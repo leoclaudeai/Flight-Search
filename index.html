@@ -156,13 +156,12 @@
             </div>
         </div>
 
-        <!-- NEW: Time Filter Slider -->
+        <!-- Time Filter Slider -->
         <div class="filter-group">
             <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
             <div class="time-slider-wrapper">
                 <div class="time-slider-track"></div>
                 <div class="time-slider-fill" id="time-fill"></div>
-                <!-- oninput updates the text smoothly, onchange updates the heavy map calculation -->
                 <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
                 <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
             </div>
@@ -325,6 +324,7 @@
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
+                        // Hide other pins and lines temporarily
                         for (let key in allMapMarkers) {
                             if (key !== iata) {
                                 if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
@@ -336,14 +336,19 @@
                         const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
 
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
-                        marker.bindPopup(contentHtml, { className: 'custom-popup', maxWidth: 360, minWidth: 340 }).openPopup();
+                        
+                        // FIX: Use L.popup().openOn(map) instead of marker.bindPopup
+                        L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
+                            .setLatLng(marker.getLatLng())
+                            .setContent(contentHtml)
+                            .openOn(window.leafletMap);
                         
                         setTimeout(() => { window.renderCardContent(iata, defaultDir); }, 10);
                     });
                 }
                 
                 loadingText.style.display = 'none';
-                window.updateTimeUI(); // Initialize visual slider
+                window.updateTimeUI(); 
                 window.applyFiltersToMap();
 
             } catch (error) {
@@ -381,7 +386,6 @@
                     for (let d of fDays) {
                         const flights = airlineData.days[d] || [];
                         
-                        // Apply Time Filter alongside Direction filter
                         const matchingFlights = flights.filter(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir));
                         
                         if (matchingFlights.length > 0) {
