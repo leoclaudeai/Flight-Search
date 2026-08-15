@@ -4,7 +4,18 @@ import time
 from datetime import datetime, timedelta
 
 HKIA_BASE_URL = 'https://www.hongkongairport.com/flightinfo-rest/rest/flights/past'
-DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+# Map weekdays to the 2-letter codes shown in the screenshot
+DAYS_MAP = {
+    'Sunday': 'su',
+    'Monday': 'mo',
+    'Tuesday': 'tu',
+    'Wednesday': 'we',
+    'Thursday': 'th',
+    'Friday': 'fr',
+    'Saturday': 'sa'
+}
+DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']
 
 def fetch_json(url):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -14,8 +25,15 @@ def fetch_json(url):
 def main():
     print("Fetching global airport locations...")
     airports_db = fetch_json('https://raw.githubusercontent.com/mwgg/Airports/master/airports.json')
-    iata_coords = {v['iata']: {'name': v['name'], 'lat': v['lat'], 'lng': v['lon']} 
-                   for k, v in airports_db.items() if v.get('iata') and v['iata'] != r'\N'}
+    iata_coords = {}
+    for k, v in airports_db.items():
+        if v.get('iata') and v['iata'] != r'\N':
+            iata_coords[v['iata']] = {
+                'name': v['name'],
+                'city': v.get('city', v['name']),
+                'lat': v['lat'],
+                'lng': v['lon']
+            }
 
     today = datetime.utcnow()
     dates = [(today - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(1, 8)]
@@ -23,39 +41,64 @@ def main():
     airport_routes = {}
 
     def process_flights(data, is_arrival, date_str):
-        if not data or not isinstance(data, list) or not data[0].get('list'):
+        flight_list = []
+        if isinstance(data, list) and len(data) > 0 and 'list' in data[0]:
+            flight_list = data[0]['list']
+        elif isinstance(data, dict) and 'list' in data:
+            flight_list = data['list']
+
+        if not flight_list:
             return
         
-        # Determine the weekday name (e.g. "Monday")
-        day_of_week = datetime.strptime(date_str, '%Y-%m-%d').strftime('%A')
+        day_key = DAYS_MAP[datetime.strptime(date_str, '%Y-%m-%d').strftime('%A')]
 
-        for item in data[0]['list']:
+        for item in flight_list:
             remote_airports = item.get('origin') if is_arrival else item.get('destination')
             if not remote_airports:
                 continue
             
             iata = remote_airports[0]
-            
-            # Initialize airport entry
+            if iata not in iata_coords:
+                continue
+
+            apt_info = iata_coords[iata]
             if iata not in airport_routes:
-                apt_info = iata_coords.get(iata)
-                if not apt_info:
-                    continue # Skip if we don't have GPS coordinates
-                
                 airport_routes[iata] = {
                     'name': apt_info['name'],
+                    'city': apt_info['city'],
                     'lat': apt_info['lat'],
                     'lng': apt_info['lng'],
-                    'schedule': {day: {'arr': 0, 'dep': 0} for day in DAYS_OF_WEEK}
+                    'airlines': {}
                 }
-            
-            # Tally the flight
-            if is_arrival:
-                airport_routes[iata]['schedule'][day_of_week]['arr'] += 1
-            else:
-                airport_routes[iata]['schedule'][day_of_week]['dep'] += 1
 
-    print("Fetching HKIA 7-day flight data...")
+            # Extract airline and flight details
+            flights = item.get('flight', [])
+            if not flights:
+                continue
+            
+            primary_flight = flights[0]
+            airline_name = primary_flight.get('airline', 'Other Airline')
+            flight_no = primary_flight.get('no', 'N/A')
+            flight_time = item.get('time', 'N/A')
+            status = item.get('status', 'Scheduled')
+
+            airlines_dict = airport_routes[iata]['airlines']
+            if airline_name not in airlines_dict:
+                airlines_dict[airline_name] = {
+                    'days': {d: [] for d in DAY_KEYS}
+                }
+
+            # Deduplicate entries for the same flight
+            existing = airlines_dict[airline_name]['days'][day_key]
+            if not any(f['no'] == flight_no and f['time'] == flight_time for f in existing):
+                existing.append({
+                    'no': flight_no,
+                    'time': flight_time,
+                    'type': 'Arrival' if is_arrival else 'Departure',
+                    'status': status
+                })
+
+    print("Fetching HKIA 7-day flight schedule...")
     for date_str in dates:
         print(f"Fetching data for {date_str}...")
         try:
@@ -68,20 +111,19 @@ def main():
             arr_data = fetch_json(arr_url)
             process_flights(arr_data, True, date_str)
         except Exception as e:
-            print(f"Warning: Failed to fetch data for {date_str}: {e}")
+            print(f"Warning: Failed for {date_str}: {e}")
             
-        time.sleep(1) # Sleep to respect server rate limits
+        time.sleep(0.8)
 
-    # Save to a static file
     output_data = {
         'lastUpdated': today.strftime('%Y-%m-%dT%H:%M:%SZ'),
         'routes': airport_routes
     }
 
     with open('flights.json', 'w', encoding='utf-8') as f:
-        json.dump(output_data, f, ensure_ascii=False)
+        json.dump(output_data, f, ensure_ascii=False, indent=2)
     
-    print(f"Success! Data saved for {len(airport_routes)} destinations.")
+    print(f"Success! Saved detailed schedules for {len(airport_routes)} airports.")
 
 if __name__ == "__main__":
     main()
