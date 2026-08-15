@@ -158,7 +158,7 @@
 </head>
 <body>
 
-    <div id="loading" class="loading-overlay">Loading Flight Routes...</div>
+    <div id="loading" class="loading-overlay">Loading Data...</div>
     
     <!-- Map Filters Panel -->
     <div id="filter-panel">
@@ -259,31 +259,20 @@
 
         window.airportRoutesData = null;
         window.leafletMap = null; 
+        window.flightDurationsCSV = {}; 
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        // --- NEW: Flight Distance and Time Estimator ---
-        window.calculateFlightInfo = function(lat1, lon1, lat2, lon2) {
-            // Haversine formula to calculate distance across the globe
-            const R = 6371; // Earth's radius in kilometers
+        // Calculate Great-Circle Distance (in km) purely via Math
+        window.calculateDistance = function(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                       Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                       Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            const distanceKm = R * c;
-
-            // Estimate flight time: 800 km/h cruising speed + 45 mins (0.75h) for takeoff/landing
-            const estimatedHours = (distanceKm / 800) + 0.75;
-            const hrs = Math.floor(estimatedHours);
-            const mins = Math.round((estimatedHours - hrs) * 60);
-
-            return {
-                distance: Math.round(distanceKm).toLocaleString(),
-                hours: hrs,
-                minutes: mins.toString().padStart(2, '0')
-            };
+            return Math.round(R * c).toLocaleString();
         };
 
         window.toggleFilterPanel = function() {
@@ -361,9 +350,29 @@
             }).addTo(window.leafletMap);
 
             try {
+                // Fetch JSON flight data
                 const res = await fetch('flights.json');
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
+
+                // Fetch CSV duration data
+                try {
+                    const csvRes = await fetch('durations.csv');
+                    if (csvRes.ok) {
+                        const csvText = await csvRes.text();
+                        const lines = csvText.split('\n');
+                        for (let i = 1; i < lines.length; i++) { 
+                            const row = lines[i].split(',');
+                            if (row.length >= 2) {
+                                const iataCode = row[0].trim().toUpperCase();
+                                const durationText = row[1].trim();
+                                window.flightDurationsCSV[iataCode] = durationText;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Could not load durations.csv. Displaying unknown duration.");
+                }
 
                 const allAirlinesSet = new Set();
                 for (let iata in window.airportRoutesData) {
@@ -499,8 +508,8 @@
             const activeDayElements = document.querySelectorAll('.f-day-pill.active');
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
 
-            // Calculate flight info mathematically
-            const flightInfo = window.calculateFlightInfo(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
+            const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
+            const csvDuration = window.flightDurationsCSV[iata] || "Time Unknown";
             
             let html = `
                 <div class="direction-toggle">
@@ -520,9 +529,9 @@
                 </div>
                 
                 <div style="font-size: 12px; color: #5f6368; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <span>✈️ ${flightInfo.distance} km</span>
+                    <span>✈️ ${distanceKm} km</span>
                     <span>•</span>
-                    <span>⏱ Approx ${flightInfo.hours}h ${flightInfo.minutes}m</span>
+                    <span>⏱ ${csvDuration}</span>
                 </div>
 
                 <div class="airline-list">
