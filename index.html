@@ -24,17 +24,17 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
-        /* --- NEW: Filter Panel Styles --- */
+        /* Map Filters Panel */
         #filter-panel {
             position: absolute;
             top: 15px;
-            left: 55px; /* Pushed slightly right to avoid Leaflet zoom controls */
+            left: 55px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(4px);
             padding: 15px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000; /* Stays above the map tiles */
+            z-index: 1000;
             width: 220px;
             border: 1px solid #e0e0e0;
         }
@@ -136,7 +136,7 @@
 
     <div id="loading" class="loading-overlay">Loading Flight Routes...</div>
     
-    <!-- NEW: Map Filters Panel -->
+    <!-- Map Filters Panel -->
     <div id="filter-panel">
         <h4>Filter Flights</h4>
         
@@ -167,7 +167,6 @@
             <label>Airline</label>
             <select id="filter-airline" onchange="window.triggerMapFilter()">
                 <option value="All">All Airlines</option>
-                <!-- Javascript will populate airlines here -->
             </select>
         </div>
     </div>
@@ -186,45 +185,105 @@
         };
 
         const AIRLINE_MAPPING = {
+            // Hong Kong Based
             "CPA": "Cathay Pacific",
-            "HKE": "Hong Kong Express",
+            "HKE": "HK Express",
             "CRK": "Hong Kong Airlines",
             "GBA": "Greater Bay Airlines",
             "HGB": "Greater Bay Airlines",
+
+            // User Requested Additions
+            "AFL": "Aeroflot",
+            "JJP": "Jetstar Japan",
+            "CSC": "Sichuan Airlines",
+            "CSH": "Shanghai Airlines",
+            "KME": "Cambodia Airways", 
+            "QDH": "Qingdao Airlines",
+            "CQH": "Spring Airlines",
+            "HBH": "Hebei Airlines",
+            "CSZ": "Shenzhen Airlines",
+
+            // Mainland China Airlines
+            "CCA": "Air China",
+            "CSN": "China Southern Airlines",
+            "CES": "China Eastern Airlines",
+            "CXA": "XiamenAir",
+            "CHH": "Hainan Airlines",
+            "DKH": "Juneyao Airlines",
+            "JYH": "9 Air",
+            "CBJ": "Beijing Capital Airlines",
+            "GCR": "Tianjin Airlines",
+            "LKE": "Lucky Air",
+            "CHB": "China West Air",
+            "UEA": "Chengdu Airlines",
+            "CDG": "Shandong Airlines",
+
+            // Taiwan
             "CAL": "China Airlines",
             "EVA": "EVA Air",
             "SJX": "Starlux Airlines",
-            "SIA": "Singapore Airlines",
+            "TTW": "Tigerair Taiwan",
+            "MDA": "Mandarin Airlines",
+            "UIA": "UNI Air",
+
+            // Japan & Korea
             "ANA": "All Nippon Airways (ANA)",
             "JAL": "Japan Airlines",
+            "APJ": "Peach Aviation",
             "KAL": "Korean Air",
             "AAR": "Asiana Airlines",
             "JJA": "Jeju Air",
             "JNA": "Jin Air",
             "TWB": "T'way Air",
-            "THA": "Thai Airways",
+            "ABL": "Air Busan",
+            "ASV": "Air Seoul",
+
+            // Southeast Asia
+            "SIA": "Singapore Airlines",
+            "TGW": "Scoot",
             "MAS": "Malaysia Airlines",
+            "AXM": "AirAsia",
+            "MXD": "Batik Air Malaysia",
+            "THA": "Thai Airways",
+            "AIQ": "Thai AirAsia",
+            "TVJ": "Thai Vietjet Air",
+            "BKP": "Bangkok Airways",
             "PAL": "Philippine Airlines",
             "CEB": "Cebu Pacific",
-            "VJC": "VietJet Air",
             "HVN": "Vietnam Airlines",
+            "VJC": "VietJet Air",
             "GIA": "Garuda Indonesia",
-            "QFA": "Qantas",
-            "ANZ": "Air New Zealand",
+            "RBA": "Royal Brunei Airlines",
+
+            // Middle East & India
             "UAE": "Emirates",
             "QTR": "Qatar Airways",
+            "THY": "Turkish Airlines",
+            "AIC": "Air India",
+            "VTI": "Vistara",
+            "IGO": "IndiGo",
+            "BBC": "Biman Bangladesh Airlines",
+            "ALK": "SriLankan Airlines",
+            "RNA": "Nepal Airlines",
+
+            // Europe
             "BAW": "British Airways",
             "AFR": "Air France",
             "DLH": "Lufthansa",
             "KLM": "KLM Royal Dutch Airlines",
             "FIN": "Finnair",
             "SWR": "Swiss International Air Lines",
+
+            // Americas, Oceania & Others
             "UAL": "United Airlines",
             "ACA": "Air Canada",
-            "CCA": "Air China",
-            "CSN": "China Southern Airlines",
-            "CES": "China Eastern Airlines",
-            "CXA": "XiamenAir"
+            "QFA": "Qantas",
+            "ANZ": "Air New Zealand",
+            "ANG": "Air Niugini",
+            "FJI": "Fiji Airways",
+            "MGL": "MIAT Mongolian Airlines",
+            "KZR": "Air Astana",
+            "UZB": "Uzbekistan Airways"
         };
 
         window.airportRoutesData = null;
@@ -236,7 +295,6 @@
         async function initMap() {
             const loadingText = document.getElementById('loading');
             
-            // Prevent map dragging/zooming when interacting with the filter panel
             const filterPanel = document.getElementById('filter-panel');
             L.DomEvent.disableClickPropagation(filterPanel);
             L.DomEvent.disableScrollPropagation(filterPanel);
@@ -256,7 +314,7 @@
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // 1. Populate the Airline Dropdown Filter dynamically
+                // Populate the Airline Dropdown Filter
                 const allAirlinesSet = new Set();
                 for (let iata in window.airportRoutesData) {
                     for (let alCode in window.airportRoutesData[iata].airlines) {
@@ -266,19 +324,18 @@
                 const sortedAirlines = Array.from(allAirlinesSet).sort();
                 const airlineSelect = document.getElementById('filter-airline');
                 sortedAirlines.forEach(code => {
-                    const fullName = AIRLINE_MAPPING[code] || code;
+                    const mappedName = AIRLINE_MAPPING[code];
+                    const optText = mappedName ? `${mappedName} (${code})` : code;
                     const opt = document.createElement('option');
                     opt.value = code;
-                    opt.innerText = `${fullName} (${code})`;
+                    opt.innerText = optText;
                     airlineSelect.appendChild(opt);
                 });
 
-                // 2. Map Event: Restore filtered pins when popup is closed
                 window.leafletMap.on('popupclose', () => {
                     window.applyFiltersToMap(); 
                 });
 
-                // 3. Draw all pins initially
                 for (let iata in window.airportRoutesData) {
                     const aptData = window.airportRoutesData[iata];
                     
@@ -301,7 +358,6 @@
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
-                        // Hide everything except clicked marker
                         for (let key in allMapMarkers) {
                             if (key !== iata) {
                                 if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
@@ -309,7 +365,6 @@
                             }
                         }
 
-                        // Determine the default tab direction based on the user's active filter
                         const fDir = document.getElementById('filter-dir').value;
                         const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
 
@@ -327,8 +382,6 @@
                 }
                 
                 loadingText.style.display = 'none';
-                
-                // Run filter once to apply default states
                 window.applyFiltersToMap();
 
             } catch (error) {
@@ -337,13 +390,11 @@
             }
         }
 
-        // Triggered by HTML dropdown changes
         window.triggerMapFilter = function() {
-            window.leafletMap.closePopup(); // Close open popups to prevent visual glitches
+            window.leafletMap.closePopup(); 
             window.applyFiltersToMap();
         };
 
-        // Core filtering logic for the map markers
         window.applyFiltersToMap = function() {
             const fDir = document.getElementById('filter-dir').value;
             const fDay = document.getElementById('filter-day').value;
@@ -354,13 +405,11 @@
                 let isMatch = false;
 
                 for (let alCode in aptData.airlines) {
-                    // Check Airline Filter
                     if (fAir !== 'All' && alCode !== fAir) continue; 
                     
                     const airlineData = aptData.airlines[alCode];
                     const daysToCheck = (fDay !== 'All') ? [fDay] : DAY_KEYS;
                     
-                    // Check Day and Direction Filters
                     for (let d of daysToCheck) {
                         const flights = airlineData.days[d] || [];
                         if (fDir !== 'All') {
@@ -373,10 +422,9 @@
                             }
                         }
                     }
-                    if (isMatch) break; // If this airport has at least one matching flight, show it
+                    if (isMatch) break; 
                 }
 
-                // Add or Remove from Leaflet map based on match
                 if (isMatch) {
                     if (!window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.addLayer(allMapMarkers[iata]);
                     if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
@@ -418,12 +466,12 @@
             let hasAnyAirline = false;
 
             for (let airlineCode in aptData.airlines) {
-                // If a user filtered by a specific airline, hide the other airlines in the popup too
                 if (activeAirlineFilter !== 'All' && airlineCode !== activeAirlineFilter) continue;
 
                 const airline = aptData.airlines[airlineCode];
-                const fullAirlineName = AIRLINE_MAPPING[airlineCode] || airlineCode;
-                const initial = fullAirlineName.charAt(0).toUpperCase();
+                const mappedName = AIRLINE_MAPPING[airlineCode];
+                const displayAirlineName = mappedName ? `${mappedName} (${airlineCode})` : airlineCode;
+                const initial = (mappedName || airlineCode).charAt(0).toUpperCase();
                 
                 let airlineHasFlightsForDir = false;
                 const dayHtmlList = [];
@@ -449,7 +497,7 @@
                         <div class="airline-row">
                             <div class="airline-info">
                                 <div class="airline-icon">${initial}</div>
-                                <div class="airline-name" title="${fullAirlineName}">${fullAirlineName}</div>
+                                <div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
                             </div>
                             <div class="day-pills">
                                 ${dayHtmlList.join('')}
