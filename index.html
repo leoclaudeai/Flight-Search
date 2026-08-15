@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hong Kong International Airport (HKG) - Flight Routes</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%; width: 100%; margin: 0; padding: 0; font-family: Arial, sans-serif; overflow: hidden;
+        }
+        #map { width: 100vw; height: 100vh; background-color: #e5e3df; }
+        
+        .loading-overlay {
+            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+            background: #ffffff; padding: 10px 20px; border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 1000;
+            font-weight: bold; font-size: 14px; color: #333333; pointer-events: none;
+        }
+        .info-window { min-width: 250px; max-width: 320px; }
+        .info-window h3 { margin: 0 0 4px 0; font-size: 15px; color: #1a73e8; }
+        .info-window .updated { font-size: 10px; color: #777; margin-bottom: 12px; }
+        .schedule-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; }
+        .schedule-table th { background-color: #f1f3f4; border-bottom: 2px solid #dadce0; padding: 6px 4px; color: #5f6368; }
+        .schedule-table td { border-bottom: 1px solid #f1f3f4; padding: 6px 4px; }
+        .has-flight { color: #188038; font-weight: bold; }
+        .no-flight { color: #bdc1c6; }
+    </style>
+</head>
+<body>
+
+    <div id="loading" class="loading-overlay">Loading Flight Routes...</div>
+    <div id="map"></div>
+
+    <!-- ⚠️ REPLACE 'YOUR_GOOGLE_MAPS_API_KEY' BELOW -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaruYG0v3IXrHqXLtgeznfzwNGKnJw1PM&callback=initMap"></script>
+
+    <script>
+        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
+        const DAYS_OF_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+        async function initMap() {
+            const loadingText = document.getElementById('loading');
+            
+            // 1. Initialize the Map
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: HKG_LATLNG,
+                zoom: 3
+            });
+
+            try {
+                // 2. Instantly fetch the pre-calculated static JSON
+                // Make sure your web server is hosting both index.html and flights.json together!
+                const res = await fetch('flights.json');
+                const data = await res.json();
+                const airportRoutes = data.routes;
+                
+                const lastUpdatedText = new Date(data.lastUpdated).toLocaleString();
+                const infoWindow = new google.maps.InfoWindow();
+
+                // 3. Draw Pins and Routes
+                for (let iata in airportRoutes) {
+                    const aptData = airportRoutes[iata];
+                    const aptLatLng = { lat: aptData.lat, lng: aptData.lng };
+
+                    const marker = new google.maps.Marker({
+                        position: aptLatLng,
+                        map: map,
+                        title: `${aptData.name} (${iata})`
+                    });
+
+                    new google.maps.Polyline({
+                        path: [HKG_LATLNG, aptLatLng],
+                        geodesic: true,
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.2, 
+                        strokeWeight: 1.5,
+                        map: map
+                    });
+
+                    // 4. Handle Clicks
+                    marker.addListener('click', () => {
+                        let contentHtml = `
+                            <div class="info-window">
+                                <h3>${aptData.name} (${iata})</h3>
+                                <div class="updated">Data from past 7 days</div>
+                                <table class="schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:left;">Day</th>
+                                            <th>Arrivals</th>
+                                            <th>Departures</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        `;
+                        
+                        DAYS_OF_WEEK.forEach(day => {
+                            const stats = aptData.schedule[day];
+                            const arrText = stats.arr > 0 ? `<span class="has-flight">${stats.arr}</span>` : `<span class="no-flight">-</span>`;
+                            const depText = stats.dep > 0 ? `<span class="has-flight">${stats.dep}</span>` : `<span class="no-flight">-</span>`;
+                            
+                            contentHtml += `
+                                <tr>
+                                    <td style="text-align:left;"><b>${day.substring(0,3)}</b></td>
+                                    <td>${arrText}</td>
+                                    <td>${depText}</td>
+                                </tr>
+                            `;
+                        });
+
+                        contentHtml += `</tbody></table></div>`;
+                        infoWindow.setContent(contentHtml);
+                        infoWindow.open(map, marker);
+                    });
+                }
+                
+                loadingText.style.display = 'none';
+
+            } catch (error) {
+                loadingText.innerText = "Error: flights.json not found. Run fetch_flights.py first.";
+                console.error("Mapping error:", error);
+            }
+        }
+    </script>
+</body>
+</html>
