@@ -20,21 +20,38 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
-        /* Flight Connections Card Styles */
         .route-card {
-            width: 330px;
+            width: 340px;
             font-family: inherit;
             color: #1a1a1a;
             padding: 4px;
         }
-        .route-header {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
+        
+        /* Direction Toggle Switch */
+        .direction-toggle {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            background-color: #f1f3f4;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 12px;
         }
+        .direction-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: #5f6368;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .direction-btn.active {
+            background-color: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
         .route-badges {
             display: flex;
             align-items: center;
@@ -52,10 +69,12 @@
             font-weight: 600;
             color: #3c4043;
         }
+        
+        /* Airline List */
         .airline-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
             border-top: 1px solid #e0e0e0;
             padding-top: 12px;
             max-height: 380px;
@@ -64,18 +83,19 @@
         .airline-row {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         .airline-info {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 2px;
         }
         .airline-icon {
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background-color: #1a73e8;
+            background-color: #006241; /* Premium dark green */
             color: white;
             display: flex;
             align-items: center;
@@ -88,9 +108,8 @@
             font-size: 14px;
             font-weight: 600;
             flex-grow: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word; /* Allows full airline names to show without being cut off */
+            line-height: 1.3;
         }
         
         /* Day Pills Bar */
@@ -100,12 +119,12 @@
             margin-left: 38px;
         }
         .day-pill {
-            width: 28px;
-            height: 24px;
+            width: 32px;
+            height: 26px;
             border-radius: 6px;
             border: 1px solid #d0d0d0;
             background: #ffffff;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             color: #202124;
             display: flex;
@@ -145,7 +164,7 @@
             border: 1px solid #e0e0e0;
             border-radius: 6px;
             padding: 8px 10px;
-            font-size: 12px;
+            font-size: 13px;
             display: none;
         }
         .flight-details-box.show {
@@ -155,7 +174,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #ebebeb;
         }
         .flight-item:last-child {
@@ -163,7 +182,6 @@
         }
         .flight-no { font-weight: 700; color: #1a73e8; }
         .flight-time { font-weight: 600; color: #333; }
-        .flight-type { font-size: 11px; color: #666; }
     </style>
 </head>
 <body>
@@ -182,6 +200,9 @@
             'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
         };
 
+        // Make data globally accessible so we don't have to keep fetching it
+        window.airportRoutesData = null;
+
         async function initMap() {
             const loadingText = document.getElementById('loading');
             
@@ -193,12 +214,12 @@
             try {
                 const res = await fetch('flights.json');
                 const data = await res.json();
-                const airportRoutes = data.routes;
+                window.airportRoutesData = data.routes;
                 
                 const infoWindow = new google.maps.InfoWindow();
 
-                for (let iata in airportRoutes) {
-                    const aptData = airportRoutes[iata];
+                for (let iata in window.airportRoutesData) {
+                    const aptData = window.airportRoutesData[iata];
                     const aptLatLng = { lat: aptData.lat, lng: aptData.lng };
 
                     const marker = new google.maps.Marker({
@@ -217,59 +238,16 @@
                     });
 
                     marker.addListener('click', () => {
-                        let contentHtml = `
-                            <div class="route-card">
-                                <div class="route-header">
-                                    Hong Kong &rarr; ${aptData.city || aptData.name}
-                                </div>
-                                <div class="route-badges">
-                                    <span>Hong Kong</span> <span class="badge">HKG</span> 
-                                    &rarr; 
-                                    <span>${aptData.city || aptData.name}</span> <span class="badge">${iata}</span>
-                                </div>
-                                <div class="airline-list">
-                        `;
-
-                        let airlineIdx = 0;
-                        for (let airlineName in aptData.airlines) {
-                            const airline = aptData.airlines[airlineName];
-                            const initial = airlineName.charAt(0).toUpperCase();
-
-                            contentHtml += `
-                                <div class="airline-row">
-                                    <div class="airline-info">
-                                        <div class="airline-icon">${initial}</div>
-                                        <div class="airline-name" title="${airlineName}">${airlineName}</div>
-                                    </div>
-                                    <div class="day-pills">
-                            `;
-
-                            DAY_KEYS.forEach(day => {
-                                const flightsForDay = airline.days[day] || [];
-                                const hasFlights = flightsForDay.length > 0;
-                                const pillClass = hasFlights ? 'day-pill active' : 'day-pill disabled';
-                                
-                                contentHtml += `
-                                    <div class="${pillClass}" 
-                                         data-airline="${airlineIdx}" 
-                                         data-day="${day}" 
-                                         onclick="toggleDaySchedule(this, '${iata}', '${airlineName}', '${day}')">
-                                        ${day}
-                                    </div>
-                                `;
-                            });
-
-                            contentHtml += `
-                                    </div>
-                                    <div id="details-${airlineIdx}" class="flight-details-box"></div>
-                                </div>
-                            `;
-                            airlineIdx++;
-                        }
-
-                        contentHtml += `</div></div>`;
+                        // Generate a container inside the InfoWindow. 
+                        // By default, it opens to 'Departure'
+                        const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
                         infoWindow.setContent(contentHtml);
                         infoWindow.open(map, marker);
+                        
+                        // We must wait for the DOM to render the container before injecting the interactive HTML
+                        setTimeout(() => {
+                            window.renderCardContent(iata, 'Departure');
+                        }, 10);
                     });
                 }
                 
@@ -281,15 +259,96 @@
             }
         }
 
-        // Global handler to switch day schedules
-        window.toggleDaySchedule = function(element, iata, airlineName, day) {
+        // Logic to build the specific interface based on direction
+        window.renderCardContent = function(iata, direction) {
+            const container = document.getElementById('route-card-container');
+            if (!container) return;
+
+            const aptData = window.airportRoutesData[iata];
+            const cityName = aptData.city || aptData.name;
+            const isDep = direction === 'Departure';
+            
+            let html = `
+                <div class="direction-toggle">
+                    <div class="direction-btn ${isDep ? 'active' : ''}" onclick="renderCardContent('${iata}', 'Departure')">
+                        HKG &rarr; ${cityName}
+                    </div>
+                    <div class="direction-btn ${!isDep ? 'active' : ''}" onclick="renderCardContent('${iata}', 'Arrival')">
+                        ${cityName} &rarr; HKG
+                    </div>
+                </div>
+                
+                <div class="route-badges">
+                    ${isDep 
+                        ? `<span>Hong Kong</span> <span class="badge">HKG</span> &rarr; <span>${cityName}</span> <span class="badge">${iata}</span>`
+                        : `<span>${cityName}</span> <span class="badge">${iata}</span> &rarr; <span>Hong Kong</span> <span class="badge">HKG</span>`
+                    }
+                </div>
+                <div class="airline-list">
+            `;
+
+            let airlineIdx = 0;
+            let hasAnyAirline = false;
+
+            for (let airlineName in aptData.airlines) {
+                const airline = aptData.airlines[airlineName];
+                const initial = airlineName.charAt(0).toUpperCase();
+                
+                // Track if this airline has flights matching the user's chosen direction
+                let airlineHasFlightsForDir = false;
+                const dayHtmlList = [];
+                
+                DAY_KEYS.forEach(day => {
+                    const flightsForDay = airline.days[day] || [];
+                    const dirFlights = flightsForDay.filter(f => f.type === direction);
+                    
+                    if (dirFlights.length > 0) airlineHasFlightsForDir = true;
+                    
+                    const pillClass = dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled';
+                    dayHtmlList.push(`
+                        <div class="${pillClass}" 
+                             onclick="toggleDaySchedule(this, '${iata}', '${airlineName}', '${day}', '${direction}')">
+                            ${day}
+                        </div>
+                    `);
+                });
+
+                // Only render the airline row if it actually flies this route direction
+                if (airlineHasFlightsForDir) {
+                    hasAnyAirline = true;
+                    html += `
+                        <div class="airline-row">
+                            <div class="airline-info">
+                                <div class="airline-icon">${initial}</div>
+                                <div class="airline-name" title="${airlineName}">${airlineName}</div>
+                            </div>
+                            <div class="day-pills">
+                                ${dayHtmlList.join('')}
+                            </div>
+                            <div class="flight-details-box"></div>
+                        </div>
+                    `;
+                }
+                airlineIdx++;
+            }
+
+            if (!hasAnyAirline) {
+                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights scheduled for this week.</div>`;
+            }
+
+            html += `</div>`;
+            container.innerHTML = html;
+        };
+
+        // Logic to expand/collapse the flight schedule
+        window.toggleDaySchedule = function(element, iata, airlineName, day, direction) {
             if (element.classList.contains('disabled')) return;
 
             const airlineRow = element.closest('.airline-row');
             const detailsBox = airlineRow.querySelector('.flight-details-box');
             const allPills = airlineRow.querySelectorAll('.day-pill');
 
-            // If already selected, hide schedule
+            // If user clicks the already active day, just hide it
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
                 detailsBox.classList.remove('show');
@@ -297,34 +356,29 @@
                 return;
             }
 
-            // Highlight selected day pill
+            // Highlight the clicked day pill
             allPills.forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
 
-            // Fetch schedule from window context / cached JSON
-            fetch('flights.json')
-                .then(r => r.json())
-                .then(data => {
-                    const flights = data.routes[iata].airlines[airlineName].days[day] || [];
-                    if (flights.length === 0) {
-                        detailsBox.innerHTML = '<em>No flights scheduled for this day.</em>';
-                    } else {
-                        let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
-                        flights.forEach(f => {
-                            html += `
-                                <div class="flight-item">
-                                    <div>
-                                        <span class="flight-no">${f.no}</span> 
-                                        <span class="flight-type">(${f.type})</span>
-                                    </div>
-                                    <div class="flight-time">${f.time}</div>
-                                </div>
-                            `;
-                        });
-                        detailsBox.innerHTML = html;
-                    }
-                    detailsBox.classList.add('show');
+            // Fetch schedule from our globally saved data
+            const flights = window.airportRoutesData[iata].airlines[airlineName].days[day] || [];
+            const dirFlights = flights.filter(f => f.type === direction); // Filter strictly by chosen direction
+
+            if (dirFlights.length === 0) {
+                detailsBox.innerHTML = '<em>No flights scheduled.</em>';
+            } else {
+                let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
+                dirFlights.forEach(f => {
+                    html += `
+                        <div class="flight-item">
+                            <div class="flight-no">${f.no}</div>
+                            <div class="flight-time">Scheduled: ${f.time}</div>
+                        </div>
+                    `;
                 });
+                detailsBox.innerHTML = html;
+            }
+            detailsBox.classList.add('show');
         };
     </script>
 </body>
