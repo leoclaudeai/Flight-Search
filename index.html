@@ -26,100 +26,82 @@
 
         /* Map Filters Panel */
         #filter-panel {
-            position: absolute;
-            top: 15px;
-            left: 55px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(4px);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000;
-            width: 240px;
-            border: 1px solid #e0e0e0;
+            position: absolute; top: 15px; left: 55px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000; width: 240px; border: 1px solid #e0e0e0;
         }
-        #filter-panel h4 {
-            margin: 0 0 12px 0;
-            font-size: 15px;
-            color: #1a73e8;
-        }
-        .filter-group { margin-bottom: 12px; }
+        #filter-panel h4 { margin: 0 0 12px 0; font-size: 15px; color: #1a73e8; }
+        .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
         .filter-group label {
-            display: block;
-            font-size: 11px;
-            font-weight: 700;
-            color: #5f6368;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
+            display: flex; justify-content: space-between; font-size: 11px;
+            font-weight: 700; color: #5f6368; margin-bottom: 6px;
+            text-transform: uppercase; letter-spacing: 0.3px;
         }
         .filter-group select {
-            width: 100%;
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 13px;
-            background-color: #fff;
-            color: #202124;
-            cursor: pointer;
-            outline: none;
+            width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc;
+            font-size: 13px; background-color: #fff; color: #202124; cursor: pointer; outline: none;
         }
         .filter-group select:focus { border-color: #1a73e8; }
 
-        /* Multi-Select Day Pills for Filter Panel */
-        .filter-day-pills {
-            display: flex; gap: 4px; 
-        }
+        /* Multi-Select Day Pills */
+        .filter-day-pills { display: flex; gap: 4px; }
         .f-day-pill {
             flex: 1; text-align: center; padding: 6px 0; font-size: 11px;
             border: 1px solid #ccc; border-radius: 4px; cursor: pointer;
-            background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s;
-            user-select: none;
+            background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s; user-select: none;
         }
         .f-day-pill:hover { border-color: #1a73e8; }
-        .f-day-pill.active {
-            background: #1a73e8; color: #fff; border-color: #1a73e8;
+        .f-day-pill.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+
+        /* Custom Dual-Thumb Time Slider */
+        .time-slider-wrapper { position: relative; width: 100%; height: 24px; margin-top: 4px; }
+        .time-slider-track {
+            position: absolute; top: 10px; left: 0; right: 0; height: 4px;
+            background: #dadce0; border-radius: 2px; z-index: 1;
         }
+        .time-slider-fill {
+            position: absolute; top: 10px; left: 0; width: 100%; height: 4px;
+            background: #1a73e8; border-radius: 2px; z-index: 2;
+        }
+        .time-slider-wrapper input[type="range"] {
+            position: absolute; top: 2px; left: 0; width: 100%; height: 20px;
+            pointer-events: none; appearance: none; background: none; z-index: 3; margin: 0;
+        }
+        .time-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            pointer-events: auto; appearance: none; width: 16px; height: 16px;
+            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .time-slider-wrapper input[type="range"]::-moz-range-thumb {
+            pointer-events: auto; appearance: none; width: 16px; height: 16px;
+            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        #time-label-val { color: #1a73e8; font-weight: 700; }
 
         /* Leaflet Popup Overrides */
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
         .custom-popup .leaflet-popup-content { margin: 12px; width: 340px !important; }
-
         .route-card { width: 340px; font-family: inherit; color: #1a1a1a; padding: 0; }
         
         /* Direction Toggle Switch */
-        .direction-toggle {
-            display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px;
-        }
+        .direction-toggle { display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px; }
         .direction-btn {
             flex: 1; text-align: center; padding: 8px 0; font-size: 13px; font-weight: 600;
             color: #5f6368; cursor: pointer; border-radius: 6px; transition: all 0.2s;
         }
-        .direction-btn.active {
-            background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+        .direction-btn.active { background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        .route-badges {
-            display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a;
-        }
-        .badge {
-            background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px;
-            padding: 2px 6px; font-size: 11px; font-weight: 600; color: #3c4043;
-        }
+        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a; }
+        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 600; color: #3c4043; }
         
         /* Airline List */
-        .airline-list {
-            display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0;
-            padding-top: 12px; max-height: 380px; overflow-y: auto;
-        }
+        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
         .airline-row { display: flex; flex-direction: column; gap: 8px; }
         .airline-info { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
-        .airline-icon {
-            width: 28px; height: 28px; border-radius: 50%; background-color: #006241;
-            color: white; display: flex; align-items: center; justify-content: center;
-            font-size: 12px; font-weight: 700; flex-shrink: 0;
-        }
+        .airline-icon { width: 28px; height: 28px; border-radius: 50%; background-color: #006241; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
         .airline-name { font-size: 14px; font-weight: 600; flex-grow: 1; word-break: break-word; line-height: 1.3; }
         
         /* Day Pills Bar (Inside Popup) */
@@ -136,10 +118,7 @@
         .day-pill.disabled { border-color: #f1f3f4; background-color: #f8f9fa; color: #bdc1c6; cursor: not-allowed; opacity: 0.6; }
 
         /* Flight Schedule Details Dropdown */
-        .flight-details-box {
-            margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0;
-            border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none;
-        }
+        .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; }
         .flight-details-box.show { display: block; }
         .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ebebeb; }
         .flight-item:last-child { border-bottom: none; }
@@ -166,7 +145,6 @@
 
         <div class="filter-group">
             <label>Days of Week</label>
-            <!-- NEW: Multi-select pill buttons instead of a dropdown -->
             <div class="filter-day-pills">
                 <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
                 <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
@@ -175,6 +153,18 @@
                 <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
                 <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
                 <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+            </div>
+        </div>
+
+        <!-- NEW: Time Filter Slider -->
+        <div class="filter-group">
+            <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+            <div class="time-slider-wrapper">
+                <div class="time-slider-track"></div>
+                <div class="time-slider-fill" id="time-fill"></div>
+                <!-- oninput updates the text smoothly, onchange updates the heavy map calculation -->
+                <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+                <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
             </div>
         </div>
 
@@ -200,106 +190,76 @@
         };
 
         const AIRLINE_MAPPING = {
-            "CPA": "Cathay Pacific",
-            "HKE": "HK Express",
-            "CRK": "Hong Kong Airlines",
-            "GBA": "Greater Bay Airlines",
-            "HGB": "Greater Bay Airlines",
-            "APZ": "Air Premia",
-            "CDC": "Loong Air",
-            "CFG": "Condor",
-            "DAL": "Delta Air Lines",
-            "ESR": "Eastar Jet",
-            "ETD": "Etihad Airways",
-            "ETH": "Ethiopian Airlines",
-            "QDA": "Qingdao Airlines",
-            "SPQ": "Sun PhuQuoc Airways",
-            "TBA": "Tibet Airlines",
-            "TLM": "Thai Lion Air",
-            "AFL": "Aeroflot",
-            "JJP": "Jetstar Japan",
-            "CSC": "Sichuan Airlines",
-            "CSH": "Shanghai Airlines",
-            "KME": "Cambodia Airways", 
-            "QDH": "Qingdao Airlines",
-            "CQH": "Spring Airlines",
-            "HBH": "Hebei Airlines",
-            "CSZ": "Shenzhen Airlines",
-            "CCA": "Air China",
-            "CSN": "China Southern Airlines",
-            "CES": "China Eastern Airlines",
-            "CXA": "XiamenAir",
-            "CHH": "Hainan Airlines",
-            "DKH": "Juneyao Airlines",
-            "JYH": "9 Air",
-            "CBJ": "Beijing Capital Airlines",
-            "GCR": "Tianjin Airlines",
-            "LKE": "Lucky Air",
-            "CHB": "China West Air",
-            "UEA": "Chengdu Airlines",
-            "CDG": "Shandong Airlines",
-            "CAL": "China Airlines",
-            "EVA": "EVA Air",
-            "SJX": "Starlux Airlines",
-            "TTW": "Tigerair Taiwan",
-            "MDA": "Mandarin Airlines",
-            "UIA": "UNI Air",
-            "ANA": "All Nippon Airways (ANA)",
-            "JAL": "Japan Airlines",
-            "APJ": "Peach Aviation",
-            "KAL": "Korean Air",
-            "AAR": "Asiana Airlines",
-            "JJA": "Jeju Air",
-            "JNA": "Jin Air",
-            "TWB": "T'way Air",
-            "ABL": "Air Busan",
-            "ASV": "Air Seoul",
-            "SIA": "Singapore Airlines",
-            "TGW": "Scoot",
-            "MAS": "Malaysia Airlines",
-            "AXM": "AirAsia",
-            "MXD": "Batik Air Malaysia",
-            "THA": "Thai Airways",
-            "AIQ": "Thai AirAsia",
-            "TVJ": "Thai Vietjet Air",
-            "BKP": "Bangkok Airways",
-            "PAL": "Philippine Airlines",
-            "CEB": "Cebu Pacific",
-            "HVN": "Vietnam Airlines",
-            "VJC": "VietJet Air",
-            "GIA": "Garuda Indonesia",
-            "RBA": "Royal Brunei Airlines",
-            "UAE": "Emirates",
-            "QTR": "Qatar Airways",
-            "THY": "Turkish Airlines",
-            "AIC": "Air India",
-            "VTI": "Vistara",
-            "IGO": "IndiGo",
-            "BBC": "Biman Bangladesh Airlines",
-            "ALK": "SriLankan Airlines",
-            "RNA": "Nepal Airlines",
-            "BAW": "British Airways",
-            "AFR": "Air France",
-            "DLH": "Lufthansa",
-            "KLM": "KLM Royal Dutch Airlines",
-            "FIN": "Finnair",
-            "SWR": "Swiss International Air Lines",
-            "UAL": "United Airlines",
-            "ACA": "Air Canada",
-            "QFA": "Qantas",
-            "ANZ": "Air New Zealand",
-            "ANG": "Air Niugini",
-            "FJI": "Fiji Airways",
-            "MGL": "MIAT Mongolian Airlines",
-            "KZR": "Air Astana",
-            "UZB": "Uzbekistan Airways"
+            "CPA": "Cathay Pacific", "HKE": "HK Express", "CRK": "Hong Kong Airlines",
+            "GBA": "Greater Bay Airlines", "HGB": "Greater Bay Airlines", "APZ": "Air Premia",
+            "CDC": "Loong Air", "CFG": "Condor", "DAL": "Delta Air Lines", "ESR": "Eastar Jet",
+            "ETD": "Etihad Airways", "ETH": "Ethiopian Airlines", "QDA": "Qingdao Airlines",
+            "SPQ": "Sun PhuQuoc Airways", "TBA": "Tibet Airlines", "TLM": "Thai Lion Air",
+            "AFL": "Aeroflot", "JJP": "Jetstar Japan", "CSC": "Sichuan Airlines",
+            "CSH": "Shanghai Airlines", "KME": "Cambodia Airways", "QDH": "Qingdao Airlines",
+            "CQH": "Spring Airlines", "HBH": "Hebei Airlines", "CSZ": "Shenzhen Airlines",
+            "CCA": "Air China", "CSN": "China Southern Airlines", "CES": "China Eastern Airlines",
+            "CXA": "XiamenAir", "CHH": "Hainan Airlines", "DKH": "Juneyao Airlines", "JYH": "9 Air",
+            "CBJ": "Beijing Capital Airlines", "GCR": "Tianjin Airlines", "LKE": "Lucky Air",
+            "CHB": "China West Air", "UEA": "Chengdu Airlines", "CDG": "Shandong Airlines",
+            "CAL": "China Airlines", "EVA": "EVA Air", "SJX": "Starlux Airlines",
+            "TTW": "Tigerair Taiwan", "MDA": "Mandarin Airlines", "UIA": "UNI Air",
+            "ANA": "All Nippon Airways (ANA)", "JAL": "Japan Airlines", "APJ": "Peach Aviation",
+            "KAL": "Korean Air", "AAR": "Asiana Airlines", "JJA": "Jeju Air", "JNA": "Jin Air",
+            "TWB": "T'way Air", "ABL": "Air Busan", "ASV": "Air Seoul", "SIA": "Singapore Airlines",
+            "TGW": "Scoot", "MAS": "Malaysia Airlines", "AXM": "AirAsia", "MXD": "Batik Air Malaysia",
+            "THA": "Thai Airways", "AIQ": "Thai AirAsia", "TVJ": "Thai Vietjet Air",
+            "BKP": "Bangkok Airways", "PAL": "Philippine Airlines", "CEB": "Cebu Pacific",
+            "HVN": "Vietnam Airlines", "VJC": "VietJet Air", "GIA": "Garuda Indonesia",
+            "RBA": "Royal Brunei Airlines", "UAE": "Emirates", "QTR": "Qatar Airways",
+            "THY": "Turkish Airlines", "AIC": "Air India", "VTI": "Vistara", "IGO": "IndiGo",
+            "BBC": "Biman Bangladesh Airlines", "ALK": "SriLankan Airlines", "RNA": "Nepal Airlines",
+            "BAW": "British Airways", "AFR": "Air France", "DLH": "Lufthansa", "KLM": "KLM Royal Dutch Airlines",
+            "FIN": "Finnair", "SWR": "Swiss International Air Lines", "UAL": "United Airlines",
+            "ACA": "Air Canada", "QFA": "Qantas", "ANZ": "Air New Zealand", "ANG": "Air Niugini",
+            "FJI": "Fiji Airways", "MGL": "MIAT Mongolian Airlines", "KZR": "Air Astana", "UZB": "Uzbekistan Airways"
         };
 
         window.airportRoutesData = null;
         window.leafletMap = null; 
-        
         const allMapMarkers = {};
         const allMapPolylines = {};
+
+        // Helper to check if a flight time (HH:MM) falls inside the selected slider range
+        window.flightTimeMatches = function(timeStr) {
+            if (!timeStr || !timeStr.includes(':')) return true; 
+            const parts = timeStr.split(':');
+            const flightMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+            
+            const v1 = parseInt(document.getElementById('time-min').value);
+            const v2 = parseInt(document.getElementById('time-max').value);
+            const minHr = Math.min(v1, v2);
+            const maxHr = Math.max(v1, v2);
+            
+            const startMins = minHr * 60;
+            const endMins = maxHr === 24 ? 24 * 60 : maxHr * 60;
+            
+            return flightMins >= startMins && flightMins <= endMins;
+        };
+
+        // Smoothly updates the visual slider blue bar and text
+        window.updateTimeUI = function() {
+            const slider1 = document.getElementById('time-min');
+            const slider2 = document.getElementById('time-max');
+            const val1 = parseInt(slider1.value);
+            const val2 = parseInt(slider2.value);
+            
+            const minVal = Math.min(val1, val2);
+            const maxVal = Math.max(val1, val2);
+            
+            document.getElementById('time-label-val').innerText = `${String(minVal).padStart(2, '0')}:00 - ${String(maxVal).padStart(2, '0')}:00`;
+            
+            const fill = document.getElementById('time-fill');
+            const percent1 = (minVal / 24) * 100;
+            const percent2 = (maxVal / 24) * 100;
+            fill.style.left = percent1 + "%";
+            fill.style.width = (percent2 - percent1) + "%";
+        };
 
         async function initMap() {
             const loadingText = document.getElementById('loading');
@@ -323,7 +283,6 @@
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // Populate the Airline Dropdown Filter alphabetically by full name
                 const allAirlinesSet = new Set();
                 for (let iata in window.airportRoutesData) {
                     for (let alCode in window.airportRoutesData[iata].airlines) {
@@ -346,9 +305,7 @@
                     airlineSelect.appendChild(opt);
                 });
 
-                window.leafletMap.on('popupclose', () => {
-                    window.applyFiltersToMap(); 
-                });
+                window.leafletMap.on('popupclose', () => { window.applyFiltersToMap(); });
 
                 for (let iata in window.airportRoutesData) {
                     const aptData = window.airportRoutesData[iata];
@@ -364,11 +321,7 @@
                     const polyline = L.polyline([
                         [HKG_LATLNG.lat, HKG_LATLNG.lng], 
                         [aptData.lat, routeLng]
-                    ], {
-                        color: 'red',
-                        weight: 1.5,
-                        opacity: 0.2
-                    }).addTo(window.leafletMap);
+                    ], { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
@@ -383,19 +336,14 @@
                         const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
 
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
-                        marker.bindPopup(contentHtml, {
-                            className: 'custom-popup',
-                            maxWidth: 360,
-                            minWidth: 340
-                        }).openPopup();
+                        marker.bindPopup(contentHtml, { className: 'custom-popup', maxWidth: 360, minWidth: 340 }).openPopup();
                         
-                        setTimeout(() => {
-                            window.renderCardContent(iata, defaultDir);
-                        }, 10);
+                        setTimeout(() => { window.renderCardContent(iata, defaultDir); }, 10);
                     });
                 }
                 
                 loadingText.style.display = 'none';
+                window.updateTimeUI(); // Initialize visual slider
                 window.applyFiltersToMap();
 
             } catch (error) {
@@ -404,7 +352,6 @@
             }
         }
 
-        // Toggles a day pill in the filter panel
         window.toggleFilterDay = function(element) {
             element.classList.toggle('active');
             window.triggerMapFilter();
@@ -419,7 +366,6 @@
             const fDir = document.getElementById('filter-dir').value;
             const fAir = document.getElementById('filter-airline').value;
             
-            // Read all currently active day pills from the filter panel
             const activeDayElements = document.querySelectorAll('.f-day-pill.active');
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
 
@@ -432,17 +378,15 @@
                     
                     const airlineData = aptData.airlines[alCode];
                     
-                    // Check if airline operates on ANY of the selected days
                     for (let d of fDays) {
                         const flights = airlineData.days[d] || [];
-                        if (fDir !== 'All') {
-                            if (flights.some(f => f.type === fDir)) {
-                                isMatch = true; break;
-                            }
-                        } else {
-                            if (flights.length > 0) {
-                                isMatch = true; break;
-                            }
+                        
+                        // Apply Time Filter alongside Direction filter
+                        const matchingFlights = flights.filter(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir));
+                        
+                        if (matchingFlights.length > 0) {
+                            isMatch = true;
+                            break;
                         }
                     }
                     if (isMatch) break; 
@@ -465,10 +409,8 @@
             const aptData = window.airportRoutesData[iata];
             const cityName = aptData.city || aptData.name;
             const isDep = direction === 'Departure';
-            
             const activeAirlineFilter = document.getElementById('filter-airline').value;
             
-            // Read active day filters to sync the popup card
             const activeDayElements = document.querySelectorAll('.f-day-pill.active');
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
             
@@ -504,17 +446,16 @@
 
                 const airline = aptData.airlines[airlineCode];
                 
-                // Ensure this airline operates on the selected days in the selected direction
-                let operatesOnFilteredDays = false;
+                let operatesOnFilteredDaysAndTimes = false;
                 for (let d of fDays) {
                     const flightsForDay = airline.days[d] || [];
-                    if (flightsForDay.some(f => f.type === direction)) {
-                        operatesOnFilteredDays = true;
+                    if (flightsForDay.some(f => f.type === direction && window.flightTimeMatches(f.time))) {
+                        operatesOnFilteredDaysAndTimes = true;
                         break;
                     }
                 }
                 
-                if (!operatesOnFilteredDays) continue; // Skip rendering if it doesn't match the Day filter
+                if (!operatesOnFilteredDaysAndTimes) continue; 
 
                 const mappedName = AIRLINE_MAPPING[airlineCode];
                 const displayAirlineName = mappedName ? `${mappedName} (${airlineCode})` : airlineCode;
@@ -523,7 +464,7 @@
                 const dayHtmlList = [];
                 DAY_KEYS.forEach(day => {
                     const flightsForDay = airline.days[day] || [];
-                    const dirFlights = flightsForDay.filter(f => f.type === direction);
+                    const dirFlights = flightsForDay.filter(f => f.type === direction && window.flightTimeMatches(f.time));
                     const pillClass = dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled';
                     
                     dayHtmlList.push(`
@@ -575,7 +516,7 @@
             element.classList.add('selected');
 
             const flights = window.airportRoutesData[iata].airlines[airlineCode].days[day] || [];
-            const dirFlights = flights.filter(f => f.type === direction);
+            const dirFlights = flights.filter(f => f.type === direction && window.flightTimeMatches(f.time));
 
             if (dirFlights.length === 0) {
                 detailsBox.innerHTML = '<em>No flights scheduled.</em>';
