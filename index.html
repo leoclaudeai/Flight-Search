@@ -35,7 +35,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000;
-            width: 220px;
+            width: 240px;
             border: 1px solid #e0e0e0;
         }
         #filter-panel h4 {
@@ -50,7 +50,7 @@
             font-size: 11px;
             font-weight: 700;
             color: #5f6368;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
@@ -66,6 +66,21 @@
             outline: none;
         }
         .filter-group select:focus { border-color: #1a73e8; }
+
+        /* Multi-Select Day Pills for Filter Panel */
+        .filter-day-pills {
+            display: flex; gap: 4px; 
+        }
+        .f-day-pill {
+            flex: 1; text-align: center; padding: 6px 0; font-size: 11px;
+            border: 1px solid #ccc; border-radius: 4px; cursor: pointer;
+            background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s;
+            user-select: none;
+        }
+        .f-day-pill:hover { border-color: #1a73e8; }
+        .f-day-pill.active {
+            background: #1a73e8; color: #fff; border-color: #1a73e8;
+        }
 
         /* Leaflet Popup Overrides */
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
@@ -107,7 +122,7 @@
         }
         .airline-name { font-size: 14px; font-weight: 600; flex-grow: 1; word-break: break-word; line-height: 1.3; }
         
-        /* Day Pills Bar */
+        /* Day Pills Bar (Inside Popup) */
         .day-pills { display: flex; gap: 4px; margin-left: 38px; }
         .day-pill {
             width: 32px; height: 26px; border-radius: 6px; border: 1px solid #d0d0d0;
@@ -150,17 +165,17 @@
         </div>
 
         <div class="filter-group">
-            <label>Day of Week</label>
-            <select id="filter-day" onchange="window.triggerMapFilter()">
-                <option value="All">Any Day</option>
-                <option value="su">Sunday</option>
-                <option value="mo">Monday</option>
-                <option value="tu">Tuesday</option>
-                <option value="we">Wednesday</option>
-                <option value="th">Thursday</option>
-                <option value="fr">Friday</option>
-                <option value="sa">Saturday</option>
-            </select>
+            <label>Days of Week</label>
+            <!-- NEW: Multi-select pill buttons instead of a dropdown -->
+            <div class="filter-day-pills">
+                <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
+                <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
+                <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
+                <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
+                <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
+                <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
+                <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+            </div>
         </div>
 
         <div class="filter-group">
@@ -185,14 +200,22 @@
         };
 
         const AIRLINE_MAPPING = {
-            // Hong Kong Based
             "CPA": "Cathay Pacific",
             "HKE": "HK Express",
             "CRK": "Hong Kong Airlines",
             "GBA": "Greater Bay Airlines",
             "HGB": "Greater Bay Airlines",
-
-            // User Requested Additions
+            "APZ": "Air Premia",
+            "CDC": "Loong Air",
+            "CFG": "Condor",
+            "DAL": "Delta Air Lines",
+            "ESR": "Eastar Jet",
+            "ETD": "Etihad Airways",
+            "ETH": "Ethiopian Airlines",
+            "QDA": "Qingdao Airlines",
+            "SPQ": "Sun PhuQuoc Airways",
+            "TBA": "Tibet Airlines",
+            "TLM": "Thai Lion Air",
             "AFL": "Aeroflot",
             "JJP": "Jetstar Japan",
             "CSC": "Sichuan Airlines",
@@ -202,8 +225,6 @@
             "CQH": "Spring Airlines",
             "HBH": "Hebei Airlines",
             "CSZ": "Shenzhen Airlines",
-
-            // Mainland China Airlines
             "CCA": "Air China",
             "CSN": "China Southern Airlines",
             "CES": "China Eastern Airlines",
@@ -217,16 +238,12 @@
             "CHB": "China West Air",
             "UEA": "Chengdu Airlines",
             "CDG": "Shandong Airlines",
-
-            // Taiwan
             "CAL": "China Airlines",
             "EVA": "EVA Air",
             "SJX": "Starlux Airlines",
             "TTW": "Tigerair Taiwan",
             "MDA": "Mandarin Airlines",
             "UIA": "UNI Air",
-
-            // Japan & Korea
             "ANA": "All Nippon Airways (ANA)",
             "JAL": "Japan Airlines",
             "APJ": "Peach Aviation",
@@ -237,8 +254,6 @@
             "TWB": "T'way Air",
             "ABL": "Air Busan",
             "ASV": "Air Seoul",
-
-            // Southeast Asia
             "SIA": "Singapore Airlines",
             "TGW": "Scoot",
             "MAS": "Malaysia Airlines",
@@ -254,8 +269,6 @@
             "VJC": "VietJet Air",
             "GIA": "Garuda Indonesia",
             "RBA": "Royal Brunei Airlines",
-
-            // Middle East & India
             "UAE": "Emirates",
             "QTR": "Qatar Airways",
             "THY": "Turkish Airlines",
@@ -265,16 +278,12 @@
             "BBC": "Biman Bangladesh Airlines",
             "ALK": "SriLankan Airlines",
             "RNA": "Nepal Airlines",
-
-            // Europe
             "BAW": "British Airways",
             "AFR": "Air France",
             "DLH": "Lufthansa",
             "KLM": "KLM Royal Dutch Airlines",
             "FIN": "Finnair",
             "SWR": "Swiss International Air Lines",
-
-            // Americas, Oceania & Others
             "UAL": "United Airlines",
             "ACA": "Air Canada",
             "QFA": "Qantas",
@@ -314,14 +323,19 @@
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // Populate the Airline Dropdown Filter
+                // Populate the Airline Dropdown Filter alphabetically by full name
                 const allAirlinesSet = new Set();
                 for (let iata in window.airportRoutesData) {
                     for (let alCode in window.airportRoutesData[iata].airlines) {
                         allAirlinesSet.add(alCode);
                     }
                 }
-                const sortedAirlines = Array.from(allAirlinesSet).sort();
+                const sortedAirlines = Array.from(allAirlinesSet).sort((codeA, codeB) => {
+                    const nameA = AIRLINE_MAPPING[codeA] || codeA;
+                    const nameB = AIRLINE_MAPPING[codeB] || codeB;
+                    return nameA.localeCompare(nameB);
+                });
+
                 const airlineSelect = document.getElementById('filter-airline');
                 sortedAirlines.forEach(code => {
                     const mappedName = AIRLINE_MAPPING[code];
@@ -390,6 +404,12 @@
             }
         }
 
+        // Toggles a day pill in the filter panel
+        window.toggleFilterDay = function(element) {
+            element.classList.toggle('active');
+            window.triggerMapFilter();
+        };
+
         window.triggerMapFilter = function() {
             window.leafletMap.closePopup(); 
             window.applyFiltersToMap();
@@ -397,8 +417,11 @@
 
         window.applyFiltersToMap = function() {
             const fDir = document.getElementById('filter-dir').value;
-            const fDay = document.getElementById('filter-day').value;
             const fAir = document.getElementById('filter-airline').value;
+            
+            // Read all currently active day pills from the filter panel
+            const activeDayElements = document.querySelectorAll('.f-day-pill.active');
+            const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
 
             for (let iata in window.airportRoutesData) {
                 const aptData = window.airportRoutesData[iata];
@@ -408,9 +431,9 @@
                     if (fAir !== 'All' && alCode !== fAir) continue; 
                     
                     const airlineData = aptData.airlines[alCode];
-                    const daysToCheck = (fDay !== 'All') ? [fDay] : DAY_KEYS;
                     
-                    for (let d of daysToCheck) {
+                    // Check if airline operates on ANY of the selected days
+                    for (let d of fDays) {
                         const flights = airlineData.days[d] || [];
                         if (fDir !== 'All') {
                             if (flights.some(f => f.type === fDir)) {
@@ -442,7 +465,12 @@
             const aptData = window.airportRoutesData[iata];
             const cityName = aptData.city || aptData.name;
             const isDep = direction === 'Departure';
+            
             const activeAirlineFilter = document.getElementById('filter-airline').value;
+            
+            // Read active day filters to sync the popup card
+            const activeDayElements = document.querySelectorAll('.f-day-pill.active');
+            const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
             
             let html = `
                 <div class="direction-toggle">
@@ -465,24 +493,39 @@
 
             let hasAnyAirline = false;
 
-            for (let airlineCode in aptData.airlines) {
+            const sortedAirlineCodes = Object.keys(aptData.airlines).sort((a, b) => {
+                const nameA = AIRLINE_MAPPING[a] || a;
+                const nameB = AIRLINE_MAPPING[b] || b;
+                return nameA.localeCompare(nameB);
+            });
+
+            for (let airlineCode of sortedAirlineCodes) {
                 if (activeAirlineFilter !== 'All' && airlineCode !== activeAirlineFilter) continue;
 
                 const airline = aptData.airlines[airlineCode];
+                
+                // Ensure this airline operates on the selected days in the selected direction
+                let operatesOnFilteredDays = false;
+                for (let d of fDays) {
+                    const flightsForDay = airline.days[d] || [];
+                    if (flightsForDay.some(f => f.type === direction)) {
+                        operatesOnFilteredDays = true;
+                        break;
+                    }
+                }
+                
+                if (!operatesOnFilteredDays) continue; // Skip rendering if it doesn't match the Day filter
+
                 const mappedName = AIRLINE_MAPPING[airlineCode];
                 const displayAirlineName = mappedName ? `${mappedName} (${airlineCode})` : airlineCode;
                 const initial = (mappedName || airlineCode).charAt(0).toUpperCase();
                 
-                let airlineHasFlightsForDir = false;
                 const dayHtmlList = [];
-                
                 DAY_KEYS.forEach(day => {
                     const flightsForDay = airline.days[day] || [];
                     const dirFlights = flightsForDay.filter(f => f.type === direction);
-                    
-                    if (dirFlights.length > 0) airlineHasFlightsForDir = true;
-                    
                     const pillClass = dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled';
+                    
                     dayHtmlList.push(`
                         <div class="${pillClass}" 
                              onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">
@@ -491,25 +534,23 @@
                     `);
                 });
 
-                if (airlineHasFlightsForDir) {
-                    hasAnyAirline = true;
-                    html += `
-                        <div class="airline-row">
-                            <div class="airline-info">
-                                <div class="airline-icon">${initial}</div>
-                                <div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
-                            </div>
-                            <div class="day-pills">
-                                ${dayHtmlList.join('')}
-                            </div>
-                            <div class="flight-details-box"></div>
+                hasAnyAirline = true;
+                html += `
+                    <div class="airline-row">
+                        <div class="airline-info">
+                            <div class="airline-icon">${initial}</div>
+                            <div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
                         </div>
-                    `;
-                }
+                        <div class="day-pills">
+                            ${dayHtmlList.join('')}
+                        </div>
+                        <div class="flight-details-box"></div>
+                    </div>
+                `;
             }
 
             if (!hasAnyAirline) {
-                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights matching criteria.</div>`;
+                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights matching your filters.</div>`;
             }
 
             html += `</div>`;
