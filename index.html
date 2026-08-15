@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hong Kong International Airport (HKG) - Flight Routes</title>
+    
+    <!-- Free Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <style>
         * { box-sizing: border-box; }
         html, body {
@@ -11,7 +15,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             overflow: hidden;
         }
-        #map { width: 100vw; height: 100vh; background-color: #e5e3df; }
+        #map { width: 100vw; height: 100vh; background-color: #cad2d3; } /* Water color */
         
         .loading-overlay {
             position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
@@ -20,11 +24,15 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
+        /* Leaflet Popup Overrides */
+        .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
+        .custom-popup .leaflet-popup-content { margin: 12px; width: 340px !important; }
+
         .route-card {
             width: 340px;
             font-family: inherit;
             color: #1a1a1a;
-            padding: 4px;
+            padding: 0;
         }
         
         /* Direction Toggle Switch */
@@ -189,8 +197,8 @@
     <div id="loading" class="loading-overlay">Loading Flight Routes...</div>
     <div id="map"></div>
 
-    <!-- ⚠️ REPLACE 'YOUR_GOOGLE_MAPS_API_KEY' BELOW -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaruYG0v3IXrHqXLtgeznfzwNGKnJw1PM&callback=initMap"></script>
+    <!-- Free Leaflet.js Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
@@ -200,8 +208,6 @@
             'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
         };
 
-        // 📝 AIRLINE NAME DICTIONARY
-        // Add or change any codes here to map them to full names.
         const AIRLINE_MAPPING = {
             "CPA": "Cathay Pacific",
             "HKE": "Hong Kong Express",
@@ -251,57 +257,72 @@
         async function initMap() {
             const loadingText = document.getElementById('loading');
             
-            const map = new google.maps.Map(document.getElementById('map'), {
-                center: HKG_LATLNG,
-                zoom: 3
+            // 1. Initialize Leaflet Map
+            const map = L.map('map', {
+                center: [HKG_LATLNG.lat, HKG_LATLNG.lng],
+                zoom: 3,
+                worldCopyJump: true // Helps with panning across the dateline
             });
+
+            // Add Free OpenStreetMap Tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
             try {
                 const res = await fetch('flights.json');
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
-                
-                const infoWindow = new google.maps.InfoWindow();
 
-                google.maps.event.addListener(infoWindow, 'closeclick', () => {
+                // When the popup closes, restore all pins and lines
+                map.on('popupclose', () => {
                     for (let key in allMapMarkers) {
-                        allMapMarkers[key].setVisible(true);
-                        allMapPolylines[key].setVisible(true);
+                        if (!map.hasLayer(allMapMarkers[key])) map.addLayer(allMapMarkers[key]);
+                        if (!map.hasLayer(allMapPolylines[key])) map.addLayer(allMapPolylines[key]);
                     }
                 });
 
                 for (let iata in window.airportRoutesData) {
                     const aptData = window.airportRoutesData[iata];
-                    const aptLatLng = { lat: aptData.lat, lng: aptData.lng };
-
-                    const marker = new google.maps.Marker({
-                        position: aptLatLng,
-                        map: map,
+                    
+                    // Create Marker
+                    const marker = L.marker([aptData.lat, aptData.lng], {
                         title: `${aptData.city || aptData.name} (${iata})`
-                    });
+                    }).addTo(map);
                     allMapMarkers[iata] = marker; 
 
-                    const polyline = new google.maps.Polyline({
-                        path: [HKG_LATLNG, aptLatLng],
-                        geodesic: true,
-                        strokeColor: '#FF0000',
-                        strokeOpacity: 0.2, 
-                        strokeWeight: 1.5,
-                        map: map
-                    });
+                    // Fix for North American flights crossing the dateline
+                    let routeLng = aptData.lng;
+                    if (routeLng < -30) routeLng += 360; 
+
+                    // Create Polyline connecting HKG to Destination
+                    const polyline = L.polyline([
+                        [HKG_LATLNG.lat, HKG_LATLNG.lng], 
+                        [aptData.lat, routeLng]
+                    ], {
+                        color: 'red',
+                        weight: 1.5,
+                        opacity: 0.2
+                    }).addTo(map);
                     allMapPolylines[iata] = polyline;
 
-                    marker.addListener('click', () => {
+                    // Handle Click Events
+                    marker.on('click', () => {
+                        // Hide other pins and lines
                         for (let key in allMapMarkers) {
                             if (key !== iata) {
-                                allMapMarkers[key].setVisible(false);
-                                allMapPolylines[key].setVisible(false);
+                                if (map.hasLayer(allMapMarkers[key])) map.removeLayer(allMapMarkers[key]);
+                                if (map.hasLayer(allMapPolylines[key])) map.removeLayer(allMapPolylines[key]);
                             }
                         }
 
+                        // Bind and open popup
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
-                        infoWindow.setContent(contentHtml);
-                        infoWindow.open(map, marker);
+                        marker.bindPopup(contentHtml, {
+                            className: 'custom-popup',
+                            maxWidth: 360,
+                            minWidth: 340
+                        }).openPopup();
                         
                         setTimeout(() => {
                             window.renderCardContent(iata, 'Departure');
@@ -348,8 +369,6 @@
 
             for (let airlineCode in aptData.airlines) {
                 const airline = aptData.airlines[airlineCode];
-                
-                // Map the short code to the full name. If it's not in our list, use the short code.
                 const fullAirlineName = AIRLINE_MAPPING[airlineCode] || airlineCode;
                 const initial = fullAirlineName.charAt(0).toUpperCase();
                 
@@ -413,7 +432,6 @@
             allPills.forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
 
-            // Fetch using the raw airlineCode from the backend JSON
             const flights = window.airportRoutesData[iata].airlines[airlineCode].days[day] || [];
             const dirFlights = flights.filter(f => f.type === direction);
 
@@ -433,6 +451,9 @@
             }
             detailsBox.classList.add('show');
         };
+
+        // Initialize the map once the HTML is loaded
+        document.addEventListener('DOMContentLoaded', initMap);
     </script>
 </body>
 </html>
