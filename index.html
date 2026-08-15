@@ -33,7 +33,7 @@
             transition: all 0.3s ease;
         }
         
-        /* New Filter Header & Buttons */
+        /* Filter Header & Buttons */
         .filter-header {
             display: flex; justify-content: space-between; align-items: center;
         }
@@ -262,7 +262,30 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        // --- NEW: Filter Panel Toggle & Reset Functions ---
+        // --- NEW: Flight Distance and Time Estimator ---
+        window.calculateFlightInfo = function(lat1, lon1, lat2, lon2) {
+            // Haversine formula to calculate distance across the globe
+            const R = 6371; // Earth's radius in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distanceKm = R * c;
+
+            // Estimate flight time: 800 km/h cruising speed + 45 mins (0.75h) for takeoff/landing
+            const estimatedHours = (distanceKm / 800) + 0.75;
+            const hrs = Math.floor(estimatedHours);
+            const mins = Math.round((estimatedHours - hrs) * 60);
+
+            return {
+                distance: Math.round(distanceKm).toLocaleString(),
+                hours: hrs,
+                minutes: mins.toString().padStart(2, '0')
+            };
+        };
+
         window.toggleFilterPanel = function() {
             const panel = document.getElementById('filter-panel');
             const btn = document.getElementById('toggle-filter-btn');
@@ -275,25 +298,17 @@
         };
 
         window.clearAllFilters = function() {
-            // Reset Dropdowns
             document.getElementById('filter-dir').value = 'All';
             document.getElementById('filter-airline').value = 'All';
-            
-            // Reset Day Pills (Activate all)
             document.querySelectorAll('.f-day-pill').forEach(pill => {
                 pill.classList.add('active');
             });
-            
-            // Reset Time Sliders
             document.getElementById('time-min').value = 0;
             document.getElementById('time-max').value = 24;
             window.updateTimeUI();
-            
-            // Trigger the map refresh
             window.triggerMapFilter();
         };
 
-        // Helper to check if a flight time (HH:MM) falls inside the selected slider range
         window.flightTimeMatches = function(timeStr) {
             if (!timeStr || !timeStr.includes(':')) return true; 
             const parts = timeStr.split(':');
@@ -310,7 +325,6 @@
             return flightMins >= startMins && flightMins <= endMins;
         };
 
-        // Smoothly updates the visual slider blue bar and text
         window.updateTimeUI = function() {
             const slider1 = document.getElementById('time-min');
             const slider2 = document.getElementById('time-max');
@@ -484,6 +498,9 @@
             
             const activeDayElements = document.querySelectorAll('.f-day-pill.active');
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
+
+            // Calculate flight info mathematically
+            const flightInfo = window.calculateFlightInfo(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
             
             let html = `
                 <div class="direction-toggle">
@@ -501,6 +518,13 @@
                         : `<span>${cityName}</span> <span class="badge">${iata}</span> &rarr; <span>Hong Kong</span> <span class="badge">HKG</span>`
                     }
                 </div>
+                
+                <div style="font-size: 12px; color: #5f6368; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    <span>✈️ ${flightInfo.distance} km</span>
+                    <span>•</span>
+                    <span>⏱ Approx ${flightInfo.hours}h ${flightInfo.minutes}m</span>
+                </div>
+
                 <div class="airline-list">
             `;
 
@@ -594,7 +618,6 @@
             } else {
                 let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
                 dirFlights.forEach(f => {
-                    // Check the direction to display the correct label
                     const timeLabel = direction === 'Departure' ? 'Departs HKG' : 'Arrives HKG';
                     
                     html += `
