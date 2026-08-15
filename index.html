@@ -20,9 +20,52 @@
         .loading-overlay {
             position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
             background: #ffffff; padding: 10px 20px; border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 2000;
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
+
+        /* --- NEW: Filter Panel Styles --- */
+        #filter-panel {
+            position: absolute;
+            top: 15px;
+            left: 55px; /* Pushed slightly right to avoid Leaflet zoom controls */
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000; /* Stays above the map tiles */
+            width: 220px;
+            border: 1px solid #e0e0e0;
+        }
+        #filter-panel h4 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: #1a73e8;
+        }
+        .filter-group { margin-bottom: 12px; }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #5f6368;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .filter-group select {
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 13px;
+            background-color: #fff;
+            color: #202124;
+            cursor: pointer;
+            outline: none;
+        }
+        .filter-group select:focus { border-color: #1a73e8; }
 
         /* Leaflet Popup Overrides */
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
@@ -92,6 +135,43 @@
 <body>
 
     <div id="loading" class="loading-overlay">Loading Flight Routes...</div>
+    
+    <!-- NEW: Map Filters Panel -->
+    <div id="filter-panel">
+        <h4>Filter Flights</h4>
+        
+        <div class="filter-group">
+            <label>Direction</label>
+            <select id="filter-dir" onchange="window.triggerMapFilter()">
+                <option value="All">All Routes</option>
+                <option value="Departure">Departures (HKG &rarr; )</option>
+                <option value="Arrival">Arrivals ( &rarr; HKG)</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Day of Week</label>
+            <select id="filter-day" onchange="window.triggerMapFilter()">
+                <option value="All">Any Day</option>
+                <option value="su">Sunday</option>
+                <option value="mo">Monday</option>
+                <option value="tu">Tuesday</option>
+                <option value="we">Wednesday</option>
+                <option value="th">Thursday</option>
+                <option value="fr">Friday</option>
+                <option value="sa">Saturday</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Airline</label>
+            <select id="filter-airline" onchange="window.triggerMapFilter()">
+                <option value="All">All Airlines</option>
+                <!-- Javascript will populate airlines here -->
+            </select>
+        </div>
+    </div>
+
     <div id="map"></div>
 
     <!-- Free Leaflet.js Script -->
@@ -110,6 +190,7 @@
             "HKE": "Hong Kong Express",
             "CRK": "Hong Kong Airlines",
             "GBA": "Greater Bay Airlines",
+            "HGB": "Greater Bay Airlines",
             "CAL": "China Airlines",
             "EVA": "EVA Air",
             "SJX": "Starlux Airlines",
@@ -147,6 +228,7 @@
         };
 
         window.airportRoutesData = null;
+        window.leafletMap = null; 
         
         const allMapMarkers = {};
         const allMapPolylines = {};
@@ -154,7 +236,12 @@
         async function initMap() {
             const loadingText = document.getElementById('loading');
             
-            const map = L.map('map', {
+            // Prevent map dragging/zooming when interacting with the filter panel
+            const filterPanel = document.getElementById('filter-panel');
+            L.DomEvent.disableClickPropagation(filterPanel);
+            L.DomEvent.disableScrollPropagation(filterPanel);
+
+            window.leafletMap = L.map('map', {
                 center: [HKG_LATLNG.lat, HKG_LATLNG.lng],
                 zoom: 3,
                 worldCopyJump: true 
@@ -162,26 +249,42 @@
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+            }).addTo(window.leafletMap);
 
             try {
                 const res = await fetch('flights.json');
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                map.on('popupclose', () => {
-                    for (let key in allMapMarkers) {
-                        if (!map.hasLayer(allMapMarkers[key])) map.addLayer(allMapMarkers[key]);
-                        if (!map.hasLayer(allMapPolylines[key])) map.addLayer(allMapPolylines[key]);
+                // 1. Populate the Airline Dropdown Filter dynamically
+                const allAirlinesSet = new Set();
+                for (let iata in window.airportRoutesData) {
+                    for (let alCode in window.airportRoutesData[iata].airlines) {
+                        allAirlinesSet.add(alCode);
                     }
+                }
+                const sortedAirlines = Array.from(allAirlinesSet).sort();
+                const airlineSelect = document.getElementById('filter-airline');
+                sortedAirlines.forEach(code => {
+                    const fullName = AIRLINE_MAPPING[code] || code;
+                    const opt = document.createElement('option');
+                    opt.value = code;
+                    opt.innerText = `${fullName} (${code})`;
+                    airlineSelect.appendChild(opt);
                 });
 
+                // 2. Map Event: Restore filtered pins when popup is closed
+                window.leafletMap.on('popupclose', () => {
+                    window.applyFiltersToMap(); 
+                });
+
+                // 3. Draw all pins initially
                 for (let iata in window.airportRoutesData) {
                     const aptData = window.airportRoutesData[iata];
                     
                     const marker = L.marker([aptData.lat, aptData.lng], {
                         title: `${aptData.city || aptData.name} (${iata})`
-                    }).addTo(map);
+                    }).addTo(window.leafletMap);
                     allMapMarkers[iata] = marker; 
 
                     let routeLng = aptData.lng;
@@ -194,16 +297,21 @@
                         color: 'red',
                         weight: 1.5,
                         opacity: 0.2
-                    }).addTo(map);
+                    }).addTo(window.leafletMap);
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
+                        // Hide everything except clicked marker
                         for (let key in allMapMarkers) {
                             if (key !== iata) {
-                                if (map.hasLayer(allMapMarkers[key])) map.removeLayer(allMapMarkers[key]);
-                                if (map.hasLayer(allMapPolylines[key])) map.removeLayer(allMapPolylines[key]);
+                                if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
+                                if (window.leafletMap.hasLayer(allMapPolylines[key])) window.leafletMap.removeLayer(allMapPolylines[key]);
                             }
                         }
+
+                        // Determine the default tab direction based on the user's active filter
+                        const fDir = document.getElementById('filter-dir').value;
+                        const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
 
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
                         marker.bindPopup(contentHtml, {
@@ -213,18 +321,71 @@
                         }).openPopup();
                         
                         setTimeout(() => {
-                            window.renderCardContent(iata, 'Departure');
+                            window.renderCardContent(iata, defaultDir);
                         }, 10);
                     });
                 }
                 
                 loadingText.style.display = 'none';
+                
+                // Run filter once to apply default states
+                window.applyFiltersToMap();
 
             } catch (error) {
                 loadingText.innerText = "Error loading flights.json. Run fetch_flights.py first.";
                 console.error("Mapping error:", error);
             }
         }
+
+        // Triggered by HTML dropdown changes
+        window.triggerMapFilter = function() {
+            window.leafletMap.closePopup(); // Close open popups to prevent visual glitches
+            window.applyFiltersToMap();
+        };
+
+        // Core filtering logic for the map markers
+        window.applyFiltersToMap = function() {
+            const fDir = document.getElementById('filter-dir').value;
+            const fDay = document.getElementById('filter-day').value;
+            const fAir = document.getElementById('filter-airline').value;
+
+            for (let iata in window.airportRoutesData) {
+                const aptData = window.airportRoutesData[iata];
+                let isMatch = false;
+
+                for (let alCode in aptData.airlines) {
+                    // Check Airline Filter
+                    if (fAir !== 'All' && alCode !== fAir) continue; 
+                    
+                    const airlineData = aptData.airlines[alCode];
+                    const daysToCheck = (fDay !== 'All') ? [fDay] : DAY_KEYS;
+                    
+                    // Check Day and Direction Filters
+                    for (let d of daysToCheck) {
+                        const flights = airlineData.days[d] || [];
+                        if (fDir !== 'All') {
+                            if (flights.some(f => f.type === fDir)) {
+                                isMatch = true; break;
+                            }
+                        } else {
+                            if (flights.length > 0) {
+                                isMatch = true; break;
+                            }
+                        }
+                    }
+                    if (isMatch) break; // If this airport has at least one matching flight, show it
+                }
+
+                // Add or Remove from Leaflet map based on match
+                if (isMatch) {
+                    if (!window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.addLayer(allMapMarkers[iata]);
+                    if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
+                } else {
+                    if (window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.removeLayer(allMapMarkers[iata]);
+                    if (window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.removeLayer(allMapPolylines[iata]);
+                }
+            }
+        };
 
         window.renderCardContent = function(iata, direction) {
             const container = document.getElementById('route-card-container');
@@ -233,9 +394,8 @@
             const aptData = window.airportRoutesData[iata];
             const cityName = aptData.city || aptData.name;
             const isDep = direction === 'Departure';
+            const activeAirlineFilter = document.getElementById('filter-airline').value;
             
-            // FIX IS HERE: We added setTimeout(() => ..., 10) to the toggle buttons
-            // so the map doesn't auto-close the popup when rewriting the HTML
             let html = `
                 <div class="direction-toggle">
                     <div class="direction-btn ${isDep ? 'active' : ''}" onclick="setTimeout(() => renderCardContent('${iata}', 'Departure'), 10)">
@@ -258,6 +418,9 @@
             let hasAnyAirline = false;
 
             for (let airlineCode in aptData.airlines) {
+                // If a user filtered by a specific airline, hide the other airlines in the popup too
+                if (activeAirlineFilter !== 'All' && airlineCode !== activeAirlineFilter) continue;
+
                 const airline = aptData.airlines[airlineCode];
                 const fullAirlineName = AIRLINE_MAPPING[airlineCode] || airlineCode;
                 const initial = fullAirlineName.charAt(0).toUpperCase();
@@ -298,7 +461,7 @@
             }
 
             if (!hasAnyAirline) {
-                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights scheduled for this week.</div>`;
+                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights matching criteria.</div>`;
             }
 
             html += `</div>`;
