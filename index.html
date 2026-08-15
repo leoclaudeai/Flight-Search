@@ -95,7 +95,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background-color: #006241; /* Premium dark green */
+            background-color: #006241;
             color: white;
             display: flex;
             align-items: center;
@@ -108,7 +108,7 @@
             font-size: 14px;
             font-weight: 600;
             flex-grow: 1;
-            word-break: break-word; /* Allows full airline names to show without being cut off */
+            word-break: break-word; 
             line-height: 1.3;
         }
         
@@ -190,7 +190,7 @@
     <div id="map"></div>
 
     <!-- ⚠️ REPLACE 'YOUR_GOOGLE_MAPS_API_KEY' BELOW -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaruYG0v3IXrHqXLtgeznfzwNGKnJw1PM&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
 
     <script>
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
@@ -200,8 +200,53 @@
             'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
         };
 
-        // Make data globally accessible so we don't have to keep fetching it
+        // 📝 AIRLINE NAME DICTIONARY
+        // Add or change any codes here to map them to full names.
+        const AIRLINE_MAPPING = {
+            "CPA": "Cathay Pacific",
+            "HKE": "Hong Kong Express",
+            "CRK": "Hong Kong Airlines",
+            "GBA": "Greater Bay Airlines",
+            "CAL": "China Airlines",
+            "EVA": "EVA Air",
+            "SJX": "Starlux Airlines",
+            "SIA": "Singapore Airlines",
+            "ANA": "All Nippon Airways (ANA)",
+            "JAL": "Japan Airlines",
+            "KAL": "Korean Air",
+            "AAR": "Asiana Airlines",
+            "JJA": "Jeju Air",
+            "JNA": "Jin Air",
+            "TWB": "T'way Air",
+            "THA": "Thai Airways",
+            "MAS": "Malaysia Airlines",
+            "PAL": "Philippine Airlines",
+            "CEB": "Cebu Pacific",
+            "VJC": "VietJet Air",
+            "HVN": "Vietnam Airlines",
+            "GIA": "Garuda Indonesia",
+            "QFA": "Qantas",
+            "ANZ": "Air New Zealand",
+            "UAE": "Emirates",
+            "QTR": "Qatar Airways",
+            "BAW": "British Airways",
+            "AFR": "Air France",
+            "DLH": "Lufthansa",
+            "KLM": "KLM Royal Dutch Airlines",
+            "FIN": "Finnair",
+            "SWR": "Swiss International Air Lines",
+            "UAL": "United Airlines",
+            "ACA": "Air Canada",
+            "CCA": "Air China",
+            "CSN": "China Southern Airlines",
+            "CES": "China Eastern Airlines",
+            "CXA": "XiamenAir"
+        };
+
         window.airportRoutesData = null;
+        
+        const allMapMarkers = {};
+        const allMapPolylines = {};
 
         async function initMap() {
             const loadingText = document.getElementById('loading');
@@ -218,6 +263,13 @@
                 
                 const infoWindow = new google.maps.InfoWindow();
 
+                google.maps.event.addListener(infoWindow, 'closeclick', () => {
+                    for (let key in allMapMarkers) {
+                        allMapMarkers[key].setVisible(true);
+                        allMapPolylines[key].setVisible(true);
+                    }
+                });
+
                 for (let iata in window.airportRoutesData) {
                     const aptData = window.airportRoutesData[iata];
                     const aptLatLng = { lat: aptData.lat, lng: aptData.lng };
@@ -227,8 +279,9 @@
                         map: map,
                         title: `${aptData.city || aptData.name} (${iata})`
                     });
+                    allMapMarkers[iata] = marker; 
 
-                    new google.maps.Polyline({
+                    const polyline = new google.maps.Polyline({
                         path: [HKG_LATLNG, aptLatLng],
                         geodesic: true,
                         strokeColor: '#FF0000',
@@ -236,15 +289,20 @@
                         strokeWeight: 1.5,
                         map: map
                     });
+                    allMapPolylines[iata] = polyline;
 
                     marker.addListener('click', () => {
-                        // Generate a container inside the InfoWindow. 
-                        // By default, it opens to 'Departure'
+                        for (let key in allMapMarkers) {
+                            if (key !== iata) {
+                                allMapMarkers[key].setVisible(false);
+                                allMapPolylines[key].setVisible(false);
+                            }
+                        }
+
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
                         infoWindow.setContent(contentHtml);
                         infoWindow.open(map, marker);
                         
-                        // We must wait for the DOM to render the container before injecting the interactive HTML
                         setTimeout(() => {
                             window.renderCardContent(iata, 'Departure');
                         }, 10);
@@ -259,7 +317,6 @@
             }
         }
 
-        // Logic to build the specific interface based on direction
         window.renderCardContent = function(iata, direction) {
             const container = document.getElementById('route-card-container');
             if (!container) return;
@@ -287,14 +344,15 @@
                 <div class="airline-list">
             `;
 
-            let airlineIdx = 0;
             let hasAnyAirline = false;
 
-            for (let airlineName in aptData.airlines) {
-                const airline = aptData.airlines[airlineName];
-                const initial = airlineName.charAt(0).toUpperCase();
+            for (let airlineCode in aptData.airlines) {
+                const airline = aptData.airlines[airlineCode];
                 
-                // Track if this airline has flights matching the user's chosen direction
+                // Map the short code to the full name. If it's not in our list, use the short code.
+                const fullAirlineName = AIRLINE_MAPPING[airlineCode] || airlineCode;
+                const initial = fullAirlineName.charAt(0).toUpperCase();
+                
                 let airlineHasFlightsForDir = false;
                 const dayHtmlList = [];
                 
@@ -307,20 +365,19 @@
                     const pillClass = dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled';
                     dayHtmlList.push(`
                         <div class="${pillClass}" 
-                             onclick="toggleDaySchedule(this, '${iata}', '${airlineName}', '${day}', '${direction}')">
+                             onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">
                             ${day}
                         </div>
                     `);
                 });
 
-                // Only render the airline row if it actually flies this route direction
                 if (airlineHasFlightsForDir) {
                     hasAnyAirline = true;
                     html += `
                         <div class="airline-row">
                             <div class="airline-info">
                                 <div class="airline-icon">${initial}</div>
-                                <div class="airline-name" title="${airlineName}">${airlineName}</div>
+                                <div class="airline-name" title="${fullAirlineName}">${fullAirlineName}</div>
                             </div>
                             <div class="day-pills">
                                 ${dayHtmlList.join('')}
@@ -329,7 +386,6 @@
                         </div>
                     `;
                 }
-                airlineIdx++;
             }
 
             if (!hasAnyAirline) {
@@ -340,15 +396,13 @@
             container.innerHTML = html;
         };
 
-        // Logic to expand/collapse the flight schedule
-        window.toggleDaySchedule = function(element, iata, airlineName, day, direction) {
+        window.toggleDaySchedule = function(element, iata, airlineCode, day, direction) {
             if (element.classList.contains('disabled')) return;
 
             const airlineRow = element.closest('.airline-row');
             const detailsBox = airlineRow.querySelector('.flight-details-box');
             const allPills = airlineRow.querySelectorAll('.day-pill');
 
-            // If user clicks the already active day, just hide it
             if (element.classList.contains('selected')) {
                 element.classList.remove('selected');
                 detailsBox.classList.remove('show');
@@ -356,13 +410,12 @@
                 return;
             }
 
-            // Highlight the clicked day pill
             allPills.forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
 
-            // Fetch schedule from our globally saved data
-            const flights = window.airportRoutesData[iata].airlines[airlineName].days[day] || [];
-            const dirFlights = flights.filter(f => f.type === direction); // Filter strictly by chosen direction
+            // Fetch using the raw airlineCode from the backend JSON
+            const flights = window.airportRoutesData[iata].airlines[airlineCode].days[day] || [];
+            const dirFlights = flights.filter(f => f.type === direction);
 
             if (dirFlights.length === 0) {
                 detailsBox.innerHTML = '<em>No flights scheduled.</em>';
