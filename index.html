@@ -29,9 +29,39 @@
             position: absolute; top: 15px; left: 55px;
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000; width: 240px; border: 1px solid #e0e0e0;
+            z-index: 1000; width: 250px; border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
         }
-        #filter-panel h4 { margin: 0 0 12px 0; font-size: 15px; color: #1a73e8; }
+        
+        /* New Filter Header & Buttons */
+        .filter-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        
+        .reset-btn {
+            background: none; border: none; color: #777; font-size: 11px; 
+            font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
+        }
+        .reset-btn:hover { color: #d93025; }
+        
+        .toggle-btn {
+            background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px;
+            font-weight: bold; color: #5f6368; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .toggle-btn:hover { background: #e8eaed; color: #1a73e8; }
+        
+        /* Minimized State */
+        #filter-content {
+            margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
+            max-height: 500px; opacity: 1; overflow: hidden;
+        }
+        #filter-panel.minimized #filter-content {
+            max-height: 0; opacity: 0; margin-top: 0;
+        }
+
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
         .filter-group label {
@@ -132,46 +162,54 @@
     
     <!-- Map Filters Panel -->
     <div id="filter-panel">
-        <h4>Filter Flights</h4>
+        <div class="filter-header">
+            <h4>Filter Flights</h4>
+            <div class="header-actions">
+                <button class="reset-btn" onclick="clearAllFilters()">Reset</button>
+                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
+            </div>
+        </div>
         
-        <div class="filter-group">
-            <label>Direction</label>
-            <select id="filter-dir" onchange="window.triggerMapFilter()">
-                <option value="All">All Routes</option>
-                <option value="Departure">Departures (HKG &rarr; )</option>
-                <option value="Arrival">Arrivals ( &rarr; HKG)</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>Days of Week</label>
-            <div class="filter-day-pills">
-                <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
-                <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
-                <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
-                <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
-                <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
-                <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
-                <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+        <div id="filter-content">
+            <div class="filter-group">
+                <label>Direction</label>
+                <select id="filter-dir" onchange="window.triggerMapFilter()">
+                    <option value="All">All Routes</option>
+                    <option value="Departure">Departures (HKG &rarr; )</option>
+                    <option value="Arrival">Arrivals ( &rarr; HKG)</option>
+                </select>
             </div>
-        </div>
 
-        <!-- Time Filter Slider -->
-        <div class="filter-group">
-            <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
-            <div class="time-slider-wrapper">
-                <div class="time-slider-track"></div>
-                <div class="time-slider-fill" id="time-fill"></div>
-                <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
-                <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+            <div class="filter-group">
+                <label>Days of Week</label>
+                <div class="filter-day-pills">
+                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
+                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
+                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
+                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
+                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
+                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
+                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+                </div>
             </div>
-        </div>
 
-        <div class="filter-group">
-            <label>Airline</label>
-            <select id="filter-airline" onchange="window.triggerMapFilter()">
-                <option value="All">All Airlines</option>
-            </select>
+            <!-- Time Filter Slider -->
+            <div class="filter-group">
+                <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <div class="time-slider-wrapper">
+                    <div class="time-slider-track"></div>
+                    <div class="time-slider-fill" id="time-fill"></div>
+                    <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+                    <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label>Airline</label>
+                <select id="filter-airline" onchange="window.triggerMapFilter()">
+                    <option value="All">All Airlines</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -223,6 +261,37 @@
         window.leafletMap = null; 
         const allMapMarkers = {};
         const allMapPolylines = {};
+
+        // --- NEW: Filter Panel Toggle & Reset Functions ---
+        window.toggleFilterPanel = function() {
+            const panel = document.getElementById('filter-panel');
+            const btn = document.getElementById('toggle-filter-btn');
+            panel.classList.toggle('minimized');
+            if (panel.classList.contains('minimized')) {
+                btn.innerHTML = '+';
+            } else {
+                btn.innerHTML = '&minus;';
+            }
+        };
+
+        window.clearAllFilters = function() {
+            // Reset Dropdowns
+            document.getElementById('filter-dir').value = 'All';
+            document.getElementById('filter-airline').value = 'All';
+            
+            // Reset Day Pills (Activate all)
+            document.querySelectorAll('.f-day-pill').forEach(pill => {
+                pill.classList.add('active');
+            });
+            
+            // Reset Time Sliders
+            document.getElementById('time-min').value = 0;
+            document.getElementById('time-max').value = 24;
+            window.updateTimeUI();
+            
+            // Trigger the map refresh
+            window.triggerMapFilter();
+        };
 
         // Helper to check if a flight time (HH:MM) falls inside the selected slider range
         window.flightTimeMatches = function(timeStr) {
@@ -324,7 +393,6 @@
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
-                        // Hide other pins and lines temporarily
                         for (let key in allMapMarkers) {
                             if (key !== iata) {
                                 if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
@@ -337,7 +405,6 @@
 
                         const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
                         
-                        // FIX: Use L.popup().openOn(map) instead of marker.bindPopup
                         L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
                             .setLatLng(marker.getLatLng())
                             .setContent(contentHtml)
