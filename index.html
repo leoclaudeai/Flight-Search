@@ -594,10 +594,13 @@
             } else {
                 let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
                 dirFlights.forEach(f => {
+                    // Check the direction to display the correct label
+                    const timeLabel = direction === 'Departure' ? 'Departs HKG' : 'Arrives HKG';
+                    
                     html += `
                         <div class="flight-item">
                             <div class="flight-no">${f.no}</div>
-                            <div class="flight-time">Scheduled: ${f.time}</div>
+                            <div class="flight-time">${timeLabel}: ${f.time}</div>
                         </div>
                     `;
                 });
