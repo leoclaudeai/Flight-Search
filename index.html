@@ -284,19 +284,58 @@
             }
         };
 
-        // City & Airport Translations
+        // Comprehensive City & Airport Translations
         const CITY_MAPPING = {
-            "ICN": {en: "Seoul", zh: "首爾"}, "NRT": {en: "Tokyo", zh: "東京"}, "KIX": {en: "Osaka", zh: "大阪"},
-            "SIN": {en: "Singapore", zh: "新加坡"}, "CAN": {en: "Guangzhou", zh: "廣州"}, "PUS": {en: "Busan", zh: "釜山"},
-            "CJU": {en: "Jeju", zh: "濟州"}, "DPS": {en: "Denpasar-Bali", zh: "峇里島"}, "TAE": {en: "Daegu", zh: "大邱"},
-            "DAD": {en: "Da Nang", zh: "峴港"}, "ILO": {en: "Iloilo City", zh: "伊洛伊洛"}, "FUK": {en: "Fukuoka", zh: "福岡"},
-            "OKA": {en: "Okinawa", zh: "沖繩"}, "MNL": {en: "Manila", zh: "馬尼拉"}, "CDG": {en: "Paris", zh: "巴黎"},
-            "ZRH": {en: "Zurich", zh: "蘇黎世"}, "MAD": {en: "Madrid", zh: "馬德里"}, "MXP": {en: "Milan", zh: "米蘭"},
-            "MAN": {en: "Manchester", zh: "曼徹斯特"}, "FCO": {en: "Rome", zh: "羅馬"}, "LAX": {en: "Los Angeles", zh: "洛杉磯"},
-            "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"}, "JFK": {en: "New York", zh: "紐約"},
-            "BNE": {en: "Brisbane", zh: "布里斯班"}, "MEL": {en: "Melbourne", zh: "墨爾本"}, "SYD": {en: "Sydney", zh: "悉尼"},
+            // East Asia
+            "ICN": {en: "Seoul (Incheon)", zh: "首爾 (仁川)"}, "GMP": {en: "Seoul (Gimpo)", zh: "首爾 (金浦)"},
+            "NRT": {en: "Tokyo (Narita)", zh: "東京 (成田)"}, "HND": {en: "Tokyo (Haneda)", zh: "東京 (羽田)"},
+            "KIX": {en: "Osaka (Kansai)", zh: "大阪 (關西)"}, "ITM": {en: "Osaka (Itami)", zh: "大阪 (伊丹)"},
+            "PUS": {en: "Busan", zh: "釜山"}, "CJU": {en: "Jeju", zh: "濟州"}, "TAE": {en: "Daegu", zh: "大邱"},
+            "FUK": {en: "Fukuoka", zh: "福岡"}, "OKA": {en: "Okinawa", zh: "沖繩"}, "NGO": {en: "Nagoya", zh: "名古屋"},
+            "CTS": {en: "Sapporo", zh: "札幌"}, "HKD": {en: "Hakodate", zh: "函館"}, "KOJ": {en: "Kagoshima", zh: "鹿兒島"},
+            "KMI": {en: "Miyazaki", zh: "宮崎"}, "TAK": {en: "Takamatsu", zh: "高松"},
+
+            // Greater China
+            "PEK": {en: "Beijing (Capital)", zh: "北京 (首都)"}, "PKX": {en: "Beijing (Daxing)", zh: "北京 (大興)"},
+            "PVG": {en: "Shanghai (Pudong)", zh: "上海 (浦東)"}, "SHA": {en: "Shanghai (Hongqiao)", zh: "上海 (虹橋)"},
+            "CAN": {en: "Guangzhou", zh: "廣州"}, "SZX": {en: "Shenzhen", zh: "深圳"}, "MFM": {en: "Macau", zh: "澳門"},
+            "TPE": {en: "Taipei (Taoyuan)", zh: "台北 (桃園)"}, "TSA": {en: "Taipei (Songshan)", zh: "台北 (松山)"},
+            "KHH": {en: "Kaohsiung", zh: "高雄"}, "RMQ": {en: "Taichung", zh: "台中"}, "TNN": {en: "Tainan", zh: "台南"},
+            "SYX": {en: "Sanya", zh: "三亞"}, "HAK": {en: "Haikou", zh: "海口"}, "NNG": {en: "Nanning", zh: "南寧"},
+            "XMN": {en: "Xiamen", zh: "廈門"}, "FOC": {en: "Fuzhou", zh: "福州"}, "JJN": {en: "Quanzhou", zh: "泉州"},
+            "HGH": {en: "Hangzhou", zh: "杭州"}, "NKG": {en: "Nanjing", zh: "南京"}, "NGB": {en: "Ningbo", zh: "寧波"},
+            "WNZ": {en: "Wenzhou", zh: "溫州"}, "CTU": {en: "Chengdu (Shuangliu)", zh: "成都 (雙流)"}, 
+            "TFU": {en: "Chengdu (Tianfu)", zh: "成都 (天府)"}, "CKG": {en: "Chongqing", zh: "重慶"},
+            "KMG": {en: "Kunming", zh: "昆明"}, "XIY": {en: "Xi'an", zh: "西安"}, "WUH": {en: "Wuhan", zh: "武漢"},
+            "CSX": {en: "Changsha", zh: "長沙"}, "CGO": {en: "Zhengzhou", zh: "鄭州"}, "TAO": {en: "Qingdao", zh: "青島"},
+            "TNA": {en: "Jinan", zh: "濟南"}, "YNT": {en: "Yantai", zh: "煙台"}, "DLC": {en: "Dalian", zh: "大連"},
+            "SHE": {en: "Shenyang", zh: "瀋陽"}, "HRB": {en: "Harbin", zh: "哈爾濱"}, "CGQ": {en: "Changchun", zh: "長春"},
+            "TSN": {en: "Tianjin", zh: "天津"}, "KWE": {en: "Guiyang", zh: "貴陽"}, "KWL": {en: "Guilin", zh: "桂林"},
+            "URC": {en: "Urumqi", zh: "烏魯木齊"}, "HFE": {en: "Hefei", zh: "合肥"}, "NCN": {en: "Nanchang", zh: "南昌"},
+            "TYN": {en: "Taiyuan", zh: "太原"}, "SJW": {en: "Shijiazhuang", zh: "石家莊"}, "LHW": {en: "Lanzhou", zh: "蘭州"},
+            "INC": {en: "Yinchuan", zh: "銀川"}, "HET": {en: "Hohhot", zh: "呼和浩特"},
+
+            // Southeast Asia
+            "SIN": {en: "Singapore", zh: "新加坡"}, "BKK": {en: "Bangkok (Suvarnabhumi)", zh: "曼谷 (素萬那普)"}, 
+            "DMK": {en: "Bangkok (Don Mueang)", zh: "曼谷 (廊曼)"}, "HKT": {en: "Phuket", zh: "布吉"},
+            "CNX": {en: "Chiang Mai", zh: "清邁"}, "KUL": {en: "Kuala Lumpur", zh: "吉隆坡"}, "PEN": {en: "Penang", zh: "檳城"},
+            "BKI": {en: "Kota Kinabalu", zh: "亞庇"}, "SGN": {en: "Ho Chi Minh City", zh: "胡志明市"}, "HAN": {en: "Hanoi", zh: "河內"},
+            "DAD": {en: "Da Nang", zh: "峴港"}, "CXR": {en: "Nha Trang", zh: "芽莊"}, "MNL": {en: "Manila", zh: "馬尼拉"},
+            "CEB": {en: "Cebu", zh: "宿霧"}, "ILO": {en: "Iloilo City", zh: "伊洛伊洛"}, "CGK": {en: "Jakarta", zh: "雅加達"},
+            "DPS": {en: "Denpasar-Bali", zh: "峇里島"}, "PNH": {en: "Phnom Penh", zh: "金邊"}, "REP": {en: "Siem Reap", zh: "暹粒"},
+
+            // International (Global)
+            "CDG": {en: "Paris", zh: "巴黎"}, "ZRH": {en: "Zurich", zh: "蘇黎世"}, "MAD": {en: "Madrid", zh: "馬德里"},
+            "MXP": {en: "Milan", zh: "米蘭"}, "MAN": {en: "Manchester", zh: "曼徹斯特"}, "FCO": {en: "Rome", zh: "羅馬"},
+            "LHR": {en: "London (Heathrow)", zh: "倫敦 (希斯路)"}, "FRA": {en: "Frankfurt", zh: "法蘭克福"}, 
+            "AMS": {en: "Amsterdam", zh: "阿姆斯特丹"}, "MUC": {en: "Munich", zh: "慕尼黑"},
+            "LAX": {en: "Los Angeles", zh: "洛杉磯"}, "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"},
+            "JFK": {en: "New York", zh: "紐約"}, "EWR": {en: "Newark", zh: "紐華克"}, "ORD": {en: "Chicago", zh: "芝加哥"},
+            "YYZ": {en: "Toronto", zh: "多倫多"}, "BNE": {en: "Brisbane", zh: "布里斯班"}, "MEL": {en: "Melbourne", zh: "墨爾本"},
+            "SYD": {en: "Sydney", zh: "悉尼"}, "PER": {en: "Perth", zh: "珀斯"}, "AKL": {en: "Auckland", zh: "奧克蘭"},
             "ADD": {en: "Addis Ababa", zh: "亞的斯亞貝巴"}, "DXB": {en: "Dubai", zh: "杜拜"}, "DOH": {en: "Doha", zh: "多哈"},
-            "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}
+            "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}, "AUH": {en: "Abu Dhabi", zh: "阿布扎比"}, "DEL": {en: "Delhi", zh: "德里"},
+            "BOM": {en: "Mumbai", zh: "孟買"}
         };
 
         // Airline Translations
