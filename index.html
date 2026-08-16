@@ -378,7 +378,7 @@
         function getCityName(iata, fallbackStr) { return CITY_MAPPING[iata] && CITY_MAPPING[iata][currentLang] ? CITY_MAPPING[iata][currentLang] : fallbackStr; }
         function getAirlineName(code) { return AIRLINE_MAPPING[code] && AIRLINE_MAPPING[code][currentLang] ? AIRLINE_MAPPING[code][currentLang] : code; }
 
-        window.sortedAirlineCodesGlobal = []; // Keeps track of sorted codes for the dropdown
+        window.sortedAirlineCodesGlobal = []; 
 
         window.setLang = function(lang) {
             currentLang = lang;
@@ -387,7 +387,6 @@
             
             document.title = t('pageTitle');
             
-            // Translate static elements
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (el.tagName === 'OPTION') {
@@ -397,13 +396,11 @@
                 }
             });
 
-            // Re-render Airline Dropdown Options dynamically
             const airlineSelect = document.getElementById('filter-airline');
             if (airlineSelect && window.sortedAirlineCodesGlobal.length > 0) {
                 const currentVal = airlineSelect.value;
                 airlineSelect.innerHTML = `<option value="All" data-i18n="airAll">${t('airAll')}</option>`;
                 
-                // Sort airlines based on the translated names
                 const updatedSorted = [...window.sortedAirlineCodesGlobal].sort((a, b) => {
                     return getAirlineName(a).localeCompare(getAirlineName(b));
                 });
@@ -419,7 +416,6 @@
                 airlineSelect.value = currentVal;
             }
 
-            // Update Map Marker Tooltips
             for (let iata in allMapMarkers) {
                 const marker = allMapMarkers[iata];
                 const aptData = window.airportRoutesData[iata];
@@ -428,11 +424,10 @@
                 
                 marker.options.title = newTitle;
                 if (marker._icon) {
-                    marker._icon.title = newTitle; // Update the actual DOM element title on hover
+                    marker._icon.title = newTitle; 
                 }
             }
 
-            // Re-render popup if it is open
             const activePopup = window.leafletMap && window.leafletMap._popup;
             if (activePopup && activePopup.isOpen()) {
                 const iataMatch = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/) : null;
@@ -453,7 +448,57 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        // Calculates either the arrival or departure time dynamically
+        // Calculate Great Circle Route for curved lines
+        window.getGreatCircleLine = function(lat1, lon1, lat2, lon2, numPoints = 100) {
+            const toRad = Math.PI / 180;
+            const toDeg = 180 / Math.PI;
+
+            const phi1 = lat1 * toRad;
+            let lambda1 = lon1 * toRad;
+            const phi2 = lat2 * toRad;
+            let lambda2 = lon2 * toRad;
+
+            // Adjust so we take the shortest path around the globe (e.g. crossing Pacific)
+            if (lambda2 - lambda1 > Math.PI) lambda2 -= 2 * Math.PI;
+            else if (lambda1 - lambda2 > Math.PI) lambda2 += 2 * Math.PI;
+
+            const dLat = phi2 - phi1;
+            const dLon = lambda2 - lambda1;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(phi1) * Math.cos(phi2) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const angularDistance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            if (angularDistance === 0) return [[lat1, lon1]];
+
+            const points = [];
+            let prevLng = lon1; 
+
+            for (let i = 0; i <= numPoints; i++) {
+                const f = i / numPoints;
+                const A = Math.sin((1 - f) * angularDistance) / Math.sin(angularDistance);
+                const B = Math.sin(f * angularDistance) / Math.sin(angularDistance);
+
+                const x = A * Math.cos(phi1) * Math.cos(lambda1) + B * Math.cos(phi2) * Math.cos(lambda2);
+                const y = A * Math.cos(phi1) * Math.sin(lambda1) + B * Math.cos(phi2) * Math.sin(lambda2);
+                const z = A * Math.sin(phi1) + B * Math.sin(phi2);
+
+                const phi = Math.atan2(z, Math.sqrt(x * x + y * y));
+                let lambda = Math.atan2(y, x);
+
+                let degLat = phi * toDeg;
+                let degLng = lambda * toDeg;
+                
+                // Prevent horizontal lines visually streaking across the entire map
+                while (degLng - prevLng > 180) degLng -= 360;
+                while (degLng - prevLng < -180) degLng += 360;
+                
+                prevLng = degLng;
+                points.push([degLat, degLng]);
+            }
+            return points;
+        };
+
         window.calculateLinkedTime = function(baseTime, durationText, direction) {
             if (!baseTime || !durationText) return t('timeUnknown');
             
@@ -475,10 +520,8 @@
             
             let targetTotalMins;
             if (direction === 'Arrival') {
-                // If it's an arrival flight, baseTime is the HKG Arrival Time. Subtract duration to get Departure Time.
                 targetTotalMins = (baseH * 60 + baseM) - totalDurMins;
             } else {
-                // If it's a departure flight, baseTime is the HKG Departure Time. Add duration to get Arrival Time.
                 targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
             }
             
@@ -651,13 +694,10 @@
                     }).addTo(window.leafletMap);
                     allMapMarkers[iata] = marker; 
 
-                    let routeLng = aptData.lng;
-                    if (routeLng < -30) routeLng += 360; 
-
-                    const polyline = L.polyline([
-                        [HKG_LATLNG.lat, HKG_LATLNG.lng], 
-                        [aptData.lat, routeLng]
-                    ], { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
+                    // Replace straight line with a Great Circle curved line
+                    const curvePoints = window.getGreatCircleLine(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
+                    
+                    const polyline = L.polyline(curvePoints, { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
@@ -685,7 +725,7 @@
                 loadingText.style.display = 'none';
                 window.updateTimeUI(); 
                 window.applyFiltersToMap();
-                window.setLang(currentLang); // Ensure initial load runs correctly
+                window.setLang(currentLang); 
 
             } catch (error) {
                 loadingText.innerText = "Error loading flights.json.";
@@ -742,26 +782,18 @@
             }
         };
 
-        // Fully Expanded Time Zone Mapping
         const TZ_OFFSETS = {
-            // East Asia (UTC+9)
             "ICN": 9, "GMP": 9, "NRT": 9, "HND": 9, "KIX": 9, "ITM": 9, "PUS": 9, "CJU": 9, "TAE": 9, 
             "FUK": 9, "OKA": 9, "NGO": 9, "CTS": 9, "HKD": 9, "KOJ": 9, "KMI": 9, "TAK": 9,
-            
-            // Greater China (UTC+8) - Includes HKG
             "HKG": 8, "PEK": 8, "PKX": 8, "PVG": 8, "SHA": 8, "CAN": 8, "SZX": 8, "MFM": 8, 
             "TPE": 8, "TSA": 8, "KHH": 8, "RMQ": 8, "TNN": 8, "SYX": 8, "HAK": 8, "NNG": 8, 
             "XMN": 8, "FOC": 8, "JJN": 8, "HGH": 8, "NKG": 8, "NGB": 8, "WNZ": 8, "CTU": 8, 
             "TFU": 8, "CKG": 8, "KMG": 8, "XIY": 8, "WUH": 8, "CSX": 8, "CGO": 8, "TAO": 8, 
             "TNA": 8, "YNT": 8, "DLC": 8, "SHE": 8, "HRB": 8, "CGQ": 8, "TSN": 8, "KWE": 8, 
             "KWL": 8, "URC": 8, "HFE": 8, "NCN": 8, "TYN": 8, "SJW": 8, "LHW": 8, "INC": 8, "HET": 8,
-
-            // Southeast Asia
-            "SIN": 8, "KUL": 8, "PEN": 8, "BKI": 8, "MNL": 8, "CEB": 8, "ILO": 8, "DPS": 8, // UTC+8
+            "SIN": 8, "KUL": 8, "PEN": 8, "BKI": 8, "MNL": 8, "CEB": 8, "ILO": 8, "DPS": 8, 
             "BKK": 7, "DMK": 7, "HKT": 7, "CNX": 7, "SGN": 7, "HAN": 7, "DAD": 7, "CXR": 7, 
-            "CGK": 7, "PNH": 7, "REP": 7, // UTC+7
-
-            // International (Europe, Americas, Oceania, ME/Africa)
+            "CGK": 7, "PNH": 7, "REP": 7, 
             "LHR": 0, "MAN": 0, 
             "CDG": 1, "ZRH": 1, "MAD": 1, "MXP": 1, "FCO": 1, "FRA": 1, "AMS": 1, "MUC": 1,
             "JFK": -5, "EWR": -5, "YYZ": -5, "ORD": -6, 
@@ -796,7 +828,6 @@
                 tzDiffHours = hkgTz - destTz;
             }
             
-            // Subtract the apparent time zone shift to get the actual physical time in the air
             let trueDurMins = totalDurMins - (tzDiffHours * 60);
             if (trueDurMins < 0) trueDurMins += 24 * 60; 
 
@@ -952,14 +983,12 @@
                     let displayHtml;
                     
                     if (calculatedTime === t('timeUnknown')) {
-                        // Display fallback if duration wasn't mapped
                         if (isArr) {
                             displayHtml = `? (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
                         } else {
                             displayHtml = `${f.time} (${depLabel}) &rarr; ? (${arrLabel})`;
                         }
                     } else {
-                        // Accurately position the calculated time versus the fixed time
                         if (isArr) {
                             displayHtml = `${calculatedTime} (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
                         } else {
