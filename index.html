@@ -550,7 +550,6 @@
                                 
                                 const cleanFlNo = fl.no.replace(/\s+/g, '').toUpperCase();
                                 
-                                // Prioritize manual override, then flight-specific CSV data, then fallback to route average
                                 const exactDurMins = MANUAL_OVERRIDES[cleanFlNo] || window.flightSpecificData[cleanFlNo];
                                 const durMins = exactDurMins ? exactDurMins : (window.flightDurationsRaw[iata] ? window.flightDurationsRaw[iata][direction] : null);
                                 
@@ -578,9 +577,11 @@
                                         let dh = Math.floor(norm / 60).toString().padStart(2, '0');
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
                                         
-                                        let dayStr = dayOffset < 0 ? ` (${dayOffset}d)` : (dayOffset > 0 ? ` (+${dayOffset}d)` : '');
+                                        // Invert dayOffset for arrivals so the perspective is anchored to departure 
+                                        let arrivalOffset = -dayOffset;
+                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}d)` : (arrivalOffset < 0 ? ` (${arrivalOffset}d)` : '');
                                         
-                                        displayStr = `${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span> &rarr; HKG ${fl.time}`;
+                                        displayStr = `${iata} ${dh}:${dm} &rarr; HKG ${fl.time} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
                                     }
                                 } else {
                                     displayStr = direction === 'Departure' 
