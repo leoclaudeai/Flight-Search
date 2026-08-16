@@ -284,7 +284,7 @@
             }
         };
 
-        // Comprehensive City & Airport Translations (Updated with specific 31 locations)
+        // Comprehensive City & Airport Translations
         const CITY_MAPPING = {
             // East Asia
             "ICN": {en: "Seoul", zh: "首爾"}, "GMP": {en: "Seoul (Gimpo)", zh: "首爾 (金浦)"},
@@ -734,14 +734,34 @@
             }
         };
 
+        // Fully Expanded Time Zone Mapping
         const TZ_OFFSETS = {
-            "HKG": 8, "ADD": 3, "BNE": 10, "CAN": 8, "CDG": 1, 
-            "CJU": 9, "DAD": 7, "DOH": 3, "DPS": 8, "DXB": 4, 
-            "FCO": 1, "FUK": 9, "ICN": 9, "ILO": 8, "JFK": -5, 
-            "JNB": 2, "KIX": 9, "LAX": -8, "MAD": 1, "MAN": 0, 
-            "MEL": 10, "MNL": 8, "MXP": 1, "NRT": 9, "OKA": 9, 
-            "PUS": 9, "SFO": -8, "SIN": 8, "SYD": 10, "TAE": 9, 
-            "YVR": -8, "ZRH": 1
+            // East Asia (UTC+9)
+            "ICN": 9, "GMP": 9, "NRT": 9, "HND": 9, "KIX": 9, "ITM": 9, "PUS": 9, "CJU": 9, "TAE": 9, 
+            "FUK": 9, "OKA": 9, "NGO": 9, "CTS": 9, "HKD": 9, "KOJ": 9, "KMI": 9, "TAK": 9,
+            
+            // Greater China (UTC+8) - Includes HKG
+            "HKG": 8, "PEK": 8, "PKX": 8, "PVG": 8, "SHA": 8, "CAN": 8, "SZX": 8, "MFM": 8, 
+            "TPE": 8, "TSA": 8, "KHH": 8, "RMQ": 8, "TNN": 8, "SYX": 8, "HAK": 8, "NNG": 8, 
+            "XMN": 8, "FOC": 8, "JJN": 8, "HGH": 8, "NKG": 8, "NGB": 8, "WNZ": 8, "CTU": 8, 
+            "TFU": 8, "CKG": 8, "KMG": 8, "XIY": 8, "WUH": 8, "CSX": 8, "CGO": 8, "TAO": 8, 
+            "TNA": 8, "YNT": 8, "DLC": 8, "SHE": 8, "HRB": 8, "CGQ": 8, "TSN": 8, "KWE": 8, 
+            "KWL": 8, "URC": 8, "HFE": 8, "NCN": 8, "TYN": 8, "SJW": 8, "LHW": 8, "INC": 8, "HET": 8,
+
+            // Southeast Asia
+            "SIN": 8, "KUL": 8, "PEN": 8, "BKI": 8, "MNL": 8, "CEB": 8, "ILO": 8, "DPS": 8, // UTC+8
+            "BKK": 7, "DMK": 7, "HKT": 7, "CNX": 7, "SGN": 7, "HAN": 7, "DAD": 7, "CXR": 7, 
+            "CGK": 7, "PNH": 7, "REP": 7, // UTC+7
+
+            // International (Europe, Americas, Oceania, ME/Africa)
+            "LHR": 0, "MAN": 0, 
+            "CDG": 1, "ZRH": 1, "MAD": 1, "MXP": 1, "FCO": 1, "FRA": 1, "AMS": 1, "MUC": 1,
+            "JFK": -5, "EWR": -5, "YYZ": -5, "ORD": -6, 
+            "LAX": -8, "YVR": -8, "SFO": -8,
+            "BNE": 10, "MEL": 10, "SYD": 10, 
+            "PER": 8, "AKL": 12,
+            "ADD": 3, "JNB": 2, "DOH": 3, "DXB": 4, "AUH": 4, 
+            "DEL": 5.5, "BOM": 5.5
         };
 
         window.getTrueDisplayDuration = function(durationText, iata, direction) {
