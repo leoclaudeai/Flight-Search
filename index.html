@@ -512,6 +512,34 @@
             }
         };
 
+        // Open specific airport popup safely
+        window.openAirportPopup = function(iata) {
+            const marker = allMapMarkers[iata];
+            if (!marker) return;
+
+            // Force visibility of marker and route if they were filtered out
+            if (!window.leafletMap.hasLayer(marker)) window.leafletMap.addLayer(marker);
+            if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
+
+            // Hide everything else for clarity
+            for (let key in allMapMarkers) {
+                if (key !== iata) {
+                    if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
+                    if (window.leafletMap.hasLayer(allMapPolylines[key])) window.leafletMap.removeLayer(allMapPolylines[key]);
+                }
+            }
+
+            const fDir = document.getElementById('filter-dir').value;
+            const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
+
+            L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
+                .setLatLng(marker.getLatLng())
+                .setContent(`<div class="route-card" id="route-card-container"></div>`)
+                .openOn(window.leafletMap);
+            
+            setTimeout(() => window.renderCardContent(iata, defaultDir), 10);
+        };
+
         // Search Engine Logic
         window.executeSearch = function() {
             const input = document.getElementById('search-input').value.toLowerCase().trim();
@@ -531,8 +559,24 @@
             }
 
             if (matchedIata) {
-                window.leafletMap.flyTo(allMapMarkers[matchedIata].getLatLng(), 5, { animate: true, duration: 1.5 });
-                setTimeout(() => { allMapMarkers[matchedIata].fire('click'); }, 1500);
+                // Drop focus from input to hide mobile keyboards
+                document.getElementById('search-input').blur(); 
+                
+                const targetLatLng = allMapMarkers[matchedIata].getLatLng();
+                const currentCenter = window.leafletMap.getCenter();
+                const currentZoom = window.leafletMap.getZoom();
+                
+                // If map is already perfectly at the target, open popup immediately
+                if (currentZoom === 5 && Math.abs(currentCenter.lat - targetLatLng.lat) < 0.01 && Math.abs(currentCenter.lng - targetLatLng.lng) < 0.01) {
+                    window.openAirportPopup(matchedIata);
+                } else {
+                    // Otherwise, wait for the animation to strictly finish before opening popup
+                    window.leafletMap.once('moveend', function() {
+                        window.openAirportPopup(matchedIata);
+                    });
+                    window.leafletMap.flyTo(targetLatLng, 5, { animate: true, duration: 1.5 });
+                }
+                
                 document.getElementById('search-input').value = ''; 
             } else {
                 // Flash red if not found
@@ -737,21 +781,7 @@
                     allMapPolylines[iata] = polyline;
 
                     marker.on('click', () => {
-                        for (let key in allMapMarkers) {
-                            if (key !== iata) {
-                                if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
-                                if (window.leafletMap.hasLayer(allMapPolylines[key])) window.leafletMap.removeLayer(allMapPolylines[key]);
-                            }
-                        }
-                        const fDir = document.getElementById('filter-dir').value;
-                        const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
-
-                        L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
-                            .setLatLng(marker.getLatLng())
-                            .setContent(`<div class="route-card" id="route-card-container"></div>`)
-                            .openOn(window.leafletMap);
-                        
-                        setTimeout(() => window.renderCardContent(iata, defaultDir), 10);
+                        window.openAirportPopup(iata);
                     });
                 }
                 
