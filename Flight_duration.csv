@@ -1,0 +1,1045 @@
+Flight Number,Airline Code,Departure Airport,Arrival Airport,Flight Duration (Approx)
+7C 6013,JJA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+7C 6014,JJA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+BX 3935,ABL,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+BX 3945,ABL,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 410,CPA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 411,CPA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+CX 413,CPA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+CX 418,CPA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 419,CPA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+CX 426,CPA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 427,CPA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+CX 430,CPA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 434,CPA,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 439,CPA,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+HX 626,CRK,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+HX 627,CRK,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+HX 628,CRK,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+HX 629,CRK,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+KE 2001,KAL,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+KE 2002,KAL,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+KE 2005,KAL,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+KE 2006,KAL,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+KE 2011,KAL,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+KE 2012,KAL,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+OZ 721,AAR,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+OZ 722,AAR,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+OZ 745,AAR,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+OZ 746,AAR,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+TW 643,TWB,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+TW 644,TWB,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 614,HKE,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 615,HKE,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+UO 616,HKE,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 617,HKE,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+UO 618,HKE,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 619,HKE,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+UO 626,HKE,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 627,HKE,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+UO 630,HKE,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+UO 631,HKE,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+YP 801,APZ,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+YP 802,APZ,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+ZE 861,ESR,Incheon International Airport (ICN),Hong Kong International Airport (HKG),2hr 55mins
+ZE 862,ESR,Hong Kong International Airport (HKG),Incheon International Airport (ICN),4hr 55mins
+CX 502,CPA,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+CX 503,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 506,CPA,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+CX 507,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 565,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 566,CPA,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+CX 569,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 595,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 596,CPA,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+CX 597,CPA,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 598,CPA,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HB 2346,HGB,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HB 2347,HGB,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HB 2348,HGB,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HB 2349,HGB,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HB 2352,HGB,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HB 2353,HGB,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HB 340,HGB,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HB 341,HGB,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HX 612,CRK,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HX 613,CRK,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HX 614,CRK,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HX 615,CRK,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HX 616,CRK,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HX 617,CRK,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HX 618,CRK,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HX 619,CRK,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+HX 632,CRK,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+HX 633,CRK,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+MM 067,APJ,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+MM 068,APJ,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 686,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 687,HKE,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+UO 688,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 689,HKE,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+UO 810,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 850,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 851,HKE,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+UO 862,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 863,HKE,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+UO 898,HKE,Hong Kong International Airport (HKG),Kansai International Airport (KIX),4hr 45mins
+UO 899,HKE,Kansai International Airport (KIX),Hong Kong International Airport (HKG),3hr 20mins
+CX 451,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 500,CPA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+CX 501,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 504,CPA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+CX 505,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 509,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 520,CPA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+CX 521,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 524,CPA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+CX 526,CPA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+CX 527,CPA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+GK 027,JJP,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+GK 028,JJP,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HB 320,HGB,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HB 321,HGB,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+HB 322,HGB,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HB 323,HGB,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+HX 604,CRK,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HX 605,CRK,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+HX 606,CRK,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HX 607,CRK,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+HX 608,CRK,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HX 609,CRK,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+HX 630,CRK,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+HX 631,CRK,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+JL 735,JAL,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+JL 736,JAL,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+NH 811,ANA,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+NH 812,ANA,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 646,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 647,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+UO 650,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 651,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+UO 652,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 653,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+UO 848,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 849,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+UO 854,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 857,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+UO 870,HKE,Hong Kong International Airport (HKG),Narita International Airport (NRT),5hr 30mins
+UO 871,HKE,Narita International Airport (NRT),Hong Kong International Airport (HKG),2hr 0mins
+CX 635,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 636,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 652,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 658,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 659,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 691,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 710,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 711,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 714,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 715,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 716,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 734,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 739,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 758,CPA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+CX 759,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 791,CPA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+SQ 874,SIA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+SQ 875,SIA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+SQ 882,SIA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+SQ 883,SIA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+SQ 892,SIA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+SQ 893,SIA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+SQ 894,SIA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+SQ 895,SIA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+SQ 898,SIA,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+SQ 899,SIA,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+TR 982,TGW,Singapore Changi International Airport (SIN),Hong Kong International Airport (HKG),4hr 5mins
+TR 983,TGW,Hong Kong International Airport (HKG),Singapore Changi International Airport (SIN),4hr 0mins
+CX 512,CPA,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+CX 513,CPA,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+CX 528,CPA,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+CX 529,CPA,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+CX 588,CPA,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+CX 589,CPA,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+HB 308,HGB,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+HB 309,HGB,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+HB 382,HGB,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+HB 383,HGB,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+HX 638,CRK,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+HX 639,CRK,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+HX 640,CRK,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+HX 641,CRK,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+UO 600,HKE,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+UO 601,HKE,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+UO 638,HKE,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+UO 639,HKE,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+UO 668,HKE,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+UO 669,HKE,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+UO 694,HKE,Hong Kong International Airport (HKG),Fukuoka Airport (FUK),4hr 30mins
+UO 695,HKE,Fukuoka Airport (FUK),Hong Kong International Airport (HKG),2hr 45mins
+HB 336,HGB,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HB 336D,HGB,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HB 336Z,HGB,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HB 337,HGB,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HB 337D,HGB,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HB 337Z,HGB,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HX 658,CRK,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HX 658D,CRK,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HX 659,CRK,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HX 659D,CRK,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HX 676,CRK,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HX 676D,CRK,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+HX 679,CRK,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HX 679D,CRK,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+UO 824,HKE,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+UO 825,HKE,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+UO 842,HKE,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+UO 843,HKE,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+UO 844,HKE,Hong Kong International Airport (HKG),Naha Airport (OKA),3hr 20mins
+UO 845,HKE,Naha Airport (OKA),Hong Kong International Airport (HKG),1hr 30mins
+HB 2531,HGB,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),1hr 55mins
+HB 2532,HGB,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),1hr 50mins
+HB 2549,HGB,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),2hr 0mins
+HB 2550,HGB,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 10mins
+HX 542,CRK,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),0hr 45mins
+HX 543,CRK,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 0mins
+HX 546,CRK,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),1hr 0mins
+HX 547,CRK,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 15mins
+HX 548,CRK,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),0hr 50mins
+HX 549,CRK,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 0mins
+UO 552,HKE,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),0hr 55mins
+UO 553,HKE,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 0mins
+UO 558,HKE,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),0hr 55mins
+UO 559,HKE,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 0mins
+UO 563,HKE,Da Nang International Airport (DAD),Hong Kong International Airport (HKG),3hr 0mins
+UO 566,HKE,Hong Kong International Airport (HKG),Da Nang International Airport (DAD),0hr 55mins
+CX 880,CPA,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+CX 881,CPA,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+CX 882,CPA,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+CX 883,CPA,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+CX 884,CPA,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+CX 885,CPA,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+DL 088,DAL,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+DL 089,DAL,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+UA 152,UAL,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+UA 153,UAL,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+UA 820,UAL,Los Angeles International Airport (LAX),Hong Kong International Airport (HKG),29hr 20mins
+UA 821,UAL,Hong Kong International Airport (HKG),Los Angeles International Airport (LAX),-2hr 30mins
+CX 100,CPA,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+CX 110,CPA,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+CX 111,CPA,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+CX 138,CPA,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+CX 139,CPA,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+CX 161,CPA,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+CX 162,CPA,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+CX 181,CPA,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+HX 017,CRK,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+HX 018,CRK,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+QF 127,QFA,Sydney Kingsford Smith International Airport (SYD),Hong Kong International Airport (HKG),7hr 25mins
+QF 128,QFA,Hong Kong International Airport (HKG),Sydney Kingsford Smith International Airport (SYD),11hr 5mins
+CX 104,CPA,Melbourne International Airport (MEL),Hong Kong International Airport (HKG),7hr 20mins
+CX 105,CPA,Hong Kong International Airport (HKG),Melbourne International Airport (MEL),10hr 55mins
+CX 134,CPA,Melbourne International Airport (MEL),Hong Kong International Airport (HKG),7hr 20mins
+CX 135,CPA,Hong Kong International Airport (HKG),Melbourne International Airport (MEL),10hr 55mins
+CX 163,CPA,Hong Kong International Airport (HKG),Melbourne International Airport (MEL),10hr 55mins
+CX 178,CPA,Melbourne International Airport (MEL),Hong Kong International Airport (HKG),7hr 20mins
+HX 035,CRK,Hong Kong International Airport (HKG),Melbourne International Airport (MEL),10hr 55mins
+HX 036,CRK,Melbourne International Airport (MEL),Hong Kong International Airport (HKG),7hr 20mins
+QF 029,QFA,Melbourne International Airport (MEL),Hong Kong International Airport (HKG),7hr 20mins
+QF 030,QFA,Hong Kong International Airport (HKG),Melbourne International Airport (MEL),10hr 55mins
+AC 007,ACA,Vancouver International Airport (YVR),Hong Kong International Airport (HKG),13hr 10mins
+AC 008,ACA,Hong Kong International Airport (HKG),Vancouver International Airport (YVR),12hr 5mins
+CX 810,CPA,Hong Kong International Airport (HKG),Vancouver International Airport (YVR),12hr 5mins
+CX 814,CPA,Hong Kong International Airport (HKG),Vancouver International Airport (YVR),12hr 5mins
+CX 815,CPA,Vancouver International Airport (YVR),Hong Kong International Airport (HKG),13hr 10mins
+CX 865,CPA,Vancouver International Airport (YVR),Hong Kong International Airport (HKG),13hr 10mins
+CX 867,CPA,Vancouver International Airport (YVR),Hong Kong International Airport (HKG),13hr 10mins
+CX 888,CPA,Hong Kong International Airport (HKG),Vancouver International Airport (YVR),12hr 5mins
+HX 080,CRK,Hong Kong International Airport (HKG),Vancouver International Airport (YVR),12hr 5mins
+HX 081,CRK,Vancouver International Airport (YVR),Hong Kong International Airport (HKG),13hr 10mins
+CX 870,CPA,Hong Kong International Airport (HKG),San Francisco International Airport (SFO),-2hr 0mins
+CX 872,CPA,Hong Kong International Airport (HKG),San Francisco International Airport (SFO),-2hr 0mins
+CX 873,CPA,San Francisco International Airport (SFO),Hong Kong International Airport (HKG),28hr 55mins
+CX 879,CPA,San Francisco International Airport (SFO),Hong Kong International Airport (HKG),28hr 55mins
+UA 862,UAL,Hong Kong International Airport (HKG),San Francisco International Airport (SFO),-2hr 0mins
+UA 869,UAL,San Francisco International Airport (SFO),Hong Kong International Airport (HKG),28hr 55mins
+UA 877,UAL,San Francisco International Airport (SFO),Hong Kong International Airport (HKG),28hr 55mins
+UA 878,UAL,Hong Kong International Airport (HKG),San Francisco International Airport (SFO),-2hr 0mins
+CX 950,CPA,Hong Kong International Airport (HKG),Guangzhou Baiyun International Airport (CAN),1hr 5mins
+CX 953,CPA,Guangzhou Baiyun International Airport (CAN),Hong Kong International Airport (HKG),1hr 25mins
+CX 982,CPA,Hong Kong International Airport (HKG),Guangzhou Baiyun International Airport (CAN),1hr 5mins
+CX 983,CPA,Guangzhou Baiyun International Airport (CAN),Hong Kong International Airport (HKG),1hr 25mins
+CX 988,CPA,Hong Kong International Airport (HKG),Guangzhou Baiyun International Airport (CAN),1hr 5mins
+CX 989,CPA,Guangzhou Baiyun International Airport (CAN),Hong Kong International Airport (HKG),1hr 25mins
+TW 639,TWB,Gimhae International Airport (PUS),Hong Kong International Airport (HKG),2hr 25mins
+TW 640,TWB,Hong Kong International Airport (HKG),Gimhae International Airport (PUS),4hr 30mins
+UO 604,HKE,Hong Kong International Airport (HKG),Gimhae International Airport (PUS),4hr 30mins
+UO 607,HKE,Gimhae International Airport (PUS),Hong Kong International Airport (HKG),2hr 25mins
+UO 674,HKE,Hong Kong International Airport (HKG),Gimhae International Airport (PUS),4hr 30mins
+UO 675,HKE,Gimhae International Airport (PUS),Hong Kong International Airport (HKG),2hr 25mins
+LJ 713,JNA,Jeju International Airport (CJU),Hong Kong International Airport (HKG),2hr 5mins
+LJ 714,JNA,Hong Kong International Airport (HKG),Jeju International Airport (CJU),4hr 5mins
+UO 660,HKE,Hong Kong International Airport (HKG),Jeju International Airport (CJU),4hr 5mins
+UO 663,HKE,Jeju International Airport (CJU),Hong Kong International Airport (HKG),2hr 5mins
+UO 698,HKE,Hong Kong International Airport (HKG),Jeju International Airport (CJU),4hr 5mins
+UO 699,HKE,Jeju International Airport (CJU),Hong Kong International Airport (HKG),2hr 5mins
+CX 782,CPA,Ngurah Rai (Bali) International Airport (DPS),Hong Kong International Airport (HKG),5hr 15mins
+CX 783,CPA,Hong Kong International Airport (HKG),Ngurah Rai (Bali) International Airport (DPS),5hr 5mins
+CX 784,CPA,Ngurah Rai (Bali) International Airport (DPS),Hong Kong International Airport (HKG),5hr 15mins
+CX 785,CPA,Hong Kong International Airport (HKG),Ngurah Rai (Bali) International Airport (DPS),5hr 5mins
+HX 706,CRK,Ngurah Rai (Bali) International Airport (DPS),Hong Kong International Airport (HKG),5hr 15mins
+HX 707,CRK,Hong Kong International Airport (HKG),Ngurah Rai (Bali) International Airport (DPS),5hr 5mins
+CX 830,CPA,Hong Kong International Airport (HKG),John F Kennedy International Airport (JFK),4hr 5mins
+CX 831,CPA,John F Kennedy International Airport (JFK),Hong Kong International Airport (HKG),28hr 10mins
+CX 840,CPA,Hong Kong International Airport (HKG),John F Kennedy International Airport (JFK),4hr 5mins
+CX 841,CPA,John F Kennedy International Airport (JFK),Hong Kong International Airport (HKG),28hr 10mins
+CX 843,CPA,John F Kennedy International Airport (JFK),Hong Kong International Airport (HKG),28hr 10mins
+CX 844,CPA,Hong Kong International Airport (HKG),John F Kennedy International Airport (JFK),4hr 5mins
+5J 110,CEB,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+5J 111,CEB,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+5J 112,CEB,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+5J 113,CEB,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+5J 114,CEB,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+5J 115,CEB,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+EK 380,UAE,Dubai International Airport (DXB),Hong Kong International Airport (HKG),12hr 5mins
+EK 381,UAE,Hong Kong International Airport (HKG),Dubai International Airport (DXB),3hr 45mins
+EK 382,UAE,Dubai International Airport (DXB),Hong Kong International Airport (HKG),12hr 5mins
+EK 383,UAE,Hong Kong International Airport (HKG),Dubai International Airport (DXB),3hr 45mins
+EK 384,UAE,Dubai International Airport (DXB),Hong Kong International Airport (HKG),12hr 5mins
+AF 185,AFR,Hong Kong International Airport (HKG),Charles de Gaulle International Airport (CDG),7hr 30mins
+AF 188,AFR,Charles de Gaulle International Airport (CDG),Hong Kong International Airport (HKG),18hr 10mins
+CX 260,CPA,Charles de Gaulle International Airport (CDG),Hong Kong International Airport (HKG),18hr 10mins
+CX 261,CPA,Hong Kong International Airport (HKG),Charles de Gaulle International Airport (CDG),7hr 30mins
+CX 150,CPA,Brisbane International Airport (BNE),Hong Kong International Airport (HKG),7hr 0mins
+CX 156,CPA,Brisbane International Airport (BNE),Hong Kong International Airport (HKG),7hr 0mins
+CX 157,CPA,Hong Kong International Airport (HKG),Brisbane International Airport (BNE),10hr 35mins
+CX 165,CPA,Hong Kong International Airport (HKG),Brisbane International Airport (BNE),10hr 35mins
+CX 382,CPA,Zurich Airport (ZRH),Hong Kong International Airport (HKG),17hr 25mins
+CX 383,CPA,Hong Kong International Airport (HKG),Zurich Airport (ZRH),7hr 5mins
+LX 138,SWR,Zurich Airport (ZRH),Hong Kong International Airport (HKG),17hr 25mins
+LX 139,SWR,Hong Kong International Airport (HKG),Zurich Airport (ZRH),7hr 5mins
+QR 815,QTR,Hong Kong International Airport (HKG),Hamad International Airport (DOH),3hr 10mins
+QR 816,QTR,Hamad International Airport (DOH),Hong Kong International Airport (HKG),13hr 25mins
+QR 817,QTR,Hong Kong International Airport (HKG),Hamad International Airport (DOH),3hr 10mins
+QR 818,QTR,Hamad International Airport (DOH),Hong Kong International Airport (HKG),13hr 25mins
+UO 656,HKE,Hong Kong International Airport (HKG),Daegu Airport (TAE),4hr 30mins
+UO 673,HKE,Daegu Airport (TAE),Hong Kong International Airport (HKG),2hr 35mins
+UO 832,HKE,Hong Kong International Airport (HKG),Daegu Airport (TAE),4hr 30mins
+UO 833,HKE,Daegu Airport (TAE),Hong Kong International Airport (HKG),2hr 35mins
+ET 644,ETH,Bole International Airport (ADD),Hong Kong International Airport (HKG),2hr 0mins
+ET 645,ETH,Hong Kong International Airport (HKG),Bole International Airport (ADD),2hr 15mins
+CX 315,CPA,Hong Kong International Airport (HKG),Madrid Barajas International Airport (MAD),8hr 30mins
+CX 372,CPA,Madrid Barajas International Airport (MAD),Hong Kong International Airport (HKG),18hr 30mins
+CX 233,CPA,Hong Kong International Airport (HKG),Malpensa International Airport (MXP),7hr 10mins
+CX 234,CPA,Malpensa International Airport (MXP),Hong Kong International Airport (HKG),17hr 30mins
+CX 216,CPA,Manchester Airport (MAN),Hong Kong International Airport (HKG),19hr 25mins
+CX 259,CPA,Hong Kong International Airport (HKG),Manchester Airport (MAN),7hr 20mins
+CX 292,CPA,Leonardo Da Vinci (Fiumicino) International Airport (FCO),Hong Kong International Airport (HKG),17hr 0mins
+CX 293,CPA,Hong Kong International Airport (HKG),Leonardo Da Vinci (Fiumicino) International Airport (FCO),7hr 0mins
+CX 748,CPA,O. R. Tambo International Airport (JNB),Hong Kong International Airport (HKG),19hr 20mins
+CX 749,CPA,Hong Kong International Airport (HKG),O. R. Tambo International Airport (JNB),6hr 50mins
+5J 242,CEB,Iloilo International Airport (ILO),Hong Kong International Airport (HKG),2hr 50mins
+5J 243,CEB,Hong Kong International Airport (HKG),Iloilo International Airport (ILO),2hr 50mins
+CX 907,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 901,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 919,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 903,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 913,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 939,CPA,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 974,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+CX 912,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+CX 906,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+CX 930,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+CX 918,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+CX 902,CPA,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+5J 273,CEB,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+5J 143,CEB,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+5J 272,CEB,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+5J 142,CEB,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+PR 319,PAL,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+PR 307,PAL,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+PR 311,PAL,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+PR 318,PAL,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+PR 306,PAL,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+PR 310,PAL,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+UO 534,HKE,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+UO 517,HKE,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+UO 535,HKE,Ninoy Aquino International Airport (MNL),Hong Kong International Airport (HKG),2hr 35mins
+UO 516,HKE,Hong Kong International Airport (HKG),Ninoy Aquino International Airport (MNL),2hr 30mins
+CX 334,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 390,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 332,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 392,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 336,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 312,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 344,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 340,CPA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CX 395,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 345,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 347,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 335,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 391,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 331,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 393,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CX 337,CPA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 118,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 108,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 102,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 112,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 110,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 116,CCA,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+CA 101,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 111,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 109,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 115,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 117,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+CA 107,CCA,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+HX 336,CRK,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+HX 304,CRK,Hong Kong International Airport (HKG),Beijing Capital International Airport (PEK),3hr 20mins
+HX 337,CRK,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+HX 305,CRK,Beijing Capital International Airport (PEK),Hong Kong International Airport (HKG),3hr 40mins
+UO 704,HKE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+UO 700,HKE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+UO 758,HKE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+UO 702,HKE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+UO 732,HKE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+UO 733,HKE,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+UO 705,HKE,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+UO 701,HKE,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+UO 759,HKE,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+UO 703,HKE,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+TG 603,THA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+TG 601,THA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+TG 629,THA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+TG 639,THA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+TG 600,THA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+TG 628,THA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+TG 638,THA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+TG 602,THA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 705,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 717,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 755,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 653,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 775,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 751,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 701,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 617,CPA,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+CX 700,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 750,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 774,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 754,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 654,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 706,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 708,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+CX 704,CPA,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+HX 775,CRK,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+HX 759,CRK,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+HX 760,CRK,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+HX 776,CRK,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+EK 385,UAE,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+HB 2295,HGB,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+HB 2296,HGB,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+HB 281,HGB,Hong Kong International Airport (HKG),Suvarnabhumi Airport (BKK),2hr 0mins
+HB 282,HGB,Suvarnabhumi Airport (BKK),Hong Kong International Airport (HKG),4hr 10mins
+MU 726,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 724,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 502,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 508,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 510,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 506,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 7366,CES,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+MU 7365,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 501,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 507,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 509,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 505,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 723,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+MU 725,CES,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+HX 236,CRK,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+HX 246,CRK,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+HX 232,CRK,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+HX 234,CRK,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+HX 231,CRK,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+HX 235,CRK,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+HX 237,CRK,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+HX 247,CRK,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 316,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 368,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 376,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 360,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 380,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 364,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 362,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 302,CPA,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+CX 303,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 361,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 365,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 319,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 367,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 377,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 369,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+CX 381,CPA,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+FM 812,CSH,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+FM 811,CSH,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+HO 1292,DKH,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+HO 1291,DKH,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+9C 8716,CQH,Hong Kong International Airport (HKG),Shanghai Pudong International Airport (PVG),2hr 45mins
+9C 8715,CQH,Shanghai Pudong International Airport (PVG),Hong Kong International Airport (HKG),2hr 25mins
+UO 522,HKE,Hong Kong International Airport (HKG),Clark International Airport (CRK),2hr 5mins
+UO 523,HKE,Clark International Airport (CRK),Hong Kong International Airport (HKG),2hr 10mins
+5J 149,CEB,Hong Kong International Airport (HKG),Clark International Airport (CRK),2hr 5mins
+5J 121,CEB,Hong Kong International Airport (HKG),Clark International Airport (CRK),2hr 5mins
+5J 150,CEB,Clark International Airport (CRK),Hong Kong International Airport (HKG),2hr 10mins
+5J 120,CEB,Clark International Airport (CRK),Hong Kong International Airport (HKG),2hr 10mins
+UO 540,HKE,Hong Kong International Airport (HKG),Noi Bai International Airport (HAN),1hr 10mins
+UO 541,HKE,Noi Bai International Airport (HAN),Hong Kong International Airport (HKG),3hr 5mins
+CX 741,CPA,Hong Kong International Airport (HKG),Noi Bai International Airport (HAN),1hr 10mins
+CX 743,CPA,Hong Kong International Airport (HKG),Noi Bai International Airport (HAN),1hr 10mins
+CX 740,CPA,Noi Bai International Airport (HAN),Hong Kong International Airport (HKG),3hr 5mins
+CX 742,CPA,Noi Bai International Airport (HAN),Hong Kong International Airport (HKG),3hr 5mins
+VN 593,HVN,Hong Kong International Airport (HKG),Noi Bai International Airport (HAN),1hr 10mins
+VN 592,HVN,Noi Bai International Airport (HAN),Hong Kong International Airport (HKG),3hr 5mins
+CX 958,CPA,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+CX 960,CPA,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+CX 962,CPA,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+CX 964,CPA,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+CX 965,CPA,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+CX 959,CPA,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+CX 961,CPA,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+CX 963,CPA,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+HX 112,CRK,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+HX 128,CRK,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+HX 129,CRK,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+HX 113,CRK,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+GJ 8008,CDC,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+GJ 8054,CDC,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+GJ 8007,CDC,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+GJ 8053,CDC,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+CA 728,CCA,Hong Kong International Airport (HKG),Hangzhou Xiaoshan International Airport (HGH),2hr 25mins
+CA 727,CCA,Hangzhou Xiaoshan International Airport (HGH),Hong Kong International Airport (HKG),2hr 40mins
+UO 598,HKE,Hong Kong International Airport (HKG),Phu Quoc Airport (PQC),1hr 55mins
+UO 596,HKE,Hong Kong International Airport (HKG),Phu Quoc Airport (PQC),1hr 55mins
+UO 599,HKE,Phu Quoc Airport (PQC),Hong Kong International Airport (HKG),4hr 10mins
+UO 597,HKE,Phu Quoc Airport (PQC),Hong Kong International Airport (HKG),4hr 10mins
+9G 501,SPQ,Hong Kong International Airport (HKG),Phu Quoc Airport (PQC),1hr 55mins
+9G 502,SPQ,Phu Quoc Airport (PQC),Hong Kong International Airport (HKG),4hr 10mins
+VJ 985,VJC,Hong Kong International Airport (HKG),Phu Quoc Airport (PQC),1hr 55mins
+VJ 986,VJC,Phu Quoc Airport (PQC),Hong Kong International Airport (HKG),4hr 10mins
+UO 738,HKE,Hong Kong International Airport (HKG),Chiang Mai International Airport (CNX),1hr 55mins
+UO 744,HKE,Hong Kong International Airport (HKG),Chiang Mai International Airport (CNX),1hr 55mins
+UO 739,HKE,Chiang Mai International Airport (CNX),Hong Kong International Airport (HKG),3hr 55mins
+UO 755,HKE,Chiang Mai International Airport (CNX),Hong Kong International Airport (HKG),3hr 55mins
+CX 921,CPA,Hong Kong International Airport (HKG),Mactan Cebu International Airport (CEB),2hr 55mins
+CX 925,CPA,Hong Kong International Airport (HKG),Mactan Cebu International Airport (CEB),2hr 55mins
+CX 948,CPA,Mactan Cebu International Airport (CEB),Hong Kong International Airport (HKG),3hr 0mins
+CX 926,CPA,Mactan Cebu International Airport (CEB),Hong Kong International Airport (HKG),3hr 0mins
+5J 237,CEB,Hong Kong International Airport (HKG),Mactan Cebu International Airport (CEB),2hr 55mins
+5J 236,CEB,Mactan Cebu International Airport (CEB),Hong Kong International Airport (HKG),3hr 0mins
+UO 192,HKE,Hong Kong International Airport (HKG),Taichung Ching Chuang Kang Airport (RMQ),1hr 40mins
+UO 102,HKE,Hong Kong International Airport (HKG),Taichung Ching Chuang Kang Airport (RMQ),1hr 40mins
+UO 172,HKE,Hong Kong International Airport (HKG),Taichung Ching Chuang Kang Airport (RMQ),1hr 40mins
+UO 182,HKE,Hong Kong International Airport (HKG),Taichung Ching Chuang Kang Airport (RMQ),1hr 40mins
+UO 193,HKE,Taichung Ching Chuang Kang Airport (RMQ),Hong Kong International Airport (HKG),1hr 45mins
+UO 103,HKE,Taichung Ching Chuang Kang Airport (RMQ),Hong Kong International Airport (HKG),1hr 45mins
+UO 173,HKE,Taichung Ching Chuang Kang Airport (RMQ),Hong Kong International Airport (HKG),1hr 45mins
+UO 183,HKE,Taichung Ching Chuang Kang Airport (RMQ),Hong Kong International Airport (HKG),1hr 45mins
+UO 724,HKE,Hong Kong International Airport (HKG),Phuket International Airport (HKT),2hr 35mins
+UO 784,HKE,Hong Kong International Airport (HKG),Phuket International Airport (HKT),2hr 35mins
+UO 725,HKE,Phuket International Airport (HKT),Hong Kong International Airport (HKG),4hr 45mins
+UO 795,HKE,Phuket International Airport (HKT),Hong Kong International Airport (HKG),4hr 45mins
+CX 771,CPA,Hong Kong International Airport (HKG),Phuket International Airport (HKT),2hr 35mins
+CX 773,CPA,Hong Kong International Airport (HKG),Phuket International Airport (HKT),2hr 35mins
+CX 770,CPA,Phuket International Airport (HKT),Hong Kong International Airport (HKG),4hr 45mins
+CX 778,CPA,Phuket International Airport (HKT),Hong Kong International Airport (HKG),4hr 45mins
+CX 488,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 564,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 530,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 466,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 450,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 494,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 400,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 420,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 472,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 402,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 464,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 408,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 469,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 407,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 489,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 461,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 495,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 443,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 421,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 473,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 479,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 422,CPA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CX 477,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CX 461D,CPA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HB 702,HGB,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HB 704,HGB,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HB 710,HGB,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HB 711,HGB,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HB 703,HGB,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HB 705,HGB,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HB 726,HGB,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HB 727,HGB,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HX 252,CRK,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HX 254,CRK,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HX 260,CRK,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HX 282,CRK,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+HX 253,CRK,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HX 255,CRK,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HX 261,CRK,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+HX 283,CRK,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 892,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 852,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 868,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 870,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 872,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 858,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 891,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 851,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 867,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 869,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 871,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 857,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+BR 810,EVA,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+BR 809,EVA,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 602,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 910,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 916,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 920,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 924,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 601,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 909,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 915,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 919,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 923,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+CI 904,CAL,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+CI 903,CAL,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+UO 110,HKE,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+UO 112,HKE,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+UO 114,HKE,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+UO 116,HKE,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+UO 111,HKE,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+UO 113,HKE,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+UO 115,HKE,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+UO 117,HKE,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+JX 234,SJX,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+JX 236,SJX,Hong Kong International Airport (HKG),Taiwan Taoyuan International Airport (TPE),1hr 50mins
+JX 233,SJX,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+JX 235,SJX,Taiwan Taoyuan International Airport (TPE),Hong Kong International Airport (HKG),2hr 5mins
+UO 130,HKE,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+UO 136,HKE,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+UO 134,HKE,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+UO 131,HKE,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+UO 133,HKE,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+UO 135,HKE,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CX 432,CPA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CX 424,CPA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CX 458,CPA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CX 448,CPA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CX 449,CPA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CX 431,CPA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CX 423,CPA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CX 459,CPA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CI 934,CAL,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CI 936,CAL,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+CI 933,CAL,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+CI 935,CAL,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+BR 846,EVA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+BR 850,EVA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+BR 845,EVA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+BR 849,EVA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+AE 984,MDA,Hong Kong International Airport (HKG),Kaohsiung International Airport (KHH),1hr 30mins
+AE 983,MDA,Kaohsiung International Airport (KHH),Hong Kong International Airport (HKG),1hr 30mins
+UO 706,HKE,Hong Kong International Airport (HKG),Sultan Abdul Aziz Shah International Airport (SZB),4hr 5mins
+UO 717,HKE,Sultan Abdul Aziz Shah International Airport (SZB),Hong Kong International Airport (HKG),3hr 55mins
+UO 716,HKE,Hong Kong International Airport (HKG),Sultan Abdul Aziz Shah International Airport (SZB),4hr 5mins
+UO 896,HKE,Hong Kong International Airport (HKG),Sendai Airport (SDJ),5hr 35mins
+UO 897,HKE,Sendai Airport (SDJ),Hong Kong International Airport (HKG),3hr 55mins
+UO 896D,HKE,Hong Kong International Airport (HKG),Sendai Airport (SDJ),5hr 35mins
+UO 897D,HKE,Sendai Airport (SDJ),Hong Kong International Airport (HKG),3hr 55mins
+CX 257,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 253,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 251,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 237,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 255,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 252,CPA,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+CX 238,CPA,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+CX 250,CPA,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+CX 256,CPA,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+CX 254,CPA,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+CX 239,CPA,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+BA 032,BAW,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+BA 031,BAW,London Heathrow Airport (LHR),Hong Kong International Airport (HKG),19hr 30mins
+BA 032F,BAW,Hong Kong International Airport (HKG),London Heathrow Airport (LHR),7hr 10mins
+CX 723,CPA,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+CX 725,CPA,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+CX 729,CPA,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+CX 733,CPA,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+CX 732,CPA,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+CX 730,CPA,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+CX 722,CPA,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+CX 724,CPA,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+MH 079,MAS,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+MH 073,MAS,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+MH 072,MAS,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+MH 078,MAS,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+AK 139,AXM,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+AK 138,AXM,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+OD 606,MXD,Hong Kong International Airport (HKG),Kuala Lumpur International Airport (KUL),3hr 55mins
+OD 605,MXD,Kuala Lumpur International Airport (KUL),Hong Kong International Airport (HKG),4hr 15mins
+CX 767,CPA,Hong Kong International Airport (HKG),Tan Son Nhat International Airport (SGN),1hr 45mins
+CX 769,CPA,Hong Kong International Airport (HKG),Tan Son Nhat International Airport (SGN),1hr 45mins
+CX 721,CPA,Hong Kong International Airport (HKG),Tan Son Nhat International Airport (SGN),1hr 45mins
+CX 744,CPA,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+CX 766,CPA,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+CX 764,CPA,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+CX 786,CPA,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+VN 595,HVN,Hong Kong International Airport (HKG),Tan Son Nhat International Airport (SGN),1hr 45mins
+VN 594,HVN,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+VJ 877,VJC,Hong Kong International Airport (HKG),Tan Son Nhat International Airport (SGN),1hr 45mins
+VJ 876,VJC,Tan Son Nhat International Airport (SGN),Hong Kong International Airport (HKG),3hr 45mins
+AI 315,AIC,Hong Kong International Airport (HKG),Indira Gandhi International Airport (DEL),3hr 30mins
+AI 314,AIC,Indira Gandhi International Airport (DEL),Hong Kong International Airport (HKG),8hr 5mins
+CX 665,CPA,Hong Kong International Airport (HKG),Indira Gandhi International Airport (DEL),3hr 30mins
+CX 679,CPA,Hong Kong International Airport (HKG),Indira Gandhi International Airport (DEL),3hr 30mins
+CX 698,CPA,Indira Gandhi International Airport (DEL),Hong Kong International Airport (HKG),8hr 5mins
+CX 694,CPA,Indira Gandhi International Airport (DEL),Hong Kong International Airport (HKG),8hr 5mins
+UO 250,HKE,Hong Kong International Airport (HKG),Sanya Phoenix International Airport (SYX),1hr 45mins
+UO 251,HKE,Sanya Phoenix International Airport (SYX),Hong Kong International Airport (HKG),1hr 30mins
+HX 169,CRK,Hong Kong International Airport (HKG),Sanya Phoenix International Airport (SYX),1hr 45mins
+HX 170,CRK,Sanya Phoenix International Airport (SYX),Hong Kong International Airport (HKG),1hr 30mins
+CX 396,CPA,Hong Kong International Airport (HKG),Wenzhou Yongqiang Airport (WNZ),2hr 5mins
+CX 307,CPA,Wenzhou Yongqiang Airport (WNZ),Hong Kong International Airport (HKG),2hr 5mins
+CX 384,CPA,Hong Kong International Airport (HKG),Wenzhou Yongqiang Airport (WNZ),2hr 5mins
+CX 385,CPA,Wenzhou Yongqiang Airport (WNZ),Hong Kong International Airport (HKG),2hr 5mins
+CZ 5010,CSN,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+CZ 356,CSN,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+CZ 355,CSN,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+CZ 5009,CSN,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+HX 398,CRK,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+HX 399,CRK,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+MU 5016,CES,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+MU 5015,CES,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+CA 764,CCA,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+CA 763,CCA,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+UO 234,HKE,Hong Kong International Airport (HKG),Beijing Daxing International Airport (PKX),3hr 20mins
+UO 235,HKE,Beijing Daxing International Airport (PKX),Hong Kong International Airport (HKG),3hr 30mins
+CX 914,CPA,Hong Kong International Airport (HKG),Fuzhou Changle International Airport (FOC),1hr 45mins
+CX 990,CPA,Hong Kong International Airport (HKG),Fuzhou Changle International Airport (FOC),1hr 45mins
+CX 995,CPA,Fuzhou Changle International Airport (FOC),Hong Kong International Airport (HKG),1hr 55mins
+CX 991,CPA,Fuzhou Changle International Airport (FOC),Hong Kong International Airport (HKG),1hr 55mins
+MF 8664,CXA,Hong Kong International Airport (HKG),Fuzhou Changle International Airport (FOC),1hr 45mins
+MF 8663,CXA,Fuzhou Changle International Airport (FOC),Hong Kong International Airport (HKG),1hr 55mins
+CX 607,CPA,Hong Kong International Airport (HKG),Techo International Airport (KTI),1hr 40mins
+CX 655,CPA,Hong Kong International Airport (HKG),Techo International Airport (KTI),1hr 40mins
+CX 608,CPA,Techo International Airport (KTI),Hong Kong International Airport (HKG),3hr 50mins
+CX 600,CPA,Techo International Airport (KTI),Hong Kong International Airport (HKG),3hr 50mins
+KR 508,KME,Hong Kong International Airport (HKG),Techo International Airport (KTI),1hr 40mins
+KR 507,KME,Techo International Airport (KTI),Hong Kong International Airport (HKG),3hr 50mins
+CX 548,CPA,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+CX 542,CPA,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+CX 543,CPA,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+CX 549,CPA,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+NH 860,ANA,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+NH 814,ANA,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+NH 813,ANA,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+NH 859,ANA,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+JL 026,JAL,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+JL 029,JAL,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+UO 622,HKE,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+UO 628,HKE,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+UO 624,HKE,Hong Kong International Airport (HKG),Tokyo International Airport (HND),5hr 15mins
+UO 623,HKE,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+UO 629,HKE,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+UO 625,HKE,Tokyo International Airport (HND),Hong Kong International Airport (HKG),3hr 45mins
+HX 690,CRK,Hong Kong International Airport (HKG),New Chitose Airport (CTS),6hr 10mins
+HX 691,CRK,New Chitose Airport (CTS),Hong Kong International Airport (HKG),4hr 50mins
+HB 880,HGB,Hong Kong International Airport (HKG),New Chitose Airport (CTS),6hr 10mins
+HB 881,HGB,New Chitose Airport (CTS),Hong Kong International Airport (HKG),4hr 50mins
+CX 580,CPA,Hong Kong International Airport (HKG),New Chitose Airport (CTS),6hr 10mins
+CX 581,CPA,New Chitose Airport (CTS),Hong Kong International Airport (HKG),4hr 50mins
+CX 582,CPA,Hong Kong International Airport (HKG),New Chitose Airport (CTS),6hr 10mins
+CX 583,CPA,New Chitose Airport (CTS),Hong Kong International Airport (HKG),4hr 50mins
+TK 171,THY,Hong Kong International Airport (HKG),Istanbul Airport (IST),6hr 15mins
+TK 071,THY,Hong Kong International Airport (HKG),Istanbul Airport (IST),6hr 15mins
+TK 170,THY,Istanbul Airport (IST),Hong Kong International Airport (HKG),15hr 35mins
+TK 070,THY,Istanbul Airport (IST),Hong Kong International Airport (HKG),15hr 35mins
+CX 936,CPA,Hong Kong International Airport (HKG),Wuhan Tianhe International Airport (WUH),2hr 5mins
+CX 937,CPA,Wuhan Tianhe International Airport (WUH),Hong Kong International Airport (HKG),2hr 20mins
+CX 938,CPA,Hong Kong International Airport (HKG),Wuhan Tianhe International Airport (WUH),2hr 5mins
+CX 931,CPA,Wuhan Tianhe International Airport (WUH),Hong Kong International Airport (HKG),2hr 20mins
+CX 924,CPA,Hong Kong International Airport (HKG),Wuhan Tianhe International Airport (WUH),2hr 5mins
+MU 2570,CES,Hong Kong International Airport (HKG),Wuhan Tianhe International Airport (WUH),2hr 5mins
+MU 2569,CES,Wuhan Tianhe International Airport (WUH),Hong Kong International Airport (HKG),2hr 20mins
+UO 822,HKE,Hong Kong International Airport (HKG),Hiroshima Airport (HIJ),4hr 35mins
+UO 823,HKE,Hiroshima Airport (HIJ),Hong Kong International Airport (HKG),2hr 50mins
+CX 777,CPA,Hong Kong International Airport (HKG),Soekarno-Hatta International Airport (CGK),4hr 0mins
+CX 719,CPA,Hong Kong International Airport (HKG),Soekarno-Hatta International Airport (CGK),4hr 0mins
+CX 797,CPA,Hong Kong International Airport (HKG),Soekarno-Hatta International Airport (CGK),4hr 0mins
+CX 798,CPA,Soekarno-Hatta International Airport (CGK),Hong Kong International Airport (HKG),6hr 0mins
+CX 718,CPA,Soekarno-Hatta International Airport (CGK),Hong Kong International Airport (HKG),6hr 0mins
+CX 776,CPA,Soekarno-Hatta International Airport (CGK),Hong Kong International Airport (HKG),6hr 0mins
+GA 863,GIA,Hong Kong International Airport (HKG),Soekarno-Hatta International Airport (CGK),4hr 0mins
+GA 860,GIA,Soekarno-Hatta International Airport (CGK),Hong Kong International Airport (HKG),6hr 0mins
+CX 330,CPA,Hong Kong International Airport (HKG),Changsha Huanghua Airport (CSX),1hr 45mins
+CX 309,CPA,Changsha Huanghua Airport (CSX),Hong Kong International Airport (HKG),1hr 40mins
+CX 314,CPA,Hong Kong International Airport (HKG),Changsha Huanghua Airport (CSX),1hr 45mins
+CX 927,CPA,Changsha Huanghua Airport (CSX),Hong Kong International Airport (HKG),1hr 40mins
+HB 8952,HGB,Hong Kong International Airport (HKG),Dunhuang Airport (DNH),5hr 15mins
+HB 8953,HGB,Dunhuang Airport (DNH),Hong Kong International Airport (HKG),5hr 15mins
+CX 970,CPA,Hong Kong International Airport (HKG),Xiamen Gaoqi International Airport (XMN),1hr 35mins
+CX 978,CPA,Hong Kong International Airport (HKG),Xiamen Gaoqi International Airport (XMN),1hr 35mins
+CX 973,CPA,Xiamen Gaoqi International Airport (XMN),Hong Kong International Airport (HKG),1hr 45mins
+CX 979,CPA,Xiamen Gaoqi International Airport (XMN),Hong Kong International Airport (HKG),1hr 45mins
+CX 342,CPA,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+CX 328,CPA,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+CX 349,CPA,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+CX 327,CPA,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+CX 346,CPA,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+CX 341,CPA,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+MU 722,CES,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+MU 5018,CES,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+MU 721,CES,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+MU 5017,CES,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+HX 248,CRK,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+HX 238,CRK,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+HX 249,CRK,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+HX 239,CRK,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+FM 810,CSH,Hong Kong International Airport (HKG),Shanghai Hongqiao International Airport (SHA),2hr 30mins
+FM 809,CSH,Shanghai Hongqiao International Airport (SHA),Hong Kong International Airport (HKG),2hr 45mins
+CX 986,CPA,Hong Kong International Airport (HKG),Chengdu Shuangliu International Airport (CTU),2hr 35mins
+CX 916,CPA,Hong Kong International Airport (HKG),Chengdu Shuangliu International Airport (CTU),2hr 35mins
+CX 917,CPA,Chengdu Shuangliu International Airport (CTU),Hong Kong International Airport (HKG),3hr 0mins
+CX 987,CPA,Chengdu Shuangliu International Airport (CTU),Hong Kong International Airport (HKG),3hr 0mins
+HX 452,CRK,Hong Kong International Airport (HKG),Chengdu Shuangliu International Airport (CTU),2hr 35mins
+HX 453,CRK,Chengdu Shuangliu International Airport (CTU),Hong Kong International Airport (HKG),3hr 0mins
+CA 428,CCA,Hong Kong International Airport (HKG),Chengdu Shuangliu International Airport (CTU),2hr 35mins
+CA 427,CCA,Chengdu Shuangliu International Airport (CTU),Hong Kong International Airport (HKG),3hr 0mins
+3U 3960,CSC,Hong Kong International Airport (HKG),Chengdu Shuangliu International Airport (CTU),2hr 35mins
+3U 3959,CSC,Chengdu Shuangliu International Airport (CTU),Hong Kong International Airport (HKG),3hr 0mins
+UO 642,HKE,Hong Kong International Airport (HKG),Takamatsu Airport (TAK),4hr 45mins
+UO 643,HKE,Takamatsu Airport (TAK),Hong Kong International Airport (HKG),2hr 55mins
+CX 536,CPA,Hong Kong International Airport (HKG),Chubu Centrair International Airport (NGO),4hr 55mins
+CX 532,CPA,Hong Kong International Airport (HKG),Chubu Centrair International Airport (NGO),4hr 55mins
+CX 563,CPA,Chubu Centrair International Airport (NGO),Hong Kong International Airport (HKG),3hr 25mins
+CX 539,CPA,Chubu Centrair International Airport (NGO),Hong Kong International Airport (HKG),3hr 25mins
+CX 531,CPA,Chubu Centrair International Airport (NGO),Hong Kong International Airport (HKG),3hr 25mins
+UO 690,HKE,Hong Kong International Airport (HKG),Chubu Centrair International Airport (NGO),4hr 55mins
+UO 670,HKE,Hong Kong International Airport (HKG),Chubu Centrair International Airport (NGO),4hr 55mins
+UO 671,HKE,Chubu Centrair International Airport (NGO),Hong Kong International Airport (HKG),3hr 25mins
+UO 691,HKE,Chubu Centrair International Airport (NGO),Hong Kong International Airport (HKG),3hr 25mins
+HU 706,CHH,Hong Kong International Airport (HKG),Haikou Meilan International Airport (HAK),1hr 25mins
+HU 720,CHH,Hong Kong International Airport (HKG),Haikou Meilan International Airport (HAK),1hr 25mins
+HU 705,CHH,Haikou Meilan International Airport (HAK),Hong Kong International Airport (HKG),1hr 30mins
+HU 719,CHH,Haikou Meilan International Airport (HAK),Hong Kong International Airport (HKG),1hr 30mins
+CX 310,CPA,Hong Kong International Airport (HKG),Haikou Meilan International Airport (HAK),1hr 25mins
+CX 313,CPA,Haikou Meilan International Airport (HAK),Hong Kong International Airport (HKG),1hr 30mins
+CX 954,CPA,Hong Kong International Airport (HKG),Qingdao Jiaodong International Airport (TAO),3hr 15mins
+CX 951,CPA,Qingdao Jiaodong International Airport (TAO),Hong Kong International Airport (HKG),3hr 30mins
+SC 4632,CDG,Hong Kong International Airport (HKG),Qingdao Jiaodong International Airport (TAO),3hr 15mins
+SC 4631,CDG,Qingdao Jiaodong International Airport (TAO),Hong Kong International Airport (HKG),3hr 30mins
+QW 916,QDA,Hong Kong International Airport (HKG),Qingdao Jiaodong International Airport (TAO),3hr 15mins
+QW 915,QDA,Qingdao Jiaodong International Airport (TAO),Hong Kong International Airport (HKG),3hr 30mins
+CX 356,CPA,Hong Kong International Airport (HKG),Nanjing Lukou Airport (NKG),2hr 35mins
+CX 304,CPA,Hong Kong International Airport (HKG),Nanjing Lukou Airport (NKG),2hr 35mins
+CX 305,CPA,Nanjing Lukou Airport (NKG),Hong Kong International Airport (HKG),2hr 45mins
+CX 357,CPA,Nanjing Lukou Airport (NKG),Hong Kong International Airport (HKG),2hr 45mins
+MU 766,CES,Hong Kong International Airport (HKG),Nanjing Lukou Airport (NKG),2hr 35mins
+MU 765,CES,Nanjing Lukou Airport (NKG),Hong Kong International Airport (HKG),2hr 45mins
+HX 216,CRK,Hong Kong International Airport (HKG),Nanjing Lukou Airport (NKG),2hr 35mins
+HX 217,CRK,Nanjing Lukou Airport (NKG),Hong Kong International Airport (HKG),2hr 45mins
+CX 828,CPA,Hong Kong International Airport (HKG),Lester B. Pearson International Airport (YYZ),3hr 0mins
+CX 826,CPA,Hong Kong International Airport (HKG),Lester B. Pearson International Airport (YYZ),3hr 0mins
+CX 829,CPA,Lester B. Pearson International Airport (YYZ),Hong Kong International Airport (HKG),27hr 10mins
+CX 821,CPA,Lester B. Pearson International Airport (YYZ),Hong Kong International Airport (HKG),27hr 10mins
+CX 805,CPA,Lester B. Pearson International Airport (YYZ),Hong Kong International Airport (HKG),27hr 10mins
+CX 820,CPA,Hong Kong International Airport (HKG),Lester B. Pearson International Airport (YYZ),3hr 0mins
+CX 956,CPA,Hong Kong International Airport (HKG),Ningbo Lishe International Airport (NGB),2hr 20mins
+CX 955,CPA,Ningbo Lishe International Airport (NGB),Hong Kong International Airport (HKG),2hr 25mins
+MU 2090,CES,Hong Kong International Airport (HKG),Ningbo Lishe International Airport (NGB),2hr 20mins
+MU 2089,CES,Ningbo Lishe International Airport (NGB),Hong Kong International Airport (HKG),2hr 25mins
+MU 834,CES,Hong Kong International Airport (HKG),Ningbo Lishe International Airport (NGB),2hr 20mins
+MU 833,CES,Ningbo Lishe International Airport (NGB),Hong Kong International Airport (HKG),2hr 25mins
+UO 226D,HKE,Hong Kong International Airport (HKG),Ningbo Lishe International Airport (NGB),2hr 20mins
+UO 227,HKE,Ningbo Lishe International Airport (NGB),Hong Kong International Airport (HKG),2hr 25mins
+UO 226,HKE,Hong Kong International Airport (HKG),Ningbo Lishe International Airport (NGB),2hr 20mins
+CX 946,CPA,Hong Kong International Airport (HKG),Xi'an Xianyang International Airport (XIY),3hr 20mins
+CX 942,CPA,Hong Kong International Airport (HKG),Xi'an Xianyang International Airport (XIY),3hr 20mins
+CX 933,CPA,Xi'an Xianyang International Airport (XIY),Hong Kong International Airport (HKG),3hr 15mins
+CX 947,CPA,Xi'an Xianyang International Airport (XIY),Hong Kong International Airport (HKG),3hr 15mins
+MU 204,CES,Hong Kong International Airport (HKG),Xi'an Xianyang International Airport (XIY),3hr 20mins
+MU 203,CES,Xi'an Xianyang International Airport (XIY),Hong Kong International Airport (HKG),3hr 15mins
+MU 7482,CES,Hong Kong International Airport (HKG),Xi'an Xianyang International Airport (XIY),3hr 20mins
+MU 7481,CES,Xi'an Xianyang International Airport (XIY),Hong Kong International Airport (HKG),3hr 15mins
+MU 6096,CES,Hong Kong International Airport (HKG),Xi'an Xianyang International Airport (XIY),3hr 20mins
+MU 9624,CES,Hong Kong International Airport (HKG),Kunming Wujiaba International Airport (KMG),2hr 30mins
+MU 734,CES,Hong Kong International Airport (HKG),Kunming Wujiaba International Airport (KMG),2hr 30mins
+MU 9658,CES,Hong Kong International Airport (HKG),Kunming Wujiaba International Airport (KMG),2hr 30mins
+MU 9623,CES,Kunming Wujiaba International Airport (KMG),Hong Kong International Airport (HKG),2hr 20mins
+MU 733,CES,Kunming Wujiaba International Airport (KMG),Hong Kong International Airport (HKG),2hr 20mins
+MU 9657,CES,Kunming Wujiaba International Airport (KMG),Hong Kong International Airport (HKG),2hr 20mins
+SU 213,AFL,Hong Kong International Airport (HKG),Sheremetyevo International Airport (SVO),10hr 45mins
+SU 212,AFL,Sheremetyevo International Airport (SVO),Hong Kong International Airport (HKG),9hr 45mins
+UO 746,HKE,Hong Kong International Airport (HKG),Penang International Airport (PEN),3hr 45mins
+UO 768,HKE,Hong Kong International Airport (HKG),Penang International Airport (PEN),3hr 45mins
+UO 769,HKE,Penang International Airport (PEN),Hong Kong International Airport (HKG),3hr 55mins
+UO 747,HKE,Penang International Airport (PEN),Hong Kong International Airport (HKG),3hr 55mins
+CX 633,CPA,Hong Kong International Airport (HKG),Penang International Airport (PEN),3hr 45mins
+CX 622,CPA,Penang International Airport (PEN),Hong Kong International Airport (HKG),3hr 55mins
+CX 634,CPA,Penang International Airport (PEN),Hong Kong International Airport (HKG),3hr 55mins
+CX 621,CPA,Hong Kong International Airport (HKG),Penang International Airport (PEN),3hr 45mins
+OM 298,MGL,Hong Kong International Airport (HKG),Chinggis Khaan International Airport (UBN),4hr 40mins
+OM 297,MGL,Chinggis Khaan International Airport (UBN),Hong Kong International Airport (HKG),4hr 35mins
+OM 2972,MGL,Hong Kong International Airport (HKG),Chinggis Khaan International Airport (UBN),4hr 40mins
+OM 2971,MGL,Chinggis Khaan International Airport (UBN),Hong Kong International Airport (HKG),4hr 35mins
+CX 806,CPA,Hong Kong International Airport (HKG),Chicago O'Hare International Airport (ORD),2hr 10mins
+CX 801,CPA,Chicago O'Hare International Airport (ORD),Hong Kong International Airport (HKG),29hr 0mins
+MU 6098,CES,Hong Kong International Airport (HKG),Lanzhou Zhongchuan Airport (LHW),3hr 35mins
+MU 6097,CES,Lanzhou Zhongchuan Airport (LHW),Hong Kong International Airport (HKG),3hr 35mins
+HX 2507,CRK,Hong Kong International Airport (HKG),Lanzhou Zhongchuan Airport (LHW),3hr 35mins
+HX 2508,CRK,Lanzhou Zhongchuan Airport (LHW),Hong Kong International Airport (HKG),3hr 35mins
+ZH 9096,CSZ,Hong Kong International Airport (HKG),Sunan Shuofang International Airport (WUX),2hr 30mins
+ZH 9095,CSZ,Sunan Shuofang International Airport (WUX),Hong Kong International Airport (HKG),2hr 45mins
+UO 214,HKE,Hong Kong International Airport (HKG),Sunan Shuofang International Airport (WUX),2hr 30mins
+UO 215,HKE,Sunan Shuofang International Airport (WUX),Hong Kong International Airport (HKG),2hr 45mins
+HX 463,CRK,Hong Kong International Airport (HKG),Dongshan Airport (HLD),4hr 40mins
+HX 462,CRK,Dongshan Airport (HLD),Hong Kong International Airport (HKG),5hr 0mins
+MU 6086,CES,Hong Kong International Airport (HKG),Taiyuan Wusu Airport (TYN),3hr 0mins
+MU 6085,CES,Taiyuan Wusu Airport (TYN),Hong Kong International Airport (HKG),3hr 0mins
+CX 952,CPA,Hong Kong International Airport (HKG),Xinzheng Airport (CGO),2hr 35mins
+CX 957,CPA,Xinzheng Airport (CGO),Hong Kong International Airport (HKG),2hr 55mins
+CA 104,CCA,Hong Kong International Airport (HKG),Tianjin Binhai International Airport (TSN),3hr 25mins
+CA 103,CCA,Tianjin Binhai International Airport (TSN),Hong Kong International Airport (HKG),3hr 35mins
+AK 236,AXM,Hong Kong International Airport (HKG),Kota Kinabalu International Airport (BKI),2hr 50mins
+AK 237,AXM,Kota Kinabalu International Airport (BKI),Hong Kong International Airport (HKG),2hr 55mins
+UO 790,HKE,Hong Kong International Airport (HKG),Kota Kinabalu International Airport (BKI),2hr 50mins
+UO 791,HKE,Kota Kinabalu International Airport (BKI),Hong Kong International Airport (HKG),2hr 55mins
+CA 412,CCA,Hong Kong International Airport (HKG),Chengdu Tianfu International Airport (TFU),2hr 45mins
+CA 411,CCA,Chengdu Tianfu International Airport (TFU),Hong Kong International Airport (HKG),2hr 40mins
+TV 9702,TBA,Hong Kong International Airport (HKG),Chengdu Tianfu International Airport (TFU),2hr 45mins
+CX 928,CPA,Hong Kong International Airport (HKG),Chongqing Jiangbei International Airport (CKG),2hr 35mins
+CX 945,CPA,Chongqing Jiangbei International Airport (CKG),Hong Kong International Airport (HKG),2hr 30mins
+CA 420,CCA,Hong Kong International Airport (HKG),Chongqing Jiangbei International Airport (CKG),2hr 35mins
+CA 419,CCA,Chongqing Jiangbei International Airport (CKG),Hong Kong International Airport (HKG),2hr 30mins
+HX 496,CRK,Hong Kong International Airport (HKG),Chongqing Jiangbei International Airport (CKG),2hr 35mins
+HX 497,CRK,Chongqing Jiangbei International Airport (CKG),Hong Kong International Airport (HKG),2hr 30mins
+SC 1152,CDG,Hong Kong International Airport (HKG),Yaoqiang Airport (TNA),2hr 50mins
+SC 1151,CDG,Yaoqiang Airport (TNA),Hong Kong International Airport (HKG),3hr 10mins
+HB 510,HGB,Hong Kong International Airport (HKG),Male International Airport (MLE),3hr 20mins
+HB 511,HGB,Male International Airport (MLE),Hong Kong International Airport (HKG),9hr 50mins
+HX 791,CRK,Hong Kong International Airport (HKG),Male International Airport (MLE),3hr 20mins
+HX 792,CRK,Male International Airport (MLE),Hong Kong International Airport (HKG),9hr 50mins
+SL 361,TLM,Hong Kong International Airport (HKG),Don Mueang International Airport (DMK),1hr 45mins
+SL 360,TLM,Don Mueang International Airport (DMK),Hong Kong International Airport (HKG),3hr 45mins
+HB 8235,HGB,Hong Kong International Airport (HKG),Babelthuap Airport (ROR),4hr 15mins
+HB 8236,HGB,Babelthuap Airport (ROR),Hong Kong International Airport (HKG),4hr 15mins
+HX 2725,CRK,Hong Kong International Airport (HKG),Babelthuap Airport (ROR),4hr 15mins
+HX 2726,CRK,Babelthuap Airport (ROR),Hong Kong International Airport (HKG),4hr 15mins
+CX 629,CPA,Hong Kong International Airport (HKG),Juanda International Airport (SUB),3hr 45mins
+CX 780,CPA,Juanda International Airport (SUB),Hong Kong International Airport (HKG),6hr 0mins
+BI 636,RBA,Hong Kong International Airport (HKG),Brunei International Airport (BWN),3hr 0mins
+BI 635,RBA,Brunei International Airport (BWN),Hong Kong International Airport (HKG),3hr 10mins
+CX 171,CPA,Hong Kong International Airport (HKG),Perth International Airport (PER),7hr 40mins
+CX 143,CPA,Hong Kong International Airport (HKG),Perth International Airport (PER),7hr 40mins
+CX 170,CPA,Perth International Airport (PER),Hong Kong International Airport (HKG),7hr 55mins
+CX 184,CPA,Perth International Airport (PER),Hong Kong International Airport (HKG),7hr 55mins
+CX 876,CPA,Hong Kong International Airport (HKG),Dallas Fort Worth International Airport (DFW),2hr 20mins
+CX 875,CPA,Dallas Fort Worth International Airport (DFW),Hong Kong International Airport (HKG),29hr 10mins
+FJ 392,FJI,Hong Kong International Airport (HKG),Nadi International Airport (NAN),14hr 10mins
+FJ 393,FJI,Nadi International Airport (NAN),Hong Kong International Airport (HKG),6hr 30mins
+HB 538,HGB,Hong Kong International Airport (HKG),Enshi Airport (ENH),2hr 45mins
+HB 539,HGB,Enshi Airport (ENH),Hong Kong International Airport (HKG),2hr 45mins
+CZ 604,CSN,Hong Kong International Airport (HKG),Urumqi Diwopu International Airport (URC),5hr 30mins
+CZ 603,CSN,Urumqi Diwopu International Airport (URC),Hong Kong International Airport (HKG),5hr 20mins
+CX 998,CPA,Hong Kong International Airport (HKG),Urumqi Diwopu International Airport (URC),5hr 30mins
+CX 997,CPA,Urumqi Diwopu International Airport (URC),Hong Kong International Airport (HKG),5hr 20mins
+HX 412,CRK,Hong Kong International Airport (HKG),Lijiang Airport (LJG),2hr 55mins
+HX 413,CRK,Lijiang Airport (LJG),Hong Kong International Airport (HKG),3hr 15mins
+PG 806,BKP,Hong Kong International Airport (HKG),Samui Airport (USM),2hr 20mins
+PG 807,BKP,Samui Airport (USM),Hong Kong International Airport (HKG),4hr 25mins
+CX 663,CPA,Hong Kong International Airport (HKG),Chhatrapati Shivaji International Airport (BOM),3hr 45mins
+CX 696,CPA,Chhatrapati Shivaji International Airport (BOM),Hong Kong International Airport (HKG),8hr 30mins
+CX 660,CPA,Chhatrapati Shivaji International Airport (BOM),Hong Kong International Airport (HKG),8hr 30mins
+CX 683,CPA,Hong Kong International Airport (HKG),Chhatrapati Shivaji International Airport (BOM),3hr 45mins
+UO 272,HKE,Hong Kong International Airport (HKG),Changzhou Airport (CZX),2hr 30mins
+UO 273,HKE,Changzhou Airport (CZX),Hong Kong International Airport (HKG),2hr 35mins
+HB 872,HGB,Hong Kong International Airport (HKG),Dayong Airport (DYG),1hr 50mins
+HB 873,HGB,Dayong Airport (DYG),Hong Kong International Airport (HKG),1hr 55mins
+MU 2068,CES,Hong Kong International Airport (HKG),Hefei Xinqiao International Airport (HFE),2hr 20mins
+MU 2067,CES,Hefei Xinqiao International Airport (HFE),Hong Kong International Airport (HKG),2hr 30mins
+CX 603,CPA,Hong Kong International Airport (HKG),Tribhuvan International Airport (KTM),2hr 50mins
+CX 640,CPA,Tribhuvan International Airport (KTM),Hong Kong International Airport (HKG),7hr 0mins
+ZH 8042,CSZ,Hong Kong International Airport (HKG),Nanning Wuxu Airport (NNG),1hr 45mins
+ZH 8041,CSZ,Nanning Wuxu Airport (NNG),Hong Kong International Airport (HKG),1hr 50mins
+CX 812,CPA,Hong Kong International Airport (HKG),General Edward Lawrence Logan International Airport (BOS),3hr 55mins
+CX 811,CPA,General Edward Lawrence Logan International Airport (BOS),Hong Kong International Airport (HKG),27hr 15mins
+NZ 080,ANZ,Hong Kong International Airport (HKG),Auckland International Airport (AKL),10hr 35mins
+NZ 081,ANZ,Auckland International Airport (AKL),Hong Kong International Airport (HKG),11hr 20mins
+CX 113,CPA,Hong Kong International Airport (HKG),Auckland International Airport (AKL),14hr 40mins
+CX 198,CPA,Auckland International Airport (AKL),Hong Kong International Airport (HKG),7hr 40mins
+EY 871,ETD,Hong Kong International Airport (HKG),Abu Dhabi International Airport (AUH),4hr 15mins
+EY 870,ETD,Abu Dhabi International Airport (AUH),Hong Kong International Airport (HKG),11hr 50mins
+PX 019,ANG,Hong Kong International Airport (HKG),Port Moresby Jacksons International Airport (POM),6hr 45mins
+PX 008,ANG,Port Moresby Jacksons International Airport (POM),Hong Kong International Airport (HKG),6hr 35mins
+CX 611,CPA,Hong Kong International Airport (HKG),Bandaranaike International Colombo Airport (CMB),2hr 55mins
+CX 612,CPA,Bandaranaike International Colombo Airport (CMB),Hong Kong International Airport (HKG),8hr 20mins
+CX 651,CPA,Hong Kong International Airport (HKG),Chennai International Airport (MAA),3hr 0mins
+CX 632,CPA,Chennai International Airport (MAA),Hong Kong International Airport (HKG),8hr 20mins
+AY 100,FIN,Hong Kong International Airport (HKG),Helsinki Vantaa Airport (HEL),8hr 40mins
+AY 099,FIN,Helsinki Vantaa Airport (HEL),Hong Kong International Airport (HKG),12hr 5mins
+CX 623,CPA,Hong Kong International Airport (HKG),Bengaluru International Airport (BLR),3hr 15mins
+CX 624,CPA,Bengaluru International Airport (BLR),Hong Kong International Airport (HKG),8hr 35mins
+KL 888,KLM,Hong Kong International Airport (HKG),Amsterdam Airport Schiphol (AMS),7hr 45mins
+KL 887,KLM,Amsterdam Airport Schiphol (AMS),Hong Kong International Airport (HKG),18hr 0mins
+CX 271,CPA,Hong Kong International Airport (HKG),Amsterdam Airport Schiphol (AMS),7hr 45mins
+CX 270,CPA,Amsterdam Airport Schiphol (AMS),Hong Kong International Airport (HKG),18hr 0mins
+CX 673,CPA,Hong Kong International Airport (HKG),Rajiv Gandhi International Airport Shamshabad (HYD),3hr 5mins
+CX 672,CPA,Rajiv Gandhi International Airport Shamshabad (HYD),Hong Kong International Airport (HKG),8hr 20mins
+LH 797,DLH,Hong Kong International Airport (HKG),Frankfurt am Main International Airport (FRA),6hr 55mins
+LH 796,DLH,Frankfurt am Main International Airport (FRA),Hong Kong International Airport (HKG),17hr 40mins
+CX 289,CPA,Hong Kong International Airport (HKG),Frankfurt am Main International Airport (FRA),6hr 55mins
+CX 288,CPA,Frankfurt am Main International Airport (FRA),Hong Kong International Airport (HKG),17hr 40mins
+HX 072,CRK,Hong Kong International Airport (HKG),Francisco C. Ada Saipan International Airport (SPN),5hr 0mins
+HX 073,CRK,Francisco C. Ada Saipan International Airport (SPN),Hong Kong International Airport (HKG),5hr 10mins
+CX 294,CPA,Brussels Airport (BRU),Hong Kong International Airport (HKG),17hr 30mins
+CX 275,CPA,Hong Kong International Airport (HKG),Brussels Airport (BRU),7hr 40mins
+CX 300,CPA,Munich International Airport (MUC),Hong Kong International Airport (HKG),17hr 0mins
+CX 301,CPA,Hong Kong International Airport (HKG),Munich International Airport (MUC),7hr 5mins
+DE 9545,CFG,Hong Kong International Airport (HKG),Munich International Airport (MUC),7hr 5mins
+CX 321,CPA,Hong Kong International Airport (HKG),Barcelona International Airport (BCN),7hr 50mins
+CX 318,CPA,Barcelona International Airport (BCN),Hong Kong International Airport (HKG),18hr 0mins
+CX 662,CPA,Dhaka / Hazrat Shahjalal International Airport (DAC),Hong Kong International Airport (HKG),6hr 0mins
+CX 667,CPA,Hong Kong International Airport (HKG),Dhaka / Hazrat Shahjalal International Airport (DAC),2hr 5mins
+CX 853,CPA,Seattle Tacoma International Airport (SEA),Hong Kong International Airport (HKG),28hr 20mins
+CX 852,CPA,Hong Kong International Airport (HKG),Seattle Tacoma International Airport (SEA),-4hr 55mins
+UO 858,HKE,Hong Kong International Airport (HKG),Ishigaki Airport (ISG),3hr 0mins
+UO 879,HKE,Ishigaki Airport (ISG),Hong Kong International Airport (HKG),1hr 15mins
+HB 866,HGB,Hong Kong International Airport (HKG),Zhoushan Airport (HSN),2hr 15mins
+HB 867,HGB,Zhoushan Airport (HSN),Hong Kong International Airport (HKG),2hr 35mins
+UO 804,HKE,Hong Kong International Airport (HKG),Komatsu Airport (KMQ),5hr 0mins
+UO 805,HKE,Komatsu Airport (KMQ),Hong Kong International Airport (HKG),3hr 20mins
+UO 212,HKE,Hong Kong International Airport (HKG),Yiwu Airport (YIW),2hr 10mins
+UO 213,HKE,Yiwu Airport (YIW),Hong Kong International Airport (HKG),2hr 10mins
+HB 932,HGB,Hong Kong International Airport (HKG),Datong Airport (DAT),3hr 20mins
+HB 933,HGB,Datong Airport (DAT),Hong Kong International Airport (HKG),3hr 30mins
+CZ 6048,CSN,Hong Kong International Airport (HKG),Taiping Airport (HRB),4hr 50mins
+CZ 6047,CSN,Taiping Airport (HRB),Hong Kong International Airport (HKG),4hr 55mins
+HB 850,HGB,Hong Kong International Airport (HKG),Yichang Airport (YIH),2hr 25mins
+HB 851,HGB,Yichang Airport (YIH),Hong Kong International Airport (HKG),2hr 25mins
+TV 6120,TBA,Hong Kong International Airport (HKG),Yuncheng Guangong Airport (YCU),3hr 0mins
+TV 6119,TBA,Yuncheng Guangong Airport (YCU),Hong Kong International Airport (HKG),2hr 25mins
+HB 838,HGB,Hong Kong International Airport (HKG),Guilin Liangjiang International Airport (KWL),1hr 40mins
+HB 839,HGB,Guilin Liangjiang International Airport (KWL),Hong Kong International Airport (HKG),1hr 40mins
+TV 9701,TBA,Lhasa Gonggar Airport (LXA),Hong Kong International Airport (HKG),2hr 30mins
+HU 7916,CHH,Hong Kong International Airport (HKG),Longjia Airport (CGQ),4hr 20mins
+HU 7915,CHH,Longjia Airport (CGQ),Hong Kong International Airport (HKG),4hr 40mins
+HX 2502,CRK,Hong Kong International Airport (HKG),Xining Caojiabu Airport (XNN),3hr 50mins
+HX 2503,CRK,Xining Caojiabu Airport (XNN),Hong Kong International Airport (HKG),6hr 5mins
+MU 6095,CES,Xining Caojiabu Airport (XNN),Hong Kong International Airport (HKG),3hr 5mins
+MF 8692,CXA,Hong Kong International Airport (HKG),Yinchuan Airport (INC),3hr 20mins
+MF 8691,CXA,Yinchuan Airport (INC),Hong Kong International Airport (HKG),3hr 25mins
+CX 342R,CPA,Hong Kong International Airport (HKG),Chek Lap Kok International Airport (HKG),1hr 30mins
+NS 3690,HBH,Hong Kong International Airport (HKG),Shijiazhuang Daguocun International Airport (SJW),3hr 0mins
+NS 3689,HBH,Shijiazhuang Daguocun International Airport (SJW),Hong Kong International Airport (HKG),3hr 10mins
