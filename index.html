@@ -14,166 +14,184 @@
             height: 100%; width: 100%; margin: 0; padding: 0; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             overflow: hidden;
+            background-color: #cad2d3;
         }
-        #map { width: 100vw; height: 100vh; background-color: #cad2d3; } 
+        #map { width: 100vw; height: 100vh; background-color: #cad2d3; transition: background-color 0.3s; } 
+        
+        /* ---------------- LIGHT MODE (DEFAULT) ---------------- */
         
         .loading-overlay {
             position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
             background: #ffffff; padding: 10px 20px; border-radius: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 2000;
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
+            transition: all 0.3s ease;
         }
 
-        /* Language Toggle Switch */
-        .lang-toggle-container {
+        /* Top Right Controls */
+        .top-right-controls {
             position: absolute; top: 15px; right: 15px; z-index: 1000;
+            display: flex; gap: 8px;
+        }
+        .control-panel {
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             display: flex; overflow: hidden; border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
         }
-        .lang-btn {
+        .ctrl-btn {
             background: none; border: none; padding: 8px 12px; font-size: 13px; font-weight: 700;
-            color: #5f6368; cursor: pointer; transition: 0.2s; outline: none;
+            color: #5f6368; cursor: pointer; transition: 0.2s; outline: none; display: flex; align-items: center; justify-content: center;
         }
-        .lang-btn.active { background: #1a73e8; color: #fff; }
-        .lang-btn:hover:not(.active) { background: #f1f3f4; color: #1a73e8; }
+        .ctrl-btn.active { background: #1a73e8; color: #fff; }
+        .ctrl-btn:hover:not(.active) { background: #f1f3f4; color: #1a73e8; }
+        
+        .theme-btn { font-size: 16px; padding: 8px 10px; }
 
         /* Map Filters Panel */
         #filter-panel {
             position: absolute; top: 15px; left: 55px;
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000; width: 250px; border: 1px solid #e0e0e0;
+            z-index: 1000; width: 260px; border: 1px solid #e0e0e0;
             transition: all 0.3s ease;
         }
         
-        /* Filter Header & Buttons */
         .filter-header { display: flex; justify-content: space-between; align-items: center; }
-        .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
+        .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; transition: color 0.3s; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         
-        .reset-btn {
-            background: none; border: none; color: #777; font-size: 11px; 
-            font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
-        }
+        .reset-btn { background: none; border: none; color: #777; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0; }
         .reset-btn:hover { color: #d93025; }
         
-        .toggle-btn {
-            background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px;
-            font-weight: bold; color: #5f6368; cursor: pointer; display: flex; 
-            align-items: center; justify-content: center; transition: background 0.2s;
-        }
+        .toggle-btn { background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px; font-weight: bold; color: #5f6368; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
         .toggle-btn:hover { background: #e8eaed; color: #1a73e8; }
         
-        /* Minimized State */
-        #filter-content {
-            margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
-            max-height: 500px; opacity: 1; overflow: hidden;
-        }
+        #filter-content { margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease; max-height: 700px; opacity: 1; overflow: hidden; }
         #filter-panel.minimized #filter-content { max-height: 0; opacity: 0; margin-top: 0; }
 
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
-        .filter-group label {
-            display: flex; justify-content: space-between; font-size: 11px;
-            font-weight: 700; color: #5f6368; margin-bottom: 6px;
-            text-transform: uppercase; letter-spacing: 0.3px;
-        }
-        .filter-group select {
+        .filter-group label { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #5f6368; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; transition: color 0.3s; }
+        
+        .filter-group select, .filter-group input[type="text"] {
             width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc;
-            font-size: 13px; background-color: #fff; color: #202124; cursor: pointer; outline: none;
+            font-size: 13px; background-color: #fff; color: #202124; cursor: text; outline: none; transition: all 0.3s;
         }
-        .filter-group select:focus { border-color: #1a73e8; }
+        .filter-group select { cursor: pointer; }
+        .filter-group select:focus, .filter-group input[type="text"]:focus { border-color: #1a73e8; }
 
-        /* Multi-Select Day Pills */
         .filter-day-pills { display: flex; gap: 4px; }
-        .f-day-pill {
-            flex: 1; text-align: center; padding: 6px 0; font-size: 11px;
-            border: 1px solid #ccc; border-radius: 4px; cursor: pointer;
-            background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s; user-select: none;
-        }
+        .f-day-pill { flex: 1; text-align: center; padding: 6px 0; font-size: 11px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s; user-select: none; }
         .f-day-pill:hover { border-color: #1a73e8; }
         .f-day-pill.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 
-        /* Custom Dual-Thumb Time Slider */
+        /* Sliders */
         .time-slider-wrapper { position: relative; width: 100%; height: 24px; margin-top: 4px; }
-        .time-slider-track {
-            position: absolute; top: 10px; left: 0; right: 0; height: 4px;
-            background: #dadce0; border-radius: 2px; z-index: 1;
-        }
-        .time-slider-fill {
-            position: absolute; top: 10px; left: 0; width: 100%; height: 4px;
-            background: #1a73e8; border-radius: 2px; z-index: 2;
-        }
-        .time-slider-wrapper input[type="range"] {
-            position: absolute; top: 2px; left: 0; width: 100%; height: 20px;
-            pointer-events: none; appearance: none; background: none; z-index: 3; margin: 0;
-        }
-        .time-slider-wrapper input[type="range"]::-webkit-slider-thumb {
-            pointer-events: auto; appearance: none; width: 16px; height: 16px;
-            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
-            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-        .time-slider-wrapper input[type="range"]::-moz-range-thumb {
-            pointer-events: auto; appearance: none; width: 16px; height: 16px;
-            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
-            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-        #time-label-val { color: #1a73e8; font-weight: 700; }
-
-        /* Leaflet Popup Overrides */
-        .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
-        .custom-popup .leaflet-popup-content { margin: 12px; width: 340px !important; }
-        .route-card { width: 340px; font-family: inherit; color: #1a1a1a; padding: 0; }
+        .time-slider-track { position: absolute; top: 10px; left: 0; right: 0; height: 4px; background: #dadce0; border-radius: 2px; z-index: 1; transition: background 0.3s; }
+        .time-slider-fill { position: absolute; top: 10px; left: 0; width: 100%; height: 4px; background: #1a73e8; border-radius: 2px; z-index: 2; transition: background 0.3s; }
+        .time-slider-wrapper input[type="range"] { position: absolute; top: 2px; left: 0; width: 100%; height: 20px; pointer-events: none; appearance: none; background: none; z-index: 3; margin: 0; }
         
-        /* Direction Toggle Switch */
-        .direction-toggle { display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px; }
-        .direction-btn {
-            flex: 1; text-align: center; padding: 8px 0; font-size: 13px; font-weight: 600;
-            color: #5f6368; cursor: pointer; border-radius: 6px; transition: all 0.2s;
-        }
+        .time-slider-wrapper input[type="range"]::-webkit-slider-thumb { pointer-events: auto; appearance: none; width: 16px; height: 16px; background: #fff; border: 2px solid #1a73e8; border-radius: 50%; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: border-color 0.3s; }
+        .time-slider-wrapper input[type="range"]::-moz-range-thumb { pointer-events: auto; appearance: none; width: 16px; height: 16px; background: #fff; border: 2px solid #1a73e8; border-radius: 50%; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3); transition: border-color 0.3s; }
+        .highlight-val { color: #1a73e8; font-weight: 700; transition: color 0.3s; }
+
+        /* Popups & Content */
+        .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; transition: background 0.3s, color 0.3s; }
+        .custom-popup .leaflet-popup-tip { transition: background 0.3s; }
+        .custom-popup .leaflet-popup-content { margin: 12px; width: 340px !important; }
+        .route-card { width: 340px; font-family: inherit; color: #1a1a1a; padding: 0; transition: color 0.3s; }
+        
+        .direction-toggle { display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px; transition: background 0.3s; }
+        .direction-btn { flex: 1; text-align: center; padding: 8px 0; font-size: 13px; font-weight: 600; color: #5f6368; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
         .direction-btn.active { background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a; }
-        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 600; color: #3c4043; }
+        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a; transition: color 0.3s; }
+        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 600; color: #3c4043; transition: all 0.3s; }
         
-        /* Airline List */
-        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
+        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; transition: border-color 0.3s; }
         .airline-row { display: flex; flex-direction: column; gap: 8px; }
         .airline-info { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
         .airline-icon { width: 28px; height: 28px; border-radius: 50%; background-color: #006241; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-        .airline-name { font-size: 14px; font-weight: 600; flex-grow: 1; word-break: break-word; line-height: 1.3; }
+        .airline-name { font-size: 14px; font-weight: 600; flex-grow: 1; word-break: break-word; line-height: 1.3; transition: color 0.3s; }
         
-        /* Day Pills Bar (Inside Popup) */
         .day-pills { display: flex; gap: 4px; margin-left: 38px; }
-        .day-pill {
-            width: 32px; height: 26px; border-radius: 6px; border: 1px solid #d0d0d0;
-            background: #ffffff; font-size: 12px; font-weight: 600; color: #202124;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            transition: all 0.15s ease; user-select: none;
-        }
+        .day-pill { width: 32px; height: 26px; border-radius: 6px; border: 1px solid #d0d0d0; background: #ffffff; font-size: 12px; font-weight: 600; color: #202124; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s ease; user-select: none; }
         .day-pill.active { border-color: #1a73e8; color: #1a73e8; background-color: #e8f0fe; }
         .day-pill.active:hover { background-color: #1a73e8; color: white; }
         .day-pill.selected { background-color: #1a73e8 !important; color: white !important; border-color: #1a73e8 !important; }
         .day-pill.disabled { border-color: #f1f3f4; background-color: #f8f9fa; color: #bdc1c6; cursor: not-allowed; opacity: 0.6; }
 
-        /* Flight Schedule Details Dropdown */
-        .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; }
+        .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; transition: all 0.3s; }
         .flight-details-box.show { display: block; }
-        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ebebeb; }
+        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ebebeb; transition: border-color 0.3s; }
         .flight-item:last-child { border-bottom: none; }
-        .flight-no { font-weight: 700; color: #1a73e8; }
-        .flight-time { font-weight: 600; color: #333; }
+        .flight-no { font-weight: 700; color: #1a73e8; transition: color 0.3s; }
+        .flight-time { font-weight: 600; color: #333; transition: color 0.3s; }
+        
+        /* Book Button */
+        .book-btn { display: block; text-align: center; background: #1a73e8; color: white; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 13px; margin-top: 15px; transition: background 0.2s; border: none; cursor: pointer; }
+        .book-btn:hover { background: #1557b0; }
+
+        /* ---------------- DARK MODE ---------------- */
+        body.dark-mode #map { background-color: #1a1a1a; }
+        body.dark-mode .loading-overlay, body.dark-mode .control-panel, body.dark-mode #filter-panel { background: rgba(30, 30, 30, 0.95); color: #e8eaed; border-color: #444; }
+        body.dark-mode .filter-group label { color: #aaa; }
+        body.dark-mode .f-day-pill { background: #333; color: #aaa; border-color: #555; }
+        body.dark-mode .f-day-pill.active { background: #8ab4f8; color: #202124; border-color: #8ab4f8; }
+        body.dark-mode .ctrl-btn, body.dark-mode .toggle-btn { color: #aaa; }
+        body.dark-mode .ctrl-btn.active { background: #8ab4f8; color: #202124; }
+        body.dark-mode .ctrl-btn:hover:not(.active) { background: #333; color: #8ab4f8; }
+        body.dark-mode .toggle-btn { background: #333; }
+        body.dark-mode .toggle-btn:hover { background: #444; color: #8ab4f8; }
+        body.dark-mode select, body.dark-mode input[type="text"] { background: #333; color: #fff; border-color: #555; }
+        body.dark-mode select:focus, body.dark-mode input[type="text"]:focus { border-color: #8ab4f8; }
+        body.dark-mode .time-slider-track { background: #444; }
+        body.dark-mode .time-slider-fill { background: #8ab4f8; }
+        body.dark-mode .time-slider-wrapper input[type="range"]::-webkit-slider-thumb { border-color: #8ab4f8; background: #202124; }
+        body.dark-mode .time-slider-wrapper input[type="range"]::-moz-range-thumb { border-color: #8ab4f8; background: #202124; }
+        body.dark-mode .highlight-val, body.dark-mode .filter-header h4 { color: #8ab4f8; }
+        body.dark-mode .reset-btn { color: #aaa; }
+        body.dark-mode .reset-btn:hover { color: #f28b82; }
+
+        body.dark-mode .custom-popup .leaflet-popup-content-wrapper { background: #202124; color: #e8eaed; }
+        body.dark-mode .custom-popup .leaflet-popup-tip { background: #202124; }
+        body.dark-mode .route-card, body.dark-mode .airline-name { color: #e8eaed; }
+        body.dark-mode .direction-toggle { background: #303134; }
+        body.dark-mode .direction-btn { color: #9aa0a6; }
+        body.dark-mode .direction-btn.active { background: #424548; color: #8ab4f8; }
+        body.dark-mode .route-badges { color: #aaa; }
+        body.dark-mode .badge { background: #303134; border-color: #5f6368; color: #e8eaed; }
+        body.dark-mode .airline-list { border-color: #444; }
+        
+        body.dark-mode .day-pill { background: #303134; border-color: #5f6368; color: #e8eaed; }
+        body.dark-mode .day-pill.active { border-color: #8ab4f8; color: #8ab4f8; background-color: rgba(138, 180, 248, 0.1); }
+        body.dark-mode .day-pill.active:hover { background-color: #8ab4f8; color: #202124; }
+        body.dark-mode .day-pill.selected { background-color: #8ab4f8 !important; color: #202124 !important; border-color: #8ab4f8 !important; }
+        body.dark-mode .day-pill.disabled { background: #202124; border-color: #3c4043; color: #5f6368; }
+        
+        body.dark-mode .flight-details-box { background: #303134; border-color: #5f6368; }
+        body.dark-mode .flight-item { border-color: #444; }
+        body.dark-mode .flight-no { color: #8ab4f8; }
+        body.dark-mode .flight-time { color: #ccc; }
+        body.dark-mode .book-btn { background: #8ab4f8; color: #202124; }
+        body.dark-mode .book-btn:hover { background: #aecbfa; }
+        
     </style>
 </head>
 <body>
 
     <div id="loading" class="loading-overlay" data-i18n="loading">Loading Data...</div>
     
-    <!-- Language Toggle -->
-    <div class="lang-toggle-container">
-        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">繁</button>
+    <!-- Top Right Controls (Theme + Language) -->
+    <div class="top-right-controls">
+        <div class="control-panel">
+            <button class="ctrl-btn theme-btn" id="btn-theme" onclick="toggleTheme()">🌙</button>
+        </div>
+        <div class="control-panel">
+            <button class="ctrl-btn" id="btn-en" onclick="setLang('en')">EN</button>
+            <button class="ctrl-btn active" id="btn-zh" onclick="setLang('zh')">繁</button>
+        </div>
     </div>
 
     <!-- Map Filters Panel -->
@@ -187,6 +205,12 @@
         </div>
         
         <div id="filter-content">
+            <!-- Search Bar -->
+            <div class="filter-group">
+                <label data-i18n="searchDest">Search Destination</label>
+                <input type="text" id="search-input" data-i18n-placeholder="searchPh" placeholder="City or IATA (e.g. NRT)" onkeydown="if(event.key === 'Enter') executeSearch()">
+            </div>
+            
             <div class="filter-group">
                 <label data-i18n="direction">Direction</label>
                 <select id="filter-dir" onchange="window.triggerMapFilter()">
@@ -211,12 +235,22 @@
 
             <!-- Time Filter Slider -->
             <div class="filter-group">
-                <label><span data-i18n="timeWindow">Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span data-i18n="timeWindow">Time Window</span> <span id="time-label-val" class="highlight-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
                     <div class="time-slider-fill" id="time-fill"></div>
                     <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
                     <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+                </div>
+            </div>
+
+            <!-- Max Duration Slider -->
+            <div class="filter-group">
+                <label><span data-i18n="maxDuration">Max Flight Duration</span> <span id="dur-label-val" class="highlight-val">24 hr</span></label>
+                <div class="time-slider-wrapper">
+                    <div class="time-slider-track"></div>
+                    <div class="time-slider-fill" id="dur-fill" style="width:100%; left:0;"></div>
+                    <input type="range" min="1" max="24" value="24" id="dur-max" oninput="updateDurUI()" onchange="triggerMapFilter()" style="width:100%">
                 </div>
             </div>
 
@@ -238,19 +272,21 @@
         // --- MULTILINGUAL DICTIONARY ---
         let currentLang = 'zh';
         
-        // Static UI Text
         const i18n = {
             'en': {
                 pageTitle: "Hong Kong International Airport (HKG) - Flight Routes",
                 loading: "Loading Data...",
                 filterTitle: "Filter Flights",
                 reset: "Reset",
+                searchDest: "Search Destination",
+                searchPh: "City or IATA (e.g. NRT)",
                 direction: "Direction",
                 dirAll: "All Routes",
                 dirDep: "Departures (HKG \u2192 )",
                 dirArr: "Arrivals ( \u2192 HKG)",
                 daysOfWeek: "Days of Week",
                 timeWindow: "Time Window",
+                maxDuration: "Max Duration",
                 airline: "Airline",
                 airAll: "All Airlines",
                 hkName: "Hong Kong",
@@ -258,6 +294,7 @@
                 noFlights: "No flights matching your filters.",
                 noSchedule: "No flights scheduled.",
                 scheduleTxt: "Schedule:",
+                bookFlight: "Check Prices on Skyscanner",
                 su_short: "Su", mo_short: "Mo", tu_short: "Tu", we_short: "We", th_short: "Th", fr_short: "Fr", sa_short: "Sa",
                 su_long: "Sunday", mo_long: "Monday", tu_long: "Tuesday", we_long: "Wednesday", th_long: "Thursday", fr_long: "Friday", sa_long: "Saturday"
             },
@@ -266,12 +303,15 @@
                 loading: "載入數據中...",
                 filterTitle: "篩選航班",
                 reset: "重設",
+                searchDest: "搜尋目的地",
+                searchPh: "城市名稱或機場代碼 (如: 東京)",
                 direction: "方向",
                 dirAll: "所有路線",
                 dirDep: "出發 (HKG \u2192 )",
                 dirArr: "抵達 ( \u2192 HKG)",
                 daysOfWeek: "星期",
                 timeWindow: "時間範圍",
+                maxDuration: "最長飛行時間",
                 airline: "航空公司",
                 airAll: "所有航空公司",
                 hkName: "香港",
@@ -279,14 +319,13 @@
                 noFlights: "沒有符合篩選條件的航班。",
                 noSchedule: "沒有預定的航班。",
                 scheduleTxt: "航班時間表:",
+                bookFlight: "在 Skyscanner 上查看價格",
                 su_short: "日", mo_short: "一", tu_short: "二", we_short: "三", th_short: "四", fr_short: "五", sa_short: "六",
                 su_long: "星期日", mo_long: "星期一", tu_long: "星期二", we_long: "星期三", th_long: "星期四", fr_long: "星期五", sa_long: "星期六"
             }
         };
 
-        // Comprehensive City & Airport Translations
         const CITY_MAPPING = {
-            // East Asia
             "ICN": {en: "Seoul", zh: "首爾"}, "GMP": {en: "Seoul (Gimpo)", zh: "首爾 (金浦)"},
             "NRT": {en: "Tokyo", zh: "東京"}, "HND": {en: "Tokyo (Haneda)", zh: "東京 (羽田)"},
             "KIX": {en: "Osaka", zh: "大阪"}, "ITM": {en: "Osaka (Itami)", zh: "大阪 (伊丹)"},
@@ -294,51 +333,40 @@
             "FUK": {en: "Fukuoka", zh: "福岡"}, "OKA": {en: "Naha", zh: "那霸"}, "NGO": {en: "Nagoya", zh: "名古屋"},
             "CTS": {en: "Sapporo", zh: "札幌"}, "HKD": {en: "Hakodate", zh: "函館"}, "KOJ": {en: "Kagoshima", zh: "鹿兒島"},
             "KMI": {en: "Miyazaki", zh: "宮崎"}, "TAK": {en: "Takamatsu", zh: "高松"},
-
-            // Greater China
-            "PEK": {en: "Beijing (Capital)", zh: "北京 (首都)"}, "PKX": {en: "Beijing (Daxing)", zh: "北京 (大興)"},
-            "PVG": {en: "Shanghai (Pudong)", zh: "上海 (浦東)"}, "SHA": {en: "Shanghai (Hongqiao)", zh: "上海 (虹橋)"},
+            "PEK": {en: "Beijing", zh: "北京"}, "PKX": {en: "Beijing (Daxing)", zh: "北京 (大興)"},
+            "PVG": {en: "Shanghai", zh: "上海"}, "SHA": {en: "Shanghai (Hongqiao)", zh: "上海 (虹橋)"},
             "CAN": {en: "Guangzhou", zh: "廣州"}, "SZX": {en: "Shenzhen", zh: "深圳"}, "MFM": {en: "Macau", zh: "澳門"},
-            "TPE": {en: "Taipei (Taoyuan)", zh: "台北 (桃園)"}, "TSA": {en: "Taipei (Songshan)", zh: "台北 (松山)"},
+            "TPE": {en: "Taipei", zh: "台北"}, "TSA": {en: "Taipei (Songshan)", zh: "台北 (松山)"},
             "KHH": {en: "Kaohsiung", zh: "高雄"}, "RMQ": {en: "Taichung", zh: "台中"}, "TNN": {en: "Tainan", zh: "台南"},
             "SYX": {en: "Sanya", zh: "三亞"}, "HAK": {en: "Haikou", zh: "海口"}, "NNG": {en: "Nanning", zh: "南寧"},
             "XMN": {en: "Xiamen", zh: "廈門"}, "FOC": {en: "Fuzhou", zh: "福州"}, "JJN": {en: "Quanzhou", zh: "泉州"},
             "HGH": {en: "Hangzhou", zh: "杭州"}, "NKG": {en: "Nanjing", zh: "南京"}, "NGB": {en: "Ningbo", zh: "寧波"},
-            "WNZ": {en: "Wenzhou", zh: "溫州"}, "CTU": {en: "Chengdu (Shuangliu)", zh: "成都 (雙流)"}, 
-            "TFU": {en: "Chengdu (Tianfu)", zh: "成都 (天府)"}, "CKG": {en: "Chongqing", zh: "重慶"},
-            "KMG": {en: "Kunming", zh: "昆明"}, "XIY": {en: "Xi'an", zh: "西安"}, "WUH": {en: "Wuhan", zh: "武漢"},
-            "CSX": {en: "Changsha", zh: "長沙"}, "CGO": {en: "Zhengzhou", zh: "鄭州"}, "TAO": {en: "Qingdao", zh: "青島"},
-            "TNA": {en: "Jinan", zh: "濟南"}, "YNT": {en: "Yantai", zh: "煙台"}, "DLC": {en: "Dalian", zh: "大連"},
-            "SHE": {en: "Shenyang", zh: "瀋陽"}, "HRB": {en: "Harbin", zh: "哈爾濱"}, "CGQ": {en: "Changchun", zh: "長春"},
-            "TSN": {en: "Tianjin", zh: "天津"}, "KWE": {en: "Guiyang", zh: "貴陽"}, "KWL": {en: "Guilin", zh: "桂林"},
-            "URC": {en: "Urumqi", zh: "烏魯木齊"}, "HFE": {en: "Hefei", zh: "合肥"}, "NCN": {en: "Nanchang", zh: "南昌"},
-            "TYN": {en: "Taiyuan", zh: "太原"}, "SJW": {en: "Shijiazhuang", zh: "石家莊"}, "LHW": {en: "Lanzhou", zh: "蘭州"},
-            "INC": {en: "Yinchuan", zh: "銀川"}, "HET": {en: "Hohhot", zh: "呼和浩特"},
-
-            // Southeast Asia
-            "SIN": {en: "Singapore", zh: "新加坡"}, "BKK": {en: "Bangkok (Suvarnabhumi)", zh: "曼谷 (素萬那普)"}, 
-            "DMK": {en: "Bangkok (Don Mueang)", zh: "曼谷 (廊曼)"}, "HKT": {en: "Phuket", zh: "布吉"},
-            "CNX": {en: "Chiang Mai", zh: "清邁"}, "KUL": {en: "Kuala Lumpur", zh: "吉隆坡"}, "PEN": {en: "Penang", zh: "檳城"},
-            "BKI": {en: "Kota Kinabalu", zh: "亞庇"}, "SGN": {en: "Ho Chi Minh City", zh: "胡志明市"}, "HAN": {en: "Hanoi", zh: "河內"},
-            "DAD": {en: "Da Nang", zh: "峴港"}, "CXR": {en: "Nha Trang", zh: "芽莊"}, "MNL": {en: "Manila", zh: "馬尼拉"},
-            "CEB": {en: "Cebu", zh: "宿霧"}, "ILO": {en: "Iloilo City", zh: "伊洛伊洛市"}, "CGK": {en: "Jakarta", zh: "雅加達"},
-            "DPS": {en: "Denpasar-Bali Island", zh: "登巴薩-峇里島"}, "PNH": {en: "Phnom Penh", zh: "金邊"}, "REP": {en: "Siem Reap", zh: "暹粒"},
-
-            // International (Global)
+            "WNZ": {en: "Wenzhou", zh: "溫州"}, "CTU": {en: "Chengdu", zh: "成都"}, "TFU": {en: "Chengdu (Tianfu)", zh: "成都 (天府)"}, 
+            "CKG": {en: "Chongqing", zh: "重慶"}, "KMG": {en: "Kunming", zh: "昆明"}, "XIY": {en: "Xi'an", zh: "西安"}, 
+            "WUH": {en: "Wuhan", zh: "武漢"}, "CSX": {en: "Changsha", zh: "長沙"}, "CGO": {en: "Zhengzhou", zh: "鄭州"}, 
+            "TAO": {en: "Qingdao", zh: "青島"}, "TNA": {en: "Jinan", zh: "濟南"}, "YNT": {en: "Yantai", zh: "煙台"}, 
+            "DLC": {en: "Dalian", zh: "大連"}, "SHE": {en: "Shenyang", zh: "瀋陽"}, "HRB": {en: "Harbin", zh: "哈爾濱"}, 
+            "CGQ": {en: "Changchun", zh: "長春"}, "TSN": {en: "Tianjin", zh: "天津"}, "KWE": {en: "Guiyang", zh: "貴陽"}, 
+            "KWL": {en: "Guilin", zh: "桂林"}, "URC": {en: "Urumqi", zh: "烏魯木齊"}, "HFE": {en: "Hefei", zh: "合肥"}, 
+            "NCN": {en: "Nanchang", zh: "南昌"}, "TYN": {en: "Taiyuan", zh: "太原"}, "SJW": {en: "Shijiazhuang", zh: "石家莊"}, 
+            "LHW": {en: "Lanzhou", zh: "蘭州"}, "INC": {en: "Yinchuan", zh: "銀川"}, "HET": {en: "Hohhot", zh: "呼和浩特"},
+            "SIN": {en: "Singapore", zh: "新加坡"}, "BKK": {en: "Bangkok", zh: "曼谷"}, "DMK": {en: "Bangkok (Don Mueang)", zh: "曼谷 (廊曼)"}, 
+            "HKT": {en: "Phuket", zh: "布吉"}, "CNX": {en: "Chiang Mai", zh: "清邁"}, "KUL": {en: "Kuala Lumpur", zh: "吉隆坡"}, 
+            "PEN": {en: "Penang", zh: "檳城"}, "BKI": {en: "Kota Kinabalu", zh: "亞庇"}, "SGN": {en: "Ho Chi Minh City", zh: "胡志明市"}, 
+            "HAN": {en: "Hanoi", zh: "河內"}, "DAD": {en: "Da Nang", zh: "峴港"}, "CXR": {en: "Nha Trang", zh: "芽莊"}, 
+            "MNL": {en: "Manila", zh: "馬尼拉"}, "CEB": {en: "Cebu", zh: "宿霧"}, "ILO": {en: "Iloilo City", zh: "伊洛伊洛市"}, 
+            "CGK": {en: "Jakarta", zh: "雅加達"}, "DPS": {en: "Denpasar-Bali", zh: "峇里島"}, "PNH": {en: "Phnom Penh", zh: "金邊"}, "REP": {en: "Siem Reap", zh: "暹粒"},
             "CDG": {en: "Paris", zh: "巴黎"}, "ZRH": {en: "Zurich", zh: "蘇黎世"}, "MAD": {en: "Madrid", zh: "馬德里"},
             "MXP": {en: "Milan", zh: "米蘭"}, "MAN": {en: "Manchester", zh: "曼徹斯特"}, "FCO": {en: "Rome", zh: "羅馬"},
-            "LHR": {en: "London (Heathrow)", zh: "倫敦 (希斯路)"}, "FRA": {en: "Frankfurt", zh: "法蘭克福"}, 
-            "AMS": {en: "Amsterdam", zh: "阿姆斯特丹"}, "MUC": {en: "Munich", zh: "慕尼黑"},
+            "LHR": {en: "London", zh: "倫敦"}, "FRA": {en: "Frankfurt", zh: "法蘭克福"}, "AMS": {en: "Amsterdam", zh: "阿姆斯特丹"}, "MUC": {en: "Munich", zh: "慕尼黑"},
             "LAX": {en: "Los Angeles", zh: "洛杉磯"}, "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"},
             "JFK": {en: "New York", zh: "紐約"}, "EWR": {en: "Newark", zh: "紐華克"}, "ORD": {en: "Chicago", zh: "芝加哥"},
             "YYZ": {en: "Toronto", zh: "多倫多"}, "BNE": {en: "Brisbane", zh: "布里斯本"}, "MEL": {en: "Melbourne", zh: "墨爾本"},
             "SYD": {en: "Sydney", zh: "悉尼"}, "PER": {en: "Perth", zh: "珀斯"}, "AKL": {en: "Auckland", zh: "奧克蘭"},
             "ADD": {en: "Addis Ababa", zh: "亞的斯亞貝巴"}, "DXB": {en: "Dubai", zh: "杜拜"}, "DOH": {en: "Doha", zh: "多哈"},
-            "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}, "AUH": {en: "Abu Dhabi", zh: "阿布扎比"}, "DEL": {en: "Delhi", zh: "德里"},
-            "BOM": {en: "Mumbai", zh: "孟買"}
+            "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}, "AUH": {en: "Abu Dhabi", zh: "阿布扎比"}, "DEL": {en: "Delhi", zh: "德里"}, "BOM": {en: "Mumbai", zh: "孟買"}
         };
 
-        // Airline Translations
         const AIRLINE_MAPPING = {
             "CPA": {en: "Cathay Pacific", zh: "國泰航空"}, "HKE": {en: "HK Express", zh: "香港快運航空"}, "CRK": {en: "Hong Kong Airlines", zh: "香港航空"},
             "GBA": {en: "Greater Bay Airlines", zh: "大灣區航空"}, "HGB": {en: "Greater Bay Airlines", zh: "大灣區航空"}, "APZ": {en: "Air Premia", zh: "普雷米亞航空"},
@@ -354,7 +382,7 @@
             "GCR": {en: "Tianjin Airlines", zh: "天津航空"}, "LKE": {en: "Lucky Air", zh: "祥鵬航空"}, "CHB": {en: "China West Air", zh: "西部航空"},
             "UEA": {en: "Chengdu Airlines", zh: "成都航空"}, "CDG": {en: "Shandong Airlines", zh: "山東航空"}, "CAL": {en: "China Airlines", zh: "中華航空"},
             "EVA": {en: "EVA Air", zh: "長榮航空"}, "SJX": {en: "Starlux Airlines", zh: "星宇航空"}, "TTW": {en: "Tigerair Taiwan", zh: "台灣虎航"},
-            "MDA": {en: "Mandarin Airlines", zh: "華信航空"}, "UIA": {en: "UNI Air", zh: "立榮航空"}, "ANA": {en: "All Nippon Airways (ANA)", zh: "全日空"},
+            "MDA": {en: "Mandarin Airlines", zh: "華信航空"}, "UIA": {en: "UNI Air", zh: "立榮航空"}, "ANA": {en: "All Nippon Airways", zh: "全日空"},
             "JAL": {en: "Japan Airlines", zh: "日本航空"}, "APJ": {en: "Peach Aviation", zh: "樂桃航空"}, "KAL": {en: "Korean Air", zh: "大韓航空"},
             "AAR": {en: "Asiana Airlines", zh: "韓亞航空"}, "JJA": {en: "Jeju Air", zh: "濟州航空"}, "JNA": {en: "Jin Air", zh: "真航空"},
             "TWB": {en: "T'way Air", zh: "德威航空"}, "ABL": {en: "Air Busan", zh: "釜山航空"}, "ASV": {en: "Air Seoul", zh: "首爾航空"},
@@ -365,421 +393,12 @@
             "VJC": {en: "VietJet Air", zh: "越捷航空"}, "GIA": {en: "Garuda Indonesia", zh: "印尼嘉魯達航空"}, "RBA": {en: "Royal Brunei Airlines", zh: "汶萊皇家航空"},
             "UAE": {en: "Emirates", zh: "阿聯酋航空"}, "QTR": {en: "Qatar Airways", zh: "卡塔爾航空"}, "THY": {en: "Turkish Airlines", zh: "土耳其航空"},
             "AIC": {en: "Air India", zh: "印度航空"}, "VTI": {en: "Vistara", zh: "維斯塔拉航空"}, "IGO": {en: "IndiGo", zh: "靛藍航空"},
-            "BBC": {en: "Biman Bangladesh Airlines", zh: "孟加拉航空"}, "ALK": {en: "SriLankan Airlines", zh: "斯里蘭卡航空"}, "RNA": {en: "Nepal Airlines", zh: "尼泊爾航空"},
+            "BBC": {en: "Biman Bangladesh", zh: "孟加拉航空"}, "ALK": {en: "SriLankan Airlines", zh: "斯里蘭卡航空"}, "RNA": {en: "Nepal Airlines", zh: "尼泊爾航空"},
             "BAW": {en: "British Airways", zh: "英國航空"}, "AFR": {en: "Air France", zh: "法國航空"}, "DLH": {en: "Lufthansa", zh: "漢莎航空"},
-            "KLM": {en: "KLM Royal Dutch Airlines", zh: "荷蘭皇家航空"}, "FIN": {en: "Finnair", zh: "芬蘭航空"}, "SWR": {en: "Swiss International Air Lines", zh: "瑞士國際航空"},
+            "KLM": {en: "KLM Royal Dutch", zh: "荷蘭皇家航空"}, "FIN": {en: "Finnair", zh: "芬蘭航空"}, "SWR": {en: "Swiss International", zh: "瑞士國際航空"},
             "UAL": {en: "United Airlines", zh: "聯合航空"}, "ACA": {en: "Air Canada", zh: "加拿大航空"}, "QFA": {en: "Qantas", zh: "澳洲航空"},
             "ANZ": {en: "Air New Zealand", zh: "新西蘭航空"}, "ANG": {en: "Air Niugini", zh: "新畿內亞航空"}, "FJI": {en: "Fiji Airways", zh: "斐濟航空"},
-            "MGL": {en: "MIAT Mongolian Airlines", zh: "蒙古航空"}, "KZR": {en: "Air Astana", zh: "阿斯塔納航空"}, "UZB": {en: "Uzbekistan Airways", zh: "烏茲別克航空"}
-        };
-
-        // UI Translators
-        function t(key) { return i18n[currentLang][key] || key; }
-        function getCityName(iata, fallbackStr) { return CITY_MAPPING[iata] && CITY_MAPPING[iata][currentLang] ? CITY_MAPPING[iata][currentLang] : fallbackStr; }
-        function getAirlineName(code) { return AIRLINE_MAPPING[code] && AIRLINE_MAPPING[code][currentLang] ? AIRLINE_MAPPING[code][currentLang] : code; }
-
-        window.sortedAirlineCodesGlobal = []; 
-
-        window.setLang = function(lang) {
-            currentLang = lang;
-            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
-            
-            document.title = t('pageTitle');
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (el.tagName === 'OPTION') {
-                    el.text = t(key);
-                } else {
-                    el.innerHTML = t(key);
-                }
-            });
-
-            const airlineSelect = document.getElementById('filter-airline');
-            if (airlineSelect && window.sortedAirlineCodesGlobal.length > 0) {
-                const currentVal = airlineSelect.value;
-                airlineSelect.innerHTML = `<option value="All" data-i18n="airAll">${t('airAll')}</option>`;
-                
-                const updatedSorted = [...window.sortedAirlineCodesGlobal].sort((a, b) => {
-                    return getAirlineName(a).localeCompare(getAirlineName(b));
-                });
-                
-                updatedSorted.forEach(code => {
-                    const name = getAirlineName(code);
-                    const optText = name ? `${name} (${code})` : code;
-                    const opt = document.createElement('option');
-                    opt.value = code;
-                    opt.innerText = optText;
-                    airlineSelect.appendChild(opt);
-                });
-                airlineSelect.value = currentVal;
-            }
-
-            for (let iata in allMapMarkers) {
-                const marker = allMapMarkers[iata];
-                const aptData = window.airportRoutesData[iata];
-                const cityName = getCityName(iata, aptData.city || aptData.name);
-                const newTitle = `${cityName} (${iata})`;
-                
-                marker.options.title = newTitle;
-                if (marker._icon) {
-                    marker._icon.title = newTitle; 
-                }
-            }
-
-            const activePopup = window.leafletMap && window.leafletMap._popup;
-            if (activePopup && activePopup.isOpen()) {
-                const iataMatch = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/) : null;
-                if (iataMatch) {
-                    const fDir = document.getElementById('filter-dir').value;
-                    const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
-                    window.renderCardContent(iataMatch[1], defaultDir);
-                }
-            }
-        };
-
-        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
-        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-
-        window.airportRoutesData = null;
-        window.leafletMap = null; 
-        window.flightDurationsCSV = {}; 
-        const allMapMarkers = {};
-        const allMapPolylines = {};
-
-        // Calculate Great Circle Route for curved lines
-        window.getGreatCircleLine = function(lat1, lon1, lat2, lon2, numPoints = 100) {
-            const toRad = Math.PI / 180;
-            const toDeg = 180 / Math.PI;
-
-            const phi1 = lat1 * toRad;
-            let lambda1 = lon1 * toRad;
-            const phi2 = lat2 * toRad;
-            let lambda2 = lon2 * toRad;
-
-            // Adjust so we take the shortest path around the globe (e.g. crossing Pacific)
-            if (lambda2 - lambda1 > Math.PI) lambda2 -= 2 * Math.PI;
-            else if (lambda1 - lambda2 > Math.PI) lambda2 += 2 * Math.PI;
-
-            const dLat = phi2 - phi1;
-            const dLon = lambda2 - lambda1;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(phi1) * Math.cos(phi2) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const angularDistance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-            if (angularDistance === 0) return [[lat1, lon1]];
-
-            const points = [];
-            let prevLng = lon1; 
-
-            for (let i = 0; i <= numPoints; i++) {
-                const f = i / numPoints;
-                const A = Math.sin((1 - f) * angularDistance) / Math.sin(angularDistance);
-                const B = Math.sin(f * angularDistance) / Math.sin(angularDistance);
-
-                const x = A * Math.cos(phi1) * Math.cos(lambda1) + B * Math.cos(phi2) * Math.cos(lambda2);
-                const y = A * Math.cos(phi1) * Math.sin(lambda1) + B * Math.cos(phi2) * Math.sin(lambda2);
-                const z = A * Math.sin(phi1) + B * Math.sin(phi2);
-
-                const phi = Math.atan2(z, Math.sqrt(x * x + y * y));
-                let lambda = Math.atan2(y, x);
-
-                let degLat = phi * toDeg;
-                let degLng = lambda * toDeg;
-                
-                // Prevent horizontal lines visually streaking across the entire map
-                while (degLng - prevLng > 180) degLng -= 360;
-                while (degLng - prevLng < -180) degLng += 360;
-                
-                prevLng = degLng;
-                points.push([degLat, degLng]);
-            }
-            return points;
-        };
-
-        window.calculateLinkedTime = function(baseTime, durationText, direction) {
-            if (!baseTime || !durationText) return t('timeUnknown');
-            
-            const baseParts = baseTime.split(':');
-            if (baseParts.length !== 2) return t('timeUnknown');
-            let baseH = parseInt(baseParts[0], 10);
-            let baseM = parseInt(baseParts[1], 10);
-            
-            let isNegative = false;
-            const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
-            if (!match) return t('timeUnknown');
-
-            if (match[1] === '-') isNegative = true;
-            let durH = parseInt(match[2], 10);
-            let durM = parseInt(match[3], 10);
-            
-            let totalDurMins = durH * 60 + durM;
-            if (isNegative) totalDurMins = -totalDurMins; 
-            
-            let targetTotalMins;
-            if (direction === 'Arrival') {
-                targetTotalMins = (baseH * 60 + baseM) - totalDurMins;
-            } else {
-                targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
-            }
-            
-            let dayOffset = 0;
-            while (targetTotalMins < 0) {
-                targetTotalMins += 24 * 60;
-                dayOffset -= 1;
-            }
-            while (targetTotalMins >= 24 * 60) {
-                targetTotalMins -= 24 * 60;
-                dayOffset += 1;
-            }
-            
-            let targetHStr = String(Math.floor(targetTotalMins / 60)).padStart(2, '0');
-            let targetMStr = String(targetTotalMins % 60).padStart(2, '0');
-            
-            let res = `${targetHStr}:${targetMStr}`;
-            if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
-            if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
-            return res;
-        };
-
-        window.calculateDistance = function(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return Math.round(R * c).toLocaleString();
-        };
-
-        window.toggleFilterPanel = function() {
-            const panel = document.getElementById('filter-panel');
-            const btn = document.getElementById('toggle-filter-btn');
-            panel.classList.toggle('minimized');
-            if (panel.classList.contains('minimized')) {
-                btn.innerHTML = '+';
-            } else {
-                btn.innerHTML = '&minus;';
-            }
-        };
-
-        window.clearAllFilters = function() {
-            document.getElementById('filter-dir').value = 'All';
-            document.getElementById('filter-airline').value = 'All';
-            document.querySelectorAll('.f-day-pill').forEach(pill => {
-                pill.classList.add('active');
-            });
-            document.getElementById('time-min').value = 0;
-            document.getElementById('time-max').value = 24;
-            window.updateTimeUI();
-            window.triggerMapFilter();
-        };
-
-        window.flightTimeMatches = function(timeStr) {
-            if (!timeStr || !timeStr.includes(':')) return true; 
-            const parts = timeStr.split(':');
-            const flightMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-            
-            const v1 = parseInt(document.getElementById('time-min').value);
-            const v2 = parseInt(document.getElementById('time-max').value);
-            const minHr = Math.min(v1, v2);
-            const maxHr = Math.max(v1, v2);
-            
-            const startMins = minHr * 60;
-            const endMins = maxHr === 24 ? 24 * 60 : maxHr * 60;
-            
-            return flightMins >= startMins && flightMins <= endMins;
-        };
-
-        window.updateTimeUI = function() {
-            const slider1 = document.getElementById('time-min');
-            const slider2 = document.getElementById('time-max');
-            const val1 = parseInt(slider1.value);
-            const val2 = parseInt(slider2.value);
-            
-            const minVal = Math.min(val1, val2);
-            const maxVal = Math.max(val1, val2);
-            
-            document.getElementById('time-label-val').innerText = `${String(minVal).padStart(2, '0')}:00 - ${String(maxVal).padStart(2, '0')}:00`;
-            
-            const fill = document.getElementById('time-fill');
-            const percent1 = (minVal / 24) * 100;
-            const percent2 = (maxVal / 24) * 100;
-            fill.style.left = percent1 + "%";
-            fill.style.width = (percent2 - percent1) + "%";
-        };
-
-        async function initMap() {
-            const loadingText = document.getElementById('loading');
-            
-            const filterPanel = document.getElementById('filter-panel');
-            L.DomEvent.disableClickPropagation(filterPanel);
-            L.DomEvent.disableScrollPropagation(filterPanel);
-
-            window.leafletMap = L.map('map', {
-                center: [HKG_LATLNG.lat, HKG_LATLNG.lng],
-                zoom: 3,
-                worldCopyJump: true 
-            });
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(window.leafletMap);
-
-            try {
-                const res = await fetch('flights.json');
-                const data = await res.json();
-                window.airportRoutesData = data.routes;
-
-                try {
-                    const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
-                    if (csvRes.ok) {
-                        const csvText = await csvRes.text();
-                        const lines = csvText.split('\n');
-                        
-                        for (let i = 1; i < lines.length; i++) { 
-                            if (!lines[i].trim()) continue;
-                            const row = lines[i].split(',');
-                            
-                            if (row.length >= 5) {
-                                const depAirport = row[2].trim();
-                                const arrAirport = row[3].trim();
-                                
-                                let targetAirport = depAirport;
-                                let direction = 'Arrival'; 
-                                
-                                if (depAirport.includes("HKG")) {
-                                    targetAirport = arrAirport;
-                                    direction = 'Departure'; 
-                                }
-                                
-                                const iataMatch = targetAirport.match(/\(([A-Z]{3})\)/);
-                                
-                                if (iataMatch) {
-                                    const iataCode = iataMatch[1].toUpperCase();
-                                    const durationText = row[4].trim(); 
-                                    
-                                    if (!window.flightDurationsCSV[iataCode]) {
-                                        window.flightDurationsCSV[iataCode] = { 'Departure': null, 'Arrival': null };
-                                    }
-                                    
-                                    window.flightDurationsCSV[iataCode][direction] = durationText;
-                                }
-                            }
-                        }
-                    }
-                } catch (e) {
-                    console.warn("Could not load Flight_duration.csv.", e);
-                }
-
-                const allAirlinesSet = new Set();
-                for (let iata in window.airportRoutesData) {
-                    for (let alCode in window.airportRoutesData[iata].airlines) {
-                        allAirlinesSet.add(alCode);
-                    }
-                }
-                
-                window.sortedAirlineCodesGlobal = Array.from(allAirlinesSet);
-
-                window.leafletMap.on('popupclose', () => { window.applyFiltersToMap(); });
-
-                for (let iata in window.airportRoutesData) {
-                    const aptData = window.airportRoutesData[iata];
-                    
-                    const marker = L.marker([aptData.lat, aptData.lng], {
-                        title: `${aptData.city || aptData.name} (${iata})`
-                    }).addTo(window.leafletMap);
-                    allMapMarkers[iata] = marker; 
-
-                    // Replace straight line with a Great Circle curved line
-                    const curvePoints = window.getGreatCircleLine(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
-                    
-                    const polyline = L.polyline(curvePoints, { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
-                    allMapPolylines[iata] = polyline;
-
-                    marker.on('click', () => {
-                        for (let key in allMapMarkers) {
-                            if (key !== iata) {
-                                if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
-                                if (window.leafletMap.hasLayer(allMapPolylines[key])) window.leafletMap.removeLayer(allMapPolylines[key]);
-                            }
-                        }
-
-                        const fDir = document.getElementById('filter-dir').value;
-                        const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
-
-                        const contentHtml = `<div class="route-card" id="route-card-container"></div>`;
-                        
-                        L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
-                            .setLatLng(marker.getLatLng())
-                            .setContent(contentHtml)
-                            .openOn(window.leafletMap);
-                        
-                        setTimeout(() => { window.renderCardContent(iata, defaultDir); }, 10);
-                    });
-                }
-                
-                loadingText.style.display = 'none';
-                window.updateTimeUI(); 
-                window.applyFiltersToMap();
-                window.setLang(currentLang); 
-
-            } catch (error) {
-                loadingText.innerText = "Error loading flights.json.";
-                console.error("Mapping error:", error);
-            }
-        }
-
-        window.toggleFilterDay = function(element) {
-            element.classList.toggle('active');
-            window.triggerMapFilter();
-        };
-
-        window.triggerMapFilter = function() {
-            window.leafletMap.closePopup(); 
-            window.applyFiltersToMap();
-        };
-
-        window.applyFiltersToMap = function() {
-            const fDir = document.getElementById('filter-dir').value;
-            const fAir = document.getElementById('filter-airline').value;
-            
-            const activeDayElements = document.querySelectorAll('.f-day-pill.active');
-            const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
-
-            for (let iata in window.airportRoutesData) {
-                const aptData = window.airportRoutesData[iata];
-                let isMatch = false;
-
-                for (let alCode in aptData.airlines) {
-                    if (fAir !== 'All' && alCode !== fAir) continue; 
-                    
-                    const airlineData = aptData.airlines[alCode];
-                    
-                    for (let d of fDays) {
-                        const flights = airlineData.days[d] || [];
-                        
-                        const matchingFlights = flights.filter(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir));
-                        
-                        if (matchingFlights.length > 0) {
-                            isMatch = true;
-                            break;
-                        }
-                    }
-                    if (isMatch) break; 
-                }
-
-                if (isMatch) {
-                    if (!window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.addLayer(allMapMarkers[iata]);
-                    if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
-                } else {
-                    if (window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.removeLayer(allMapMarkers[iata]);
-                    if (window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.removeLayer(allMapPolylines[iata]);
-                }
-            }
+            "MGL": {en: "MIAT Mongolian", zh: "蒙古航空"}, "KZR": {en: "Air Astana", zh: "阿斯塔納航空"}, "UZB": {en: "Uzbekistan Airways", zh: "烏茲別克航空"}
         };
 
         const TZ_OFFSETS = {
@@ -804,36 +423,402 @@
             "DEL": 5.5, "BOM": 5.5
         };
 
-        window.getTrueDisplayDuration = function(durationText, iata, direction) {
-            if (!durationText || durationText === t('timeUnknown') || TZ_OFFSETS[iata] === undefined) return durationText;
+        function t(key) { return i18n[currentLang][key] || key; }
+        function getCityName(iata, fallbackStr, langOverride = currentLang) { return CITY_MAPPING[iata] && CITY_MAPPING[iata][langOverride] ? CITY_MAPPING[iata][langOverride] : fallbackStr; }
+        function getAirlineName(code) { return AIRLINE_MAPPING[code] && AIRLINE_MAPPING[code][currentLang] ? AIRLINE_MAPPING[code][currentLang] : code; }
+
+        window.sortedAirlineCodesGlobal = []; 
+
+        window.setLang = function(lang) {
+            currentLang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+            document.title = t('pageTitle');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (el.tagName === 'OPTION') el.text = t(key);
+                else el.innerHTML = t(key);
+            });
+            
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                el.placeholder = t(key);
+            });
+
+            const airlineSelect = document.getElementById('filter-airline');
+            if (airlineSelect && window.sortedAirlineCodesGlobal.length > 0) {
+                const currentVal = airlineSelect.value;
+                airlineSelect.innerHTML = `<option value="All" data-i18n="airAll">${t('airAll')}</option>`;
+                
+                const updatedSorted = [...window.sortedAirlineCodesGlobal].sort((a, b) => getAirlineName(a).localeCompare(getAirlineName(b)));
+                updatedSorted.forEach(code => {
+                    const name = getAirlineName(code);
+                    const opt = document.createElement('option');
+                    opt.value = code;
+                    opt.innerText = name ? `${name} (${code})` : code;
+                    airlineSelect.appendChild(opt);
+                });
+                airlineSelect.value = currentVal;
+            }
+
+            for (let iata in allMapMarkers) {
+                const marker = allMapMarkers[iata];
+                const cityName = getCityName(iata, window.airportRoutesData[iata].city || window.airportRoutesData[iata].name);
+                const newTitle = `${cityName} (${iata})`;
+                marker.options.title = newTitle;
+                if (marker._icon) marker._icon.title = newTitle; 
+            }
+
+            const activePopup = window.leafletMap && window.leafletMap._popup;
+            if (activePopup && activePopup.isOpen()) {
+                const iataMatch = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/) : null;
+                if (iataMatch) {
+                    const fDir = document.getElementById('filter-dir').value;
+                    window.renderCardContent(iataMatch[1], (fDir !== 'All') ? fDir : 'Departure');
+                }
+            }
+        };
+
+        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
+        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+
+        window.airportRoutesData = null;
+        window.leafletMap = null; 
+        window.activeTileLayer = null;
+        window.isDarkMode = false;
+        window.flightDurationsCSV = {}; 
+        const allMapMarkers = {};
+        const allMapPolylines = {};
+
+        // Theme Toggle Logic
+        window.toggleTheme = function() {
+            window.isDarkMode = !window.isDarkMode;
+            const btn = document.getElementById('btn-theme');
+            btn.innerHTML = window.isDarkMode ? '☀️' : '🌙';
+            
+            if(window.isDarkMode) {
+                document.body.classList.add('dark-mode');
+                if(window.activeTileLayer) window.leafletMap.removeLayer(window.activeTileLayer);
+                window.activeTileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                }).addTo(window.leafletMap);
+            } else {
+                document.body.classList.remove('dark-mode');
+                if(window.activeTileLayer) window.leafletMap.removeLayer(window.activeTileLayer);
+                window.activeTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(window.leafletMap);
+            }
+        };
+
+        // Search Engine Logic
+        window.executeSearch = function() {
+            const input = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!input) return;
+
+            let matchedIata = null;
+            if (allMapMarkers[input.toUpperCase()]) {
+                matchedIata = input.toUpperCase();
+            } else {
+                for (let iata in window.airportRoutesData) {
+                    const cEn = (CITY_MAPPING[iata] && CITY_MAPPING[iata].en ? CITY_MAPPING[iata].en : "").toLowerCase();
+                    const cZh = (CITY_MAPPING[iata] && CITY_MAPPING[iata].zh ? CITY_MAPPING[iata].zh : "").toLowerCase();
+                    if (cEn.includes(input) || cZh.includes(input)) {
+                        matchedIata = iata; break;
+                    }
+                }
+            }
+
+            if (matchedIata) {
+                window.leafletMap.flyTo(allMapMarkers[matchedIata].getLatLng(), 5, { animate: true, duration: 1.5 });
+                setTimeout(() => { allMapMarkers[matchedIata].fire('click'); }, 1500);
+                document.getElementById('search-input').value = ''; 
+            } else {
+                // Flash red if not found
+                const searchBox = document.getElementById('search-input');
+                const oldColor = searchBox.style.borderColor;
+                searchBox.style.borderColor = '#d93025';
+                setTimeout(() => { searchBox.style.borderColor = oldColor; }, 800);
+            }
+        };
+
+        // Great Circle Line Logic
+        window.getGreatCircleLine = function(lat1, lon1, lat2, lon2, numPoints = 100) {
+            const toRad = Math.PI / 180;
+            const toDeg = 180 / Math.PI;
+            const phi1 = lat1 * toRad, phi2 = lat2 * toRad;
+            let lambda1 = lon1 * toRad, lambda2 = lon2 * toRad;
+
+            if (lambda2 - lambda1 > Math.PI) lambda2 -= 2 * Math.PI;
+            else if (lambda1 - lambda2 > Math.PI) lambda2 += 2 * Math.PI;
+
+            const dLat = phi2 - phi1, dLon = lambda2 - lambda1;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const angularDistance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            if (angularDistance === 0) return [[lat1, lon1]];
+
+            const points = [];
+            let prevLng = lon1; 
+            for (let i = 0; i <= numPoints; i++) {
+                const f = i / numPoints;
+                const A = Math.sin((1 - f) * angularDistance) / Math.sin(angularDistance);
+                const B = Math.sin(f * angularDistance) / Math.sin(angularDistance);
+                const x = A * Math.cos(phi1) * Math.cos(lambda1) + B * Math.cos(phi2) * Math.cos(lambda2);
+                const y = A * Math.cos(phi1) * Math.sin(lambda1) + B * Math.cos(phi2) * Math.sin(lambda2);
+                const z = A * Math.sin(phi1) + B * Math.sin(phi2);
+                const phi = Math.atan2(z, Math.sqrt(x * x + y * y));
+                let lambda = Math.atan2(y, x);
+
+                let degLat = phi * toDeg, degLng = lambda * toDeg;
+                while (degLng - prevLng > 180) degLng -= 360;
+                while (degLng - prevLng < -180) degLng += 360;
+                prevLng = degLng;
+                points.push([degLat, degLng]);
+            }
+            return points;
+        };
+
+        // Time Engine & Duration Engine
+        window.getTrueDurationMins = function(iata, direction) {
+            const searchIata = iata.trim().toUpperCase();
+            const durationText = window.flightDurationsCSV[searchIata] ? window.flightDurationsCSV[searchIata][direction] : null;
+            if (!durationText || durationText === t('timeUnknown') || TZ_OFFSETS[searchIata] === undefined) return null;
 
             let isNegative = false;
             const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
-            if (!match) return durationText;
+            if (!match) return null;
 
             if (match[1] === '-') isNegative = true;
-            let durH = parseInt(match[2], 10);
-            let durM = parseInt(match[3], 10);
-            
+            let durH = parseInt(match[2], 10), durM = parseInt(match[3], 10);
             let totalDurMins = durH * 60 + durM;
             if (isNegative) totalDurMins = -totalDurMins; 
             
-            const hkgTz = 8;
-            const destTz = TZ_OFFSETS[iata];
-            
-            let tzDiffHours = 0;
-            if (direction === 'Departure') {
-                tzDiffHours = destTz - hkgTz; 
-            } else {
-                tzDiffHours = hkgTz - destTz;
-            }
-            
+            let tzDiffHours = (direction === 'Departure') ? (TZ_OFFSETS[searchIata] - 8) : (8 - TZ_OFFSETS[searchIata]);
             let trueDurMins = totalDurMins - (tzDiffHours * 60);
             if (trueDurMins < 0) trueDurMins += 24 * 60; 
+            return trueDurMins;
+        };
 
-            let trueH = Math.floor(trueDurMins / 60);
-            let trueM = trueDurMins % 60;
-            return `${trueH}hr ${String(trueM).padStart(2, '0')}mins`;
+        window.calculateLinkedTime = function(baseTime, durationText, direction) {
+            if (!baseTime || !durationText) return t('timeUnknown');
+            const baseParts = baseTime.split(':');
+            if (baseParts.length !== 2) return t('timeUnknown');
+            
+            let baseH = parseInt(baseParts[0], 10), baseM = parseInt(baseParts[1], 10);
+            let isNegative = false;
+            const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
+            if (!match) return t('timeUnknown');
+
+            if (match[1] === '-') isNegative = true;
+            let durH = parseInt(match[2], 10), durM = parseInt(match[3], 10);
+            let totalDurMins = durH * 60 + durM;
+            if (isNegative) totalDurMins = -totalDurMins; 
+            
+            let targetTotalMins = (direction === 'Arrival') ? ((baseH * 60 + baseM) - totalDurMins) : ((baseH * 60 + baseM) + totalDurMins);
+            let dayOffset = 0;
+            while (targetTotalMins < 0) { targetTotalMins += 24 * 60; dayOffset -= 1; }
+            while (targetTotalMins >= 24 * 60) { targetTotalMins -= 24 * 60; dayOffset += 1; }
+            
+            let targetHStr = String(Math.floor(targetTotalMins / 60)).padStart(2, '0');
+            let targetMStr = String(targetTotalMins % 60).padStart(2, '0');
+            
+            let res = `${targetHStr}:${targetMStr}`;
+            if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
+            if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
+            return res;
+        };
+
+        window.calculateDistance = function(lat1, lon1, lat2, lon2) {
+            const R = 6371; 
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return Math.round(R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toLocaleString();
+        };
+
+        // Filter UI Adjustments
+        window.toggleFilterPanel = function() {
+            const panel = document.getElementById('filter-panel');
+            const btn = document.getElementById('toggle-filter-btn');
+            panel.classList.toggle('minimized');
+            btn.innerHTML = panel.classList.contains('minimized') ? '+' : '&minus;';
+        };
+
+        window.clearAllFilters = function() {
+            document.getElementById('filter-dir').value = 'All';
+            document.getElementById('filter-airline').value = 'All';
+            document.querySelectorAll('.f-day-pill').forEach(pill => pill.classList.add('active'));
+            document.getElementById('time-min').value = 0;
+            document.getElementById('time-max').value = 24;
+            document.getElementById('dur-max').value = 24;
+            window.updateTimeUI();
+            window.updateDurUI();
+            window.triggerMapFilter();
+        };
+
+        window.flightTimeMatches = function(timeStr) {
+            if (!timeStr || !timeStr.includes(':')) return true; 
+            const parts = timeStr.split(':');
+            const flightMins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+            const v1 = parseInt(document.getElementById('time-min').value), v2 = parseInt(document.getElementById('time-max').value);
+            const startMins = Math.min(v1, v2) * 60, endMins = (Math.max(v1, v2) === 24) ? 24 * 60 : Math.max(v1, v2) * 60;
+            return flightMins >= startMins && flightMins <= endMins;
+        };
+
+        window.updateTimeUI = function() {
+            const val1 = parseInt(document.getElementById('time-min').value), val2 = parseInt(document.getElementById('time-max').value);
+            const minVal = Math.min(val1, val2), maxVal = Math.max(val1, val2);
+            document.getElementById('time-label-val').innerText = `${String(minVal).padStart(2, '0')}:00 - ${String(maxVal).padStart(2, '0')}:00`;
+            const fill = document.getElementById('time-fill');
+            fill.style.left = (minVal / 24 * 100) + "%"; fill.style.width = ((maxVal - minVal) / 24 * 100) + "%";
+        };
+        
+        window.updateDurUI = function() {
+            const maxVal = parseInt(document.getElementById('dur-max').value);
+            document.getElementById('dur-label-val').innerText = maxVal === 24 ? "24 hr" : `≤ ${maxVal} hr`;
+            document.getElementById('dur-fill').style.width = (maxVal / 24 * 100) + "%";
+        };
+
+        // Core Map Init
+        async function initMap() {
+            const loadingText = document.getElementById('loading');
+            const filterPanel = document.getElementById('filter-panel');
+            L.DomEvent.disableClickPropagation(filterPanel);
+            L.DomEvent.disableScrollPropagation(filterPanel);
+
+            window.leafletMap = L.map('map', { center: [HKG_LATLNG.lat, HKG_LATLNG.lng], zoom: 3, worldCopyJump: true });
+            
+            // Set default light theme
+            window.activeTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(window.leafletMap);
+
+            try {
+                const res = await fetch('flights.json');
+                window.airportRoutesData = (await res.json()).routes;
+
+                try {
+                    const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
+                    if (csvRes.ok) {
+                        const lines = (await csvRes.text()).split('\n');
+                        for (let i = 1; i < lines.length; i++) { 
+                            if (!lines[i].trim()) continue;
+                            const row = lines[i].split(',');
+                            if (row.length >= 5) {
+                                const depA = row[2].trim(), arrA = row[3].trim();
+                                let targetA = depA, dir = 'Arrival'; 
+                                if (depA.includes("HKG")) { targetA = arrA; dir = 'Departure'; }
+                                const iataMatch = targetA.match(/\(([A-Z]{3})\)/);
+                                if (iataMatch) {
+                                    const code = iataMatch[1].toUpperCase();
+                                    if (!window.flightDurationsCSV[code]) window.flightDurationsCSV[code] = { 'Departure': null, 'Arrival': null };
+                                    window.flightDurationsCSV[code][dir] = row[4].trim();
+                                }
+                            }
+                        }
+                    }
+                } catch (e) { console.warn("Could not load CSV."); }
+
+                const allAirlinesSet = new Set();
+                for (let iata in window.airportRoutesData) {
+                    for (let alCode in window.airportRoutesData[iata].airlines) allAirlinesSet.add(alCode);
+                }
+                window.sortedAirlineCodesGlobal = Array.from(allAirlinesSet);
+                window.leafletMap.on('popupclose', () => window.applyFiltersToMap());
+
+                for (let iata in window.airportRoutesData) {
+                    const aptData = window.airportRoutesData[iata];
+                    const marker = L.marker([aptData.lat, aptData.lng], { title: `${aptData.city || aptData.name} (${iata})` }).addTo(window.leafletMap);
+                    allMapMarkers[iata] = marker; 
+
+                    const curvePoints = window.getGreatCircleLine(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
+                    const polyline = L.polyline(curvePoints, { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
+                    allMapPolylines[iata] = polyline;
+
+                    marker.on('click', () => {
+                        for (let key in allMapMarkers) {
+                            if (key !== iata) {
+                                if (window.leafletMap.hasLayer(allMapMarkers[key])) window.leafletMap.removeLayer(allMapMarkers[key]);
+                                if (window.leafletMap.hasLayer(allMapPolylines[key])) window.leafletMap.removeLayer(allMapPolylines[key]);
+                            }
+                        }
+                        const fDir = document.getElementById('filter-dir').value;
+                        const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
+
+                        L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
+                            .setLatLng(marker.getLatLng())
+                            .setContent(`<div class="route-card" id="route-card-container"></div>`)
+                            .openOn(window.leafletMap);
+                        
+                        setTimeout(() => window.renderCardContent(iata, defaultDir), 10);
+                    });
+                }
+                
+                loadingText.style.display = 'none';
+                window.updateTimeUI(); window.updateDurUI(); window.applyFiltersToMap(); window.setLang(currentLang); 
+            } catch (error) {
+                loadingText.innerText = "Error loading flights.json.";
+                console.error(error);
+            }
+        }
+
+        window.toggleFilterDay = function(element) {
+            element.classList.toggle('active');
+            window.triggerMapFilter();
+        };
+
+        window.triggerMapFilter = function() {
+            window.leafletMap.closePopup(); 
+            window.applyFiltersToMap();
+        };
+
+        window.applyFiltersToMap = function() {
+            const fDir = document.getElementById('filter-dir').value;
+            const fAir = document.getElementById('filter-airline').value;
+            const maxMins = parseInt(document.getElementById('dur-max').value) * 60;
+            const activeDayElements = document.querySelectorAll('.f-day-pill.active');
+            const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
+
+            for (let iata in window.airportRoutesData) {
+                const aptData = window.airportRoutesData[iata];
+                let isMatch = false;
+                
+                // Duration Filter Pass
+                const durDep = window.getTrueDurationMins(iata, 'Departure');
+                const durArr = window.getTrueDurationMins(iata, 'Arrival');
+                
+                let durationAllows = false;
+                if (maxMins >= 24 * 60) { durationAllows = true; } 
+                else if (fDir === 'Departure' && (durDep === null || durDep <= maxMins)) { durationAllows = true; }
+                else if (fDir === 'Arrival' && (durArr === null || durArr <= maxMins)) { durationAllows = true; }
+                else if (fDir === 'All' && ((durDep === null || durDep <= maxMins) || (durArr === null || durArr <= maxMins))) { durationAllows = true; }
+                
+                if (!durationAllows) {
+                    if (window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.removeLayer(allMapMarkers[iata]);
+                    if (window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.removeLayer(allMapPolylines[iata]);
+                    continue; // Skip further checks
+                }
+
+                // Airline, Time, & Day Filter Pass
+                for (let alCode in aptData.airlines) {
+                    if (fAir !== 'All' && alCode !== fAir) continue; 
+                    for (let d of fDays) {
+                        const flights = aptData.airlines[alCode].days[d] || [];
+                        const matchingFlights = flights.filter(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir));
+                        if (matchingFlights.length > 0) { isMatch = true; break; }
+                    }
+                    if (isMatch) break; 
+                }
+
+                if (isMatch) {
+                    if (!window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.addLayer(allMapMarkers[iata]);
+                    if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
+                } else {
+                    if (window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.removeLayer(allMapMarkers[iata]);
+                    if (window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.removeLayer(allMapPolylines[iata]);
+                }
+            }
         };
 
         window.renderCardContent = function(iata, direction) {
@@ -844,17 +829,17 @@
             const cityName = getCityName(iata, aptData.city || aptData.name);
             const isDep = direction === 'Departure';
             const activeAirlineFilter = document.getElementById('filter-airline').value;
-            
-            const activeDayElements = document.querySelectorAll('.f-day-pill.active');
-            const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
-
+            const fDays = Array.from(document.querySelectorAll('.f-day-pill.active')).map(el => el.getAttribute('data-day'));
             const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
             
             const searchIata = iata.trim().toUpperCase();
+            const csvDuration = (window.flightDurationsCSV[searchIata] || {})[direction] || t('timeUnknown');
             
-            const durationsObj = window.flightDurationsCSV[searchIata] || {};
-            const csvDuration = durationsObj[direction] || t('timeUnknown');
-            const displayDuration = window.getTrueDisplayDuration(csvDuration, searchIata, direction);
+            let displayDuration = csvDuration;
+            const trueMins = window.getTrueDurationMins(iata, direction);
+            if (trueMins !== null) {
+                displayDuration = `${Math.floor(trueMins / 60)}hr ${String(trueMins % 60).padStart(2, '0')}mins`;
+            }
             
             let html = `
                 <div class="direction-toggle">
@@ -874,101 +859,73 @@
                 </div>
                 
                 <div style="font-size: 12px; color: #5f6368; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <span>✈️ ${distanceKm} km</span>
-                    <span>•</span>
-                    <span>⏱ ${displayDuration}</span>
+                    <span>✈️ ${distanceKm} km</span> <span>•</span> <span>⏱ ${displayDuration}</span>
                 </div>
 
                 <div class="airline-list">
             `;
 
             let hasAnyAirline = false;
-
-            const sortedAirlineCodes = Object.keys(aptData.airlines).sort((a, b) => {
-                const nameA = getAirlineName(a);
-                const nameB = getAirlineName(b);
-                return nameA.localeCompare(nameB);
-            });
+            const sortedAirlineCodes = Object.keys(aptData.airlines).sort((a, b) => getAirlineName(a).localeCompare(getAirlineName(b)));
 
             for (let airlineCode of sortedAirlineCodes) {
                 if (activeAirlineFilter !== 'All' && airlineCode !== activeAirlineFilter) continue;
-
                 const airline = aptData.airlines[airlineCode];
                 
                 let operatesOnFilteredDaysAndTimes = false;
                 for (let d of fDays) {
-                    const flightsForDay = airline.days[d] || [];
-                    if (flightsForDay.some(f => f.type === direction && window.flightTimeMatches(f.time))) {
-                        operatesOnFilteredDaysAndTimes = true;
-                        break;
+                    if ((airline.days[d] || []).some(f => f.type === direction && window.flightTimeMatches(f.time))) {
+                        operatesOnFilteredDaysAndTimes = true; break;
                     }
                 }
-                
                 if (!operatesOnFilteredDaysAndTimes) continue; 
 
                 const displayAirlineName = getAirlineName(airlineCode);
                 const initial = displayAirlineName.charAt(0).toUpperCase();
-                
                 const dayHtmlList = [];
+                
                 DAY_KEYS.forEach(day => {
-                    const flightsForDay = airline.days[day] || [];
-                    const dirFlights = flightsForDay.filter(f => f.type === direction && window.flightTimeMatches(f.time));
+                    const dirFlights = (airline.days[day] || []).filter(f => f.type === direction && window.flightTimeMatches(f.time));
                     const pillClass = dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled';
-                    
-                    dayHtmlList.push(`
-                        <div class="${pillClass}" 
-                             onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">
-                            ${t(day + '_short')}
-                        </div>
-                    `);
+                    dayHtmlList.push(`<div class="${pillClass}" onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">${t(day + '_short')}</div>`);
                 });
 
                 hasAnyAirline = true;
                 html += `
                     <div class="airline-row">
                         <div class="airline-info">
-                            <div class="airline-icon">${initial}</div>
-                            <div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
+                            <div class="airline-icon">${initial}</div><div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
                         </div>
-                        <div class="day-pills">
-                            ${dayHtmlList.join('')}
-                        </div>
+                        <div class="day-pills">${dayHtmlList.join('')}</div>
                         <div class="flight-details-box"></div>
                     </div>
                 `;
             }
 
-            if (!hasAnyAirline) {
-                html += `<div style="padding: 20px; text-align: center; color: #777;">${t('noFlights')}</div>`;
-            }
-
+            if (!hasAnyAirline) html += `<div style="padding: 20px; text-align: center; color: #777;">${t('noFlights')}</div>`;
             html += `</div>`;
+            
+            // Booking Link
+            html += `<a href="https://www.skyscanner.com/transport/flights/hkg/${iata.toLowerCase()}" target="_blank" class="book-btn" data-i18n="bookFlight">${t('bookFlight')}</a>`;
+            
             container.innerHTML = html;
         };
 
         window.toggleDaySchedule = function(element, iata, airlineCode, day, direction) {
             if (element.classList.contains('disabled')) return;
-
             const airlineRow = element.closest('.airline-row');
             const detailsBox = airlineRow.querySelector('.flight-details-box');
             const allPills = airlineRow.querySelectorAll('.day-pill');
 
             if (element.classList.contains('selected')) {
-                element.classList.remove('selected');
-                detailsBox.classList.remove('show');
-                detailsBox.innerHTML = '';
-                return;
+                element.classList.remove('selected'); detailsBox.classList.remove('show'); detailsBox.innerHTML = ''; return;
             }
 
             allPills.forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
 
-            const flights = window.airportRoutesData[iata].airlines[airlineCode].days[day] || [];
-            const dirFlights = flights.filter(f => f.type === direction && window.flightTimeMatches(f.time));
-            
-            const searchIata = iata.trim().toUpperCase();
-            const durationsObj = window.flightDurationsCSV[searchIata] || {};
-            const csvDuration = durationsObj[direction] || "";
+            const dirFlights = (window.airportRoutesData[iata].airlines[airlineCode].days[day] || []).filter(f => f.type === direction && window.flightTimeMatches(f.time));
+            const csvDuration = (window.flightDurationsCSV[iata.trim().toUpperCase()] || {})[direction] || "";
 
             if (dirFlights.length === 0) {
                 detailsBox.innerHTML = `<em>${t('noSchedule')}</em>`;
@@ -976,32 +933,13 @@
                 let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${t(day + '_long')} ${t('scheduleTxt')}</div>`;
                 dirFlights.forEach(f => {
                     let isArr = direction === 'Arrival';
-                    let depLabel = isArr ? iata : 'HKG';
-                    let arrLabel = isArr ? 'HKG' : iata;
-                    
+                    let depLabel = isArr ? iata : 'HKG', arrLabel = isArr ? 'HKG' : iata;
                     let calculatedTime = window.calculateLinkedTime(f.time, csvDuration, direction);
-                    let displayHtml;
+                    let displayHtml = calculatedTime === t('timeUnknown') 
+                        ? (isArr ? `? (${depLabel}) &rarr; ${f.time} (${arrLabel})` : `${f.time} (${depLabel}) &rarr; ? (${arrLabel})`)
+                        : (isArr ? `${calculatedTime} (${depLabel}) &rarr; ${f.time} (${arrLabel})` : `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`);
                     
-                    if (calculatedTime === t('timeUnknown')) {
-                        if (isArr) {
-                            displayHtml = `? (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
-                        } else {
-                            displayHtml = `${f.time} (${depLabel}) &rarr; ? (${arrLabel})`;
-                        }
-                    } else {
-                        if (isArr) {
-                            displayHtml = `${calculatedTime} (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
-                        } else {
-                            displayHtml = `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`;
-                        }
-                    }
-                    
-                    html += `
-                        <div class="flight-item">
-                            <div class="flight-no">${f.no}</div>
-                            <div class="flight-time">${displayHtml}</div>
-                        </div>
-                    `;
+                    html += `<div class="flight-item"><div class="flight-no">${f.no}</div><div class="flight-time">${displayHtml}</div></div>`;
                 });
                 detailsBox.innerHTML = html;
             }
