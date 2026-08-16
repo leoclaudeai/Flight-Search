@@ -290,6 +290,10 @@
                     const csvText = await csvRes.text();
                     const lines = csvText.split('\n');
                     
+                    // We'll store durations in a temporary object and prioritize "scheduled" status
+                    // but allow "active" or "landed" to calculate duration as well if needed.
+                    let tempDurations = {};
+
                     for (let i = 1; i < lines.length; i++) { 
                         if (!lines[i].trim()) continue;
                         
@@ -297,7 +301,8 @@
                         if (row.length >= 9) {
                             const status = row[8].trim().toLowerCase();
                             
-                            if (status !== 'scheduled') continue;
+                            // Skip cancelled flights as they don't help with duration estimation
+                            if (status === 'cancelled') continue;
 
                             const depIata = row[3].trim().toUpperCase();
                             const arrIata = row[6].trim().toUpperCase();
@@ -306,7 +311,8 @@
                             
                             const targetIata = depIata === 'HKG' ? arrIata : depIata;
                             
-                            if (!window.flightDurationsCSV[targetIata] && depTimeStr && arrTimeStr) {
+                            // Calculate duration for this row if we haven't already locked in a 'scheduled' duration
+                            if (depTimeStr && arrTimeStr && (!tempDurations[targetIata] || tempDurations[targetIata].status !== 'scheduled')) {
                                 const depDate = new Date(depTimeStr);
                                 const arrDate = new Date(arrTimeStr);
                                 
@@ -324,11 +330,20 @@
                                         const diffMins = Math.floor(diffMs / 60000);
                                         const hours = Math.floor(diffMins / 60);
                                         const mins = diffMins % 60;
-                                        window.flightDurationsCSV[targetIata] = `${hours}h ${mins}m`;
+                                        
+                                        tempDurations[targetIata] = {
+                                            durationStr: `${hours}h ${mins}m`,
+                                            status: status
+                                        };
                                     }
                                 }
                             }
                         }
+                    }
+                    
+                    // Extract just the string durations back to the main variable
+                    for (const [iata, data] of Object.entries(tempDurations)) {
+                        window.flightDurationsCSV[iata] = data.durationStr;
                     }
                 }
             } catch (err) {
