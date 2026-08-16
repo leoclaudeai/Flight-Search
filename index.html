@@ -287,15 +287,21 @@
             markersLayer = L.featureGroup().addTo(map);
             linesLayer = L.featureGroup().addTo(map);
 
-            // Handle popup close logically to prevent jumpy zooms
+            // Handle popup close logically to prevent jumpy race conditions
             map.on('popupclose', (e) => {
-                // Only reset the view if the popup being closed is actually the CURRENTLY selected one. 
-                // This prevents the map from zooming out when simply switching from one airport to another.
-                if (e.popup && e.popup.iata === window.selectedIata) {
-                    window.selectedIata = null;
-                    renderMapData();
-                    map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back to home view
-                }
+                const closedIata = e.popup ? e.popup.iata : null;
+                if (!closedIata) return;
+
+                // Set a tiny 100ms delay. If the user clicked another airport marker, 
+                // selectedIata will immediately change to the new airport.
+                // If it HASN'T changed in 100ms, it means they clicked the empty background, so we zoom out!
+                setTimeout(() => {
+                    if (window.selectedIata === closedIata) {
+                        window.selectedIata = null;
+                        renderMapData();
+                        map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back out
+                    }
+                }, 100);
             });
 
             loadMapData();
