@@ -63,7 +63,7 @@
 
         /* Map Filters Panel */
         #filter-panel {
-            position: absolute; top: 15px; left: 55px;
+            position: absolute; top: 15px; left: 15px; /* Flush to left edge since zoom buttons moved */
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000; width: 250px; border: 1px solid #e0e0e0;
@@ -209,7 +209,7 @@
             /* Give filter panel a bit more breathing room on mobile */
             #filter-panel {
                 width: 240px;
-                left: 15px; /* Push it to the far left so it doesn't overlap controls */
+                /* left: 15px is inherited from desktop view */
             }
             
             /* Center the popup perfectly on mobile without spilling off edges */
@@ -797,12 +797,17 @@
         function initMap() {
             updateLanguageUI();
             
+            // Disable default zoom controls (top-left) to make room for the filter box
             map = L.map('map', { 
                 center: [20, 114], 
                 zoom: 3, 
                 minZoom: 2,
-                worldCopyJump: false 
+                worldCopyJump: false,
+                zoomControl: false // <-- This removes the top-left buttons
             });
+            
+            // Add zoom controls back to the bottom-left corner
+            L.control.zoom({ position: 'bottomleft' }).addTo(map);
             
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap &copy; CARTO'
@@ -1059,15 +1064,12 @@
             
             const targetZoom = 5;
             
-            // --- NEW: Smart Mobile Camera Centering ---
             let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
             
             if (window.innerWidth <= 600) {
-                // Mobile View: Center horizontally, push marker down to leave room for the tall popup above it
                 targetPoint.x -= 0;
                 targetPoint.y -= 220; 
             } else {
-                // Desktop View: Push marker left to make room for the filter panel
                 targetPoint.x -= 180; 
                 targetPoint.y -= 150; 
             }
@@ -1343,7 +1345,7 @@
             initMap();
             updateTimeUI();
             
-            // --- NEW: Auto-minimize filter box if viewed on a mobile device ---
+            // Auto-minimize filter box if viewed on a mobile device
             if (window.innerWidth <= 600) {
                 const panel = document.getElementById('filter-panel');
                 const btn = document.getElementById('toggle-filter-btn');
