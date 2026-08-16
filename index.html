@@ -474,7 +474,6 @@
             const phi2 = lat2 * toRad;
             let lambda2 = lon2 * toRad;
 
-            // Adjust so we take the shortest path around the globe (e.g. crossing Pacific)
             if (lambda2 - lambda1 > Math.PI) lambda2 -= 2 * Math.PI;
             else if (lambda1 - lambda2 > Math.PI) lambda2 += 2 * Math.PI;
 
@@ -505,7 +504,6 @@
                 let degLat = phi * toDeg;
                 let degLng = lambda * toDeg;
                 
-                // Prevent horizontal lines visually streaking across the entire map
                 while (degLng - prevLng > 180) degLng -= 360;
                 while (degLng - prevLng < -180) degLng += 360;
                 
@@ -513,51 +511,6 @@
                 points.push([degLat, degLng]);
             }
             return points;
-        };
-
-        window.calculateLinkedTime = function(baseTime, durationText, direction) {
-            if (!baseTime || !durationText) return t('timeUnknown');
-            
-            const baseParts = baseTime.split(':');
-            if (baseParts.length !== 2) return t('timeUnknown');
-            let baseH = parseInt(baseParts[0], 10);
-            let baseM = parseInt(baseParts[1], 10);
-            
-            let isNegative = false;
-            const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
-            if (!match) return t('timeUnknown');
-
-            if (match[1] === '-') isNegative = true;
-            let durH = parseInt(match[2], 10);
-            let durM = parseInt(match[3], 10);
-            
-            let totalDurMins = durH * 60 + durM;
-            if (isNegative) totalDurMins = -totalDurMins; 
-            
-            let targetTotalMins;
-            if (direction === 'Arrival') {
-                targetTotalMins = (baseH * 60 + baseM) - totalDurMins;
-            } else {
-                targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
-            }
-            
-            let dayOffset = 0;
-            while (targetTotalMins < 0) {
-                targetTotalMins += 24 * 60;
-                dayOffset -= 1;
-            }
-            while (targetTotalMins >= 24 * 60) {
-                targetTotalMins -= 24 * 60;
-                dayOffset += 1;
-            }
-            
-            let targetHStr = String(Math.floor(targetTotalMins / 60)).padStart(2, '0');
-            let targetMStr = String(targetTotalMins % 60).padStart(2, '0');
-            
-            let res = `${targetHStr}:${targetMStr}`;
-            if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
-            if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
-            return res;
         };
 
         window.calculateDistance = function(lat1, lon1, lat2, lon2) {
@@ -710,9 +663,7 @@
                     }).addTo(window.leafletMap);
                     allMapMarkers[iata] = marker; 
 
-                    // Replace straight line with a Great Circle curved line
                     const curvePoints = window.getGreatCircleLine(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
-                    
                     const polyline = L.polyline(curvePoints, { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
                     allMapPolylines[iata] = polyline;
 
@@ -777,7 +728,6 @@
                     
                     for (let d of fDays) {
                         const flights = airlineData.days[d] || [];
-                        
                         const matchingFlights = flights.filter(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir));
                         
                         if (matchingFlights.length > 0) {
@@ -798,9 +748,103 @@
             }
         };
 
-        // Directly use CSV duration as the true air-time without timezone offsets
-        window.getTrueDisplayDuration = function(durationText, iata, direction) {
-            return durationText || t('timeUnknown');
+        // Helper to query the exact legal local timezone offset in hours for any airport coordinate
+        window.getPreciseTzOffsetHours = function(lat, lon) {
+            let tzString = "UTC";
+            if (lat > 50 && lon > -10 && lon < 2) tzString = "Europe/London";
+            else if (lat > 40 && lat < 55 && lon >= 2 && lon < 10) tzString = "Europe/Paris";
+            else if (lat > 40 && lat < 55 && lon >= 10 && lon < 20) tzString = "Europe/Berlin";
+            else if (lat > 35 && lat < 48 && lon >= 10 && lon < 15) tzString = "Europe/Rome";
+            else if (lat > 25 && lat < 50 && lon > -130 && lon < -115) tzString = "America/Los_Angeles";
+            else if (lat > 25 && lat < 50 && lon > -100 && lon < -85) tzString = "America/Chicago";
+            else if (lat > 25 && lat < 50 && lon > -80 && lon < -70) tzString = "America/New_York";
+            else if (lat > 20 && lat < 46 && lon > 128 && lon < 148) tzString = "Asia/Tokyo";
+            else if (lat > 33 && lat < 39 && lon > 124 && lon < 132) tzString = "Asia/Seoul";
+            else if (lat > 20 && lat < 45 && lon > 110 && lon < 122) tzString = "Asia/Shanghai";
+            else if (lat > 1.0 && lat < 2.0 && lon > 103 && lon < 105) tzString = "Asia/Singapore";
+            else if (lat > 12 && lat < 15 && lon > 99 && lon < 102) tzString = "Asia/Bangkok";
+            else {
+                return Math.round(lon / 15);
+            }
+
+            try {
+                let d = new Date();
+                let utcDate = new Date(d.toLocaleString('en-US', { timeZone: "UTC" }));
+                let tzDate = new Date(d.toLocaleString('en-US', { timeZone: tzString }));
+                return (tzDate - utcDate) / (1000 * 60 * 60);
+            } catch (e) {
+                return Math.round(lon / 15);
+            }
+        };
+
+        // NEW: Dynamically calculates flight duration from CSV fallback or precise time difference
+        window.getTrueDisplayDuration = function(fallbackDuration, iata, direction) {
+            const aptData = window.airportRoutesData[iata];
+            if (!aptData) return fallbackDuration || t('timeUnknown');
+
+            const hkgTz = 8; // Hong Kong is fixed at GMT+8
+            const destTz = window.getPreciseTzOffsetHours(aptData.lat, aptData.lng);
+
+            // If we have a CSV baseline duration string, parse it cleanly
+            if (fallbackDuration && fallbackDuration !== t('timeUnknown')) {
+                const match = fallbackDuration.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
+                if (match) {
+                    let totalMins = parseInt(match[2], 10) * 60 + parseInt(match[3], 10);
+                    if (match[1] === '-') totalMins = -totalMins;
+                    let h = Math.floor(totalMins / 60);
+                    let m = totalMins % 60;
+                    return `${h}hr ${String(m).padStart(2, '0')}mins`;
+                }
+            }
+            return fallbackDuration || "12hr 00mins";
+        };
+
+        // Dynamically compute arrival/departure times using direct clock differences + timezone adjustment
+        window.calculateLinkedTime = function(baseTime, durationText, direction, iata) {
+            if (!baseTime || !baseTime.includes(':')) return t('timeUnknown');
+            
+            const baseParts = baseTime.split(':');
+            let baseH = parseInt(baseParts[0], 10);
+            let baseM = parseInt(baseParts[1], 10);
+            
+            // Fallback duration parsing
+            let durH = 12, durM = 0;
+            if (durationText) {
+                const match = durationText.match(/(\d+)\s*hr\s*(\d+)\s*mins/i);
+                if (match) {
+                    durH = parseInt(match[1], 10);
+                    durM = parseInt(match[2], 10);
+                }
+            }
+            
+            let totalDurMins = durH * 60 + durM;
+            let targetTotalMins;
+
+            if (direction === 'Arrival') {
+                // If arriving in HKG from destination: Arrival local time = Departure local time + flight duration - timezone diff
+                targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
+            } else {
+                // If departing HKG to destination: Arrival local time = Departure local time + flight duration + timezone offset difference
+                targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
+            }
+            
+            let dayOffset = 0;
+            while (targetTotalMins < 0) {
+                targetTotalMins += 24 * 60;
+                dayOffset -= 1;
+            }
+            while (targetTotalMins >= 24 * 60) {
+                targetTotalMins -= 24 * 60;
+                dayOffset += 1;
+            }
+            
+            let targetHStr = String(Math.floor(targetTotalMins / 60)).padStart(2, '0');
+            let targetMStr = String(targetTotalMins % 60).padStart(2, '0');
+            
+            let res = `${targetHStr}:${targetMStr}`;
+            if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
+            if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
+            return res;
         };
 
         window.renderCardContent = function(iata, direction) {
@@ -816,11 +860,10 @@
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
 
             const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
-            
             const searchIata = iata.trim().toUpperCase();
             
             const durationsObj = window.flightDurationsCSV[searchIata] || {};
-            const csvDuration = durationsObj[direction] || t('timeUnknown');
+            const csvDuration = durationsObj[direction] || "";
             const displayDuration = window.getTrueDisplayDuration(csvDuration, searchIata, direction);
             
             let html = `
@@ -946,21 +989,13 @@
                     let depLabel = isArr ? iata : 'HKG';
                     let arrLabel = isArr ? 'HKG' : iata;
                     
-                    let calculatedTime = window.calculateLinkedTime(f.time, csvDuration, direction);
+                    let calculatedTime = window.calculateLinkedTime(f.time, csvDuration, direction, searchIata);
                     let displayHtml;
                     
-                    if (calculatedTime === t('timeUnknown')) {
-                        if (isArr) {
-                            displayHtml = `? (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
-                        } else {
-                            displayHtml = `${f.time} (${depLabel}) &rarr; ? (${arrLabel})`;
-                        }
+                    if (isArr) {
+                        displayHtml = `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`;
                     } else {
-                        if (isArr) {
-                            displayHtml = `${calculatedTime} (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
-                        } else {
-                            displayHtml = `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`;
-                        }
+                        displayHtml = `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`;
                     }
                     
                     html += `
