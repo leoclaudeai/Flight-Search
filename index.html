@@ -125,7 +125,7 @@
         .direction-btn.active { background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a; }
-        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 600; color: #3c4043; }
+        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #3c4043; }
         
         /* Airline List */
         .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
@@ -193,7 +193,6 @@
                 </div>
             </div>
 
-            <!-- Time Filter Slider -->
             <div class="filter-group">
                 <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
@@ -290,8 +289,6 @@
                     const csvText = await csvRes.text();
                     const lines = csvText.split('\n');
                     
-                    // We'll store durations in a temporary object and prioritize "scheduled" status
-                    // but allow "active" or "landed" to calculate duration as well if needed.
                     let tempDurations = {};
 
                     for (let i = 1; i < lines.length; i++) { 
@@ -300,8 +297,6 @@
                         const row = lines[i].split(',');
                         if (row.length >= 9) {
                             const status = row[8].trim().toLowerCase();
-                            
-                            // Skip cancelled flights as they don't help with duration estimation
                             if (status === 'cancelled') continue;
 
                             const depIata = row[3].trim().toUpperCase();
@@ -310,14 +305,19 @@
                             const arrTimeStr = row[7].trim();
                             
                             const targetIata = depIata === 'HKG' ? arrIata : depIata;
+                            const direction = depIata === 'HKG' ? 'Departure' : 'Arrival';
                             
-                            // Calculate duration for this row if we haven't already locked in a 'scheduled' duration
-                            if (depTimeStr && arrTimeStr && (!tempDurations[targetIata] || tempDurations[targetIata].status !== 'scheduled')) {
+                            if (!tempDurations[targetIata]) {
+                                tempDurations[targetIata] = {};
+                            }
+
+                            const currentRec = tempDurations[targetIata][direction];
+
+                            if (depTimeStr && arrTimeStr && (!currentRec || currentRec.status !== 'scheduled')) {
                                 const depDate = new Date(depTimeStr);
                                 const arrDate = new Date(arrTimeStr);
                                 
                                 if (!isNaN(depDate) && !isNaN(arrDate)) {
-                                    // Calculate True UTC time using our hardcoded dictionary offsets
                                     const depOffset = TIMEZONE_OFFSETS[depIata] || 0;
                                     const arrOffset = TIMEZONE_OFFSETS[arrIata] || 0;
                                     
@@ -331,7 +331,7 @@
                                         const hours = Math.floor(diffMins / 60);
                                         const mins = diffMins % 60;
                                         
-                                        tempDurations[targetIata] = {
+                                        tempDurations[targetIata][direction] = {
                                             durationStr: `${hours}h ${mins}m`,
                                             status: status
                                         };
@@ -341,9 +341,11 @@
                         }
                     }
                     
-                    // Extract just the string durations back to the main variable
                     for (const [iata, data] of Object.entries(tempDurations)) {
-                        window.flightDurationsCSV[iata] = data.durationStr;
+                        window.flightDurationsCSV[iata] = {
+                            Departure: data.Departure ? data.Departure.durationStr : 'N/A',
+                            Arrival: data.Arrival ? data.Arrival.durationStr : 'N/A'
+                        };
                     }
                 }
             } catch (err) {
@@ -455,7 +457,7 @@
         }
 
         function generateRouteHTML(iata, info) {
-            const routeDuration = window.flightDurationsCSV[iata] || 'Duration unavailable';
+            const durs = window.flightDurationsCSV[iata] || { Departure: 'N/A', Arrival: 'N/A' };
             
             return `
                 <div class="route-card" id="popup-${iata}">
@@ -463,7 +465,8 @@
                     <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${info.name}</p>
                     
                     <div class="route-badges">
-                        <span class="badge" title="Flight Time">⏱ ${routeDuration}</span>
+                        <span class="badge" title="HKG to ${iata}">🛫 Outbound: ${durs.Departure}</span>
+                        <span class="badge" title="${iata} to HKG">🛬 Inbound: ${durs.Arrival}</span>
                     </div>
 
                     <div class="direction-toggle">
