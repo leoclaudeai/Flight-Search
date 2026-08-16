@@ -453,13 +453,14 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        window.calculateArrivalTime = function(depTime, durationText) {
-            if (!depTime || !durationText) return t('timeUnknown');
+        // Calculates either the arrival or departure time dynamically
+        window.calculateLinkedTime = function(baseTime, durationText, direction) {
+            if (!baseTime || !durationText) return t('timeUnknown');
             
-            const depParts = depTime.split(':');
-            if (depParts.length !== 2) return t('timeUnknown');
-            let depH = parseInt(depParts[0], 10);
-            let depM = parseInt(depParts[1], 10);
+            const baseParts = baseTime.split(':');
+            if (baseParts.length !== 2) return t('timeUnknown');
+            let baseH = parseInt(baseParts[0], 10);
+            let baseM = parseInt(baseParts[1], 10);
             
             let isNegative = false;
             const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
@@ -472,22 +473,29 @@
             let totalDurMins = durH * 60 + durM;
             if (isNegative) totalDurMins = -totalDurMins; 
             
-            let arrTotalMins = (depH * 60 + depM) + totalDurMins;
+            let targetTotalMins;
+            if (direction === 'Arrival') {
+                // If it's an arrival flight, baseTime is the HKG Arrival Time. Subtract duration to get Departure Time.
+                targetTotalMins = (baseH * 60 + baseM) - totalDurMins;
+            } else {
+                // If it's a departure flight, baseTime is the HKG Departure Time. Add duration to get Arrival Time.
+                targetTotalMins = (baseH * 60 + baseM) + totalDurMins;
+            }
             
             let dayOffset = 0;
-            while (arrTotalMins < 0) {
-                arrTotalMins += 24 * 60;
+            while (targetTotalMins < 0) {
+                targetTotalMins += 24 * 60;
                 dayOffset -= 1;
             }
-            while (arrTotalMins >= 24 * 60) {
-                arrTotalMins -= 24 * 60;
+            while (targetTotalMins >= 24 * 60) {
+                targetTotalMins -= 24 * 60;
                 dayOffset += 1;
             }
             
-            let arrHStr = String(Math.floor(arrTotalMins / 60)).padStart(2, '0');
-            let arrMStr = String(arrTotalMins % 60).padStart(2, '0');
+            let targetHStr = String(Math.floor(targetTotalMins / 60)).padStart(2, '0');
+            let targetMStr = String(targetTotalMins % 60).padStart(2, '0');
             
-            let res = `${arrHStr}:${arrMStr}`;
+            let res = `${targetHStr}:${targetMStr}`;
             if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
             if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
             return res;
@@ -936,16 +944,27 @@
             } else {
                 let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${t(day + '_long')} ${t('scheduleTxt')}</div>`;
                 dirFlights.forEach(f => {
-                    let depLabel = direction === 'Departure' ? 'HKG' : iata;
-                    let arrLabel = direction === 'Departure' ? iata : 'HKG';
+                    let isArr = direction === 'Arrival';
+                    let depLabel = isArr ? iata : 'HKG';
+                    let arrLabel = isArr ? 'HKG' : iata;
                     
-                    let arrTime = window.calculateArrivalTime(f.time, csvDuration);
+                    let calculatedTime = window.calculateLinkedTime(f.time, csvDuration, direction);
                     let displayHtml;
                     
-                    if (arrTime === t('timeUnknown')) {
-                        displayHtml = `${f.time} (${depLabel})`;
+                    if (calculatedTime === t('timeUnknown')) {
+                        // Display fallback if duration wasn't mapped
+                        if (isArr) {
+                            displayHtml = `? (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
+                        } else {
+                            displayHtml = `${f.time} (${depLabel}) &rarr; ? (${arrLabel})`;
+                        }
                     } else {
-                        displayHtml = `${f.time} (${depLabel}) &rarr; ${arrTime} (${arrLabel})`;
+                        // Accurately position the calculated time versus the fixed time
+                        if (isArr) {
+                            displayHtml = `${calculatedTime} (${depLabel}) &rarr; ${f.time} (${arrLabel})`;
+                        } else {
+                            displayHtml = `${f.time} (${depLabel}) &rarr; ${calculatedTime} (${arrLabel})`;
+                        }
                     }
                     
                     html += `
