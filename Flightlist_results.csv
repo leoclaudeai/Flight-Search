@@ -1,0 +1,938 @@
+query_flight_iata,airline_name,departure_airport,departure_iata,departure_scheduled,arrival_airport,arrival_iata,arrival_scheduled,flight_status
+7C6013,Jeju Air,Seoul (Incheon),ICN,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-16T23:35:00+00:00,active
+7C6014,Jeju Air,Hong Kong International,HKG,2026-08-17T00:35:00+00:00,Seoul (Incheon),ICN,2026-08-17T05:30:00+00:00,scheduled
+BX3935,Air Busan,Seoul (Incheon),ICN,2026-08-16T21:30:00+00:00,Hong Kong International,HKG,2026-08-17T00:15:00+00:00,active
+BX3945,Air Busan,Hong Kong International,HKG,2026-08-17T01:25:00+00:00,Seoul (Incheon),ICN,2026-08-17T06:25:00+00:00,scheduled
+CX410,Qantas,Hong Kong International,HKG,2026-08-16T09:25:00+00:00,Seoul (Incheon),ICN,2026-08-16T14:05:00+00:00,landed
+CX411,Cathay Pacific,Seoul (Incheon),ICN,2026-08-16T15:10:00+00:00,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,active
+CX413,Cathay Pacific,Seoul (Incheon),ICN,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:50:00+00:00,landed
+CX418,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:25:00+00:00,Seoul (Incheon),ICN,2026-08-16T19:05:00+00:00,landed
+CX419,Qatar Airways,Seoul (Incheon),ICN,2026-08-16T20:05:00+00:00,Hong Kong International,HKG,2026-08-16T23:00:00+00:00,active
+CX426,American Airlines,Hong Kong International,HKG,2026-08-16T19:45:00+00:00,Seoul (Incheon),ICN,2026-08-17T00:25:00+00:00,scheduled
+CX427,Cathay Pacific,Seoul (Incheon),ICN,2026-08-17T01:55:00+00:00,Hong Kong International,HKG,2026-08-17T04:45:00+00:00,scheduled
+CX430,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,Seoul (Incheon),ICN,2026-08-16T22:25:00+00:00,active
+CX434,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Seoul (Incheon),ICN,2026-08-16T12:40:00+00:00,landed
+CX439,Qatar Airways,Seoul (Incheon),ICN,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,landed
+HX626,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T20:50:00+00:00,Seoul (Incheon),ICN,2026-08-17T01:35:00+00:00,scheduled
+HX627,Hong Kong Airlines,Seoul (Incheon),ICN,2026-08-17T02:35:00+00:00,Hong Kong International,HKG,2026-08-17T05:45:00+00:00,scheduled
+HX628,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T08:45:00+00:00,Seoul (Incheon),ICN,2026-08-16T13:35:00+00:00,landed
+HX629,Hong Kong Airlines,Seoul (Incheon),ICN,2026-08-16T14:35:00+00:00,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,active
+KE2001,Korean Air,Seoul (Incheon),ICN,2026-08-16T08:05:00+00:00,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,landed
+KE2002,Korean Air,Hong Kong International,HKG,2026-08-16T12:20:00+00:00,Seoul (Incheon),ICN,2026-08-16T17:05:00+00:00,landed
+KE2005,Korean Air,Seoul (Incheon),ICN,2026-08-16T13:25:00+00:00,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,landed
+KE2006,Korean Air,Hong Kong International,HKG,2026-08-16T17:55:00+00:00,Seoul (Incheon),ICN,2026-08-16T22:45:00+00:00,active
+KE2011,Air Canada,Seoul (Incheon),ICN,2026-08-16T19:45:00+00:00,Hong Kong International,HKG,2026-08-16T22:45:00+00:00,active
+KE2012,Korean Air,Hong Kong International,HKG,2026-08-17T00:45:00+00:00,Seoul (Incheon),ICN,2026-08-17T05:25:00+00:00,scheduled
+OZ721,Asiana Airlines,Seoul (Incheon),ICN,2026-08-16T09:00:00+00:00,Hong Kong International,HKG,2026-08-16T11:40:00+00:00,landed
+OZ722,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T13:00:00+00:00,Seoul (Incheon),ICN,2026-08-16T17:35:00+00:00,landed
+OZ745,Asiana Airlines,Seoul (Incheon),ICN,2026-08-16T20:35:00+00:00,Hong Kong International,HKG,2026-08-16T23:30:00+00:00,active
+OZ746,Asiana Airlines,Hong Kong International,HKG,2026-08-17T01:40:00+00:00,Seoul (Incheon),ICN,2026-08-17T06:20:00+00:00,scheduled
+TW643,T'way Air,Seoul (Incheon),ICN,2026-08-16T08:45:00+00:00,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,landed
+TW644,T'way Air,Hong Kong International,HKG,2026-08-16T13:15:00+00:00,Seoul (Incheon),ICN,2026-08-16T18:05:00+00:00,landed
+UO614,HK express,Hong Kong International,HKG,2026-08-16T21:00:00+00:00,Seoul (Incheon),ICN,2026-08-17T01:40:00+00:00,scheduled
+UO615,HK express,Seoul (Incheon),ICN,2026-08-17T02:35:00+00:00,Hong Kong International,HKG,2026-08-17T05:25:00+00:00,scheduled
+UO616,HK express,Hong Kong International,HKG,2026-08-17T00:50:00+00:00,Seoul (Incheon),ICN,2026-08-17T05:30:00+00:00,scheduled
+UO617,HK express,Seoul (Incheon),ICN,2026-08-16T06:40:00+00:00,Hong Kong International,HKG,2026-08-16T09:30:00+00:00,landed
+UO618,HK express,Hong Kong International,HKG,2026-08-16T07:15:00+00:00,Seoul (Incheon),ICN,2026-08-16T11:50:00+00:00,landed
+UO619,HK express,Seoul (Incheon),ICN,2026-08-16T12:45:00+00:00,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,landed
+UO626,HK express,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,Seoul (Incheon),ICN,2026-08-16T21:35:00+00:00,active
+UO627,HK express,Seoul (Incheon),ICN,2026-08-16T22:30:00+00:00,Hong Kong International,HKG,2026-08-17T01:10:00+00:00,active
+UO630,HK express,Hong Kong International,HKG,2026-08-16T09:45:00+00:00,Seoul (Incheon),ICN,2026-08-16T14:25:00+00:00,landed
+UO631,HK express,Seoul (Incheon),ICN,2026-08-16T15:25:00+00:00,Hong Kong International,HKG,2026-08-16T18:15:00+00:00,active
+YP801,Air Premia,Seoul (Incheon),ICN,2026-08-16T09:15:00+00:00,Hong Kong International,HKG,2026-08-16T12:00:00+00:00,landed
+YP802,Air Premia,Hong Kong International,HKG,2026-08-16T13:30:00+00:00,Seoul (Incheon),ICN,2026-08-16T18:15:00+00:00,landed
+ZE861,Eastar Jet,Seoul (Incheon),ICN,2026-08-16T20:10:00+00:00,Hong Kong International,HKG,2026-08-16T22:45:00+00:00,active
+ZE862,Eastar Jet,Hong Kong International,HKG,2026-08-17T00:05:00+00:00,Seoul (Incheon),ICN,2026-08-17T04:55:00+00:00,scheduled
+CX502,Qatar Airways,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,Kansai International,KIX,2026-08-16T21:15:00+00:00,landed
+CX503,Cathay Pacific,Kansai International,KIX,2026-08-16T09:45:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+CX506,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:25:00+00:00,Kansai International,KIX,2026-08-16T15:10:00+00:00,scheduled
+CX507,Cathay Pacific,Kansai International,KIX,2026-08-16T17:35:00+00:00,Hong Kong International,HKG,2026-08-16T20:50:00+00:00,active
+CX565,Japan Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T19:15:00+00:00,Hong Kong International,HKG,2026-08-16T21:10:00+00:00,active
+CX566,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:55:00+00:00,Kansai International,KIX,2026-08-17T06:40:00+00:00,scheduled
+CX569,Cathay Pacific,Kansai International,KIX,2026-08-16T19:25:00+00:00,Hong Kong International,HKG,2026-08-16T22:40:00+00:00,active
+CX595,Cathay Pacific,Kansai International,KIX,2026-08-16T18:30:00+00:00,Hong Kong International,HKG,2026-08-16T21:40:00+00:00,active
+CX596,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:10:00+00:00,Kansai International,KIX,2026-08-16T12:55:00+00:00,landed
+CX597,Cathay Pacific,Kansai International,KIX,2026-08-16T09:05:00+00:00,Hong Kong International,HKG,2026-08-16T12:15:00+00:00,landed
+CX598,Japan Airlines,Hong Kong International,HKG,2026-08-16T13:20:00+00:00,Kansai International,KIX,2026-08-16T18:05:00+00:00,landed
+HB2348,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T19:25:00+00:00,Kansai International,KIX,2026-08-17T00:10:00+00:00,scheduled
+HB2349,Greater Bay Airlines,Kansai International,KIX,2026-08-17T01:00:00+00:00,Hong Kong International,HKG,2026-08-17T04:15:00+00:00,scheduled
+HB2352,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T09:20:00+00:00,Kansai International,KIX,2026-08-16T14:10:00+00:00,landed
+HB2353,Greater Bay Airlines,Kansai International,KIX,2026-08-16T15:00:00+00:00,Hong Kong International,HKG,2026-08-16T18:10:00+00:00,active
+HB340,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T08:15:00+00:00,Kansai International,KIX,2026-08-16T13:05:00+00:00,landed
+HB341,Greater Bay Airlines,Kansai International,KIX,2026-08-16T14:00:00+00:00,Hong Kong International,HKG,2026-08-16T17:15:00+00:00,active
+HX612,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,Kansai International,KIX,2026-08-16T19:20:00+00:00,landed
+HX613,Hong Kong Airlines,Kansai International,KIX,2026-08-16T20:20:00+00:00,Hong Kong International,HKG,2026-08-16T23:50:00+00:00,active
+HX614,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T08:25:00+00:00,Kansai International,KIX,2026-08-16T13:30:00+00:00,landed
+HX615,Hong Kong Airlines,Kansai International,KIX,2026-08-16T14:30:00+00:00,Hong Kong International,HKG,2026-08-16T17:50:00+00:00,active
+HX616,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T02:50:00+00:00,Kansai International,KIX,2026-08-17T07:55:00+00:00,scheduled
+HX617,Hong Kong Airlines,Kansai International,KIX,2026-08-16T09:55:00+00:00,Hong Kong International,HKG,2026-08-16T13:10:00+00:00,landed
+HX618,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,Kansai International,KIX,2026-08-16T16:00:00+00:00,landed
+HX619,Hong Kong Airlines,Kansai International,KIX,2026-08-16T17:00:00+00:00,Hong Kong International,HKG,2026-08-16T20:20:00+00:00,active
+HX632,Hong Kong Airlines,Hong Kong International,HKG,2026-08-15T11:55:00+00:00,Kansai International,KIX,2026-08-15T16:55:00+00:00,landed
+HX633,Hong Kong Airlines,Kansai International,KIX,2026-08-15T17:55:00+00:00,Hong Kong International,HKG,2026-08-15T21:25:00+00:00,landed
+UO686,HK express,Hong Kong International,HKG,2026-08-16T08:45:00+00:00,Kansai International,KIX,2026-08-16T13:30:00+00:00,landed
+UO687,HK express,Kansai International,KIX,2026-08-16T14:25:00+00:00,Hong Kong International,HKG,2026-08-16T17:35:00+00:00,active
+UO688,HK express,Hong Kong International,HKG,2026-08-16T14:55:00+00:00,Kansai International,KIX,2026-08-16T19:40:00+00:00,landed
+UO689,HK express,Kansai International,KIX,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-16T23:50:00+00:00,active
+UO810,HK express,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Kansai International,KIX,2026-08-16T12:45:00+00:00,landed
+UO850,HK express,Hong Kong International,HKG,2026-08-15T07:05:00+00:00,Kansai International,KIX,2026-08-15T11:50:00+00:00,landed
+UO851,HK express,Kansai International,KIX,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,landed
+UO862,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:50:00+00:00,Kansai International,KIX,2026-08-16T20:35:00+00:00,landed
+UO863,HK express,Kansai International,KIX,2026-08-16T21:30:00+00:00,Hong Kong International,HKG,2026-08-17T00:40:00+00:00,active
+UO898,HK express,Hong Kong International,HKG,2026-08-16T11:20:00+00:00,Kansai International,KIX,2026-08-16T16:05:00+00:00,landed
+HB321,Greater Bay Airlines,Narita International Airport,NRT,2026-08-16T15:50:00+00:00,Hong Kong International,HKG,2026-08-16T19:55:00+00:00,active
+HB322,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,Narita International Airport,NRT,2026-08-16T17:25:00+00:00,landed
+HB323,Greater Bay Airlines,Narita International Airport,NRT,2026-08-16T18:25:00+00:00,Hong Kong International,HKG,2026-08-16T22:25:00+00:00,active
+HX604,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Narita International Airport,NRT,2026-08-16T14:15:00+00:00,landed
+HX605,Hong Kong Airlines,Narita International Airport,NRT,2026-08-16T15:15:00+00:00,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,active
+HX606,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T02:35:00+00:00,Narita International Airport,NRT,2026-08-17T08:20:00+00:00,scheduled
+HX607,Hong Kong Airlines,Narita International Airport,NRT,2026-08-16T09:30:00+00:00,Hong Kong International,HKG,2026-08-16T13:30:00+00:00,landed
+HX608,Turkish Airlines,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,Narita International Airport,NRT,2026-08-16T14:55:00+00:00,landed
+HX609,Hong Kong Airlines,Narita International Airport,NRT,2026-08-16T15:55:00+00:00,Hong Kong International,HKG,2026-08-16T20:00:00+00:00,active
+HX630,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,Narita International Airport,NRT,2026-08-16T20:05:00+00:00,landed
+HX631,Turkish Airlines,Narita International Airport,NRT,2026-08-16T21:05:00+00:00,Hong Kong International,HKG,2026-08-17T00:55:00+00:00,active
+JL735,Japan Airlines,Narita International Airport,NRT,2026-08-16T18:20:00+00:00,Hong Kong International,HKG,2026-08-16T22:05:00+00:00,active
+JL736,Japan Airlines,Hong Kong International,HKG,2026-08-16T10:30:00+00:00,Narita International Airport,NRT,2026-08-16T15:55:00+00:00,landed
+NH811,Air New Zealand,Narita International Airport,NRT,2026-08-16T18:45:00+00:00,Hong Kong International,HKG,2026-08-16T22:35:00+00:00,active
+NH812,Air New Zealand,Hong Kong International,HKG,2026-08-16T09:30:00+00:00,Narita International Airport,NRT,2026-08-16T15:10:00+00:00,landed
+UO646,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:00:00+00:00,Narita International Airport,NRT,2026-08-16T18:25:00+00:00,landed
+UO647,Cathay Pacific,Narita International Airport,NRT,2026-08-16T19:25:00+00:00,Hong Kong International,HKG,2026-08-16T23:20:00+00:00,active
+UO650,HK express,Hong Kong International,HKG,2026-08-16T14:15:00+00:00,Narita International Airport,NRT,2026-08-16T19:45:00+00:00,landed
+UO651,Cathay Pacific,Narita International Airport,NRT,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-17T00:35:00+00:00,active
+UO652,HK express,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,Narita International Airport,NRT,2026-08-16T20:40:00+00:00,landed
+UO653,HK express,Narita International Airport,NRT,2026-08-16T21:35:00+00:00,Hong Kong International,HKG,2026-08-17T01:30:00+00:00,active
+UO848,HK express,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,Narita International Airport,NRT,2026-08-16T14:45:00+00:00,landed
+UO849,HK express,Narita International Airport,NRT,2026-08-16T15:45:00+00:00,Hong Kong International,HKG,2026-08-16T19:40:00+00:00,active
+UO854,HK express,Hong Kong International,HKG,2026-08-17T01:15:00+00:00,Narita International Airport,NRT,2026-08-17T06:45:00+00:00,scheduled
+UO857,HK express,Narita International Airport,NRT,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,landed
+UO870,HK express,Hong Kong International,HKG,2026-08-16T10:35:00+00:00,Narita International Airport,NRT,2026-08-16T16:05:00+00:00,landed
+UO871,HK express,Narita International Airport,NRT,2026-08-16T17:05:00+00:00,Hong Kong International,HKG,2026-08-16T21:00:00+00:00,active
+CX635,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:05:00+00:00,Singapore Changi,SIN,2026-08-16T19:05:00+00:00,landed
+CX636,Fiji Airways,Singapore Changi,SIN,2026-08-16T20:05:00+00:00,Hong Kong International,HKG,2026-08-17T00:10:00+00:00,active
+CX652,Fiji Airways,Singapore Changi,SIN,2026-08-16T12:45:00+00:00,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,landed
+CX658,Qatar Airways,Singapore Changi,SIN,2026-08-16T09:45:00+00:00,Hong Kong International,HKG,2026-08-16T13:55:00+00:00,landed
+CX659,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:45:00+00:00,Singapore Changi,SIN,2026-08-17T05:30:00+00:00,scheduled
+CX691,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Singapore Changi,SIN,2026-08-16T11:45:00+00:00,landed
+CX710,MIAT Mongolian Airlines,Singapore Changi,SIN,2026-08-16T07:20:00+00:00,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,landed
+CX711,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,Singapore Changi,SIN,2026-08-16T20:50:00+00:00,active
+CX714,Cathay Pacific,Singapore Changi,SIN,2026-08-17T01:45:00+00:00,Hong Kong International,HKG,2026-08-17T05:50:00+00:00,scheduled
+CX715,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:55:00+00:00,Singapore Changi,SIN,2026-08-17T00:45:00+00:00,scheduled
+CX716,Fiji Airways,Singapore Changi,SIN,2026-08-16T18:00:00+00:00,Hong Kong International,HKG,2026-08-16T22:05:00+00:00,active
+CX734,Fiji Airways,Singapore Changi,SIN,2026-08-16T16:05:00+00:00,Hong Kong International,HKG,2026-08-16T20:10:00+00:00,active
+CX739,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:15:00+00:00,Singapore Changi,SIN,2026-08-16T15:05:00+00:00,landed
+CX758,Fiji Airways,Singapore Changi,SIN,2026-08-16T13:25:00+00:00,Hong Kong International,HKG,2026-08-16T17:35:00+00:00,active
+CX759,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:40:00+00:00,Singapore Changi,SIN,2026-08-16T12:25:00+00:00,landed
+CX791,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,Singapore Changi,SIN,2026-08-16T15:40:00+00:00,landed
+SQ874,Virgin Australia,Singapore Changi,SIN,2026-08-16T07:25:00+00:00,Hong Kong International,HKG,2026-08-16T11:20:00+00:00,landed
+SQ875,Virgin Australia,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,Singapore Changi,SIN,2026-08-16T16:30:00+00:00,landed
+SQ882,Virgin Australia,Singapore Changi,SIN,2026-08-16T08:40:00+00:00,Hong Kong International,HKG,2026-08-16T12:40:00+00:00,landed
+SQ883,Singapore Airlines,Hong Kong International,HKG,2026-08-16T14:25:00+00:00,Singapore Changi,SIN,2026-08-16T18:20:00+00:00,landed
+SQ892,Virgin Australia,Singapore Changi,SIN,2026-08-16T09:50:00+00:00,Hong Kong International,HKG,2026-08-16T13:55:00+00:00,landed
+SQ893,Virgin Australia,Hong Kong International,HKG,2026-08-16T15:40:00+00:00,Singapore Changi,SIN,2026-08-16T19:25:00+00:00,landed
+SQ894,Virgin Australia,Singapore Changi,SIN,2026-08-16T13:05:00+00:00,Hong Kong International,HKG,2026-08-16T17:05:00+00:00,active
+SQ895,Singapore Airlines,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,Singapore Changi,SIN,2026-08-16T22:40:00+00:00,active
+SQ898,Virgin Australia,Singapore Changi,SIN,2026-08-16T19:00:00+00:00,Hong Kong International,HKG,2026-08-16T23:00:00+00:00,active
+SQ899,Virgin Australia,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,Singapore Changi,SIN,2026-08-16T12:55:00+00:00,landed
+TR982,Singapore Airlines,Singapore Changi,SIN,2026-08-16T15:25:00+00:00,Hong Kong International,HKG,2026-08-16T19:45:00+00:00,active
+TR983,Scoot,Hong Kong International,HKG,2026-08-16T20:45:00+00:00,Singapore Changi,SIN,2026-08-17T00:45:00+00:00,scheduled
+CX512,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:15:00+00:00,Fukuoka,FUK,2026-08-16T12:45:00+00:00,landed
+CX513,Cathay Pacific,Fukuoka,FUK,2026-08-16T14:00:00+00:00,Hong Kong International,HKG,2026-08-16T16:45:00+00:00,landed
+CX588,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,Fukuoka,FUK,2026-08-16T15:30:00+00:00,landed
+CX589,Cathay Pacific,Fukuoka,FUK,2026-08-16T16:40:00+00:00,Hong Kong International,HKG,2026-08-16T19:25:00+00:00,landed
+HB308,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Fukuoka,FUK,2026-08-16T13:00:00+00:00,landed
+HB309,Greater Bay Airlines,Fukuoka,FUK,2026-08-16T14:00:00+00:00,Hong Kong International,HKG,2026-08-16T16:50:00+00:00,landed
+HB382,Greater Bay Airlines,Hong Kong International,HKG,2026-08-17T02:45:00+00:00,Fukuoka,FUK,2026-08-17T07:20:00+00:00,scheduled
+HB383,Greater Bay Airlines,Fukuoka,FUK,2026-08-16T08:20:00+00:00,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,landed
+HX638,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T03:35:00+00:00,Fukuoka,FUK,2026-08-16T07:55:00+00:00,landed
+HX639,Hong Kong Airlines,Fukuoka,FUK,2026-08-16T09:10:00+00:00,Hong Kong International,HKG,2026-08-16T11:20:00+00:00,landed
+HX640,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T10:20:00+00:00,Fukuoka,FUK,2026-08-16T15:00:00+00:00,landed
+HX641,Hong Kong Airlines,Fukuoka,FUK,2026-08-16T16:00:00+00:00,Hong Kong International,HKG,2026-08-16T18:45:00+00:00,landed
+UO600,HK express,Hong Kong International,HKG,2026-08-16T07:35:00+00:00,Fukuoka,FUK,2026-08-16T12:00:00+00:00,landed
+UO601,HK express,Fukuoka,FUK,2026-08-16T12:55:00+00:00,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,landed
+UO638,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,Fukuoka,FUK,2026-08-16T17:00:00+00:00,landed
+UO639,HK express,Fukuoka,FUK,2026-08-16T18:00:00+00:00,Hong Kong International,HKG,2026-08-16T20:40:00+00:00,active
+UO668,HK express,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,Fukuoka,FUK,2026-08-16T15:20:00+00:00,landed
+UO669,HK express,Fukuoka,FUK,2026-08-16T16:15:00+00:00,Hong Kong International,HKG,2026-08-16T19:00:00+00:00,landed
+UO694,HK express,Hong Kong International,HKG,2026-08-16T15:15:00+00:00,Fukuoka,FUK,2026-08-16T19:40:00+00:00,active
+UO695,HK express,Fukuoka,FUK,2026-08-16T20:35:00+00:00,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,scheduled
+HB336,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T09:20:00+00:00,Naha,OKA,2026-08-16T12:40:00+00:00,landed
+HB337,Greater Bay Airlines,Naha,OKA,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,landed
+HX658,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T11:20:00+00:00,Naha,OKA,2026-08-16T15:10:00+00:00,landed
+HX659,Hong Kong Airlines,Naha,OKA,2026-08-16T16:10:00+00:00,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,active
+HX676,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,Naha,OKA,2026-08-16T12:55:00+00:00,landed
+HX679,Hong Kong Airlines,Naha,OKA,2026-08-16T13:55:00+00:00,Hong Kong International,HKG,2026-08-16T15:50:00+00:00,landed
+UO824,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:50:00+00:00,Naha,OKA,2026-08-16T19:30:00+00:00,landed
+UO825,HK express,Naha,OKA,2026-08-16T20:25:00+00:00,Hong Kong International,HKG,2026-08-16T22:10:00+00:00,active
+UO842,HK express,Hong Kong International,HKG,2026-08-16T07:00:00+00:00,Naha,OKA,2026-08-16T10:40:00+00:00,landed
+UO843,HK express,Naha,OKA,2026-08-16T11:35:00+00:00,Hong Kong International,HKG,2026-08-16T13:20:00+00:00,landed
+UO844,HK express,Hong Kong International,HKG,2026-08-16T14:25:00+00:00,Naha,OKA,2026-08-16T18:05:00+00:00,landed
+UO845,Cathay Pacific,Naha,OKA,2026-08-16T18:50:00+00:00,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,active
+HB2550,Greater Bay Airlines,Da Nang,DAD,2026-08-15T02:00:00+00:00,Hong Kong International,HKG,2026-08-15T05:10:00+00:00,scheduled
+HX542,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T02:15:00+00:00,Da Nang,DAD,2026-08-17T03:00:00+00:00,scheduled
+HX543,Hong Kong Airlines,Da Nang,DAD,2026-08-16T04:00:00+00:00,Hong Kong International,HKG,2026-08-16T07:00:00+00:00,landed
+HX546,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,Da Nang,DAD,2026-08-16T19:50:00+00:00,active
+HX547,Hong Kong Airlines,Da Nang,DAD,2026-08-16T20:50:00+00:00,Hong Kong International,HKG,2026-08-17T00:05:00+00:00,scheduled
+HX548,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T14:30:00+00:00,Da Nang,DAD,2026-08-16T15:20:00+00:00,active
+HX549,Hong Kong Airlines,Da Nang,DAD,2026-08-16T16:20:00+00:00,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,landed
+UO552,HK express,Hong Kong International,HKG,2026-08-16T08:25:00+00:00,Da Nang,DAD,2026-08-16T09:20:00+00:00,landed
+UO553,HK express,Da Nang,DAD,2026-08-16T10:05:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+UO558,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,Da Nang,DAD,2026-08-16T17:25:00+00:00,active
+UO559,HK express,Da Nang,DAD,2026-08-16T18:10:00+00:00,Hong Kong International,HKG,2026-08-16T21:10:00+00:00,active
+UO563,HK express,Da Nang,DAD,2026-08-16T11:50:00+00:00,Hong Kong International,HKG,2026-08-16T14:50:00+00:00,landed
+UO566,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,Da Nang,DAD,2026-08-16T11:05:00+00:00,landed
+CX880,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:05:00+00:00,Los Angeles International,LAX,2026-08-16T22:35:00+00:00,scheduled
+CX881,MIAT Mongolian Airlines,Los Angeles International,LAX,2026-08-16T01:25:00+00:00,Hong Kong International,HKG,2026-08-17T06:45:00+00:00,active
+CX882,Cathay Pacific,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,Los Angeles International,LAX,2026-08-16T16:55:00+00:00,active
+CX883,MIAT Mongolian Airlines,Los Angeles International,LAX,2026-08-16T00:25:00+00:00,Hong Kong International,HKG,2026-08-17T05:45:00+00:00,active
+CX884,Malaysia Airlines,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,Los Angeles International,LAX,2026-08-16T11:15:00+00:00,active
+CX885,Malaysia Airlines,Los Angeles International,LAX,2026-08-15T13:20:00+00:00,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,landed
+UA152,United Airlines,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,Tan Son Nhat International,SGN,2026-08-16T22:05:00+00:00,active
+UA153,United Airlines,Hong Kong International,HKG,2026-08-16T12:40:00+00:00,Los Angeles International,LAX,2026-08-16T11:15:00+00:00,cancelled
+UA820,United Airlines,Hong Kong International,HKG,2026-08-16T07:40:00+00:00,Suvarnabhumi International,BKK,2026-08-16T09:35:00+00:00,scheduled
+UA821,United Airlines,Hong Kong International,HKG,2026-08-16T21:45:00+00:00,Los Angeles International,LAX,2026-08-16T20:20:00+00:00,active
+CX100,MIAT Mongolian Airlines,Sydney Kingsford Smith Airport,SYD,2026-08-16T14:05:00+00:00,Hong Kong International,HKG,2026-08-16T21:30:00+00:00,active
+CX110,Cathay Pacific,Sydney Kingsford Smith Airport,SYD,2026-08-16T07:40:00+00:00,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,landed
+CX111,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,Sydney Kingsford Smith Airport,SYD,2026-08-17T06:10:00+00:00,active
+CX138,MIAT Mongolian Airlines,Sydney Kingsford Smith Airport,SYD,2026-08-16T21:55:00+00:00,Hong Kong International,HKG,2026-08-17T05:10:00+00:00,active
+CX139,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,Sydney Kingsford Smith Airport,SYD,2026-08-16T20:10:00+00:00,landed
+CX161,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:35:00+00:00,Sydney Kingsford Smith Airport,SYD,2026-08-17T08:40:00+00:00,active
+CX162,MIAT Mongolian Airlines,Sydney Kingsford Smith Airport,SYD,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T17:45:00+00:00,landed
+CX181,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:45:00+00:00,Sydney Kingsford Smith Airport,SYD,2026-08-17T11:45:00+00:00,scheduled
+QF127,LATAM Airlines,Sydney Kingsford Smith Airport,SYD,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T17:55:00+00:00,landed
+QF128,Air France,Hong Kong International,HKG,2026-08-16T19:30:00+00:00,Sydney Kingsford Smith Airport,SYD,2026-08-17T06:45:00+00:00,active
+CX104,LATAM Airlines,Melbourne - Tullamarine Airport,MEL,2026-08-16T14:25:00+00:00,Hong Kong International,HKG,2026-08-16T21:45:00+00:00,active
+CX105,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:20:00+00:00,Melbourne - Tullamarine Airport,MEL,2026-08-17T11:15:00+00:00,scheduled
+CX134,Cathay Pacific,Melbourne - Tullamarine Airport,MEL,2026-08-16T07:25:00+00:00,Hong Kong International,HKG,2026-08-16T14:55:00+00:00,landed
+CX135,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T19:00:00+00:00,Melbourne - Tullamarine Airport,MEL,2026-08-17T05:55:00+00:00,active
+CX163,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:20:00+00:00,Melbourne - Tullamarine Airport,MEL,2026-08-16T22:15:00+00:00,landed
+CX178,MIAT Mongolian Airlines,Melbourne - Tullamarine Airport,MEL,2026-08-16T23:45:00+00:00,Hong Kong International,HKG,2026-08-17T06:55:00+00:00,active
+CX810,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:55:00+00:00,Vancouver International,YVR,2026-08-16T13:00:00+00:00,active
+CX865,Cathay Pacific,Vancouver International,YVR,2026-08-16T01:25:00+00:00,Hong Kong International,HKG,2026-08-17T05:35:00+00:00,active
+CX867,Cathay Pacific,Vancouver International,YVR,2026-08-15T14:55:00+00:00,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,landed
+CX888,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:45:00+00:00,Vancouver International,YVR,2026-08-16T21:50:00+00:00,scheduled
+CX870,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T13:25:00+00:00,San Francisco International,SFO,2026-08-16T11:25:00+00:00,active
+CX872,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:10:00+00:00,San Francisco International,SFO,2026-08-16T23:15:00+00:00,scheduled
+CX873,MIAT Mongolian Airlines,San Francisco International,SFO,2026-08-16T01:20:00+00:00,Hong Kong International,HKG,2026-08-17T06:15:00+00:00,active
+CX879,Malaysia Airlines,San Francisco International,SFO,2026-08-15T14:00:00+00:00,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,landed
+UA862,United Airlines,Hong Kong International,HKG,2026-08-16T11:45:00+00:00,San Francisco International,SFO,2026-08-16T09:50:00+00:00,active
+UA869,United Airlines,San Francisco International,SFO,2026-08-15T13:45:00+00:00,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,landed
+UA877,United Airlines,San Francisco International,SFO,2026-08-15T23:50:00+00:00,Hong Kong International,HKG,2026-08-17T05:00:00+00:00,active
+UA878,United Airlines,Hong Kong International,HKG,2026-08-16T22:30:00+00:00,San Francisco International,SFO,2026-08-16T20:35:00+00:00,scheduled
+CX950,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:15:00+00:00,Guangzhou Baiyun International,CAN,2026-08-17T02:20:00+00:00,scheduled
+CX953,Cathay Pacific,Guangzhou Baiyun International,CAN,2026-08-16T05:00:00+00:00,Hong Kong International,HKG,2026-08-16T06:25:00+00:00,landed
+CX982,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:50:00+00:00,Guangzhou Baiyun International,CAN,2026-08-16T08:55:00+00:00,landed
+CX983,Cathay Pacific,Guangzhou Baiyun International,CAN,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T11:45:00+00:00,landed
+CX988,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:00:00+00:00,Guangzhou Baiyun International,CAN,2026-08-16T21:05:00+00:00,active
+CX989,Cathay Pacific,Guangzhou Baiyun International,CAN,2026-08-16T22:20:00+00:00,Hong Kong International,HKG,2026-08-16T23:40:00+00:00,scheduled
+TW639,T'way Air,Gimhae,PUS,2026-08-16T21:50:00+00:00,Hong Kong International,HKG,2026-08-17T00:15:00+00:00,active
+TW640,T'way Air,Hong Kong International,HKG,2026-08-17T01:50:00+00:00,Gimhae,PUS,2026-08-17T06:20:00+00:00,scheduled
+UO604,HK express,Hong Kong International,HKG,2026-08-17T02:35:00+00:00,Gimhae,PUS,2026-08-17T07:00:00+00:00,scheduled
+UO607,HK express,Gimhae,PUS,2026-08-15T07:45:00+00:00,Hong Kong International,HKG,2026-08-15T10:20:00+00:00,landed
+UO674,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,Gimhae,PUS,2026-08-16T13:35:00+00:00,landed
+UO675,HK express,Gimhae,PUS,2026-08-16T14:20:00+00:00,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,active
+LJ713,Jin Air,Jeju Airport,CJU,2026-08-16T21:30:00+00:00,Hong Kong International,HKG,2026-08-16T23:35:00+00:00,scheduled
+LJ714,Jin Air,Hong Kong International,HKG,2026-08-17T02:00:00+00:00,Jeju Airport,CJU,2026-08-17T06:05:00+00:00,scheduled
+UO660,HK express,Hong Kong International,HKG,2026-08-15T08:35:00+00:00,Jeju Airport,CJU,2026-08-15T12:35:00+00:00,landed
+UO663,Cathay Pacific,Jeju Airport,CJU,2026-08-15T13:25:00+00:00,Hong Kong International,HKG,2026-08-15T15:30:00+00:00,landed
+UO698,HK express,Hong Kong International,HKG,2026-08-17T02:30:00+00:00,Jeju Airport,CJU,2026-08-17T06:30:00+00:00,scheduled
+UO699,HK express,Jeju Airport,CJU,2026-08-16T07:30:00+00:00,Hong Kong International,HKG,2026-08-16T09:40:00+00:00,landed
+CX782,Cathay Pacific,Ngurah Rai International,DPS,2026-08-16T18:50:00+00:00,Hong Kong International,HKG,2026-08-17T00:05:00+00:00,scheduled
+CX783,American Airlines,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,Ngurah Rai International,DPS,2026-08-16T17:40:00+00:00,landed
+CX784,Qatar Airways,Ngurah Rai International,DPS,2026-08-16T16:15:00+00:00,Hong Kong International,HKG,2026-08-16T21:25:00+00:00,scheduled
+CX785,Qatar Airways,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,Ngurah Rai International,DPS,2026-08-16T15:00:00+00:00,scheduled
+HX706,Hong Kong Airlines,Ngurah Rai International,DPS,2026-08-16T08:05:00+00:00,Hong Kong International,HKG,2026-08-16T13:20:00+00:00,landed
+HX707,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T02:00:00+00:00,Ngurah Rai International,DPS,2026-08-17T07:05:00+00:00,scheduled
+CX830,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,John F Kennedy International,JFK,2026-08-16T13:10:00+00:00,active
+CX831,Cathay Pacific,John F Kennedy International,JFK,2026-08-16T14:55:00+00:00,Hong Kong International,HKG,2026-08-17T19:05:00+00:00,scheduled
+CX840,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,John F Kennedy International,JFK,2026-08-16T20:35:00+00:00,active
+CX841,Cathay Pacific,John F Kennedy International,JFK,2026-08-16T10:00:00+00:00,Hong Kong International,HKG,2026-08-17T13:55:00+00:00,scheduled
+CX843,LATAM Airlines,John F Kennedy International,JFK,2026-08-16T01:55:00+00:00,Hong Kong International,HKG,2026-08-17T05:30:00+00:00,active
+CX844,Cathay Pacific,Hong Kong International,HKG,2026-08-17T02:00:00+00:00,John F Kennedy International,JFK,2026-08-17T06:00:00+00:00,scheduled
+5J110,Cebu Pacific,Ninoy Aquino International,MNL,2026-08-16T07:10:00+00:00,Hong Kong International,HKG,2026-08-16T09:45:00+00:00,landed
+5J111,Cebu Pacific,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,Ninoy Aquino International,MNL,2026-08-16T13:30:00+00:00,landed
+5J112,Cebu Pacific,Ninoy Aquino International,MNL,2026-08-16T15:30:00+00:00,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,active
+5J113,Cebu Pacific,Hong Kong International,HKG,2026-08-16T19:15:00+00:00,Ninoy Aquino International,MNL,2026-08-16T21:45:00+00:00,active
+5J114,Cebu Pacific,Ninoy Aquino International,MNL,2026-08-15T17:50:00+00:00,Hong Kong International,HKG,2026-08-15T20:20:00+00:00,landed
+5J115,Cebu Pacific,Hong Kong International,HKG,2026-08-15T21:15:00+00:00,Ninoy Aquino International,MNL,2026-08-15T23:35:00+00:00,landed
+EK380,Emirates,Dubai,DXB,2026-08-16T10:00:00+00:00,Hong Kong International,HKG,2026-08-16T22:05:00+00:00,scheduled
+EK381,Emirates,Hong Kong International,HKG,2026-08-17T00:40:00+00:00,Dubai,DXB,2026-08-17T04:25:00+00:00,scheduled
+EK382,Emirates,Dubai,DXB,2026-08-16T03:15:00+00:00,Hong Kong International,HKG,2026-08-16T15:25:00+00:00,scheduled
+EK383,Alitalia,Hong Kong International,HKG,2026-08-16T19:10:00+00:00,Dubai,DXB,2026-08-16T23:00:00+00:00,active
+EK384,Emirates,Suvarnabhumi International,BKK,2026-08-16T14:15:00+00:00,Hong Kong International,HKG,2026-08-16T18:15:00+00:00,landed
+AF185,Air France,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,Charles De Gaulle,CDG,2026-08-17T05:50:00+00:00,scheduled
+AF188,Qantas,Charles De Gaulle,CDG,2026-08-15T23:30:00+00:00,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,landed
+CX260,Cathay Pacific,Charles De Gaulle,CDG,2026-08-16T12:20:00+00:00,Hong Kong International,HKG,2026-08-17T06:15:00+00:00,active
+CX261,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:05:00+00:00,Charles De Gaulle,CDG,2026-08-17T07:55:00+00:00,scheduled
+CX150,Japan Airlines,Brisbane International,BNE,2026-08-16T12:20:00+00:00,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,landed
+CX156,Lufthansa,Brisbane International,BNE,2026-08-17T00:05:00+00:00,Hong Kong International,HKG,2026-08-17T06:50:00+00:00,scheduled
+CX157,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,Brisbane International,BNE,2026-08-16T22:30:00+00:00,landed
+CX165,Cathay Pacific,Hong Kong International,HKG,2026-08-16T00:15:00+00:00,Brisbane International,BNE,2026-08-16T10:50:00+00:00,landed
+CX382,Swiss,Zurich,ZRH,2026-08-16T13:30:00+00:00,Hong Kong International,HKG,2026-08-17T06:55:00+00:00,active
+CX383,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:25:00+00:00,Zurich,ZRH,2026-08-17T07:30:00+00:00,scheduled
+LX138,Cathay Pacific,Zurich,ZRH,2026-08-15T22:30:00+00:00,Hong Kong International,HKG,2026-08-16T16:35:00+00:00,landed
+LX139,Swiss,Hong Kong International,HKG,2026-08-16T23:05:00+00:00,Zurich,ZRH,2026-08-17T06:10:00+00:00,scheduled
+QR815,Qatar Airways,Hong Kong International,HKG,2026-08-17T01:25:00+00:00,Doha International,DOH,2026-08-17T04:35:00+00:00,scheduled
+QR816,LATAM Airlines,Doha International,DOH,2026-08-16T08:30:00+00:00,Hong Kong International,HKG,2026-08-16T21:55:00+00:00,active
+QR817,LATAM Airlines,Hong Kong International,HKG,2026-08-16T19:40:00+00:00,Doha International,DOH,2026-08-16T22:50:00+00:00,active
+QR818,AirSERBIA,Doha International,DOH,2026-08-16T01:45:00+00:00,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,landed
+UO656,HK express,Hong Kong International,HKG,2026-08-17T02:10:00+00:00,Daegu,TAE,2026-08-17T06:40:00+00:00,scheduled
+UO673,HK express,Daegu,TAE,2026-08-16T07:25:00+00:00,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,landed
+UO832,HK express,Hong Kong International,HKG,2026-08-15T10:00:00+00:00,Daegu,TAE,2026-08-15T14:30:00+00:00,landed
+UO833,HK express,Daegu,TAE,2026-08-15T15:30:00+00:00,Hong Kong International,HKG,2026-08-15T18:10:00+00:00,landed
+ET644,Ethiopian Airlines,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,Ninoy Aquino International,MNL,2026-08-16T18:15:00+00:00,landed
+ET645,Ethiopian Airlines,Hong Kong International,HKG,2026-08-17T00:25:00+00:00,Bole International,ADD,2026-08-17T05:35:00+00:00,scheduled
+CX315,Cathay Pacific,Hong Kong International,HKG,2026-08-16T00:45:00+00:00,Barajas,MAD,2026-08-16T09:15:00+00:00,landed
+CX372,Iberia,Barajas,MAD,2026-08-16T12:25:00+00:00,Hong Kong International,HKG,2026-08-17T06:55:00+00:00,active
+CX233,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:50:00+00:00,Milano Malpensa,MXP,2026-08-17T08:00:00+00:00,scheduled
+CX234,Cathay Pacific,Milano Malpensa,MXP,2026-08-16T12:45:00+00:00,Hong Kong International,HKG,2026-08-17T06:15:00+00:00,active
+CX216,Cathay Pacific,Manchester Airport,MAN,2026-08-16T11:10:00+00:00,Hong Kong International,HKG,2026-08-17T06:35:00+00:00,active
+CX259,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:55:00+00:00,Manchester Airport,MAN,2026-08-17T08:15:00+00:00,scheduled
+CX292,Cathay Pacific,Leonardo Da Vinci (Fiumicino),FCO,2026-08-15T13:00:00+00:00,Hong Kong International,HKG,2026-08-16T06:00:00+00:00,landed
+CX293,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:05:00+00:00,Leonardo Da Vinci (Fiumicino),FCO,2026-08-17T08:05:00+00:00,scheduled
+CX748,LATAM Airlines,Oliver Reginald Tambo International (Jan Smuts International),JNB,2026-08-16T11:10:00+00:00,Hong Kong International,HKG,2026-08-17T06:30:00+00:00,active
+CX749,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:05:00+00:00,Oliver Reginald Tambo International (Jan Smuts International),JNB,2026-08-17T07:45:00+00:00,scheduled
+5J242,Cebu Pacific,Iloilo International,ILO,2026-08-16T22:00:00+00:00,Hong Kong International,HKG,2026-08-17T00:50:00+00:00,scheduled
+5J243,Cebu Pacific,Hong Kong International,HKG,2026-08-17T02:20:00+00:00,Iloilo International,ILO,2026-08-17T05:10:00+00:00,scheduled
+CX907,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:20:00+00:00,Ninoy Aquino International,MNL,2026-08-16T09:35:00+00:00,landed
+CX901,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:00:00+00:00,Ninoy Aquino International,MNL,2026-08-16T11:20:00+00:00,landed
+CX919,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,Ninoy Aquino International,MNL,2026-08-16T16:30:00+00:00,landed
+CX903,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:40:00+00:00,Ninoy Aquino International,MNL,2026-08-16T19:05:00+00:00,landed
+CX913,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,Ninoy Aquino International,MNL,2026-08-16T22:55:00+00:00,scheduled
+CX939,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:55:00+00:00,Ninoy Aquino International,MNL,2026-08-17T00:15:00+00:00,scheduled
+CX974,Cathay Pacific,Ninoy Aquino International,MNL,2026-08-16T05:30:00+00:00,Hong Kong International,HKG,2026-08-16T07:50:00+00:00,landed
+CX912,Cathay Pacific,Ninoy Aquino International,MNL,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:30:00+00:00,landed
+CX906,British Airways,Ninoy Aquino International,MNL,2026-08-16T10:50:00+00:00,Hong Kong International,HKG,2026-08-16T13:15:00+00:00,landed
+CX930,Cathay Pacific,Ninoy Aquino International,MNL,2026-08-16T12:30:00+00:00,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,landed
+CX918,Swiss,Ninoy Aquino International,MNL,2026-08-16T17:40:00+00:00,Hong Kong International,HKG,2026-08-16T20:15:00+00:00,active
+CX902,Cathay Pacific,Ninoy Aquino International,MNL,2026-08-16T20:20:00+00:00,Hong Kong International,HKG,2026-08-16T22:55:00+00:00,active
+5J273,Cebu Pacific,Hong Kong International,HKG,2026-08-16T09:25:00+00:00,Ninoy Aquino International,MNL,2026-08-16T11:50:00+00:00,landed
+5J143,Cebu Pacific,Hong Kong International,HKG,2026-08-16T14:00:00+00:00,Ninoy Aquino International,MNL,2026-08-16T16:25:00+00:00,landed
+5J272,Cebu Pacific,Ninoy Aquino International,MNL,2026-08-16T05:35:00+00:00,Hong Kong International,HKG,2026-08-16T08:10:00+00:00,landed
+5J142,Cebu Pacific,Ninoy Aquino International,MNL,2026-08-16T10:30:00+00:00,Hong Kong International,HKG,2026-08-16T13:00:00+00:00,landed
+PR319,Philippine Airlines,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,Ninoy Aquino International,MNL,2026-08-16T16:05:00+00:00,
+PR307,Philippine Airlines,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,Ninoy Aquino International,MNL,2026-08-16T20:20:00+00:00,scheduled
+PR311,Philippine Airlines,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,Ninoy Aquino International,MNL,2026-08-17T01:20:00+00:00,scheduled
+PR318,Philippine Airlines,Ninoy Aquino International,MNL,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,
+PR306,Philippine Airlines,Ninoy Aquino International,MNL,2026-08-16T14:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,active
+PR310,Philippine Airlines,Ninoy Aquino International,MNL,2026-08-16T19:30:00+00:00,Hong Kong International,HKG,2026-08-16T22:00:00+00:00,active
+UO534,HK express,Hong Kong International,HKG,2026-08-16T17:50:00+00:00,Ninoy Aquino International,MNL,2026-08-16T20:10:00+00:00,landed
+UO517,HK express,Ninoy Aquino International,MNL,2026-08-16T01:45:00+00:00,Hong Kong International,HKG,2026-08-16T04:05:00+00:00,landed
+UO535,HK express,Ninoy Aquino International,MNL,2026-08-16T21:10:00+00:00,Hong Kong International,HKG,2026-08-16T23:30:00+00:00,active
+UO516,Cathay Pacific,Hong Kong International,HKG,2026-08-15T22:40:00+00:00,Ninoy Aquino International,MNL,2026-08-16T01:00:00+00:00,landed
+CX334,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:25:00+00:00,Beijing Capital International,PEK,2026-08-16T10:45:00+00:00,landed
+CX390,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:00:00+00:00,Beijing Capital International,PEK,2026-08-16T12:25:00+00:00,landed
+CX332,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:00:00+00:00,Beijing Capital International,PEK,2026-08-16T15:25:00+00:00,landed
+CX392,Air China,Hong Kong International,HKG,2026-08-16T13:55:00+00:00,Beijing Capital International,PEK,2026-08-16T17:25:00+00:00,landed
+CX336,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,Beijing Capital International,PEK,2026-08-16T18:25:00+00:00,landed
+CX312,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,Beijing Capital International,PEK,2026-08-16T20:25:00+00:00,landed
+CX344,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:00:00+00:00,Beijing Capital International,PEK,2026-08-16T22:25:00+00:00,active
+CX340,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:55:00+00:00,Beijing Capital International,PEK,2026-08-17T01:25:00+00:00,scheduled
+CX395,Air China,Beijing Capital International,PEK,2026-08-16T03:15:00+00:00,Hong Kong International,HKG,2026-08-16T06:55:00+00:00,landed
+CX345,Air China,Beijing Capital International,PEK,2026-08-16T07:25:00+00:00,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,landed
+CX347,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T10:00:00+00:00,Hong Kong International,HKG,2026-08-16T13:45:00+00:00,landed
+CX335,Air China,Beijing Capital International,PEK,2026-08-16T12:05:00+00:00,Hong Kong International,HKG,2026-08-16T16:00:00+00:00,landed
+CX391,Air China,Beijing Capital International,PEK,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,active
+CX331,Air China,Beijing Capital International,PEK,2026-08-16T16:40:00+00:00,Hong Kong International,HKG,2026-08-16T20:25:00+00:00,active
+CX393,Air China,Beijing Capital International,PEK,2026-08-16T18:40:00+00:00,Hong Kong International,HKG,2026-08-16T22:25:00+00:00,active
+CX337,Air China,Beijing Capital International,PEK,2026-08-16T19:40:00+00:00,Hong Kong International,HKG,2026-08-16T23:25:00+00:00,active
+CA118,Air China,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Beijing Capital International,PEK,2026-08-16T11:55:00+00:00,landed
+CA108,Air China,Hong Kong International,HKG,2026-08-16T10:30:00+00:00,Beijing Capital International,PEK,2026-08-16T14:00:00+00:00,landed
+CA102,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:30:00+00:00,Beijing Capital International,PEK,2026-08-16T17:15:00+00:00,landed
+CA112,Air China,Hong Kong International,HKG,2026-08-16T14:35:00+00:00,Beijing Capital International,PEK,2026-08-16T18:00:00+00:00,landed
+CA110,Air China,Hong Kong International,HKG,2026-08-16T17:45:00+00:00,Beijing Capital International,PEK,2026-08-16T21:15:00+00:00,landed
+CA116,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:15:00+00:00,Beijing Capital International,PEK,2026-08-16T23:45:00+00:00,active
+CA101,Air China,Beijing Capital International,PEK,2026-08-16T08:05:00+00:00,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,landed
+CA111,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T09:25:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+CA109,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T12:35:00+00:00,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,landed
+CA115,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T15:20:00+00:00,Hong Kong International,HKG,2026-08-16T19:00:00+00:00,active
+CA117,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T17:30:00+00:00,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,active
+CA107,Cathay Pacific,Beijing Capital International,PEK,2026-08-16T18:00:00+00:00,Hong Kong International,HKG,2026-08-16T21:45:00+00:00,active
+HX336,Hainan Airlines,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,Beijing Capital International,PEK,2026-08-16T20:00:00+00:00,landed
+HX304,Hainan Airlines,Hong Kong International,HKG,2026-08-16T20:20:00+00:00,Beijing Capital International,PEK,2026-08-16T23:40:00+00:00,active
+HX337,Hainan Airlines,Beijing Capital International,PEK,2026-08-16T21:00:00+00:00,Hong Kong International,HKG,2026-08-17T00:35:00+00:00,active
+HX305,Hainan Airlines,Beijing Capital International,PEK,2026-08-16T09:20:00+00:00,Hong Kong International,HKG,2026-08-16T13:15:00+00:00,landed
+UO704,HK express,Hong Kong International,HKG,2026-08-16T07:25:00+00:00,Suvarnabhumi International,BKK,2026-08-16T09:25:00+00:00,landed
+UO700,HK express,Hong Kong International,HKG,2026-08-16T13:30:00+00:00,Suvarnabhumi International,BKK,2026-08-16T15:30:00+00:00,active
+UO758,HK express,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,Suvarnabhumi International,BKK,2026-08-16T17:00:00+00:00,active
+UO702,HK express,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,Suvarnabhumi International,BKK,2026-08-16T18:55:00+00:00,active
+UO732,HK express,Hong Kong International,HKG,2026-08-16T21:30:00+00:00,Suvarnabhumi International,BKK,2026-08-16T23:20:00+00:00,active
+UO733,HK express,Suvarnabhumi International,BKK,2026-08-17T00:20:00+00:00,Hong Kong International,HKG,2026-08-17T04:30:00+00:00,scheduled
+UO705,Cathay Pacific,Suvarnabhumi International,BKK,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,landed
+UO701,HK express,Suvarnabhumi International,BKK,2026-08-16T16:15:00+00:00,Hong Kong International,HKG,2026-08-16T20:15:00+00:00,landed
+UO759,HK express,Suvarnabhumi International,BKK,2026-08-16T17:50:00+00:00,Hong Kong International,HKG,2026-08-16T21:40:00+00:00,active
+UO703,HK express,Suvarnabhumi International,BKK,2026-08-16T19:40:00+00:00,Hong Kong International,HKG,2026-08-16T23:40:00+00:00,scheduled
+TG603,Thai Airways,Hong Kong International,HKG,2026-08-16T07:50:00+00:00,Suvarnabhumi International,BKK,2026-08-16T09:35:00+00:00,landed
+TG601,Gulf Air,Hong Kong International,HKG,2026-08-16T12:55:00+00:00,Suvarnabhumi International,BKK,2026-08-16T14:45:00+00:00,landed
+TG629,Gulf Air,Hong Kong International,HKG,2026-08-16T15:30:00+00:00,Suvarnabhumi International,BKK,2026-08-16T17:20:00+00:00,active
+TG639,Turkish Airlines,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,Suvarnabhumi International,BKK,2026-08-16T20:45:00+00:00,active
+TG600,Turkish Airlines,Suvarnabhumi International,BKK,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T11:45:00+00:00,landed
+TG628,Gulf Air,Suvarnabhumi International,BKK,2026-08-16T10:30:00+00:00,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,landed
+TG638,Air New Zealand,Suvarnabhumi International,BKK,2026-08-16T14:00:00+00:00,Hong Kong International,HKG,2026-08-16T17:45:00+00:00,landed
+TG602,Austrian Airlines,Suvarnabhumi International,BKK,2026-08-16T18:10:00+00:00,Hong Kong International,HKG,2026-08-16T22:00:00+00:00,active
+CX705,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Suvarnabhumi International,BKK,2026-08-16T10:00:00+00:00,landed
+CX717,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:00:00+00:00,Suvarnabhumi International,BKK,2026-08-16T11:05:00+00:00,landed
+CX755,Qatar Airways,Hong Kong International,HKG,2026-08-16T09:25:00+00:00,Suvarnabhumi International,BKK,2026-08-16T11:30:00+00:00,landed
+CX653,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:00:00+00:00,Suvarnabhumi International,BKK,2026-08-16T14:00:00+00:00,landed
+CX775,Qatar Airways,Hong Kong International,HKG,2026-08-16T13:20:00+00:00,Suvarnabhumi International,BKK,2026-08-16T15:25:00+00:00,active
+CX751,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:30:00+00:00,Suvarnabhumi International,BKK,2026-08-16T16:30:00+00:00,active
+CX701,Qatar Airways,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,Suvarnabhumi International,BKK,2026-08-16T18:00:00+00:00,active
+CX617,Cathay Pacific,Hong Kong International,HKG,2026-08-16T22:15:00+00:00,Suvarnabhumi International,BKK,2026-08-17T00:10:00+00:00,scheduled
+CX700,MIAT Mongolian Airlines,Suvarnabhumi International,BKK,2026-08-16T07:35:00+00:00,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,landed
+CX750,MIAT Mongolian Airlines,Suvarnabhumi International,BKK,2026-08-16T11:00:00+00:00,Hong Kong International,HKG,2026-08-16T15:05:00+00:00,landed
+CX774,Qatar Airways,Suvarnabhumi International,BKK,2026-08-16T12:10:00+00:00,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,landed
+CX754,Qatar Airways,Suvarnabhumi International,BKK,2026-08-16T12:35:00+00:00,Hong Kong International,HKG,2026-08-16T16:40:00+00:00,landed
+CX654,Qatar Airways,Suvarnabhumi International,BKK,2026-08-16T15:00:00+00:00,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,landed
+CX706,Bangkok Airways,Suvarnabhumi International,BKK,2026-08-16T16:25:00+00:00,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,landed
+CX708,Qatar Airways,Suvarnabhumi International,BKK,2026-08-16T17:30:00+00:00,Hong Kong International,HKG,2026-08-16T21:30:00+00:00,active
+CX704,Qatar Airways,Suvarnabhumi International,BKK,2026-08-16T19:10:00+00:00,Hong Kong International,HKG,2026-08-16T23:05:00+00:00,active
+HX775,Turkish Airlines,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,Suvarnabhumi International,BKK,2026-08-16T14:55:00+00:00,landed
+HX759,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T23:00:00+00:00,Suvarnabhumi International,BKK,2026-08-17T01:00:00+00:00,scheduled
+HX760,Hong Kong Airlines,Suvarnabhumi International,BKK,2026-08-17T02:00:00+00:00,Hong Kong International,HKG,2026-08-17T05:55:00+00:00,scheduled
+HX776,Turkish Airlines,Suvarnabhumi International,BKK,2026-08-16T15:55:00+00:00,Hong Kong International,HKG,2026-08-16T19:55:00+00:00,landed
+EK385,Emirates,Suvarnabhumi International,BKK,2026-08-17T01:35:00+00:00,Dubai,DXB,2026-08-17T04:40:00+00:00,scheduled
+HB2295,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T17:50:00+00:00,Suvarnabhumi International,BKK,2026-08-16T19:45:00+00:00,active
+HB2296,Greater Bay Airlines,Suvarnabhumi International,BKK,2026-08-16T20:45:00+00:00,Hong Kong International,HKG,2026-08-17T00:50:00+00:00,scheduled
+HB282,Greater Bay Airlines,Suvarnabhumi International,BKK,2026-08-15T00:40:00+00:00,Hong Kong International,HKG,2026-08-15T04:45:00+00:00,landed
+MU726,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T07:30:00+00:00,Shanghai Pudong International,PVG,2026-08-16T10:15:00+00:00,landed
+MU724,Shanghai Airlines,Hong Kong International,HKG,2026-08-16T09:45:00+00:00,Shanghai Pudong International,PVG,2026-08-16T12:25:00+00:00,landed
+MU502,Juneyao Air,Hong Kong International,HKG,2026-08-16T12:50:00+00:00,Shanghai Pudong International,PVG,2026-08-16T15:15:00+00:00,landed
+MU508,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T15:05:00+00:00,Shanghai Pudong International,PVG,2026-08-16T18:00:00+00:00,landed
+MU510,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T17:05:00+00:00,Shanghai Pudong International,PVG,2026-08-16T19:40:00+00:00,landed
+MU506,Shanghai Airlines,Hong Kong International,HKG,2026-08-16T20:05:00+00:00,Shanghai Pudong International,PVG,2026-08-16T22:40:00+00:00,active
+MU7366,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T22:05:00+00:00,Shanghai Pudong International,PVG,2026-08-17T00:40:00+00:00,scheduled
+MU7365,Shanghai Airlines,Shanghai Pudong International,PVG,2026-08-16T06:20:00+00:00,Hong Kong International,HKG,2026-08-16T08:45:00+00:00,landed
+MU501,Juneyao Air,Shanghai Pudong International,PVG,2026-08-16T09:00:00+00:00,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,landed
+MU507,Shanghai Airlines,Shanghai Pudong International,PVG,2026-08-16T10:50:00+00:00,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,landed
+MU509,Juneyao Air,Shanghai Pudong International,PVG,2026-08-16T12:55:00+00:00,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,landed
+MU505,Shanghai Airlines,Shanghai Pudong International,PVG,2026-08-16T16:20:00+00:00,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,active
+MU723,Shanghai Airlines,Shanghai Pudong International,PVG,2026-08-16T18:25:00+00:00,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,active
+MU725,Shanghai Airlines,Shanghai Pudong International,PVG,2026-08-16T21:00:00+00:00,Hong Kong International,HKG,2026-08-16T23:45:00+00:00,active
+HX236,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T08:05:00+00:00,Shanghai Pudong International,PVG,2026-08-16T10:40:00+00:00,landed
+HX246,Hainan Airlines,Hong Kong International,HKG,2026-08-16T13:00:00+00:00,Shanghai Pudong International,PVG,2026-08-16T15:40:00+00:00,landed
+HX232,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T19:10:00+00:00,Shanghai Pudong International,PVG,2026-08-16T21:55:00+00:00,scheduled
+HX234,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T21:20:00+00:00,Shanghai Pudong International,PVG,2026-08-16T23:50:00+00:00,scheduled
+HX231,Hong Kong Airlines,Shanghai Pudong International,PVG,2026-08-16T07:35:00+00:00,Hong Kong International,HKG,2026-08-16T10:20:00+00:00,landed
+HX235,Hainan Airlines,Shanghai Pudong International,PVG,2026-08-16T09:15:00+00:00,Hong Kong International,HKG,2026-08-16T12:05:00+00:00,landed
+HX237,Hainan Airlines,Shanghai Pudong International,PVG,2026-08-16T11:55:00+00:00,Hong Kong International,HKG,2026-08-16T14:45:00+00:00,landed
+HX247,Hainan Airlines,Shanghai Pudong International,PVG,2026-08-16T16:55:00+00:00,Hong Kong International,HKG,2026-08-16T19:45:00+00:00,active
+CX316,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:10:00+00:00,Shanghai Pudong International,PVG,2026-08-16T11:05:00+00:00,landed
+CX368,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:20:00+00:00,Shanghai Pudong International,PVG,2026-08-16T12:05:00+00:00,landed
+CX376,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:25:00+00:00,Shanghai Pudong International,PVG,2026-08-16T13:15:00+00:00,landed
+CX360,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,Shanghai Pudong International,PVG,2026-08-16T16:25:00+00:00,landed
+CX380,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,Shanghai Pudong International,PVG,2026-08-16T17:50:00+00:00,landed
+CX364,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,Shanghai Pudong International,PVG,2026-08-16T20:15:00+00:00,landed
+CX362,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,Shanghai Pudong International,PVG,2026-08-16T22:10:00+00:00,scheduled
+CX302,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,Shanghai Pudong International,PVG,2026-08-16T23:55:00+00:00,scheduled
+CX303,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T07:20:00+00:00,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,landed
+CX361,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T08:35:00+00:00,Hong Kong International,HKG,2026-08-16T11:25:00+00:00,landed
+CX365,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T09:35:00+00:00,Hong Kong International,HKG,2026-08-16T12:30:00+00:00,landed
+CX319,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T12:20:00+00:00,Hong Kong International,HKG,2026-08-16T15:15:00+00:00,landed
+CX367,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T13:20:00+00:00,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,active
+CX377,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T14:30:00+00:00,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,active
+CX369,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T17:40:00+00:00,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,active
+CX381,Cathay Pacific,Shanghai Pudong International,PVG,2026-08-16T19:05:00+00:00,Hong Kong International,HKG,2026-08-16T21:50:00+00:00,active
+FM812,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T13:55:00+00:00,Shanghai Pudong International,PVG,2026-08-16T17:05:00+00:00,landed
+FM811,China Eastern Airlines,Shanghai Pudong International,PVG,2026-08-16T09:40:00+00:00,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,landed
+HO1292,Juneyao Air,Hong Kong International,HKG,2026-08-16T20:45:00+00:00,Shanghai Pudong International,PVG,2026-08-16T23:25:00+00:00,scheduled
+HO1291,China Eastern Airlines,Shanghai Pudong International,PVG,2026-08-16T17:00:00+00:00,Hong Kong International,HKG,2026-08-16T19:45:00+00:00,active
+9C8716,Spring Airlines,Hong Kong International,HKG,2026-08-15T13:20:00+00:00,Shanghai Pudong International,PVG,2026-08-15T16:00:00+00:00,landed
+9C8715,Spring Airlines,Shanghai Pudong International,PVG,2026-08-15T09:15:00+00:00,Hong Kong International,HKG,2026-08-15T12:20:00+00:00,landed
+UO522,HK express,Hong Kong International,HKG,2026-08-16T07:05:00+00:00,Diosdado Macapagal International (Clark International),CRK,2026-08-16T09:10:00+00:00,active
+UO523,HK express,Diosdado Macapagal International (Clark International),CRK,2026-08-16T10:20:00+00:00,Hong Kong International,HKG,2026-08-16T12:30:00+00:00,landed
+5J149,Cebu Pacific,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,Diosdado Macapagal International (Clark International),CRK,2026-08-16T12:05:00+00:00,landed
+5J121,Cebu Pacific,Hong Kong International,HKG,2026-08-16T22:35:00+00:00,Diosdado Macapagal International (Clark International),CRK,2026-08-17T00:40:00+00:00,scheduled
+5J150,Cebu Pacific,Diosdado Macapagal International (Clark International),CRK,2026-08-16T07:00:00+00:00,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,landed
+5J120,Cebu Pacific,Diosdado Macapagal International (Clark International),CRK,2026-08-16T19:30:00+00:00,Hong Kong International,HKG,2026-08-16T21:50:00+00:00,active
+UO540,HK express,Hong Kong International,HKG,2026-08-16T07:40:00+00:00,Noibai International,HAN,2026-08-16T08:50:00+00:00,landed
+UO541,Cathay Pacific,Noibai International,HAN,2026-08-16T09:35:00+00:00,Hong Kong International,HKG,2026-08-16T12:40:00+00:00,landed
+CX741,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:45:00+00:00,Noibai International,HAN,2026-08-16T09:55:00+00:00,landed
+CX743,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,Noibai International,HAN,2026-08-16T18:10:00+00:00,active
+CX740,Cathay Pacific,Noibai International,HAN,2026-08-16T10:55:00+00:00,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,landed
+CX742,Vietnam Airlines,Noibai International,HAN,2026-08-16T19:10:00+00:00,Hong Kong International,HKG,2026-08-16T22:15:00+00:00,active
+VN593,Vietnam Airlines,Hong Kong International,HKG,2026-08-16T14:30:00+00:00,Noibai International,HAN,2026-08-16T15:45:00+00:00,active
+VN592,Vietnam Airlines,Noibai International,HAN,2026-08-16T10:25:00+00:00,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,landed
+CX958,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:45:00+00:00,Hangzhou,HGH,2026-08-16T10:10:00+00:00,landed
+CX960,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:15:00+00:00,Hangzhou,HGH,2026-08-16T14:40:00+00:00,landed
+CX962,Air China,Hong Kong International,HKG,2026-08-16T16:00:00+00:00,Hangzhou,HGH,2026-08-16T18:30:00+00:00,active
+CX964,Air China,Hong Kong International,HKG,2026-08-16T20:10:00+00:00,Hangzhou,HGH,2026-08-16T22:35:00+00:00,active
+CX965,Air China,Hangzhou,HGH,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:40:00+00:00,landed
+CX959,Air China,Hangzhou,HGH,2026-08-16T11:25:00+00:00,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,landed
+CX961,Air China,Hangzhou,HGH,2026-08-16T15:55:00+00:00,Hong Kong International,HKG,2026-08-16T18:35:00+00:00,landed
+CX963,Air China,Hangzhou,HGH,2026-08-16T19:45:00+00:00,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,active
+HX112,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Hangzhou,HGH,2026-08-16T10:55:00+00:00,landed
+HX128,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,Hangzhou,HGH,2026-08-16T23:35:00+00:00,active
+HX129,Hainan Airlines,Hangzhou,HGH,2026-08-16T08:30:00+00:00,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,landed
+HX113,Hainan Airlines,Hangzhou,HGH,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T14:35:00+00:00,landed
+GJ8008,Loong Air,Hong Kong International,HKG,2026-08-16T13:55:00+00:00,Hangzhou,HGH,2026-08-16T16:25:00+00:00,active
+GJ8054,Loong Air,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,Hangzhou,HGH,2026-08-16T19:50:00+00:00,active
+GJ8007,Loong Air,Hangzhou,HGH,2026-08-16T10:15:00+00:00,Hong Kong International,HKG,2026-08-16T12:55:00+00:00,landed
+GJ8053,Loong Air,Hangzhou,HGH,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T16:25:00+00:00,landed
+CA728,Air China,Hong Kong International,HKG,2026-08-16T18:35:00+00:00,Hangzhou,HGH,2026-08-16T20:55:00+00:00,active
+CA727,Cathay Pacific,Hangzhou,HGH,2026-08-16T14:50:00+00:00,Hong Kong International,HKG,2026-08-16T17:20:00+00:00,landed
+UO598,HK express,Hong Kong International,HKG,2026-08-16T07:45:00+00:00,Duong Dong,PQC,2026-08-16T09:40:00+00:00,active
+UO596,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:10:00+00:00,Duong Dong,PQC,2026-08-16T18:05:00+00:00,scheduled
+UO599,HK express,Duong Dong,PQC,2026-08-16T10:40:00+00:00,Hong Kong International,HKG,2026-08-16T14:50:00+00:00,landed
+UO597,HK express,Duong Dong,PQC,2026-08-16T19:05:00+00:00,Hong Kong International,HKG,2026-08-16T23:10:00+00:00,active
+9G501,Sun PhuQuoc Airways,Hong Kong International,HKG,2026-08-16T16:45:00+00:00,Duong Dong,PQC,2026-08-16T18:35:00+00:00,active
+9G502,Sun PhuQuoc Airways,Duong Dong,PQC,2026-08-16T11:55:00+00:00,Hong Kong International,HKG,2026-08-16T15:45:00+00:00,landed
+VJ985,VietJet Air,Hong Kong International,HKG,2026-08-15T16:40:00+00:00,Duong Dong,PQC,2026-08-15T18:25:00+00:00,scheduled
+VJ986,VietJet Air,Duong Dong,PQC,2026-08-15T11:55:00+00:00,Hong Kong International,HKG,2026-08-15T15:40:00+00:00,landed
+UO738,HK express,Hong Kong International,HKG,2026-08-16T07:50:00+00:00,Chiang Mai International,CNX,2026-08-16T09:45:00+00:00,landed
+UO744,HK express,Hong Kong International,HKG,2026-08-16T16:50:00+00:00,Chiang Mai International,CNX,2026-08-16T18:40:00+00:00,landed
+UO739,HK express,Chiang Mai International,CNX,2026-08-16T10:30:00+00:00,Hong Kong International,HKG,2026-08-16T14:25:00+00:00,landed
+UO755,HK express,Chiang Mai International,CNX,2026-08-16T19:25:00+00:00,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,active
+CX921,Cathay Pacific,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Mactan-Cebu International,CEB,2026-08-16T10:50:00+00:00,landed
+CX925,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:20:00+00:00,Mactan-Cebu International,CEB,2026-08-16T18:10:00+00:00,landed
+CX948,Cathay Pacific,Mactan-Cebu International,CEB,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,landed
+CX926,Cathay Pacific,Mactan-Cebu International,CEB,2026-08-16T19:20:00+00:00,Hong Kong International,HKG,2026-08-16T22:15:00+00:00,active
+UO192,HK express,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Chingchuankang,RMQ,2026-08-16T09:35:00+00:00,active
+UO102,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:30:00+00:00,Chingchuankang,RMQ,2026-08-16T11:10:00+00:00,landed
+UO172,HK express,Hong Kong International,HKG,2026-08-16T11:05:00+00:00,Chingchuankang,RMQ,2026-08-16T12:45:00+00:00,landed
+UO182,HK express,Hong Kong International,HKG,2026-08-16T18:15:00+00:00,Chingchuankang,RMQ,2026-08-16T19:55:00+00:00,landed
+UO193,HK express,Chingchuankang,RMQ,2026-08-16T10:25:00+00:00,Hong Kong International,HKG,2026-08-16T12:10:00+00:00,landed
+UO103,HK express,Chingchuankang,RMQ,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T13:45:00+00:00,landed
+UO173,HK express,Chingchuankang,RMQ,2026-08-16T13:35:00+00:00,Hong Kong International,HKG,2026-08-16T15:20:00+00:00,active
+UO183,HK express,Chingchuankang,RMQ,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-16T22:25:00+00:00,active
+UO724,HK express,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Phuket International,HKT,2026-08-16T10:30:00+00:00,landed
+UO784,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,Phuket International,HKT,2026-08-16T18:10:00+00:00,landed
+UO725,HK express,Phuket International,HKT,2026-08-16T11:15:00+00:00,Hong Kong International,HKG,2026-08-16T16:00:00+00:00,landed
+UO795,HK express,Phuket International,HKT,2026-08-16T19:00:00+00:00,Hong Kong International,HKG,2026-08-17T00:00:00+00:00,scheduled
+CX771,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:05:00+00:00,Phuket International,HKT,2026-08-16T10:50:00+00:00,landed
+CX773,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:45:00+00:00,Phuket International,HKT,2026-08-16T17:20:00+00:00,landed
+CX770,Cathay Pacific,Phuket International,HKT,2026-08-16T11:50:00+00:00,Hong Kong International,HKG,2026-08-16T16:50:00+00:00,landed
+CX778,Qatar Airways,Phuket International,HKT,2026-08-16T18:20:00+00:00,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,active
+CX488,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T09:50:00+00:00,landed
+CX564,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:05:00+00:00,Kansai International,KIX,2026-08-16T14:50:00+00:00,landed
+CX530,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:30:00+00:00,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T15:30:00+00:00,landed
+CX466,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:00:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:00:00+00:00,landed
+CX450,Japan Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:00:00+00:00,Narita International Airport,NRT,2026-08-16T17:15:00+00:00,active
+CX494,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:10:00+00:00,scheduled
+CX400,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:10:00+00:00,landed
+CX420,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:35:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:30:00+00:00,landed
+CX472,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:45:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T17:40:00+00:00,landed
+CX402,Cathay Pacific,Hong Kong International,HKG,2026-08-16T18:15:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T20:05:00+00:00,landed
+CX464,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:20:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:20:00+00:00,active
+CX408,Cathay Pacific,Hong Kong International,HKG,2026-08-16T22:50:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-17T00:35:00+00:00,scheduled
+CX469,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T22:20:00+00:00,Hong Kong International,HKG,2026-08-17T00:25:00+00:00,scheduled
+CX407,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,landed
+CX489,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T10:50:00+00:00,Hong Kong International,HKG,2026-08-16T13:00:00+00:00,landed
+CX461,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,landed
+CX495,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:20:00+00:00,Hong Kong International,HKG,2026-08-16T15:20:00+00:00,active
+CX443,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T16:10:00+00:00,Hong Kong International,HKG,2026-08-16T18:10:00+00:00,active
+CX421,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T16:30:00+00:00,Hong Kong International,HKG,2026-08-16T18:30:00+00:00,active
+CX473,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T18:40:00+00:00,Hong Kong International,HKG,2026-08-16T20:40:00+00:00,active
+CX479,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:05:00+00:00,Hong Kong International,HKG,2026-08-16T23:05:00+00:00,active
+CX422,Cathay Pacific,Hong Kong International,HKG,2026-08-15T07:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-15T08:55:00+00:00,landed
+CX477,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-15T09:55:00+00:00,Hong Kong International,HKG,2026-08-15T12:05:00+00:00,landed
+HB702,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T10:15:00+00:00,landed
+HB704,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T18:30:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T20:20:00+00:00,active
+HB710,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T22:00:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-17T00:05:00+00:00,scheduled
+HB711,Greater Bay Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-17T02:00:00+00:00,Hong Kong International,HKG,2026-08-17T04:00:00+00:00,scheduled
+HB703,Greater Bay Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:15:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+HB705,Greater Bay Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:20:00+00:00,Hong Kong International,HKG,2026-08-16T23:20:00+00:00,scheduled
+HX252,EVA Air,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:15:00+00:00,landed
+HX254,EVA Air,Hong Kong International,HKG,2026-08-16T12:55:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T14:45:00+00:00,landed
+HX260,EVA Air,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T18:20:00+00:00,active
+HX282,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T20:45:00+00:00,active
+HX253,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:15:00+00:00,Hong Kong International,HKG,2026-08-16T14:15:00+00:00,landed
+HX255,Hong Kong Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:45:00+00:00,Hong Kong International,HKG,2026-08-16T18:10:00+00:00,landed
+HX261,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T19:20:00+00:00,Hong Kong International,HKG,2026-08-16T21:20:00+00:00,active
+HX283,Hong Kong Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:45:00+00:00,Hong Kong International,HKG,2026-08-16T23:45:00+00:00,scheduled
+BR892,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:55:00+00:00,landed
+BR852,EVA Air,Hong Kong International,HKG,2026-08-16T11:05:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:00:00+00:00,landed
+BR868,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T13:30:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:20:00+00:00,active
+BR870,EVA Air,Hong Kong International,HKG,2026-08-16T15:25:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T17:15:00+00:00,active
+BR872,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T19:40:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:30:00+00:00,active
+BR858,EVA Air,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T22:50:00+00:00,active
+BR891,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T07:00:00+00:00,Hong Kong International,HKG,2026-08-16T08:50:00+00:00,landed
+BR851,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T08:15:00+00:00,Hong Kong International,HKG,2026-08-16T10:05:00+00:00,landed
+BR867,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T10:05:00+00:00,Hong Kong International,HKG,2026-08-16T12:05:00+00:00,landed
+BR869,Hong Kong Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:40:00+00:00,Hong Kong International,HKG,2026-08-16T14:25:00+00:00,landed
+BR871,EVA Air,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T16:40:00+00:00,Hong Kong International,HKG,2026-08-16T18:30:00+00:00,landed
+BR857,Hong Kong Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T18:10:00+00:00,Hong Kong International,HKG,2026-08-16T19:55:00+00:00,landed
+CI602,China Airlines,Hong Kong International,HKG,2026-08-16T10:15:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:10:00+00:00,landed
+CI910,China Airlines,Hong Kong International,HKG,2026-08-16T14:05:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:55:00+00:00,active
+CI916,China Airlines,Hong Kong International,HKG,2026-08-16T17:35:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T19:25:00+00:00,active
+CI920,China Airlines,Hong Kong International,HKG,2026-08-16T20:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T22:10:00+00:00,active
+CI924,China Airlines,Hong Kong International,HKG,2026-08-16T21:15:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T23:10:00+00:00,active
+CI601,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T07:20:00+00:00,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,landed
+CI909,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T11:00:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+CI915,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T14:35:00+00:00,Hong Kong International,HKG,2026-08-16T16:35:00+00:00,landed
+CI919,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T17:00:00+00:00,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,landed
+CI923,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T18:15:00+00:00,Hong Kong International,HKG,2026-08-16T20:10:00+00:00,landed
+CI904,China Airlines,Hong Kong International,HKG,2026-08-16T11:05:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:00:00+00:00,landed
+CI903,China Airlines,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:05:00+00:00,landed
+UO110,HK express,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T12:45:00+00:00,landed
+UO112,HK express,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T14:25:00+00:00,landed
+UO114,HK express,Hong Kong International,HKG,2026-08-16T14:55:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T16:45:00+00:00,active
+UO116,HK express,Hong Kong International,HKG,2026-08-16T18:40:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T20:30:00+00:00,active
+UO111,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,landed
+UO113,HK express,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T15:20:00+00:00,Hong Kong International,HKG,2026-08-16T17:10:00+00:00,landed
+UO115,HK express,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T17:40:00+00:00,Hong Kong International,HKG,2026-08-16T19:35:00+00:00,landed
+UO117,HK express,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T21:25:00+00:00,Hong Kong International,HKG,2026-08-16T23:20:00+00:00,scheduled
+JX234,STARLUX,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T13:35:00+00:00,landed
+JX236,STARLUX,Hong Kong International,HKG,2026-08-16T20:10:00+00:00,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T22:10:00+00:00,active
+JX233,STARLUX,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T08:15:00+00:00,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,landed
+JX235,STARLUX,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T17:00:00+00:00,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,landed
+UO130,HK express,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T09:30:00+00:00,landed
+UO136,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T14:15:00+00:00,landed
+UO134,HK express,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T20:20:00+00:00,landed
+UO131,HK express,Kaoshiung International Airport,KHH,2026-08-16T10:15:00+00:00,Hong Kong International,HKG,2026-08-16T11:45:00+00:00,landed
+UO133,HK express,Kaoshiung International Airport,KHH,2026-08-16T15:00:00+00:00,Hong Kong International,HKG,2026-08-16T16:35:00+00:00,active
+UO135,HK express,Kaoshiung International Airport,KHH,2026-08-16T21:15:00+00:00,Hong Kong International,HKG,2026-08-16T22:50:00+00:00,active
+CX432,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:35:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T10:10:00+00:00,landed
+CX424,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:05:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T12:40:00+00:00,landed
+CX458,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:35:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T18:10:00+00:00,landed
+CX448,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:40:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T23:10:00+00:00,scheduled
+CX449,Cathay Pacific,Kaoshiung International Airport,KHH,2026-08-16T07:30:00+00:00,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,landed
+CX431,Cathay Pacific,Kaoshiung International Airport,KHH,2026-08-16T11:10:00+00:00,Hong Kong International,HKG,2026-08-16T12:50:00+00:00,landed
+CX423,Cathay Pacific,Kaoshiung International Airport,KHH,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T15:25:00+00:00,active
+CX459,Cathay Pacific,Kaoshiung International Airport,KHH,2026-08-16T19:10:00+00:00,Hong Kong International,HKG,2026-08-16T20:50:00+00:00,active
+CI934,Mandarin Airlines,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T11:45:00+00:00,landed
+CI936,China Airlines,Hong Kong International,HKG,2026-08-16T20:40:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T22:10:00+00:00,scheduled
+CI933,China Airlines,Kaoshiung International Airport,KHH,2026-08-16T07:35:00+00:00,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,landed
+CI935,China Airlines,Kaoshiung International Airport,KHH,2026-08-16T18:00:00+00:00,Hong Kong International,HKG,2026-08-16T19:40:00+00:00,active
+BR846,EVA Air,Hong Kong International,HKG,2026-08-16T12:05:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T13:40:00+00:00,landed
+BR850,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T19:25:00+00:00,Kaoshiung International Airport,KHH,2026-08-16T21:00:00+00:00,landed
+BR845,EVA Air,Kaoshiung International Airport,KHH,2026-08-16T09:15:00+00:00,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,landed
+BR849,EVA Air,Kaoshiung International Airport,KHH,2026-08-16T16:45:00+00:00,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,active
+AE984,Mandarin Airlines,Hong Kong International,HKG,2026-08-15T10:10:00+00:00,Kaoshiung International Airport,KHH,2026-08-15T11:45:00+00:00,landed
+AE983,Mandarin Airlines,Kaoshiung International Airport,KHH,2026-08-15T07:35:00+00:00,Hong Kong International,HKG,2026-08-15T09:10:00+00:00,landed
+UO706,HK express,Hong Kong International,HKG,2026-08-16T07:55:00+00:00,Sultan Abdul Aziz Shah,SZB,2026-08-16T12:00:00+00:00,landed
+UO717,HK express,Sultan Abdul Aziz Shah,SZB,2026-08-16T13:00:00+00:00,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,landed
+UO716,HK express,Hong Kong International,HKG,2026-08-15T08:00:00+00:00,Sultan Abdul Aziz Shah,SZB,2026-08-15T12:00:00+00:00,landed
+UO896,HK express,Hong Kong International,HKG,2026-08-16T08:00:00+00:00,Sendai,SDJ,2026-08-16T13:35:00+00:00,landed
+UO897,HK express,Sendai,SDJ,2026-08-16T14:30:00+00:00,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,landed
+CX257,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:05:00+00:00,Heathrow,LHR,2026-08-16T15:15:00+00:00,scheduled
+CX253,Cathay Pacific,Hong Kong International,HKG,2026-08-16T13:25:00+00:00,Heathrow,LHR,2026-08-16T20:35:00+00:00,active
+CX251,Cathay Pacific,Hong Kong International,HKG,2026-08-16T22:45:00+00:00,Heathrow,LHR,2026-08-17T05:40:00+00:00,scheduled
+CX237,Cathay Pacific,Hong Kong International,HKG,2026-08-16T23:05:00+00:00,Heathrow,LHR,2026-08-17T06:15:00+00:00,scheduled
+CX255,Cathay Pacific,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,Heathrow,LHR,2026-08-17T06:20:00+00:00,scheduled
+CX252,Cathay Pacific,Heathrow,LHR,2026-08-16T12:20:00+00:00,Hong Kong International,HKG,2026-08-17T07:50:00+00:00,active
+CX238,Cathay Pacific,Heathrow,LHR,2026-08-16T17:00:00+00:00,Hong Kong International,HKG,2026-08-17T12:35:00+00:00,scheduled
+CX250,Cathay Pacific,Heathrow,LHR,2026-08-16T18:20:00+00:00,Hong Kong International,HKG,2026-08-17T14:10:00+00:00,scheduled
+CX256,Cathay Pacific,Heathrow,LHR,2026-08-16T20:15:00+00:00,Hong Kong International,HKG,2026-08-17T15:45:00+00:00,scheduled
+CX254,Cathay Pacific,Heathrow,LHR,2026-08-15T22:15:00+00:00,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,landed
+CX239,Cathay Pacific,Hong Kong International,HKG,2026-08-15T11:05:00+00:00,Heathrow,LHR,2026-08-15T18:10:00+00:00,landed
+CX723,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:10:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-16T12:05:00+00:00,landed
+CX725,Malaysia Airlines,Hong Kong International,HKG,2026-08-16T12:40:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-16T16:40:00+00:00,landed
+CX729,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-16T20:55:00+00:00,active
+CX733,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:30:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-17T01:30:00+00:00,scheduled
+CX732,Cathay Pacific,Kuala Lumpur International Airport (klia),KUL,2026-08-17T02:45:00+00:00,Hong Kong International,HKG,2026-08-17T07:00:00+00:00,scheduled
+CX730,Cathay Pacific,Kuala Lumpur International Airport (klia),KUL,2026-08-16T08:10:00+00:00,Hong Kong International,HKG,2026-08-16T12:20:00+00:00,landed
+CX722,Qatar Airways,Kuala Lumpur International Airport (klia),KUL,2026-08-16T13:10:00+00:00,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,active
+CX724,Qatar Airways,Kuala Lumpur International Airport (klia),KUL,2026-08-16T17:40:00+00:00,Hong Kong International,HKG,2026-08-16T22:00:00+00:00,active
+AK139,AirAsia,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-16T15:55:00+00:00,landed
+AK138,AirAsia,Bangalore International Airport,BLR,2026-08-16T23:20:00+00:00,Don Muang,DMK,2026-08-17T04:40:00+00:00,scheduled
+OD606,Batik Air,Hong Kong International,HKG,2026-08-16T15:15:00+00:00,Kuala Lumpur International Airport (klia),KUL,2026-08-16T19:05:00+00:00,landed
+OD605,Etihad Airways,Kuala Lumpur International Airport (klia),KUL,2026-08-16T10:15:00+00:00,Hong Kong International,HKG,2026-08-16T14:15:00+00:00,scheduled
+CX767,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:20:00+00:00,Tan Son Nhat International,SGN,2026-08-16T10:05:00+00:00,landed
+CX769,Vietnam Airlines,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,Tan Son Nhat International,SGN,2026-08-16T17:20:00+00:00,active
+CX721,Cathay Pacific,Hong Kong International,HKG,2026-08-16T22:40:00+00:00,Tan Son Nhat International,SGN,2026-08-17T00:20:00+00:00,scheduled
+CX744,Cathay Pacific,Tan Son Nhat International,SGN,2026-08-16T06:55:00+00:00,Hong Kong International,HKG,2026-08-16T10:40:00+00:00,landed
+CX766,Vietnam Airlines,Tan Son Nhat International,SGN,2026-08-16T11:05:00+00:00,Hong Kong International,HKG,2026-08-16T14:55:00+00:00,landed
+CX764,Vietnam Airlines,Tan Son Nhat International,SGN,2026-08-16T18:20:00+00:00,Hong Kong International,HKG,2026-08-16T22:05:00+00:00,active
+CX786,Cathay Pacific,Tan Son Nhat International,SGN,2026-08-15T07:10:00+00:00,Hong Kong International,HKG,2026-08-15T10:55:00+00:00,landed
+VN595,Vietnam Airlines,Hong Kong International,HKG,2026-08-16T18:45:00+00:00,Tan Son Nhat International,SGN,2026-08-16T20:25:00+00:00,active
+VN594,Air Cambodia,Tan Son Nhat International,SGN,2026-08-16T13:35:00+00:00,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,landed
+VJ877,,Hong Kong International,HKG,2026-08-16T19:50:00+00:00,Tan Son Nhat International,SGN,2026-08-16T21:30:00+00:00,active
+VJ876,,Tan Son Nhat International,SGN,2026-08-16T15:10:00+00:00,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,landed
+AI315,Air India,Hong Kong International,HKG,2026-08-16T08:20:00+00:00,Indira Gandhi International,DEL,2026-08-16T11:50:00+00:00,landed
+AI314,Air India,Indira Gandhi International,DEL,2026-08-16T22:10:00+00:00,Hong Kong International,HKG,2026-08-17T06:15:00+00:00,scheduled
+CX665,Cathay Pacific,Hong Kong International,HKG,2026-08-16T18:00:00+00:00,Indira Gandhi International,DEL,2026-08-16T21:10:00+00:00,active
+CX679,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,Indira Gandhi International,DEL,2026-08-16T23:50:00+00:00,active
+CX698,Cathay Pacific,Indira Gandhi International,DEL,2026-08-16T22:45:00+00:00,Hong Kong International,HKG,2026-08-17T06:40:00+00:00,scheduled
+CX694,Cathay Pacific,Indira Gandhi International,DEL,2026-08-16T01:10:00+00:00,Hong Kong International,HKG,2026-08-16T09:20:00+00:00,landed
+UO250,HK express,Hong Kong International,HKG,2026-08-16T18:45:00+00:00,Fenghuang International (Phoenix International),SYX,2026-08-16T20:30:00+00:00,active
+UO251,Cathay Pacific,Fenghuang International (Phoenix International),SYX,2026-08-16T21:45:00+00:00,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,active
+HX169,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,Fenghuang International (Phoenix International),SYX,2026-08-16T12:45:00+00:00,landed
+HX170,Hainan Airlines,Fenghuang International (Phoenix International),SYX,2026-08-16T13:45:00+00:00,Hong Kong International,HKG,2026-08-16T15:45:00+00:00,landed
+CX396,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:00:00+00:00,Wenzhou,WNZ,2026-08-16T19:05:00+00:00,active
+CX307,Cathay Pacific,Wenzhou,WNZ,2026-08-16T20:15:00+00:00,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,scheduled
+CX384,Cathay Pacific,Hong Kong International,HKG,2026-08-15T08:30:00+00:00,Wenzhou,WNZ,2026-08-15T10:40:00+00:00,landed
+CX385,Cathay Pacific,Wenzhou,WNZ,2026-08-15T11:50:00+00:00,Hong Kong International,HKG,2026-08-15T14:00:00+00:00,landed
+CZ5010,China Southern Airlines,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Beijing Daxing International Airport,PKX,2026-08-16T11:50:00+00:00,landed
+CZ356,Sichuan Airlines,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,Beijing Daxing International Airport,PKX,2026-08-16T16:55:00+00:00,active
+CZ355,China Southern Airlines,Beijing Daxing International Airport,PKX,2026-08-16T08:55:00+00:00,Hong Kong International,HKG,2026-08-16T12:25:00+00:00,landed
+CZ5009,Sichuan Airlines,Beijing Daxing International Airport,PKX,2026-08-16T18:55:00+00:00,Hong Kong International,HKG,2026-08-16T22:45:00+00:00,active
+HX398,Hainan Airlines,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,Beijing Daxing International Airport,PKX,2026-08-16T13:30:00+00:00,landed
+HX399,Hainan Airlines,Beijing Daxing International Airport,PKX,2026-08-16T14:30:00+00:00,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,landed
+MU5016,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T13:35:00+00:00,Beijing Daxing International Airport,PKX,2026-08-16T17:15:00+00:00,active
+MU5015,China Eastern Airlines,Beijing Daxing International Airport,PKX,2026-08-16T08:50:00+00:00,Hong Kong International,HKG,2026-08-16T12:20:00+00:00,landed
+CA764,Air China,Hong Kong International,HKG,2026-08-16T18:30:00+00:00,Beijing Daxing International Airport,PKX,2026-08-16T21:55:00+00:00,active
+CA763,Cathay Pacific,Beijing Daxing International Airport,PKX,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:10:00+00:00,landed
+UO234,HK express,Hong Kong International,HKG,2026-08-16T22:15:00+00:00,Beijing Daxing International Airport,PKX,2026-08-17T01:35:00+00:00,scheduled
+UO235,HK express,Beijing Daxing International Airport,PKX,2026-08-17T02:35:00+00:00,Hong Kong International,HKG,2026-08-17T06:10:00+00:00,scheduled
+CX914,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:30:00+00:00,Fuzhou,FOC,2026-08-16T10:15:00+00:00,landed
+CX990,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,Fuzhou,FOC,2026-08-16T19:25:00+00:00,active
+CX995,Cathay Pacific,Fuzhou,FOC,2026-08-16T11:30:00+00:00,Hong Kong International,HKG,2026-08-16T13:25:00+00:00,landed
+CX991,Cathay Pacific,Fuzhou,FOC,2026-08-16T20:45:00+00:00,Hong Kong International,HKG,2026-08-16T22:40:00+00:00,scheduled
+MF8664,China Southern Airlines,Hong Kong International,HKG,2026-08-16T13:10:00+00:00,Fuzhou,FOC,2026-08-16T14:50:00+00:00,active
+MF8663,China Southern Airlines,Fuzhou,FOC,2026-08-16T10:10:00+00:00,Hong Kong International,HKG,2026-08-16T12:10:00+00:00,landed
+CX607,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:35:00+00:00,Techo International Airport,KTI,2026-08-16T10:15:00+00:00,active
+CX655,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:35:00+00:00,Techo International Airport,KTI,2026-08-16T17:15:00+00:00,active
+CX608,Finnair,Techo International Airport,KTI,2026-08-16T11:25:00+00:00,Hong Kong International,HKG,2026-08-16T15:15:00+00:00,landed
+CX600,Cathay Pacific,Techo International Airport,KTI,2026-08-16T18:30:00+00:00,Hong Kong International,HKG,2026-08-16T22:15:00+00:00,active
+KR508,Cambodia Airways,Hong Kong International,HKG,2026-08-15T12:25:00+00:00,Techo International Airport,KTI,2026-08-15T14:05:00+00:00,active
+KR507,Cambodia Airways,Techo International Airport,KTI,2026-08-15T07:45:00+00:00,Hong Kong International,HKG,2026-08-15T11:25:00+00:00,landed
+CX548,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:40:00+00:00,Haneda Airport,HND,2026-08-16T13:55:00+00:00,landed
+CX542,Fiji Airways,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,Haneda Airport,HND,2026-08-16T21:35:00+00:00,scheduled
+CX543,Qatar Airways,Haneda Airport,HND,2026-08-16T10:05:00+00:00,Hong Kong International,HKG,2026-08-16T13:50:00+00:00,landed
+CX549,Qatar Airways,Haneda Airport,HND,2026-08-16T16:20:00+00:00,Hong Kong International,HKG,2026-08-16T20:00:00+00:00,landed
+NH860,All Nippon Airways,Hong Kong International,HKG,2026-08-16T14:35:00+00:00,Haneda Airport,HND,2026-08-16T20:00:00+00:00,landed
+NH814,All Nippon Airways,Hong Kong International,HKG,2026-08-16T23:55:00+00:00,Haneda Airport,HND,2026-08-17T04:55:00+00:00,scheduled
+NH813,United Airlines,Haneda Airport,HND,2026-08-17T01:35:00+00:00,Hong Kong International,HKG,2026-08-17T05:15:00+00:00,scheduled
+NH859,United Airlines,Haneda Airport,HND,2026-08-16T08:35:00+00:00,Hong Kong International,HKG,2026-08-16T12:25:00+00:00,landed
+UO622,HK express,Hong Kong International,HKG,2026-08-16T17:35:00+00:00,Haneda Airport,HND,2026-08-16T22:55:00+00:00,active
+UO628,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:00:00+00:00,Haneda Airport,HND,2026-08-17T01:20:00+00:00,active
+UO624,HK express,Hong Kong International,HKG,2026-08-16T23:35:00+00:00,Haneda Airport,HND,2026-08-17T05:00:00+00:00,scheduled
+UO623,Cathay Pacific,Haneda Airport,HND,2026-08-17T01:00:00+00:00,Hong Kong International,HKG,2026-08-17T04:40:00+00:00,scheduled
+UO629,HK express,Haneda Airport,HND,2026-08-17T02:20:00+00:00,Hong Kong International,HKG,2026-08-17T06:00:00+00:00,scheduled
+UO625,HK express,Haneda Airport,HND,2026-08-16T06:35:00+00:00,Hong Kong International,HKG,2026-08-16T10:15:00+00:00,landed
+HX690,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T08:45:00+00:00,Chitose,CTS,2026-08-16T14:55:00+00:00,landed
+HX691,Hong Kong Airlines,Chitose,CTS,2026-08-16T15:55:00+00:00,Hong Kong International,HKG,2026-08-16T20:45:00+00:00,landed
+HB880,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,Chitose,CTS,2026-08-16T15:05:00+00:00,landed
+HB881,Greater Bay Airlines,Chitose,CTS,2026-08-16T16:05:00+00:00,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,active
+CX580,Qatar Airways,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,Chitose,CTS,2026-08-16T15:20:00+00:00,landed
+CX581,Cathay Pacific,Chitose,CTS,2026-08-16T16:40:00+00:00,Hong Kong International,HKG,2026-08-16T20:55:00+00:00,active
+CX582,Cathay Pacific,Hong Kong International,HKG,2026-08-15T10:00:00+00:00,Chitose,CTS,2026-08-15T16:05:00+00:00,scheduled
+CX583,Cathay Pacific,Chitose,CTS,2026-08-15T17:30:00+00:00,Hong Kong International,HKG,2026-08-15T21:30:00+00:00,landed
+TK171,Turkish Airlines,Hong Kong International,HKG,2026-08-16T08:55:00+00:00,Istanbul Airport,IST,2026-08-16T15:10:00+00:00,landed
+TK170,Turkish Airlines,Istanbul Airport,IST,2026-08-16T15:50:00+00:00,Hong Kong International,HKG,2026-08-17T07:25:00+00:00,active
+CX936,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:15:00+00:00,Tianhe International,WUH,2026-08-16T10:20:00+00:00,landed
+CX937,Air China,Tianhe International,WUH,2026-08-16T11:30:00+00:00,Hong Kong International,HKG,2026-08-16T13:50:00+00:00,landed
+CX938,Cathay Pacific,Hong Kong International,HKG,2026-08-15T17:35:00+00:00,Tianhe International,WUH,2026-08-15T19:40:00+00:00,scheduled
+CX931,Cathay Pacific,Tianhe International,WUH,2026-08-15T20:50:00+00:00,Hong Kong International,HKG,2026-08-15T23:05:00+00:00,scheduled
+CX924,Cathay Pacific,Hong Kong International,HKG,2026-08-15T09:00:00+00:00,Tianhe International,WUH,2026-08-15T11:05:00+00:00,landed
+MU2570,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T20:45:00+00:00,Tianhe International,WUH,2026-08-16T22:40:00+00:00,active
+MU2569,China Eastern Airlines,Tianhe International,WUH,2026-08-16T17:15:00+00:00,Hong Kong International,HKG,2026-08-16T19:45:00+00:00,landed
+UO822,HK express,Hong Kong International,HKG,2026-08-15T09:05:00+00:00,Hiroshima Airport,HIJ,2026-08-15T13:40:00+00:00,scheduled
+UO823,HK express,Hiroshima Airport,HIJ,2026-08-15T14:30:00+00:00,Hong Kong International,HKG,2026-08-15T17:20:00+00:00,landed
+CX777,Qatar Airways,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,Soekarno-Hatta International,CGK,2026-08-16T13:10:00+00:00,landed
+CX719,Qatar Airways,Hong Kong International,HKG,2026-08-16T15:45:00+00:00,Soekarno-Hatta International,CGK,2026-08-16T19:40:00+00:00,active
+CX797,Qatar Airways,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,Soekarno-Hatta International,CGK,2026-08-16T22:55:00+00:00,active
+CX798,British Airways,Soekarno-Hatta International,CGK,2026-08-17T00:05:00+00:00,Hong Kong International,HKG,2026-08-17T06:05:00+00:00,scheduled
+CX718,Cathay Pacific,Soekarno-Hatta International,CGK,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T14:10:00+00:00,landed
+CX776,Qatar Airways,Soekarno-Hatta International,CGK,2026-08-16T14:20:00+00:00,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,active
+GA863,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T09:40:00+00:00,Soekarno-Hatta International,CGK,2026-08-16T13:25:00+00:00,landed
+GA860,Hong Kong Airlines,Soekarno-Hatta International,CGK,2026-08-16T23:50:00+00:00,Hong Kong International,HKG,2026-08-17T05:45:00+00:00,scheduled
+CX330,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:15:00+00:00,Changsha,CSX,2026-08-16T11:00:00+00:00,landed
+CX309,Cathay Pacific,Changsha,CSX,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,landed
+CX970,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:30:00+00:00,Xiamen,XMN,2026-08-16T11:05:00+00:00,landed
+CX978,Cathay Pacific,Hong Kong International,HKG,2026-08-16T17:45:00+00:00,Xiamen,XMN,2026-08-16T19:25:00+00:00,landed
+CX973,Cathay Pacific,Xiamen,XMN,2026-08-16T12:15:00+00:00,Hong Kong International,HKG,2026-08-16T14:00:00+00:00,landed
+CX979,Cathay Pacific,Xiamen,XMN,2026-08-16T20:35:00+00:00,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,active
+CX342,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:35:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T12:05:00+00:00,landed
+CX328,Cathay Pacific,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T20:55:00+00:00,active
+CX349,Cathay Pacific,Shanghai Hongqiao International,SHA,2026-08-16T13:20:00+00:00,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,active
+CX327,Cathay Pacific,Shanghai Hongqiao International,SHA,2026-08-16T22:30:00+00:00,Hong Kong International,HKG,2026-08-17T01:15:00+00:00,scheduled
+MU722,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T12:05:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T14:40:00+00:00,landed
+MU5018,Shanghai Airlines,Hong Kong International,HKG,2026-08-16T12:50:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T15:10:00+00:00,landed
+MU721,Shanghai Airlines,Shanghai Hongqiao International,SHA,2026-08-16T08:15:00+00:00,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,landed
+MU5017,Shanghai Airlines,Shanghai Hongqiao International,SHA,2026-08-16T09:10:00+00:00,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,landed
+HX248,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T12:25:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T14:55:00+00:00,landed
+HX238,Hainan Airlines,Hong Kong International,HKG,2026-08-16T15:30:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T18:00:00+00:00,landed
+HX249,Hainan Airlines,Shanghai Hongqiao International,SHA,2026-08-16T16:10:00+00:00,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,active
+HX239,Hainan Airlines,Shanghai Hongqiao International,SHA,2026-08-16T19:15:00+00:00,Hong Kong International,HKG,2026-08-16T21:55:00+00:00,active
+FM810,Shanghai Airlines,Hong Kong International,HKG,2026-08-16T18:50:00+00:00,Shanghai Hongqiao International,SHA,2026-08-16T21:15:00+00:00,active
+FM809,China Eastern Airlines,Shanghai Hongqiao International,SHA,2026-08-16T15:00:00+00:00,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,active
+CX986,Air China,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,Shuangliu,CTU,2026-08-16T12:35:00+00:00,landed
+CX916,Air China,Hong Kong International,HKG,2026-08-16T19:15:00+00:00,Shuangliu,CTU,2026-08-16T21:55:00+00:00,active
+CX917,Air China,Shuangliu,CTU,2026-08-16T08:10:00+00:00,Hong Kong International,HKG,2026-08-16T11:10:00+00:00,landed
+CX987,Air China,Shuangliu,CTU,2026-08-16T13:55:00+00:00,Hong Kong International,HKG,2026-08-16T16:50:00+00:00,landed
+HX452,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T17:10:00+00:00,Shuangliu,CTU,2026-08-16T20:00:00+00:00,active
+HX453,Hainan Airlines,Shuangliu,CTU,2026-08-16T21:00:00+00:00,Hong Kong International,HKG,2026-08-16T23:45:00+00:00,active
+CA428,Air China,Hong Kong International,HKG,2026-08-16T17:30:00+00:00,Shuangliu,CTU,2026-08-16T20:15:00+00:00,active
+CA427,Shenzhen Airlines,Shuangliu,CTU,2026-08-16T13:15:00+00:00,Hong Kong International,HKG,2026-08-16T15:55:00+00:00,landed
+3U3960,Sichuan Airlines,Hong Kong International,HKG,2026-08-16T18:40:00+00:00,Shuangliu,CTU,2026-08-16T21:10:00+00:00,active
+3U3959,China Southern Airlines,Shuangliu,CTU,2026-08-16T14:45:00+00:00,Hong Kong International,HKG,2026-08-16T17:25:00+00:00,landed
+UO642,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:00:00+00:00,Takamatsu,TAK,2026-08-16T14:45:00+00:00,active
+UO643,HK express,Takamatsu,TAK,2026-08-16T15:30:00+00:00,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,active
+CX536,Qatar Airways,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T15:05:00+00:00,landed
+CX532,Qatar Airways,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T21:15:00+00:00,landed
+CX563,Cathay Pacific,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T10:00:00+00:00,Hong Kong International,HKG,2026-08-16T13:25:00+00:00,landed
+CX539,Cathay Pacific,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T16:10:00+00:00,Hong Kong International,HKG,2026-08-16T19:30:00+00:00,active
+CX531,Cathay Pacific,Taiwan Taoyuan International (Chiang Kai Shek International),TPE,2026-08-16T19:55:00+00:00,Hong Kong International,HKG,2026-08-16T22:00:00+00:00,active
+UO690,HK express,Hong Kong International,HKG,2026-08-16T10:50:00+00:00,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T15:50:00+00:00,landed
+UO670,HK express,Hong Kong International,HKG,2026-08-16T14:50:00+00:00,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T19:50:00+00:00,landed
+UO671,HK express,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T20:45:00+00:00,Hong Kong International,HKG,2026-08-17T00:00:00+00:00,active
+UO691,HK express,Chu-Bu Centrair International (Central Japan International),NGO,2026-08-16T16:45:00+00:00,Hong Kong International,HKG,2026-08-16T20:00:00+00:00,active
+HU706,Hainan Airlines,Hong Kong International,HKG,2026-08-16T10:15:00+00:00,Haikou,HAK,2026-08-16T11:40:00+00:00,landed
+HU720,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,Haikou,HAK,2026-08-16T17:40:00+00:00,active
+HU705,Hainan Airlines,Haikou,HAK,2026-08-16T07:35:00+00:00,Hong Kong International,HKG,2026-08-16T09:05:00+00:00,landed
+HU719,Hainan Airlines,Haikou,HAK,2026-08-16T13:30:00+00:00,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,landed
+CX310,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:10:00+00:00,Haikou,HAK,2026-08-16T15:40:00+00:00,active
+CX313,Cathay Pacific,Haikou,HAK,2026-08-16T16:50:00+00:00,Hong Kong International,HKG,2026-08-16T18:20:00+00:00,landed
+CX954,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:15:00+00:00,Qingdao,TAO,2026-08-16T13:30:00+00:00,landed
+CX951,Cathay Pacific,Qingdao,TAO,2026-08-16T14:45:00+00:00,Hong Kong International,HKG,2026-08-16T18:15:00+00:00,active
+SC4632,Shandong Airlines,Hong Kong International,HKG,2026-08-16T17:30:00+00:00,Qingdao,TAO,2026-08-16T20:35:00+00:00,active
+SC4631,Air China,Qingdao,TAO,2026-08-16T12:50:00+00:00,Hong Kong International,HKG,2026-08-16T16:30:00+00:00,landed
+QW916,Qingdao Airlines,Hong Kong International,HKG,2026-08-15T13:45:00+00:00,Qingdao,TAO,2026-08-15T17:05:00+00:00,scheduled
+QW915,Qingdao Airlines,Qingdao,TAO,2026-08-15T09:25:00+00:00,Hong Kong International,HKG,2026-08-15T12:45:00+00:00,landed
+CX356,Cathay Pacific,Hong Kong International,HKG,2026-08-16T10:25:00+00:00,Nanjing Lukou International Airport,NKG,2026-08-16T13:00:00+00:00,landed
+CX304,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:25:00+00:00,Nanjing Lukou International Airport,NKG,2026-08-16T22:05:00+00:00,active
+CX305,Cathay Pacific,Nanjing Lukou International Airport,NKG,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:45:00+00:00,landed
+CX357,Cathay Pacific,Nanjing Lukou International Airport,NKG,2026-08-16T14:15:00+00:00,Hong Kong International,HKG,2026-08-16T17:05:00+00:00,active
+MU766,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,Nanjing Lukou International Airport,NKG,2026-08-16T14:00:00+00:00,landed
+MU765,China Eastern Airlines,Nanjing Lukou International Airport,NKG,2026-08-16T08:00:00+00:00,Hong Kong International,HKG,2026-08-16T10:30:00+00:00,landed
+HX216,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T15:15:00+00:00,Nanjing Lukou International Airport,NKG,2026-08-16T17:50:00+00:00,landed
+HX217,Hainan Airlines,Nanjing Lukou International Airport,NKG,2026-08-16T18:55:00+00:00,Hong Kong International,HKG,2026-08-16T21:35:00+00:00,active
+CX828,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,Lester B. Pearson International,YYZ,2026-08-16T14:00:00+00:00,scheduled
+CX826,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:10:00+00:00,Lester B. Pearson International,YYZ,2026-08-16T22:10:00+00:00,active
+CX829,Cathay Pacific,Lester B. Pearson International,YYZ,2026-08-16T01:50:00+00:00,Hong Kong International,HKG,2026-08-17T05:00:00+00:00,active
+CX821,Cathay Pacific,Lester B. Pearson International,YYZ,2026-08-15T10:35:00+00:00,Hong Kong International,HKG,2026-08-16T14:00:00+00:00,scheduled
+CX805,Cathay Pacific,Lester B. Pearson International,YYZ,2026-08-15T15:45:00+00:00,Hong Kong International,HKG,2026-08-16T19:10:00+00:00,scheduled
+CX820,Cathay Pacific,Hong Kong International,HKG,2026-08-17T02:50:00+00:00,Lester B. Pearson International,YYZ,2026-08-17T05:45:00+00:00,scheduled
+CX956,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,Lishe International Airport,NGB,2026-08-16T13:20:00+00:00,landed
+CX955,Cathay Pacific,Lishe International Airport,NGB,2026-08-16T14:30:00+00:00,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,active
+MU2090,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T12:35:00+00:00,Lishe International Airport,NGB,2026-08-16T14:55:00+00:00,landed
+MU2089,China Eastern Airlines,Lishe International Airport,NGB,2026-08-16T08:55:00+00:00,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,landed
+UO227,HK express,Lishe International Airport,NGB,2026-08-16T09:20:00+00:00,Hong Kong International,HKG,2026-08-16T11:40:00+00:00,landed
+UO226,Cathay Pacific,Hong Kong International,HKG,2026-08-16T19:50:00+00:00,Lishe International Airport,NGB,2026-08-16T22:05:00+00:00,scheduled
+CX946,Cathay Pacific,Hong Kong International,HKG,2026-08-16T11:10:00+00:00,Xianyang,XIY,2026-08-16T14:30:00+00:00,landed
+CX942,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:25:00+00:00,Xianyang,XIY,2026-08-16T23:40:00+00:00,scheduled
+CX933,Cathay Pacific,Xianyang,XIY,2026-08-16T06:55:00+00:00,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,landed
+CX947,Air China,Xianyang,XIY,2026-08-16T15:50:00+00:00,Hong Kong International,HKG,2026-08-16T19:05:00+00:00,active
+MU204,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T14:35:00+00:00,Xianyang,XIY,2026-08-16T17:50:00+00:00,landed
+MU203,Xiamen Air,Xianyang,XIY,2026-08-16T10:25:00+00:00,Hong Kong International,HKG,2026-08-16T13:35:00+00:00,landed
+MU6096,China Eastern Airlines,Xianyang,XIY,2026-08-15T21:35:00+00:00,Xining,XNN,2026-08-15T23:05:00+00:00,landed
+MU9624,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T11:25:00+00:00,Kunming,KMG,2026-08-16T13:55:00+00:00,landed
+MU734,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T17:05:00+00:00,Kunming,KMG,2026-08-16T19:40:00+00:00,landed
+MU9658,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T21:15:00+00:00,Kunming,KMG,2026-08-16T23:50:00+00:00,scheduled
+MU9623,Xiamen Air,Kunming,KMG,2026-08-16T08:05:00+00:00,Hong Kong International,HKG,2026-08-16T10:25:00+00:00,landed
+MU733,China Eastern Airlines,Kunming,KMG,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,active
+MU9657,China Eastern Airlines,Kunming,KMG,2026-08-16T18:00:00+00:00,Hong Kong International,HKG,2026-08-16T20:15:00+00:00,active
+SU212,Aeroflot,Sheremetyevo International,SVO,2026-08-16T20:15:00+00:00,Hong Kong International,HKG,2026-08-17T10:35:00+00:00,scheduled
+UO746,HK express,Hong Kong International,HKG,2026-08-16T11:55:00+00:00,Penang International,PEN,2026-08-16T15:40:00+00:00,landed
+UO768,HK express,Hong Kong International,HKG,2026-08-16T20:30:00+00:00,Penang International,PEN,2026-08-17T00:15:00+00:00,scheduled
+UO769,HK express,Penang International,PEN,2026-08-17T01:00:00+00:00,Hong Kong International,HKG,2026-08-17T04:55:00+00:00,scheduled
+UO747,HK express,Penang International,PEN,2026-08-16T16:25:00+00:00,Hong Kong International,HKG,2026-08-16T20:20:00+00:00,active
+CX633,Cathay Pacific,Hong Kong International,HKG,2026-08-16T08:15:00+00:00,Penang International,PEN,2026-08-16T12:00:00+00:00,landed
+CX622,Cathay Pacific,Penang International,PEN,2026-08-16T07:30:00+00:00,Hong Kong International,HKG,2026-08-16T11:30:00+00:00,landed
+CX634,Cathay Pacific,Penang International,PEN,2026-08-16T13:00:00+00:00,Hong Kong International,HKG,2026-08-16T17:10:00+00:00,active
+CX621,Qatar Airways,Hong Kong International,HKG,2026-08-15T15:30:00+00:00,Penang International,PEN,2026-08-15T19:10:00+00:00,landed
+OM298,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T12:05:00+00:00,New Ulaanbaator International Airport,UBN,2026-08-16T16:45:00+00:00,landed
+OM297,MIAT Mongolian Airlines,New Ulaanbaator International Airport,UBN,2026-08-16T06:20:00+00:00,Hong Kong International,HKG,2026-08-16T10:55:00+00:00,landed
+OM2972,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-15T18:30:00+00:00,New Ulaanbaator International Airport,UBN,2026-08-15T23:10:00+00:00,landed
+OM2971,MIAT Mongolian Airlines,New Ulaanbaator International Airport,UBN,2026-08-15T12:55:00+00:00,Hong Kong International,HKG,2026-08-15T17:30:00+00:00,landed
+CX806,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:10:00+00:00,Chicago O'hare International,ORD,2026-08-16T14:20:00+00:00,active
+CX801,MIAT Mongolian Airlines,Chicago O'hare International,ORD,2026-08-15T16:00:00+00:00,Hong Kong International,HKG,2026-08-16T21:00:00+00:00,active
+ZH9096,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:30:00+00:00,Wuxi,WUX,2026-08-16T15:00:00+00:00,landed
+ZH9095,Shenzhen Airlines,Wuxi,WUX,2026-08-16T08:40:00+00:00,Hong Kong International,HKG,2026-08-16T11:25:00+00:00,landed
+UO214,Cathay Pacific,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,Wuxi,WUX,2026-08-16T18:45:00+00:00,landed
+UO215,HK express,Wuxi,WUX,2026-08-16T19:45:00+00:00,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,active
+CX952,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,Zhengzhou,CGO,2026-08-16T15:20:00+00:00,landed
+CX957,Cathay Pacific,Zhengzhou,CGO,2026-08-16T16:30:00+00:00,Hong Kong International,HKG,2026-08-16T19:25:00+00:00,landed
+CA104,Cathay Pacific,Hong Kong International,HKG,2026-08-16T12:50:00+00:00,Tianjin Binhai International,TSN,2026-08-16T16:15:00+00:00,landed
+CA103,Air China,Tianjin Binhai International,TSN,2026-08-16T08:15:00+00:00,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,landed
+AK236,AirAsia,Don Muang,DMK,2026-08-16T23:45:00+00:00,Fukuoka,FUK,2026-08-17T07:05:00+00:00,scheduled
+AK237,AirAsia,Kota-Kinabalu International Airport,BKI,2026-08-16T09:30:00+00:00,Hong Kong International,HKG,2026-08-16T12:25:00+00:00,landed
+UO790,HK express,Hong Kong International,HKG,2026-08-16T21:25:00+00:00,Kota-Kinabalu International Airport,BKI,2026-08-17T00:30:00+00:00,active
+UO791,HK express,Kota-Kinabalu International Airport,BKI,2026-08-17T01:15:00+00:00,Hong Kong International,HKG,2026-08-17T04:25:00+00:00,scheduled
+CA412,Shenzhen Airlines,Hong Kong International,HKG,2026-08-16T13:20:00+00:00,Chengdu Tianfu International Airport,TFU,2026-08-16T16:05:00+00:00,landed
+CA411,Shenzhen Airlines,Chengdu Tianfu International Airport,TFU,2026-08-16T09:10:00+00:00,Hong Kong International,HKG,2026-08-16T11:50:00+00:00,landed
+TV9702,Kunming Airlines,Chengdu Tianfu International Airport,TFU,2026-08-16T20:20:00+00:00,Gonggar/Lhasa,LXA,2026-08-16T22:40:00+00:00,active
+CX928,Air China,Hong Kong International,HKG,2026-08-16T13:35:00+00:00,Chongqing Jiangbei International,CKG,2026-08-16T16:10:00+00:00,active
+CX945,Air China,Chongqing Jiangbei International,CKG,2026-08-16T17:25:00+00:00,Hong Kong International,HKG,2026-08-16T19:55:00+00:00,landed
+CA420,Air China,Hong Kong International,HKG,2026-08-16T14:50:00+00:00,Chongqing Jiangbei International,CKG,2026-08-16T17:25:00+00:00,active
+CA419,Cathay Pacific,Chongqing Jiangbei International,CKG,2026-08-16T11:20:00+00:00,Hong Kong International,HKG,2026-08-16T13:50:00+00:00,landed
+HX496,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T20:55:00+00:00,Chongqing Jiangbei International,CKG,2026-08-16T23:30:00+00:00,active
+HX497,Hainan Airlines,Chongqing Jiangbei International,CKG,2026-08-16T08:50:00+00:00,Hong Kong International,HKG,2026-08-16T11:10:00+00:00,landed
+SC1152,Air China,Hong Kong International,HKG,2026-08-16T13:40:00+00:00,Jinan,TNA,2026-08-16T16:30:00+00:00,landed
+SC1151,Air China,Jinan,TNA,2026-08-16T09:30:00+00:00,Hong Kong International,HKG,2026-08-16T12:40:00+00:00,landed
+HB510,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,Malé International Airport,MLE,2026-08-16T17:40:00+00:00,active
+HB511,Greater Bay Airlines,Malé International Airport,MLE,2026-08-16T19:45:00+00:00,Hong Kong International,HKG,2026-08-17T05:35:00+00:00,scheduled
+HX791,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,Malé International Airport,MLE,2026-08-16T18:35:00+00:00,active
+HX792,Hong Kong Airlines,Malé International Airport,MLE,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-17T06:40:00+00:00,scheduled
+SL361,Thai Lion Air,Hong Kong International,HKG,2026-08-16T14:20:00+00:00,Don Muang,DMK,2026-08-16T16:05:00+00:00,active
+SL360,Thai Lion Air,Don Muang,DMK,2026-08-16T09:20:00+00:00,Hong Kong International,HKG,2026-08-16T13:05:00+00:00,landed
+CX629,Cathay Pacific,Hong Kong International,HKG,2026-08-16T14:30:00+00:00,Juanda,SUB,2026-08-16T18:15:00+00:00,landed
+CX780,Cathay Pacific,Juanda,SUB,2026-08-16T08:10:00+00:00,Hong Kong International,HKG,2026-08-16T14:10:00+00:00,landed
+BI636,Royal Brunei Airlines,Hong Kong International,HKG,2026-08-16T14:40:00+00:00,Bandar Seri Begwan International Airport,BWN,2026-08-16T17:40:00+00:00,active
+BI635,Royal Brunei Airlines,Bandar Seri Begwan International Airport,BWN,2026-08-16T10:25:00+00:00,Hong Kong International,HKG,2026-08-16T13:35:00+00:00,landed
+CX171,Cathay Pacific,Hong Kong International,HKG,2026-08-16T15:00:00+00:00,Perth International,PER,2026-08-16T22:40:00+00:00,active
+CX143,Cathay Pacific,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,Perth International,PER,2026-08-17T06:50:00+00:00,scheduled
+CX170,Cathay Pacific,Perth International,PER,2026-08-17T00:10:00+00:00,Hong Kong International,HKG,2026-08-17T08:05:00+00:00,scheduled
+CX184,Cathay Pacific,Perth International,PER,2026-08-16T08:20:00+00:00,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,landed
+CX876,Malaysia Airlines,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,Dallas/Fort Worth International,DFW,2026-08-16T18:25:00+00:00,active
+CX875,Malaysia Airlines,Dallas/Fort Worth International,DFW,2026-08-15T22:55:00+00:00,Hong Kong International,HKG,2026-08-17T04:05:00+00:00,active
+FJ392,Finnair,Hong Kong International,HKG,2026-08-16T16:15:00+00:00,Nadi International,NAN,2026-08-17T06:25:00+00:00,active
+FJ393,Fiji Airways,Nadi International,NAN,2026-08-15T23:30:00+00:00,Hong Kong International,HKG,2026-08-16T06:00:00+00:00,landed
+CZ604,China Southern Airlines,Hong Kong International,HKG,2026-08-16T16:55:00+00:00,,URC,2026-08-16T22:25:00+00:00,active
+CZ603,China Southern Airlines,Newport News Railway,URC,2026-08-16T10:20:00+00:00,Hong Kong International,HKG,2026-08-16T15:40:00+00:00,landed
+CX998,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:15:00+00:00,,URC,2026-08-17T07:00:00+00:00,scheduled
+CX997,Cathay Pacific,Newport News Railway,URC,2026-08-16T10:15:00+00:00,Hong Kong International,HKG,2026-08-16T16:05:00+00:00,landed
+HX413,Hong Kong Airlines,Lijiang,LJG,2026-08-15T10:05:00+00:00,Hong Kong International,HKG,2026-08-15T13:20:00+00:00,landed
+PG806,Bangkok Airways,Hong Kong International,HKG,2026-08-16T17:20:00+00:00,Koh Samui,USM,2026-08-16T19:40:00+00:00,active
+PG807,Thai Airways,Koh Samui,USM,2026-08-16T11:55:00+00:00,Hong Kong International,HKG,2026-08-16T16:20:00+00:00,landed
+CX663,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,Chhatrapati Shivaji International (Sahar International),BOM,2026-08-17T00:20:00+00:00,active
+CX696,MIAT Mongolian Airlines,Chhatrapati Shivaji International (Sahar International),BOM,2026-08-15T22:25:00+00:00,Hong Kong International,HKG,2026-08-16T06:55:00+00:00,landed
+CX660,Cathay Pacific,Chhatrapati Shivaji International (Sahar International),BOM,2026-08-16T01:40:00+00:00,Hong Kong International,HKG,2026-08-16T10:10:00+00:00,landed
+CX683,Cathay Pacific,Hong Kong International,HKG,2026-08-15T17:20:00+00:00,Chhatrapati Shivaji International (Sahar International),BOM,2026-08-15T21:05:00+00:00,landed
+UO272,HK express,Hong Kong International,HKG,2026-08-16T17:45:00+00:00,Changzhou,CZX,2026-08-16T20:15:00+00:00,active
+UO273,HK express,Changzhou,CZX,2026-08-16T21:00:00+00:00,Hong Kong International,HKG,2026-08-16T23:35:00+00:00,scheduled
+MU2068,China Eastern Airlines,Hong Kong International,HKG,2026-08-16T18:10:00+00:00,Shanghai,HFE,2026-08-16T20:30:00+00:00,landed
+MU2067,China Eastern Airlines,Shanghai,HFE,2026-08-16T14:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:10:00+00:00,landed
+CX603,Cathay Pacific,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,Tribhuvan International,KTM,2026-08-16T21:45:00+00:00,active
+CX640,Cathay Pacific,Tribhuvan International,KTM,2026-08-16T23:00:00+00:00,Hong Kong International,HKG,2026-08-17T06:00:00+00:00,scheduled
+ZH8042,Shenzhen Airlines,Hong Kong International,HKG,2026-08-16T18:55:00+00:00,,NNG,2026-08-16T20:40:00+00:00,landed
+ZH8041,Air China,Zhongshan Ferry Port,NNG,2026-08-16T16:05:00+00:00,Hong Kong International,HKG,2026-08-16T17:55:00+00:00,active
+CX812,MIAT Mongolian Airlines,Hong Kong International,HKG,2026-08-16T19:10:00+00:00,Logan International,BOS,2026-08-16T23:05:00+00:00,active
+CX811,MIAT Mongolian Airlines,Logan International,BOS,2026-08-16T01:45:00+00:00,Hong Kong International,HKG,2026-08-17T05:00:00+00:00,active
+CX113,Cathay Pacific,Hong Kong International,HKG,2026-08-16T21:10:00+00:00,Auckland International,AKL,2026-08-17T11:50:00+00:00,active
+CX198,Qatar Airways,Auckland International,AKL,2026-08-16T13:25:00+00:00,Hong Kong International,HKG,2026-08-16T21:05:00+00:00,scheduled
+EY871,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T20:20:00+00:00,Abu Dhabi International,AUH,2026-08-17T00:35:00+00:00,active
+EY870,Hong Kong Airlines,Abu Dhabi International,AUH,2026-08-16T21:10:00+00:00,Hong Kong International,HKG,2026-08-17T09:00:00+00:00,scheduled
+CX611,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,Bandaranaike International,CMB,2026-08-16T23:30:00+00:00,active
+CX612,Cathay Pacific,Bandaranaike International,CMB,2026-08-16T00:50:00+00:00,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,scheduled
+CX651,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:35:00+00:00,Madras International (Meenambakkam),MAA,2026-08-16T23:35:00+00:00,scheduled
+CX632,Cathay Pacific,Madras International (Meenambakkam),MAA,2026-08-16T00:50:00+00:00,Hong Kong International,HKG,2026-08-16T09:10:00+00:00,landed
+AY100,Finnair,Hong Kong International,HKG,2026-08-16T20:55:00+00:00,Helsinki-vantaa,HEL,2026-08-17T05:35:00+00:00,active
+CX623,Cathay Pacific,Hong Kong International,HKG,2026-08-16T20:55:00+00:00,Bangalore International Airport,BLR,2026-08-17T00:10:00+00:00,active
+CX624,Cathay Pacific,Bangalore International Airport,BLR,2026-08-16T01:15:00+00:00,Hong Kong International,HKG,2026-08-16T09:50:00+00:00,scheduled
+KL888,KLM,Hong Kong International,HKG,2026-08-16T22:20:00+00:00,Schiphol,AMS,2026-08-17T06:05:00+00:00,scheduled
+KL887,Qantas,Schiphol,AMS,2026-08-15T21:25:00+00:00,Hong Kong International,HKG,2026-08-16T15:25:00+00:00,landed
+CX271,Cathay Pacific,Hong Kong International,HKG,2026-08-16T23:15:00+00:00,Schiphol,AMS,2026-08-17T06:55:00+00:00,scheduled
+CX270,Cathay Pacific,Schiphol,AMS,2026-08-16T12:20:00+00:00,Hong Kong International,HKG,2026-08-17T06:10:00+00:00,active
+CX673,Cathay Pacific,Hong Kong International,HKG,2026-08-16T22:30:00+00:00,Hyderabad Airport,HYD,2026-08-17T01:35:00+00:00,scheduled
+CX672,Cathay Pacific,Hyderabad Airport,HYD,2026-08-16T02:40:00+00:00,Hong Kong International,HKG,2026-08-16T11:00:00+00:00,landed
+LH797,Lufthansa,Hong Kong International,HKG,2026-08-16T23:25:00+00:00,Frankfurt International Airport,FRA,2026-08-17T06:20:00+00:00,scheduled
+LH796,Air New Zealand,Frankfurt International Airport,FRA,2026-08-15T21:40:00+00:00,Hong Kong International,HKG,2026-08-16T15:20:00+00:00,landed
+CX289,Cathay Pacific,Hong Kong International,HKG,2026-08-16T23:55:00+00:00,Frankfurt International Airport,FRA,2026-08-17T07:15:00+00:00,scheduled
+CX288,Lufthansa,Frankfurt International Airport,FRA,2026-08-16T13:40:00+00:00,Hong Kong International,HKG,2026-08-17T07:20:00+00:00,active
+CX294,Cathay Pacific,Brussels Airport,BRU,2026-08-15T13:05:00+00:00,Hong Kong International,HKG,2026-08-16T06:35:00+00:00,landed
+CX275,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:45:00+00:00,Brussels Airport,BRU,2026-08-17T08:25:00+00:00,scheduled
+CX300,Cathay Pacific,Franz Josef Strauss,MUC,2026-08-15T13:50:00+00:00,Hong Kong International,HKG,2026-08-16T06:50:00+00:00,scheduled
+CX301,Cathay Pacific,Hong Kong International,HKG,2026-08-17T01:00:00+00:00,Franz Josef Strauss,MUC,2026-08-17T08:05:00+00:00,scheduled
+CX321,Cathay Pacific,Hong Kong International,HKG,2026-08-17T00:45:00+00:00,El Prat De Llobregat,BCN,2026-08-17T08:35:00+00:00,scheduled
+CX318,Cathay Pacific,El Prat De Llobregat,BCN,2026-08-16T13:00:00+00:00,Hong Kong International,HKG,2026-08-17T07:00:00+00:00,active
+CX662,Cathay Pacific,Zia International,DAC,2026-08-16T02:10:00+00:00,Hong Kong International,HKG,2026-08-16T08:10:00+00:00,landed
+CX667,Japan Airlines,Hong Kong International,HKG,2026-08-15T22:55:00+00:00,Zia International,DAC,2026-08-16T01:00:00+00:00,landed
+CX853,Malaysia Airlines,Seattle-Tacoma International,SEA,2026-08-15T12:25:00+00:00,Hong Kong International,HKG,2026-08-16T16:45:00+00:00,landed
+CX852,Cathay Pacific,Hong Kong International,HKG,2026-08-15T13:25:00+00:00,Seattle-Tacoma International,SEA,2026-08-15T10:20:00+00:00,landed
+UO858,HK express,Hong Kong International,HKG,2026-08-16T07:40:00+00:00,Ishigaki,ISG,2026-08-16T10:40:00+00:00,landed
+UO879,HK express,Ishigaki,ISG,2026-08-16T11:30:00+00:00,Hong Kong International,HKG,2026-08-16T12:45:00+00:00,landed
+HB866,Greater Bay Airlines,Hong Kong International,HKG,2026-08-15T08:15:00+00:00,Zhoushan,HSN,2026-08-15T10:30:00+00:00,scheduled
+HB867,Greater Bay Airlines,Zhoushan,HSN,2026-08-15T11:20:00+00:00,Hong Kong International,HKG,2026-08-15T13:55:00+00:00,landed
+UO804,HK express,Hong Kong International,HKG,2026-08-15T09:35:00+00:00,Komatsu,KMQ,2026-08-15T14:35:00+00:00,scheduled
+UO805,HK express,Komatsu,KMQ,2026-08-15T15:20:00+00:00,Hong Kong International,HKG,2026-08-15T18:40:00+00:00,scheduled
+UO212,HK express,Hong Kong International,HKG,2026-08-15T14:00:00+00:00,Yiwu,YIW,2026-08-15T16:10:00+00:00,scheduled
+UO213,HK express,Yiwu,YIW,2026-08-15T16:55:00+00:00,Hong Kong International,HKG,2026-08-15T19:05:00+00:00,landed
+HB932,Greater Bay Airlines,Hong Kong International,HKG,2026-08-15T14:50:00+00:00,Datong,DAT,2026-08-15T18:10:00+00:00,scheduled
+HB933,Greater Bay Airlines,Datong,DAT,2026-08-15T19:10:00+00:00,Hong Kong International,HKG,2026-08-15T22:40:00+00:00,scheduled
+CZ6048,China Southern Airlines,Hong Kong International,HKG,2026-08-16T15:10:00+00:00,Harbin,HRB,2026-08-16T20:00:00+00:00,landed
+CZ6047,China Southern Airlines,Harbin,HRB,2026-08-16T08:55:00+00:00,Hong Kong International,HKG,2026-08-16T13:50:00+00:00,landed
+HB850,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T16:00:00+00:00,Yichang,YIH,2026-08-16T18:25:00+00:00,landed
+HB851,Greater Bay Airlines,Yichang,YIH,2026-08-16T19:25:00+00:00,Hong Kong International,HKG,2026-08-16T21:50:00+00:00,active
+TV6120,Tibet Airlines,Hong Kong International,HKG,2026-08-15T17:10:00+00:00,Yun Cheng,YCU,2026-08-15T20:10:00+00:00,landed
+TV6119,Tibet Airlines,Yun Cheng,YCU,2026-08-15T13:15:00+00:00,Hong Kong International,HKG,2026-08-15T15:40:00+00:00,landed
+HB838,Greater Bay Airlines,Hong Kong International,HKG,2026-08-15T17:30:00+00:00,Guilin,KWL,2026-08-15T19:10:00+00:00,landed
+HB839,Greater Bay Airlines,Guilin,KWL,2026-08-15T20:00:00+00:00,Hong Kong International,HKG,2026-08-15T21:40:00+00:00,landed
+TV9701,Tibet Airlines,Chengdu Tianfu International Airport,TFU,2026-08-16T12:00:00+00:00,Hong Kong International,HKG,2026-08-16T14:30:00+00:00,landed
+HU7916,Hainan Airlines,Hong Kong International,HKG,2026-08-15T10:15:00+00:00,Changchun,CGQ,2026-08-15T14:35:00+00:00,landed
+HU7915,Hainan Airlines,Changchun,CGQ,2026-08-15T15:50:00+00:00,Hong Kong International,HKG,2026-08-15T20:30:00+00:00,landed
+MU6095,China Eastern Airlines,Xianyang,XIY,2026-08-15T12:25:00+00:00,Hong Kong International,HKG,2026-08-15T15:30:00+00:00,landed
+MF8692,Xiamen Air,Hong Kong International,HKG,2026-08-15T13:45:00+00:00,Yinchuan,INC,2026-08-15T17:05:00+00:00,landed
+MF8691,Xiamen Air,Yinchuan,INC,2026-08-15T09:20:00+00:00,Hong Kong International,HKG,2026-08-15T12:45:00+00:00,landed
+NS3690,Hebei Airlines,Hong Kong International,HKG,2026-08-15T13:00:00+00:00,Daguocun,SJW,2026-08-15T16:00:00+00:00,landed
+NS3689,Hebei Airlines,Daguocun,SJW,2026-08-15T08:50:00+00:00,Hong Kong International,HKG,2026-08-15T12:00:00+00:00,landed
