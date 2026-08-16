@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>香港國際機場 (HKG) - 航班路線圖</title>
+    <title id="page-title">香港國際機場 (HKG) - 航班路線圖</title>
     
     <!-- Free Leaflet.js CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -38,13 +38,15 @@
             display: flex; justify-content: space-between; align-items: center;
         }
         .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
-        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
         
         .reset-btn {
             background: none; border: none; color: #777; font-size: 12px; 
-            font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
+            font-weight: 700; cursor: pointer; padding: 0;
+            transition: color 0.2s;
         }
-        .reset-btn:hover { color: #d93025; }
+        .reset-btn:hover { color: #1a73e8; }
+        .reset-btn.danger:hover { color: #d93025; }
         
         .toggle-btn {
             background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px;
@@ -65,9 +67,9 @@
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
         .filter-group label {
-            display: flex; justify-content: space-between; font-size: 12px;
+            display: flex; justify-content: space-between; font-size: 11px;
             font-weight: 700; color: #5f6368; margin-bottom: 6px;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.3px; text-transform: uppercase;
         }
         .filter-group select {
             width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc;
@@ -111,7 +113,7 @@
         }
         #time-label-val { color: #1a73e8; font-weight: 700; }
 
-        /* Elevate Popup above the filter UI */
+        /* Elevate Popup */
         .leaflet-popup-pane { z-index: 1100 !important; }
 
         /* Leaflet Popup Overrides */
@@ -163,30 +165,31 @@
 </head>
 <body>
 
-    <div id="loading" class="loading-overlay">載入資料中...</div>
+    <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
     
     <!-- Map Filters Panel -->
     <div id="filter-panel">
         <div class="filter-header">
-            <h4>航班篩選</h4>
+            <h4 id="ui-title">航班篩選</h4>
             <div class="header-actions">
-                <button class="reset-btn" onclick="clearAllFilters()">重設</button>
+                <button class="reset-btn" id="lang-btn" onclick="toggleLanguage()">EN</button>
+                <button class="reset-btn danger" id="reset-btn" style="text-decoration: underline;" onclick="clearAllFilters()">重設</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
         </div>
         
         <div id="filter-content">
             <div class="filter-group">
-                <label>方向</label>
+                <label id="ui-dir-label">方向</label>
                 <select id="filter-dir" onchange="window.triggerMapFilter()">
-                    <option value="All">所有路線</option>
-                    <option value="Departure">離港 (HKG &rarr; )</option>
-                    <option value="Arrival">抵港 ( &rarr; HKG)</option>
+                    <option value="All" id="ui-dir-all">所有路線</option>
+                    <option value="Departure" id="ui-dir-dep">離港 (HKG &rarr; )</option>
+                    <option value="Arrival" id="ui-dir-arr">抵港 ( &rarr; HKG)</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label>星期</label>
+                <label id="ui-days-label">星期</label>
                 <div class="filter-day-pills">
                     <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">日</div>
                     <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">一</div>
@@ -199,7 +202,7 @@
             </div>
 
             <div class="filter-group">
-                <label><span>時間範圍</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span id="ui-time-label">時間範圍</span> <span id="time-label-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
                     <div class="time-slider-fill" id="time-fill"></div>
@@ -209,9 +212,9 @@
             </div>
 
             <div class="filter-group">
-                <label>航空公司</label>
+                <label id="ui-airline-label">航空公司</label>
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
-                    <option value="All">所有航空公司</option>
+                    <option value="All" id="ui-airline-all">所有航空公司</option>
                 </select>
             </div>
         </div>
@@ -223,12 +226,385 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
-        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-        
-        const DAY_NAMES_ZH = { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' };
-        
-        // UTC offsets for August (Daylight Saving Rules inclusive)
+        // --- TRANSLATION DICTIONARY FOR UI ---
+        const i18n = {
+            'zh': {
+                page_title: '香港國際機場 (HKG) - 航班路線圖',
+                loading_error: '載入失敗。',
+                ui_title: '航班篩選',
+                reset_btn: '重設',
+                lang_btn: 'EN',
+                dir_label: '方向',
+                dir_all: '所有路線',
+                dir_dep: '離港 (HKG &rarr; )',
+                dir_arr: '抵港 ( &rarr; HKG)',
+                days_label: '星期',
+                days: { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' },
+                time_label: '時間範圍',
+                airline_label: '航空公司',
+                airline_all: '所有航空公司',
+                hkg_tooltip: 'HKG - 香港',
+                fastest_out: '最快離港:',
+                fastest_in: '最快抵港:',
+                fastest_out_title: 'HKG飛往{iata}的最快路線',
+                fastest_in_title: '{iata}飛往HKG的最快路線',
+                popup_dep: '🛫 離港航班',
+                popup_arr: '🛬 抵港航班',
+                dur_unk: '需時未知',
+                arr_unk: '抵達時間未知',
+                dep_unk: '起飛時間未知',
+                hours: '小時',
+                mins: '分鐘',
+                day_offset: '日',
+                flights_count: '班航班',
+                no_flights_pre: '找不到符合篩選條件的',
+                no_flights_suf: '航班。',
+                dep_text: '離港',
+                arr_text: '抵港'
+            },
+            'en': {
+                page_title: 'HKG International Airport - Flight Routes',
+                loading_error: 'Error loading data.',
+                ui_title: 'Filter Flights',
+                reset_btn: 'Reset',
+                lang_btn: '中文',
+                dir_label: 'DIRECTION',
+                dir_all: 'All Routes',
+                dir_dep: 'Departures (HKG &rarr; )',
+                dir_arr: 'Arrivals ( &rarr; HKG)',
+                days_label: 'DAYS OF WEEK',
+                days: { 'su': 'Su', 'mo': 'Mo', 'tu': 'Tu', 'we': 'We', 'th': 'Th', 'fr': 'Fr', 'sa': 'Sa' },
+                time_label: 'TIME WINDOW',
+                airline_label: 'AIRLINE',
+                airline_all: 'All Airlines',
+                hkg_tooltip: 'HKG - Hong Kong',
+                fastest_out: 'Fastest Outbound:',
+                fastest_in: 'Fastest Inbound:',
+                fastest_out_title: 'Fastest Route HKG to {iata}',
+                fastest_in_title: 'Fastest Route {iata} to HKG',
+                popup_dep: '🛫 Departures',
+                popup_arr: '🛬 Arrivals',
+                dur_unk: 'Duration N/A',
+                arr_unk: 'Arr Time N/A',
+                dep_unk: 'Dep Time N/A',
+                hours: 'h',
+                mins: 'm',
+                day_offset: 'd',
+                flights_count: 'flights',
+                no_flights_pre: 'No matching flights found for ',
+                no_flights_suf: 's.',
+                dep_text: 'Departure',
+                arr_text: 'Arrival'
+            }
+        };
+
+        // --- BILINGUAL AIRLINE DATABASE ---
+        const AIRLINE_INFO = {
+            "AAL": { nameEn: "American Airlines", nameZh: "美國航空", iata: "AA" },
+            "AAR": { nameEn: "Asiana Airlines", nameZh: "韓亞航空", iata: "OZ" },
+            "ABB": { nameEn: "Air Belgium", nameZh: "比利時航空", iata: "KF" },
+            "ABL": { nameEn: "Air Busan", nameZh: "釜山航空", iata: "BX" },
+            "ABY": { nameEn: "Air Arabia", nameZh: "阿拉伯航空", iata: "G9" },
+            "ACA": { nameEn: "Air Canada", nameZh: "加拿大航空", iata: "AC" },
+            "AEU": { nameEn: "Astraeus", nameZh: "星辰航空", iata: "5W" },
+            "AFL": { nameEn: "Aeroflot", nameZh: "俄羅斯航空", iata: "SU" },
+            "AFR": { nameEn: "Air France", nameZh: "法國航空", iata: "AF" },
+            "AIC": { nameEn: "Air India", nameZh: "印度航空", iata: "AI" },
+            "ALK": { nameEn: "SriLankan Airlines", nameZh: "斯里蘭卡航空", iata: "UL" },
+            "AMX": { nameEn: "Aeroméxico", nameZh: "墨西哥國際航空", iata: "AM" },
+            "ANA": { nameEn: "All Nippon Airways", nameZh: "全日空", iata: "NH" },
+            "ANG": { nameEn: "Air Niugini", nameZh: "新幾內亞航空", iata: "PX" },
+            "ANZ": { nameEn: "Air New Zealand", nameZh: "新西蘭航空", iata: "NZ" },
+            "APJ": { nameEn: "Peach", nameZh: "樂桃航空", iata: "MM" },
+            "APZ": { nameEn: "Air Premia", nameZh: "普雷米婭航空", iata: "YP" },
+            "ARG": { nameEn: "Aerolíneas Argentinas", nameZh: "阿根廷航空", iata: "AR" },
+            "ASA": { nameEn: "Alaska Airlines", nameZh: "阿拉斯加航空", iata: "AS" },
+            "ASY": { nameEn: "AirAsia", nameZh: "亞洲航空", iata: "AK" }, 
+            "AXM": { nameEn: "AirAsia", nameZh: "亞洲航空", iata: "AK" },
+            "AZA": { nameEn: "ITA Airways", nameZh: "意大利航空", iata: "AZ" },
+            "AZM": { nameEn: "Azman Air", nameZh: "阿茲曼航空", iata: "ZU" },
+            "BAW": { nameEn: "British Airways", nameZh: "英國航空", iata: "BA" },
+            "BBC": { nameEn: "Biman Bangladesh Airlines", nameZh: "孟加拉航空", iata: "BG" },
+            "BGH": { nameEn: "BH Air", nameZh: "巴爾幹假日航空", iata: "8H" },
+            "BKP": { nameEn: "Bangkok Airways", nameZh: "曼谷航空", iata: "PG" },
+            "BOX": { nameEn: "AeroLogic", nameZh: "邏輯航空", iata: "3S" },
+            "BTI": { nameEn: "Air Baltic", nameZh: "波羅的海航空", iata: "BT" },
+            "BWA": { nameEn: "Caribbean Airlines", nameZh: "加勒比海航空", iata: "BW" },
+            "CAL": { nameEn: "China Airlines", nameZh: "中華航空", iata: "CI" },
+            "CAW": { nameEn: "Kulula", nameZh: "庫魯拉航空", iata: "MN" },
+            "CBJ": { nameEn: "Beijing Capital Airlines", nameZh: "首都航空", iata: "JD" },
+            "CCA": { nameEn: "Air China", nameZh: "中國國際航空", iata: "CA" },
+            "CDC": { nameEn: "Loong Air", nameZh: "長龍航空", iata: "GJ" },
+            "CDG": { nameEn: "Shandong Airlines", nameZh: "山東航空", iata: "SC" },
+            "CEB": { nameEn: "Cebu Pacific", nameZh: "宿霧太平洋航空", iata: "5J" },
+            "CES": { nameEn: "China Eastern Airlines", nameZh: "中國東方航空", iata: "MU" },
+            "CFG": { nameEn: "Condor", nameZh: "神鷹航空", iata: "DE" },
+            "CHH": { nameEn: "Hainan Airlines", nameZh: "海南航空", iata: "HU" },
+            "CPA": { nameEn: "Cathay Pacific", nameZh: "國泰航空", iata: "CX" },
+            "CQH": { nameEn: "Spring Airlines", nameZh: "春秋航空", iata: "9C" },
+            "CRK": { nameEn: "Hong Kong Airlines", nameZh: "香港航空", iata: "HX" },
+            "CSC": { nameEn: "Sichuan Airlines", nameZh: "四川航空", iata: "3U" },
+            "CSH": { nameEn: "Shanghai Airlines", nameZh: "上海航空", iata: "FM" },
+            "CSN": { nameEn: "China Southern Airlines", nameZh: "中國南方航空", iata: "CZ" },
+            "CSZ": { nameEn: "Shenzhen Airlines", nameZh: "深圳航空", iata: "ZH" },
+            "CUB": { nameEn: "Cubana de Aviación", nameZh: "古巴航空", iata: "CU" },
+            "CVA": { nameEn: "Air Austral", nameZh: "南方航空 (留尼汪)", iata: "UU" },
+            "CXA": { nameEn: "XiamenAir", nameZh: "廈門航空", iata: "MF" },
+            "DAH": { nameEn: "Air Algérie", nameZh: "阿爾及利亞航空", iata: "AH" },
+            "DAL": { nameEn: "Delta Air Lines", nameZh: "達美航空", iata: "DL" },
+            "DHK": { nameEn: "DHL Aviation", nameZh: "DHL航空", iata: "D0" },
+            "DKH": { nameEn: "Juneyao Airlines", nameZh: "吉祥航空", iata: "HO" },
+            "DLH": { nameEn: "Lufthansa", nameZh: "漢莎航空", iata: "LH" },
+            "DTR": { nameEn: "DAT", nameZh: "丹麥航空", iata: "DX" },
+            "EIN": { nameEn: "Aer Lingus", nameZh: "愛爾蘭航空", iata: "EI" },
+            "ELB": { nameEn: "El Al", nameZh: "以色列航空", iata: "LY" },
+            "ESR": { nameEn: "Eastar Jet", nameZh: "易斯達航空", iata: "ZE" },
+            "ETD": { nameEn: "Etihad Airways", nameZh: "阿提哈德航空", iata: "EY" },
+            "ETH": { nameEn: "Ethiopian Airlines", nameZh: "埃塞俄比亞航空", iata: "ET" },
+            "EVA": { nameEn: "EVA Air", nameZh: "長榮航空", iata: "BR" },
+            "EVE": { nameEn: "Evelop Airlines", nameZh: "埃福洛普航空", iata: "E9" },
+            "EXY": { nameEn: "South African Express", nameZh: "南非快運航空", iata: "XZ" },
+            "EZS": { nameEn: "easyJet Switzerland", nameZh: "瑞士易捷航空", iata: "DS" },
+            "EZY": { nameEn: "easyJet", nameZh: "易捷航空", iata: "U2" },
+            "FDX": { nameEn: "FedEx Express", nameZh: "聯邦快遞", iata: "FX" },
+            "FIN": { nameEn: "Finnair", nameZh: "芬蘭航空", iata: "AY" },
+            "FJI": { nameEn: "Fiji Airways", nameZh: "斐濟航空", iata: "FJ" },
+            "FLI": { nameEn: "Atlantic Airways", nameZh: "大西洋航空", iata: "RC" },
+            "GBA": { nameEn: "Greater Bay Airlines", nameZh: "大灣區航空", iata: "HB" },
+            "GIA": { nameEn: "Garuda Indonesia", nameZh: "印尼嘉魯達航空", iata: "GA" },
+            "GOW": { nameEn: "GoAir", nameZh: "捷高航空", iata: "G8" },
+            "GTI": { nameEn: "Atlas Air", nameZh: "亞特拉斯航空", iata: "5Y" },
+            "GWI": { nameEn: "Germanwings", nameZh: "德國之翼航空", iata: "4U" },
+            "HAL": { nameEn: "Hawaiian Airlines", nameZh: "夏威夷航空", iata: "HA" },
+            "HBH": { nameEn: "Hebei Airlines", nameZh: "河北航空", iata: "NS" },
+            "HGB": { nameEn: "Greater Bay Airlines", nameZh: "大灣區航空", iata: "HB" },
+            "HKE": { nameEn: "HK Express", nameZh: "香港快運航空", iata: "UO" },
+            "HVN": { nameEn: "Vietnam Airlines", nameZh: "越南航空", iata: "VN" },
+            "IBS": { nameEn: "Iberia", nameZh: "伊比利亞航空", iata: "IB" },
+            "IGO": { nameEn: "IndiGo", nameZh: "靛藍航空", iata: "6E" },
+            "IRA": { nameEn: "Iran Air", nameZh: "伊朗航空", iata: "IR" },
+            "ISR": { nameEn: "Israir", nameZh: "以色列方舟航空", iata: "6H" },
+            "JAI": { nameEn: "Jet Airways", nameZh: "捷特航空", iata: "9W" },
+            "JAL": { nameEn: "Japan Airlines", nameZh: "日本航空", iata: "JL" },
+            "JBW": { nameEn: "Jubba Airways", nameZh: "朱巴航空", iata: "3J" },
+            "JJA": { nameEn: "Jeju Air", nameZh: "濟州航空", iata: "7C" },
+            "JJP": { nameEn: "Jetstar Japan", nameZh: "捷星日本航空", iata: "GK" },
+            "JNA": { nameEn: "Jin Air", nameZh: "真航空", iata: "LJ" },
+            "JST": { nameEn: "Jetstar Airways", nameZh: "捷星航空", iata: "JQ" },
+            "KAL": { nameEn: "Korean Air", nameZh: "大韓航空", iata: "KE" },
+            "KAC": { nameEn: "Kuwait Airways", nameZh: "科威特航空", iata: "KU" },
+            "KME": { nameEn: "Cambodia Airways", nameZh: "柬埔寨航空", iata: "KR" },
+            "KQA": { nameEn: "Kenya Airways", nameZh: "肯雅航空", iata: "KQ" },
+            "KLM": { nameEn: "KLM Royal Dutch Airlines", nameZh: "荷蘭皇家航空", iata: "KL" },
+            "LAN": { nameEn: "LATAM Airlines", nameZh: "智利南美航空", iata: "LA" },
+            "LNI": { nameEn: "Lion Air", nameZh: "獅子航空", iata: "JT" },
+            "LOT": { nameEn: "LOT Polish Airlines", nameZh: "波蘭航空", iata: "LO" },
+            "LZB": { nameEn: "Bulgaria Air", nameZh: "保加利亞航空", iata: "FB" },
+            "MAS": { nameEn: "Malaysia Airlines", nameZh: "馬來西亞航空", iata: "MH" },
+            "MAU": { nameEn: "Air Mauritius", nameZh: "毛里求斯航空", iata: "MK" },
+            "MDA": { nameEn: "Mandarin Airlines", nameZh: "華信航空", iata: "AE" },
+            "MEA": { nameEn: "Middle East Airlines", nameZh: "中東航空", iata: "ME" },
+            "MGL": { nameEn: "MIAT Mongolian Airlines", nameZh: "蒙古民用航空", iata: "OM" },
+            "MON": { nameEn: "Monarch Airlines", nameZh: "君主航空", iata: "ZB" },
+            "MSR": { nameEn: "EgyptAir", nameZh: "埃及航空", iata: "MS" },
+            "MXD": { nameEn: "Batik Air Malaysia", nameZh: "馬印航空", iata: "OD" },
+            "NAX": { nameEn: "Norwegian Air Shuttle", nameZh: "挪威航空", iata: "DY" },
+            "NCA": { nameEn: "Nippon Cargo Airlines", nameZh: "日本貨物航空", iata: "KZ" },
+            "OMA": { nameEn: "Oman Air", nameZh: "阿曼航空", iata: "WY" },
+            "PAC": { nameEn: "Polar Air Cargo", nameZh: "極地貨運航空", iata: "PO" },
+            "PAL": { nameEn: "Philippine Airlines", nameZh: "菲律賓航空", iata: "PR" },
+            "PIA": { nameEn: "Pakistan International Airlines", nameZh: "巴基斯坦國際航空", iata: "PK" },
+            "PIC": { nameEn: "Pacific Airlines", nameZh: "太平洋航空", iata: "BL" },
+            "PNC": { nameEn: "Prince Aviation", nameZh: "王子航空", iata: "PU" },
+            "QDA": { nameEn: "Qingdao Airlines", nameZh: "青島航空", iata: "QW" },
+            "QFA": { nameEn: "Qantas", nameZh: "澳洲航空", iata: "QF" },
+            "QTR": { nameEn: "Qatar Airways", nameZh: "卡塔爾航空", iata: "QR" },
+            "RAM": { nameEn: "Royal Air Maroc", nameZh: "皇家摩洛哥航空", iata: "AT" },
+            "RBA": { nameEn: "Royal Brunei Airlines", nameZh: "汶萊皇家航空", iata: "BI" },
+            "RJA": { nameEn: "Royal Jordanian", nameZh: "皇家約旦航空", iata: "RJ" },
+            "RNA": { nameEn: "Nepal Airlines", nameZh: "尼泊爾航空", iata: "RA" },
+            "ROT": { nameEn: "TAROM", nameZh: "羅馬尼亞航空", iata: "RO" },
+            "RYR": { nameEn: "Ryanair", nameZh: "瑞安航空", iata: "FR" },
+            "SAA": { nameEn: "South African Airways", nameZh: "南非航空", iata: "SA" },
+            "SAS": { nameEn: "Scandinavian Airlines", nameZh: "北歐航空", iata: "SK" },
+            "SIA": { nameEn: "Singapore Airlines", nameZh: "新加坡航空", iata: "SQ" },
+            "SJX": { nameEn: "Starlux Airlines", nameZh: "星宇航空", iata: "JX" },
+            "SNG": { nameEn: "Synergy Aviation", nameZh: "協同航空", iata: "SY" },
+            "SOO": { nameEn: "Southern Air", nameZh: "美國南方航空", iata: "9S" },
+            "SPQ": { nameEn: "Sun PhuQuoc Airways", nameZh: "太陽富國航空", iata: "VU" },
+            "SQC": { nameEn: "Singapore Airlines Cargo", nameZh: "新加坡貨運航空", iata: "SQ" },
+            "SVA": { nameEn: "Saudia", nameZh: "沙特阿拉伯航空", iata: "SV" },
+            "SWR": { nameEn: "Swiss International Air Lines", nameZh: "瑞士國際航空", iata: "LX" },
+            "SWA": { nameEn: "Southwest Airlines", nameZh: "西南航空", iata: "WN" },
+            "TAI": { nameEn: "TACA Airlines", nameZh: "中美洲航空", iata: "TA" },
+            "TAM": { nameEn: "LATAM Brasil", nameZh: "巴西南美航空", iata: "JJ" },
+            "TAP": { nameEn: "TAP Air Portugal", nameZh: "葡萄牙航空", iata: "TP" },
+            "TBA": { nameEn: "Tibet Airlines", nameZh: "西藏航空", iata: "TV" },
+            "TGW": { nameEn: "Scoot", nameZh: "酷航", iata: "TR" },
+            "THA": { nameEn: "Thai Airways", nameZh: "泰國國際航空", iata: "TG" },
+            "THD": { nameEn: "Thai Smile", nameZh: "泰國微笑航空", iata: "WE" },
+            "THY": { nameEn: "Turkish Airlines", nameZh: "土耳其航空", iata: "TK" },
+            "TLM": { nameEn: "Thai Lion Air", nameZh: "泰國獅子航空", iata: "SL" },
+            "TWB": { nameEn: "T'way Air", nameZh: "德威航空", iata: "TW" },
+            "UAE": { nameEn: "Emirates", nameZh: "阿聯酋航空", iata: "EK" },
+            "UAL": { nameEn: "United Airlines", nameZh: "聯合航空", iata: "UA" },
+            "UBG": { nameEn: "US-Bangla Airlines", nameZh: "美孟航空", iata: "BS" },
+            "UBA": { nameEn: "Myanmar National Airlines", nameZh: "緬甸國家航空", iata: "UB" },
+            "UPS": { nameEn: "UPS Airlines", nameZh: "UPS航空", iata: "5X" },
+            "UTA": { nameEn: "Utair", nameZh: "烏塔航空", iata: "UT" },
+            "UZB": { nameEn: "Uzbekistan Airways", nameZh: "烏茲別克斯坦航空", iata: "HY" },
+            "VIR": { nameEn: "Virgin Atlantic", nameZh: "維珍航空", iata: "VS" },
+            "VJC": { nameEn: "VietJet Air", nameZh: "越捷航空", iata: "VJ" },
+            "VKG": { nameEn: "Sunclass Airlines", nameZh: "太陽系航空", iata: "DK" },
+            "VOZ": { nameEn: "Virgin Australia", nameZh: "維珍澳洲航空", iata: "VA" },
+            "VTE": { nameEn: "Volotea", nameZh: "維羅提航空", iata: "V7" },
+            "WJA": { nameEn: "WestJet", nameZh: "西捷航空", iata: "WS" },
+            "WZZ": { nameEn: "Wizz Air", nameZh: "威茲航空", iata: "W6" },
+            "XAX": { nameEn: "AirAsia X", nameZh: "全亞洲航空", iata: "D7" }
+        };
+
+        // --- BILINGUAL AIRPORTS & CITIES DATABASE ---
+        const AIRPORT_INFO = {
+            "ICN": { cityEn: "Seoul", cityZh: "首爾", nameEn: "Incheon", nameZh: "仁川國際機場" },
+            "CDG": { cityEn: "Paris", cityZh: "巴黎", nameEn: "Charles de Gaulle", nameZh: "戴高樂機場" },
+            "LAX": { cityEn: "Los Angeles", cityZh: "洛杉磯", nameEn: "Los Angeles Intl", nameZh: "洛杉磯國際機場" },
+            "BNE": { cityEn: "Brisbane", cityZh: "布里斯班", nameEn: "Brisbane Airport", nameZh: "布里斯班機場" },
+            "MEL": { cityEn: "Melbourne", cityZh: "墨爾本", nameEn: "Melbourne Airport", nameZh: "墨爾本機場" },
+            "ADD": { cityEn: "Addis Ababa", cityZh: "亞的斯亞貝巴", nameEn: "Bole", nameZh: "博萊國際機場" },
+            "ZRH": { cityEn: "Zurich", cityZh: "蘇黎世", nameEn: "Zurich Airport", nameZh: "蘇黎世機場" },
+            "DXB": { cityEn: "Dubai", cityZh: "杜拜", nameEn: "Dubai Intl", nameZh: "杜拜國際機場" },
+            "SYD": { cityEn: "Sydney", cityZh: "悉尼", nameEn: "Sydney Airport", nameZh: "悉尼機場" },
+            "MAD": { cityEn: "Madrid", cityZh: "馬德里", nameEn: "Barajas", nameZh: "巴拉哈斯機場" },
+            "YVR": { cityEn: "Vancouver", cityZh: "溫哥華", nameEn: "Vancouver Intl", nameZh: "溫哥華國際機場" },
+            "MXP": { cityEn: "Milan", cityZh: "米蘭", nameEn: "Malpensa", nameZh: "馬爾彭薩機場" },
+            "NRT": { cityEn: "Tokyo", cityZh: "東京", nameEn: "Narita", nameZh: "成田國際機場" },
+            "MAN": { cityEn: "Manchester", cityZh: "曼徹斯特", nameEn: "Manchester Airport", nameZh: "曼徹斯特機場" },
+            "KIX": { cityEn: "Osaka", cityZh: "大阪", nameEn: "Kansai", nameZh: "關西國際機場" },
+            "FCO": { cityEn: "Rome", cityZh: "羅馬", nameEn: "Fiumicino", nameZh: "菲烏米奇諾機場" },
+            "JNB": { cityEn: "Johannesburg", cityZh: "約翰內斯堡", nameEn: "OR Tambo", nameZh: "奧利弗·坦博國際機場" },
+            "SFO": { cityEn: "San Francisco", cityZh: "三藩市", nameEn: "San Francisco Intl", nameZh: "三藩市國際機場" },
+            "CAN": { cityEn: "Guangzhou", cityZh: "廣州", nameEn: "Baiyun", nameZh: "白雲國際機場" },
+            "DOH": { cityEn: "Doha", cityZh: "多哈", nameEn: "Hamad", nameZh: "哈馬德國際機場" },
+            "SIN": { cityEn: "Singapore", cityZh: "新加坡", nameEn: "Changi", nameZh: "樟宜機場" },
+            "PUS": { cityEn: "Busan", cityZh: "釜山", nameEn: "Gimhae", nameZh: "金海國際機場" },
+            "CJU": { cityEn: "Jeju", cityZh: "濟州", nameEn: "Jeju Intl", nameZh: "濟州國際機場" },
+            "DPS": { cityEn: "Bali", cityZh: "峇里島", nameEn: "Ngurah Rai", nameZh: "伍拉·賴國際機場" },
+            "JFK": { cityEn: "New York", cityZh: "紐約", nameEn: "JFK Intl", nameZh: "甘迺迪國際機場" },
+            "TAE": { cityEn: "Daegu", cityZh: "大邱", nameEn: "Daegu Intl", nameZh: "大邱國際機場" },
+            "DAD": { cityEn: "Da Nang", cityZh: "峴港", nameEn: "Da Nang Intl", nameZh: "峴港國際機場" },
+            "ILO": { cityEn: "Iloilo", cityZh: "伊洛伊洛", nameEn: "Iloilo Intl", nameZh: "伊洛伊洛國際機場" },
+            "FUK": { cityEn: "Fukuoka", cityZh: "福岡", nameEn: "Fukuoka Airport", nameZh: "福岡機場" },
+            "OKA": { cityEn: "Okinawa", cityZh: "沖繩", nameEn: "Naha", nameZh: "那霸機場" },
+            "MNL": { cityEn: "Manila", cityZh: "馬尼拉", nameEn: "Ninoy Aquino", nameZh: "尼諾伊·阿基諾國際機場" },
+            "PEK": { cityEn: "Beijing", cityZh: "北京", nameEn: "Capital", nameZh: "首都國際機場" },
+            "BKK": { cityEn: "Bangkok", cityZh: "曼谷", nameEn: "Suvarnabhumi", nameZh: "素萬那普機場" },
+            "PVG": { cityEn: "Shanghai", cityZh: "上海", nameEn: "Pudong", nameZh: "浦東國際機場" },
+            "CRK": { cityEn: "Clark", cityZh: "克拉克", nameEn: "Clark Intl", nameZh: "克拉克國際機場" },
+            "HAN": { cityEn: "Hanoi", cityZh: "河內", nameEn: "Noi Bai", nameZh: "內排國際機場" },
+            "HGH": { cityEn: "Hangzhou", cityZh: "杭州", nameEn: "Xiaoshan", nameZh: "蕭山國際機場" },
+            "PQC": { cityEn: "Phu Quoc", cityZh: "富國島", nameEn: "Phu Quoc Intl", nameZh: "富國國際機場" },
+            "CNX": { cityEn: "Chiang Mai", cityZh: "清邁", nameEn: "Chiang Mai Intl", nameZh: "清邁國際機場" },
+            "CEB": { cityEn: "Cebu", cityZh: "宿霧", nameEn: "Mactan-Cebu", nameZh: "麥克坦-宿霧國際機場" },
+            "RMQ": { cityEn: "Taichung", cityZh: "台中", nameEn: "Taichung Intl", nameZh: "台中國際機場" },
+            "HKT": { cityEn: "Phuket", cityZh: "布吉", nameEn: "Phuket Intl", nameZh: "布吉國際機場" },
+            "TPE": { cityEn: "Taipei", cityZh: "台北", nameEn: "Taoyuan", nameZh: "桃園國際機場" },
+            "KHH": { cityEn: "Kaohsiung", cityZh: "高雄", nameEn: "Kaohsiung Intl", nameZh: "高雄國際機場" },
+            "SZB": { cityEn: "Kuala Lumpur", cityZh: "吉隆坡", nameEn: "Subang", nameZh: "梳邦機場" },
+            "SDJ": { cityEn: "Sendai", cityZh: "仙台", nameEn: "Sendai Airport", nameZh: "仙台機場" },
+            "LHR": { cityEn: "London", cityZh: "倫敦", nameEn: "Heathrow", nameZh: "希斯路機場" },
+            "KUL": { cityEn: "Kuala Lumpur", cityZh: "吉隆坡", nameEn: "KLIA", nameZh: "吉隆坡國際機場" },
+            "SGN": { cityEn: "Ho Chi Minh City", cityZh: "胡志明市", nameEn: "Tan Son Nhat", nameZh: "新山一國際機場" },
+            "DEL": { cityEn: "Delhi", cityZh: "德里", nameEn: "Indira Gandhi", nameZh: "英迪拉·甘地國際機場" },
+            "SYX": { cityEn: "Sanya", cityZh: "三亞", nameEn: "Phoenix", nameZh: "鳳凰國際機場" },
+            "WNZ": { cityEn: "Wenzhou", cityZh: "溫州", nameEn: "Longwan", nameZh: "龍灣國際機場" },
+            "PKX": { cityEn: "Beijing", cityZh: "北京", nameEn: "Daxing", nameZh: "大興國際機場" },
+            "FOC": { cityEn: "Fuzhou", cityZh: "福州", nameEn: "Changle", nameZh: "長樂國際機場" },
+            "HND": { cityEn: "Tokyo", cityZh: "東京", nameEn: "Haneda", nameZh: "羽田機場" },
+            "CTS": { cityEn: "Sapporo", cityZh: "札幌", nameEn: "New Chitose", nameZh: "新千歲機場" },
+            "IST": { cityEn: "Istanbul", cityZh: "伊斯坦堡", nameEn: "Istanbul Airport", nameZh: "伊斯坦堡機場" },
+            "WUH": { cityEn: "Wuhan", cityZh: "武漢", nameEn: "Tianhe", nameZh: "天河國際機場" },
+            "HIJ": { cityEn: "Hiroshima", cityZh: "廣島", nameEn: "Hiroshima Airport", nameZh: "廣島機場" },
+            "CGK": { cityEn: "Jakarta", cityZh: "雅加達", nameEn: "Soekarno-Hatta", nameZh: "蘇加諾-哈達國際機場" },
+            "CSX": { cityEn: "Changsha", cityZh: "長沙", nameEn: "Huanghua", nameZh: "黃花國際機場" },
+            "DNH": { cityEn: "Dunhuang", cityZh: "敦煌", nameEn: "Dunhuang Mogao", nameZh: "敦煌莫高國際機場" },
+            "XMN": { cityEn: "Xiamen", cityZh: "廈門", nameEn: "Gaoqi", nameZh: "高崎國際機場" },
+            "SHA": { cityEn: "Shanghai", cityZh: "上海", nameEn: "Hongqiao", nameZh: "虹橋國際機場" },
+            "CTU": { cityEn: "Chengdu", cityZh: "成都", nameEn: "Shuangliu", nameZh: "雙流國際機場" },
+            "TAK": { cityEn: "Takamatsu", cityZh: "高松", nameEn: "Takamatsu Airport", nameZh: "高松機場" },
+            "NGO": { cityEn: "Nagoya", cityZh: "名古屋", nameEn: "Chubu Centrair", nameZh: "中部國際機場" },
+            "HAK": { cityEn: "Haikou", cityZh: "海口", nameEn: "Meilan", nameZh: "美蘭國際機場" },
+            "TAO": { cityEn: "Qingdao", cityZh: "青島", nameEn: "Jiaodong", nameZh: "膠東國際機場" },
+            "NKG": { cityEn: "Nanjing", cityZh: "南京", nameEn: "Lukou", nameZh: "祿口國際機場" },
+            "YYZ": { cityEn: "Toronto", cityZh: "多倫多", nameEn: "Pearson", nameZh: "皮爾遜國際機場" },
+            "NGB": { cityEn: "Ningbo", cityZh: "寧波", nameEn: "Lishe", nameZh: "櫟社國際機場" },
+            "XIY": { cityEn: "Xi'an", cityZh: "西安", nameEn: "Xianyang", nameZh: "咸陽國際機場" },
+            "KMG": { cityEn: "Kunming", cityZh: "昆明", nameEn: "Changshui", nameZh: "長水國際機場" },
+            "SVO": { cityEn: "Moscow", cityZh: "莫斯科", nameEn: "Sheremetyevo", nameZh: "謝列梅捷沃國際機場" },
+            "PEN": { cityEn: "Penang", cityZh: "檳城", nameEn: "Penang Intl", nameZh: "檳城國際機場" },
+            "UBN": { cityEn: "Ulaanbaatar", cityZh: "烏蘭巴托", nameEn: "Chinggis Khaan", nameZh: "成吉思汗國際機場" },
+            "ORD": { cityEn: "Chicago", cityZh: "芝加哥", nameEn: "O'Hare", nameZh: "奧黑爾國際機場" },
+            "LHW": { cityEn: "Lanzhou", cityZh: "蘭州", nameEn: "Zhongchuan", nameZh: "中川國際機場" },
+            "WUX": { cityEn: "Wuxi", cityZh: "無錫", nameEn: "Shuofang", nameZh: "碩放國際機場" },
+            "HLD": { cityEn: "Hailar", cityZh: "海拉爾", nameEn: "Dongshan", nameZh: "東山機場" },
+            "TYN": { cityEn: "Taiyuan", cityZh: "太原", nameEn: "Wusu", nameZh: "武宿國際機場" },
+            "HNL": { cityEn: "Honolulu", cityZh: "檀香山", nameEn: "Inouye", nameZh: "井上國際機場" },
+            "CGO": { cityEn: "Zhengzhou", cityZh: "鄭州", nameEn: "Xinzheng", nameZh: "新鄭國際機場" },
+            "TSN": { cityEn: "Tianjin", cityZh: "天津", nameEn: "Binhai", nameZh: "濱海國際機場" },
+            "BKI": { cityEn: "Kota Kinabalu", cityZh: "亞庇", nameEn: "Kota Kinabalu Intl", nameZh: "亞庇國際機場" },
+            "TFU": { cityEn: "Chengdu", cityZh: "成都", nameEn: "Tianfu", nameZh: "天府國際機場" },
+            "CKG": { cityEn: "Chongqing", cityZh: "重慶", nameEn: "Jiangbei", nameZh: "江北國際機場" },
+            "TNA": { cityEn: "Jinan", cityZh: "濟南", nameEn: "Yaoqiang", nameZh: "遙牆國際機場" },
+            "MLE": { cityEn: "Malé", cityZh: "馬累", nameEn: "Velana", nameZh: "維拉納國際機場" },
+            "DMK": { cityEn: "Bangkok", cityZh: "曼谷", nameEn: "Don Mueang", nameZh: "廊曼國際機場" },
+            "ROR": { cityEn: "Koror", cityZh: "科羅爾", nameEn: "Palau Intl", nameZh: "帛琉國際機場" },
+            "SUB": { cityEn: "Surabaya", cityZh: "泗水", nameEn: "Juanda", nameZh: "朱安達國際機場" },
+            "BWN": { cityEn: "Bandar Seri Begawan", cityZh: "斯里巴加灣", nameEn: "Brunei Intl", nameZh: "汶萊國際機場" },
+            "PER": { cityEn: "Perth", cityZh: "珀斯", nameEn: "Perth Airport", nameZh: "珀斯機場" },
+            "DFW": { cityEn: "Dallas", cityZh: "達拉斯", nameEn: "DFW Intl", nameZh: "達拉斯-沃斯堡國際機場" },
+            "NAN": { cityEn: "Nadi", cityZh: "楠迪", nameEn: "Nadi Intl", nameZh: "楠迪國際機場" },
+            "ENH": { cityEn: "Enshi", cityZh: "恩施", nameEn: "Xujiaping", nameZh: "許家坪機場" },
+            "URC": { cityEn: "Urumqi", cityZh: "烏魯木齊", nameEn: "Diwopu", nameZh: "地窩堡國際機場" },
+            "LJG": { cityEn: "Lijiang", cityZh: "麗江", nameEn: "Sanyi", nameZh: "三義國際機場" },
+            "USM": { cityEn: "Koh Samui", cityZh: "蘇梅島", nameEn: "Samui", nameZh: "蘇梅國際機場" },
+            "BOM": { cityEn: "Mumbai", cityZh: "孟買", nameEn: "Chhatrapati Shivaji", nameZh: "賈特拉帕蒂·希瓦吉國際機場" },
+            "CZX": { cityEn: "Changzhou", cityZh: "常州", nameEn: "Benniu", nameZh: "奔牛國際機場" },
+            "DYG": { cityEn: "Zhangjiajie", cityZh: "張家界", nameEn: "Hehua", nameZh: "荷花國際機場" },
+            "HFE": { cityEn: "Hefei", cityZh: "合肥", nameEn: "Xinqiao", nameZh: "新橋國際機場" },
+            "KTM": { cityEn: "Kathmandu", cityZh: "加德滿都", nameEn: "Tribhuvan", nameZh: "特里布萬國際機場" },
+            "NNG": { cityEn: "Nanning", cityZh: "南寧", nameEn: "Wuxu", nameZh: "吳圩國際機場" },
+            "BOS": { cityEn: "Boston", cityZh: "波士頓", nameEn: "Logan", nameZh: "羅根國際機場" },
+            "AKL": { cityEn: "Auckland", cityZh: "奧克蘭", nameEn: "Auckland Airport", nameZh: "奧克蘭機場" },
+            "AUH": { cityEn: "Abu Dhabi", cityZh: "阿布扎比", nameEn: "Zayed", nameZh: "扎耶德國際機場" },
+            "POM": { cityEn: "Port Moresby", cityZh: "莫爾茲比港", nameEn: "Jacksons", nameZh: "傑克遜斯國際機場" },
+            "CMB": { cityEn: "Colombo", cityZh: "科倫坡", nameEn: "Bandaranaike", nameZh: "班達拉奈克國際機場" },
+            "MAA": { cityEn: "Chennai", cityZh: "金奈", nameEn: "Chennai Intl", nameZh: "金奈國際機場" },
+            "HEL": { cityEn: "Helsinki", cityZh: "赫爾辛基", nameEn: "Vantaa", nameZh: "萬塔機場" },
+            "BLR": { cityEn: "Bengaluru", cityZh: "班加羅爾", nameEn: "Kempegowda", nameZh: "肯佩戈達國際機場" },
+            "AMS": { cityEn: "Amsterdam", cityZh: "阿姆斯特丹", nameEn: "Schiphol", nameZh: "史基浦機場" },
+            "HYD": { cityEn: "Hyderabad", cityZh: "海得拉巴", nameEn: "Rajiv Gandhi", nameZh: "拉吉夫·甘地國際機場" },
+            "FRA": { cityEn: "Frankfurt", cityZh: "法蘭克福", nameEn: "Frankfurt Airport", nameZh: "法蘭克福機場" },
+            "SPN": { cityEn: "Saipan", cityZh: "塞班島", nameEn: "Saipan Intl", nameZh: "塞班國際機場" },
+            "BRU": { cityEn: "Brussels", cityZh: "布魯塞爾", nameEn: "Brussels Airport", nameZh: "布魯塞爾機場" },
+            "MUC": { cityEn: "Munich", cityZh: "慕尼黑", nameEn: "Munich Airport", nameZh: "慕尼黑機場" },
+            "BCN": { cityEn: "Barcelona", cityZh: "巴塞羅那", nameEn: "El Prat", nameZh: "埃爾普拉特機場" },
+            "DAC": { cityEn: "Dhaka", cityZh: "達卡", nameEn: "Shahjalal", nameZh: "沙阿賈拉勒國際機場" },
+            "SEA": { cityEn: "Seattle", cityZh: "西雅圖", nameEn: "Sea-Tac", nameZh: "西雅圖-塔科馬國際機場" },
+            "ISG": { cityEn: "Ishigaki", cityZh: "石垣", nameEn: "New Ishigaki", nameZh: "新石垣機場" },
+            "HSN": { cityEn: "Zhoushan", cityZh: "舟山", nameEn: "Putuoshan", nameZh: "普陀山機場" },
+            "KMQ": { cityEn: "Komatsu", cityZh: "小松", nameEn: "Komatsu Airport", nameZh: "小松機場" },
+            "YIW": { cityEn: "Yiwu", cityZh: "義烏", nameEn: "Yiwu Airport", nameZh: "義烏機場" },
+            "DAT": { cityEn: "Datong", cityZh: "大同", nameEn: "Yungang", nameZh: "雲岡機場" },
+            "HRB": { cityEn: "Harbin", cityZh: "哈爾濱", nameEn: "Taiping", nameZh: "太平國際機場" },
+            "YIH": { cityEn: "Yichang", cityZh: "宜昌", nameEn: "Sanxia", nameZh: "三峽機場" },
+            "YCU": { cityEn: "Yuncheng", cityZh: "運城", nameEn: "Yanhu", nameZh: "鹽湖國際機場" },
+            "KWL": { cityEn: "Guilin", cityZh: "桂林", nameEn: "Liangjiang", nameZh: "兩江國際機場" },
+            "LXA": { cityEn: "Lhasa", cityZh: "拉薩", nameEn: "Gonggar", nameZh: "貢嘎機場" },
+            "CGQ": { cityEn: "Changchun", cityZh: "長春", nameEn: "Longjia", nameZh: "龍嘉國際機場" },
+            "XNN": { cityEn: "Xining", cityZh: "西寧", nameEn: "Caojiabao", nameZh: "曹家堡國際機場" },
+            "INC": { cityEn: "Yinchuan", cityZh: "銀川", nameEn: "Hedong", nameZh: "河東國際機場" },
+            "SJW": { cityEn: "Shijiazhuang", cityZh: "石家莊", nameEn: "Zhengding", nameZh: "正定國際機場" }
+        };
+
         const TIMEZONE_OFFSETS = {
             "ICN": 9, "CDG": 2, "LAX": -7, "BNE": 10, "MEL": 10, "ADD": 3, "ZRH": 2, "DXB": 4, "SYD": 10, "MAD": 2,
             "YVR": -7, "MXP": 2, "NRT": 9, "MAN": 1, "KIX": 9, "FCO": 2, "JNB": 2, "SFO": -7, "CAN": 8, "DOH": 3,
@@ -246,174 +622,11 @@
             "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
         };
 
-        const AIRLINE_INFO = {
-            "AAL": { name: "American Airlines", iata: "AA" },
-            "AAR": { name: "Asiana Airlines", iata: "OZ" },
-            "ABB": { name: "Air Belgium", iata: "KF" },
-            "ABL": { name: "Air Busan", iata: "BX" },
-            "ABY": { name: "Air Arabia", iata: "G9" },
-            "ACA": { name: "Air Canada", iata: "AC" },
-            "AEU": { name: "Astraeus", iata: "5W" },
-            "AFL": { name: "Aeroflot", iata: "SU" },
-            "AFR": { name: "Air France", iata: "AF" },
-            "AIC": { name: "Air India", iata: "AI" },
-            "ALK": { name: "SriLankan Airlines", iata: "UL" },
-            "AMX": { name: "Aeroméxico", iata: "AM" },
-            "ANA": { name: "All Nippon Airways", iata: "NH" },
-            "ANG": { name: "Air Niugini", iata: "PX" },
-            "ANZ": { name: "Air New Zealand", iata: "NZ" },
-            "APJ": { name: "Peach", iata: "MM" },
-            "APZ": { name: "Air Premia", iata: "YP" },
-            "ARG": { name: "Aerolíneas Argentinas", iata: "AR" },
-            "ASA": { name: "Alaska Airlines", iata: "AS" },
-            "ASY": { name: "AirAsia", iata: "AK" }, 
-            "AXM": { name: "AirAsia", iata: "AK" },
-            "AZA": { name: "ITA Airways", iata: "AZ" },
-            "AZM": { name: "Azman Air", iata: "ZU" },
-            "BAW": { name: "British Airways", iata: "BA" },
-            "BBC": { name: "Biman Bangladesh Airlines", iata: "BG" },
-            "BGH": { name: "BH Air", iata: "8H" },
-            "BKP": { name: "Bangkok Airways", iata: "PG" },
-            "BOX": { name: "AeroLogic", iata: "3S" },
-            "BTI": { name: "Air Baltic", iata: "BT" },
-            "BWA": { name: "Caribbean Airlines", iata: "BW" },
-            "CAL": { name: "China Airlines", iata: "CI" },
-            "CAW": { name: "Kulula", iata: "MN" },
-            "CBJ": { name: "Beijing Capital Airlines", iata: "JD" },
-            "CCA": { name: "Air China", iata: "CA" },
-            "CDC": { name: "Loong Air", iata: "GJ" },
-            "CDG": { name: "Shandong Airlines", iata: "SC" },
-            "CEB": { name: "Cebu Pacific", iata: "5J" },
-            "CES": { name: "China Eastern Airlines", iata: "MU" },
-            "CFG": { name: "Condor", iata: "DE" },
-            "CHH": { name: "Hainan Airlines", iata: "HU" },
-            "CPA": { name: "Cathay Pacific", iata: "CX" },
-            "CQH": { name: "Spring Airlines", iata: "9C" },
-            "CRK": { name: "Hong Kong Airlines", iata: "HX" },
-            "CSC": { name: "Sichuan Airlines", iata: "3U" },
-            "CSH": { name: "Shanghai Airlines", iata: "FM" },
-            "CSN": { name: "China Southern Airlines", iata: "CZ" },
-            "CSZ": { name: "Shenzhen Airlines", iata: "ZH" },
-            "CUB": { name: "Cubana de Aviación", iata: "CU" },
-            "CVA": { name: "Air Austral", iata: "UU" },
-            "CXA": { name: "XiamenAir", iata: "MF" },
-            "DAH": { name: "Air Algérie", iata: "AH" },
-            "DAL": { name: "Delta Air Lines", iata: "DL" },
-            "DHK": { name: "DHL Aviation", iata: "D0" },
-            "DKH": { name: "Juneyao Airlines", iata: "HO" },
-            "DLH": { name: "Lufthansa", iata: "LH" },
-            "DTR": { name: "DAT", iata: "DX" },
-            "EIN": { name: "Aer Lingus", iata: "EI" },
-            "ELB": { name: "El Al", iata: "LY" },
-            "ESR": { name: "Eastar Jet", iata: "ZE" },
-            "ETD": { name: "Etihad Airways", iata: "EY" },
-            "ETH": { name: "Ethiopian Airlines", iata: "ET" },
-            "EVA": { name: "EVA Air", iata: "BR" },
-            "EVE": { name: "Evelop Airlines", iata: "E9" },
-            "EXY": { name: "South African Express", iata: "XZ" },
-            "EZS": { name: "easyJet Switzerland", iata: "DS" },
-            "EZY": { name: "easyJet", iata: "U2" },
-            "FDX": { name: "FedEx Express", iata: "FX" },
-            "FIN": { name: "Finnair", iata: "AY" },
-            "FJI": { name: "Fiji Airways", iata: "FJ" },
-            "FLI": { name: "Atlantic Airways", iata: "RC" },
-            "GBA": { name: "Greater Bay Airlines", iata: "HB" },
-            "GIA": { name: "Garuda Indonesia", iata: "GA" },
-            "GOW": { name: "GoAir", iata: "G8" },
-            "GTI": { name: "Atlas Air", iata: "5Y" },
-            "GWI": { name: "Germanwings", iata: "4U" },
-            "HAL": { name: "Hawaiian Airlines", iata: "HA" },
-            "HBH": { name: "Hebei Airlines", iata: "NS" },
-            "HGB": { name: "Greater Bay Airlines", iata: "HB" },
-            "HKE": { name: "HK Express", iata: "UO" },
-            "HVN": { name: "Vietnam Airlines", iata: "VN" },
-            "IBS": { name: "Iberia", iata: "IB" },
-            "IGO": { name: "IndiGo", iata: "6E" },
-            "IRA": { name: "Iran Air", iata: "IR" },
-            "ISR": { name: "Israir", iata: "6H" },
-            "JAI": { name: "Jet Airways", iata: "9W" },
-            "JAL": { name: "Japan Airlines", iata: "JL" },
-            "JBW": { name: "Jubba Airways", iata: "3J" },
-            "JJA": { name: "Jeju Air", iata: "7C" },
-            "JJP": { name: "Jetstar Japan", iata: "GK" },
-            "JNA": { name: "Jin Air", iata: "LJ" },
-            "JST": { name: "Jetstar Airways", iata: "JQ" },
-            "KAL": { name: "Korean Air", iata: "KE" },
-            "KAC": { name: "Kuwait Airways", iata: "KU" },
-            "KME": { name: "Cambodia Airways", iata: "KR" },
-            "KQA": { name: "Kenya Airways", iata: "KQ" },
-            "KLM": { name: "KLM Royal Dutch Airlines", iata: "KL" },
-            "LAN": { name: "LATAM Airlines", iata: "LA" },
-            "LNI": { name: "Lion Air", iata: "JT" },
-            "LOT": { name: "LOT Polish Airlines", iata: "LO" },
-            "LZB": { name: "Bulgaria Air", iata: "FB" },
-            "MAS": { name: "Malaysia Airlines", iata: "MH" },
-            "MAU": { name: "Air Mauritius", iata: "MK" },
-            "MDA": { name: "Mandarin Airlines", iata: "AE" },
-            "MEA": { name: "Middle East Airlines", iata: "ME" },
-            "MGL": { name: "MIAT Mongolian Airlines", iata: "OM" },
-            "MON": { name: "Monarch Airlines", iata: "ZB" },
-            "MSR": { name: "EgyptAir", iata: "MS" },
-            "MXD": { name: "Batik Air Malaysia", iata: "OD" },
-            "NAX": { name: "Norwegian Air Shuttle", iata: "DY" },
-            "NCA": { name: "Nippon Cargo Airlines", iata: "KZ" },
-            "OMA": { name: "Oman Air", iata: "WY" },
-            "PAC": { name: "Polar Air Cargo", iata: "PO" },
-            "PAL": { name: "Philippine Airlines", iata: "PR" },
-            "PIA": { name: "Pakistan International Airlines", iata: "PK" },
-            "PIC": { name: "Pacific Airlines", iata: "BL" },
-            "PNC": { name: "Prince Aviation", iata: "PU" },
-            "QDA": { name: "Qingdao Airlines", iata: "QW" },
-            "QFA": { name: "Qantas", iata: "QF" },
-            "QTR": { name: "Qatar Airways", iata: "QR" },
-            "RAM": { name: "Royal Air Maroc", iata: "AT" },
-            "RBA": { name: "Royal Brunei Airlines", iata: "BI" },
-            "RJA": { name: "Royal Jordanian", iata: "RJ" },
-            "RNA": { name: "Nepal Airlines", iata: "RA" },
-            "ROT": { name: "TAROM", iata: "RO" },
-            "RYR": { name: "Ryanair", iata: "FR" },
-            "SAA": { name: "South African Airways", iata: "SA" },
-            "SAS": { name: "Scandinavian Airlines", iata: "SK" },
-            "SIA": { name: "Singapore Airlines", iata: "SQ" },
-            "SJX": { name: "Starlux Airlines", iata: "JX" },
-            "SNG": { name: "Synergy Aviation", iata: "SY" },
-            "SOO": { name: "Southern Air", iata: "9S" },
-            "SPQ": { name: "Sun PhuQuoc Airways", iata: "VU" },
-            "SQC": { name: "Singapore Airlines Cargo", iata: "SQ" },
-            "SVA": { name: "Saudia", iata: "SV" },
-            "SWR": { name: "Swiss International Air Lines", iata: "LX" },
-            "SWA": { name: "Southwest Airlines", iata: "WN" },
-            "TAI": { name: "TACA Airlines", iata: "TA" },
-            "TAM": { name: "LATAM Brasil", iata: "JJ" },
-            "TAP": { name: "TAP Air Portugal", iata: "TP" },
-            "TBA": { name: "Tibet Airlines", iata: "TV" },
-            "TGW": { name: "Scoot", iata: "TR" },
-            "THA": { name: "Thai Airways", iata: "TG" },
-            "THD": { name: "Thai Smile", iata: "WE" },
-            "THY": { name: "Turkish Airlines", iata: "TK" },
-            "TLM": { name: "Thai Lion Air", iata: "SL" },
-            "TWB": { name: "T'way Air", iata: "TW" },
-            "UAE": { name: "Emirates", iata: "EK" },
-            "UAL": { name: "United Airlines", iata: "UA" },
-            "UBG": { name: "US-Bangla Airlines", iata: "BS" },
-            "UBA": { name: "Myanmar National Airlines", iata: "UB" },
-            "UPS": { name: "UPS Airlines", iata: "5X" },
-            "UTA": { name: "Utair", iata: "UT" },
-            "UZB": { name: "Uzbekistan Airways", iata: "HY" },
-            "VIR": { name: "Virgin Atlantic", iata: "VS" },
-            "VJC": { name: "VietJet Air", iata: "VJ" },
-            "VKG": { name: "Sunclass Airlines", iata: "DK" },
-            "VOZ": { name: "Virgin Australia", iata: "VA" },
-            "VTE": { name: "Volotea", iata: "V7" },
-            "WJA": { name: "WestJet", iata: "WS" },
-            "WZZ": { name: "Wizz Air", iata: "W6" },
-            "XAX": { name: "AirAsia X", iata: "D7" }
-        };
+        let currentLang = 'zh';
+        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
+        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
         
-        const MANUAL_OVERRIDES = {
-            "CX947": 195,  
-            "MU7481": 190  
-        };
+        const MANUAL_OVERRIDES = { "CX947": 195, "MU7481": 190 };
 
         let map, markersLayer, linesLayer;
         let routeData = {}; 
@@ -421,12 +634,99 @@
         let globalSelectedDays = new Set(DAY_KEYS);
         
         window.flightDurationsRaw = {}; 
-        window.flightDurationsCSV = {}; 
         window.flightSpecificData = {}; 
         
         window.selectedIata = null;
+        window.currentRouteInfo = null;
+        window.currentOffsetLng = null;
+        window.currentDirection = 'Departure';
+
+        // Helper function to dynamically get the translated airport/city name
+        function getLocationName(iata, fallbackInfo) {
+            const dictionaryHit = AIRPORT_INFO[iata];
+            if (dictionaryHit) {
+                return {
+                    city: currentLang === 'zh' ? dictionaryHit.cityZh : dictionaryHit.cityEn,
+                    name: currentLang === 'zh' ? dictionaryHit.nameZh : dictionaryHit.nameEn
+                };
+            }
+            return { city: fallbackInfo.city, name: fallbackInfo.name };
+        }
+
+        // Helper function to dynamically get the translated airline name
+        function getAirlineName(alCode) {
+            const infoObj = AIRLINE_INFO[alCode];
+            if (infoObj) {
+                return currentLang === 'zh' ? infoObj.nameZh : infoObj.nameEn;
+            }
+            return alCode; // Fallback
+        }
+
+        function updateLanguageUI() {
+            const txt = i18n[currentLang];
+            
+            document.documentElement.lang = currentLang;
+            document.getElementById('page-title').innerText = txt.page_title;
+            document.getElementById('ui-title').innerText = txt.ui_title;
+            document.getElementById('reset-btn').innerText = txt.reset_btn;
+            document.getElementById('lang-btn').innerText = txt.lang_btn;
+            
+            document.getElementById('ui-dir-label').innerText = txt.dir_label;
+            document.getElementById('ui-dir-all').innerText = txt.dir_all;
+            document.getElementById('ui-dir-dep').innerHTML = txt.dir_dep;
+            document.getElementById('ui-dir-arr').innerHTML = txt.dir_arr;
+            
+            document.getElementById('ui-days-label').innerText = txt.days_label;
+            document.querySelectorAll('.f-day-pill').forEach(el => {
+                el.innerText = txt.days[el.dataset.day];
+            });
+            
+            document.getElementById('ui-time-label').innerText = txt.time_label;
+            document.getElementById('ui-airline-label').innerText = txt.airline_label;
+            
+            populateAirlineFilter(); // Re-populate the dropdown in the new language
+        }
+
+        window.toggleLanguage = function() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            updateLanguageUI();
+            
+            if (map) {
+                renderMapData(); // Updates tooltips
+                
+                // If a popup is open, regenerate its HTML silently
+                if (window.selectedIata && window.currentRouteInfo) {
+                    const newHTML = generateRouteHTML(window.selectedIata, window.currentRouteInfo);
+                    const popup = document.querySelector('.custom-popup .leaflet-popup-content');
+                    if (popup) {
+                        popup.innerHTML = newHTML;
+                        
+                        const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
+                        dirBtns.forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                dirBtns.forEach(b => b.classList.remove('active'));
+                                e.target.classList.add('active');
+                                window.currentDirection = e.target.dataset.dir;
+                                updatePopupContent(window.selectedIata, window.currentRouteInfo, window.currentDirection);
+                            });
+                        });
+                        
+                        updatePopupContent(window.selectedIata, window.currentRouteInfo, window.currentDirection);
+                    }
+                }
+            }
+        };
+
+        function formatDuration(m) {
+            if (!m) return i18n[currentLang].dur_unk;
+            let h = Math.floor(m / 60);
+            let mins = m % 60;
+            return `${h}${i18n[currentLang].hours} ${mins}${i18n[currentLang].mins}`;
+        }
 
         function initMap() {
+            updateLanguageUI();
+            
             map = L.map('map', { 
                 center: [20, 114], 
                 zoom: 3, 
@@ -448,6 +748,8 @@
                 setTimeout(() => {
                     if (window.selectedIata === closedIata) {
                         window.selectedIata = null;
+                        window.currentRouteInfo = null;
+                        window.currentOffsetLng = null;
                         renderMapData();
                         map.flyTo([20, 114], 3, { duration: 0.8 });
                     }
@@ -464,7 +766,7 @@
                 routeData = await flightsRes.json();
             } catch (err) {
                 console.error(err);
-                document.getElementById('loading').innerText = "載入失敗。";
+                document.getElementById('loading').innerText = i18n[currentLang].loading_error;
                 return;
             }
 
@@ -535,12 +837,6 @@
                             Departure: data.Departure ? data.Departure.durationMins : null,
                             Arrival: data.Arrival ? data.Arrival.durationMins : null
                         };
-                        
-                        const formatMins = (m) => m ? `${Math.floor(m/60)}小時 ${m%60}分鐘` : 'N/A';
-                        window.flightDurationsCSV[iata] = {
-                            Departure: formatMins(window.flightDurationsRaw[iata].Departure),
-                            Arrival: formatMins(window.flightDurationsRaw[iata].Arrival)
-                        };
                     }
                 }
             } catch (err) {
@@ -553,26 +849,38 @@
         }
 
         function populateAirlineFilter() {
+            if (!routeData.routes) return;
+            
+            const currentSelection = document.getElementById('filter-airline').value;
             let airlinesSet = new Set();
             for (const [iata, info] of Object.entries(routeData.routes)) {
                 for (const al in info.airlines) {
                     airlinesSet.add(al);
                 }
             }
+            
             const sel = document.getElementById('filter-airline');
             
+            // Clear current options except "All"
+            sel.innerHTML = `<option value="All" id="ui-airline-all">${i18n[currentLang].airline_all}</option>`;
+            
             const sortedAl = Array.from(airlinesSet).sort((a,b) => {
-                const nameA = AIRLINE_INFO[a] ? `${AIRLINE_INFO[a].name} (${AIRLINE_INFO[a].iata})` : a;
-                const nameB = AIRLINE_INFO[b] ? `${AIRLINE_INFO[b].name} (${AIRLINE_INFO[b].iata})` : b;
+                const infoA = AIRLINE_INFO[a];
+                const infoB = AIRLINE_INFO[b];
+                const nameA = infoA ? `${currentLang === 'zh' ? infoA.nameZh : infoA.nameEn} (${infoA.iata})` : a;
+                const nameB = infoB ? `${currentLang === 'zh' ? infoB.nameZh : infoB.nameEn} (${infoB.iata})` : b;
                 return nameA.localeCompare(nameB);
             });
             
             sortedAl.forEach(code => {
                 let opt = document.createElement('option');
                 opt.value = code; 
-                opt.text = AIRLINE_INFO[code] ? `${AIRLINE_INFO[code].name} (${AIRLINE_INFO[code].iata})` : code;
+                const infoObj = AIRLINE_INFO[code];
+                opt.text = infoObj ? `${currentLang === 'zh' ? infoObj.nameZh : infoObj.nameEn} (${infoObj.iata})` : code;
                 sel.add(opt);
             });
+            
+            sel.value = currentSelection;
         }
 
         function renderMapData() {
@@ -584,11 +892,12 @@
             const fAirline = document.getElementById('filter-airline').value;
             const tMin = parseInt(document.getElementById('time-min').value);
             const tMax = parseInt(document.getElementById('time-max').value);
+            const txt = i18n[currentLang];
 
             [-360, 0, 360].forEach(offset => {
                 L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng + offset], {
                     radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
-                }).bindTooltip("HKG - 香港", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
+                }).bindTooltip(txt.hkg_tooltip, {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
             });
 
             for (const [iata, info] of Object.entries(routeData.routes)) {
@@ -638,6 +947,7 @@
                     });
 
                     let wrappedLng = latlngs[latlngs.length - 1][1];
+                    const loc = getLocationName(iata, info);
 
                     [-360, 0, 360].forEach(offset => {
                         const offsetLatLngs = latlngs.map(c => [c[0], c[1] + offset]);
@@ -658,7 +968,7 @@
                             color: '#fff', weight: 1.5, fillOpacity: 0.9
                         });
                         
-                        m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
+                        m.bindTooltip(`<b>${iata}</b><br>${loc.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
                         
                         m.on('click', () => { showPopup(iata, info, offsetWrappedLng); });
                         m.addTo(markersLayer);
@@ -672,6 +982,10 @@
 
         function showPopup(iata, info, offsetWrappedLng) {
             window.selectedIata = iata;
+            window.currentRouteInfo = info;
+            window.currentOffsetLng = offsetWrappedLng;
+            window.currentDirection = 'Departure';
+            
             renderMapData(); 
             
             const targetZoom = 5;
@@ -706,29 +1020,40 @@
                     btn.addEventListener('click', (e) => {
                         dirBtns.forEach(b => b.classList.remove('active'));
                         e.target.classList.add('active');
-                        updatePopupContent(iata, info, e.target.dataset.dir);
+                        window.currentDirection = e.target.dataset.dir;
+                        updatePopupContent(iata, info, window.currentDirection);
                     });
                 });
-                updatePopupContent(iata, info, 'Departure'); 
+                updatePopupContent(iata, info, window.currentDirection); 
             }, 400);
         }
 
         function generateRouteHTML(iata, info) {
-            const durs = window.flightDurationsCSV[iata] || { Departure: 'N/A', Arrival: 'N/A' };
+            const txt = i18n[currentLang];
+            const rawDurs = window.flightDurationsRaw[iata] || {};
+            const depDur = formatDuration(rawDurs.Departure);
+            const arrDur = formatDuration(rawDurs.Arrival);
+            const loc = getLocationName(iata, info);
+            
+            const outTitle = txt.fastest_out_title.replace('{iata}', iata);
+            const inTitle = txt.fastest_in_title.replace('{iata}', iata);
+            
+            const isDepActive = window.currentDirection === 'Departure' ? 'active' : '';
+            const isArrActive = window.currentDirection === 'Arrival' ? 'active' : '';
             
             return `
                 <div class="route-card" id="popup-${iata}">
-                    <h3 style="margin:0 0 4px 0; font-size:18px;">${info.city} (${iata})</h3>
-                    <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${info.name}</p>
+                    <h3 style="margin:0 0 4px 0; font-size:18px;">${loc.city} (${iata})</h3>
+                    <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${loc.name}</p>
                     
                     <div class="route-badges">
-                        <span class="badge" title="HKG飛往${iata}的最快路線">🛫 最快離港: ${durs.Departure}</span>
-                        <span class="badge" title="${iata}飛往HKG的最快路線">🛬 最快抵港: ${durs.Arrival}</span>
+                        <span class="badge" title="${outTitle}">🛫 ${txt.fastest_out} ${depDur}</span>
+                        <span class="badge" title="${inTitle}">🛬 ${txt.fastest_in} ${arrDur}</span>
                     </div>
 
                     <div class="direction-toggle">
-                        <div class="direction-btn active" data-dir="Departure">🛫 離港航班</div>
-                        <div class="direction-btn" data-dir="Arrival">🛬 抵港航班</div>
+                        <div class="direction-btn ${isDepActive}" data-dir="Departure">${txt.popup_dep}</div>
+                        <div class="direction-btn ${isArrActive}" data-dir="Arrival">${txt.popup_arr}</div>
                     </div>
 
                     <div class="airline-list" id="popup-airlines-${iata}">
@@ -745,6 +1070,7 @@
             const fAirline = document.getElementById('filter-airline').value;
             const tMin = parseInt(document.getElementById('time-min').value);
             const tMax = parseInt(document.getElementById('time-max').value);
+            const txt = i18n[currentLang];
             let html = '';
 
             for (const [alCode, alData] of Object.entries(info.airlines)) {
@@ -769,7 +1095,8 @@
 
                 if (hasDirFlight) {
                     const infoObj = AIRLINE_INFO[alCode];
-                    const alName = infoObj ? `${infoObj.name} (${infoObj.iata})` : alCode;
+                    const translatedAlName = getAirlineName(alCode);
+                    const alName = infoObj ? `${translatedAlName} (${infoObj.iata})` : alCode;
                     const iconText = infoObj ? infoObj.iata : alCode.substring(0,2);
                     
                     const uId = `fl-${iata}-${alCode}-${direction}`;
@@ -778,9 +1105,9 @@
                     DAY_KEYS.forEach(d => {
                         const count = dayData[d].length;
                         if (count > 0) {
-                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} 班航班">${DAY_NAMES_ZH[d]}</div>`;
+                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} ${txt.flights_count}">${txt.days[d]}</div>`;
                         } else {
-                            pillsHtml += `<div class="day-pill disabled">${DAY_NAMES_ZH[d]}</div>`;
+                            pillsHtml += `<div class="day-pill disabled">${txt.days[d]}</div>`;
                         }
                     });
                     pillsHtml += `</div>`;
@@ -801,7 +1128,7 @@
                                 let [h, m] = fl.time.split(':').map(Number);
                                 let hkgMins = h * 60 + m;
                                 let displayStr = '';
-                                let durStr = durMins ? `${Math.floor(durMins/60)}小時 ${durMins%60}分鐘` : '需時未知';
+                                let durStr = formatDuration(durMins);
 
                                 if (durMins) {
                                     if (direction === 'Departure') {
@@ -810,7 +1137,7 @@
                                         let norm = ((destMins % 1440) + 1440) % 1440;
                                         let dh = Math.floor(norm / 60).toString().padStart(2, '0');
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
-                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}日)` : (dayOffset < 0 ? ` (${dayOffset}日)` : '');
+                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}${txt.day_offset})` : (dayOffset < 0 ? ` (${dayOffset}${txt.day_offset})` : '');
                                         
                                         displayStr = `HKG ${fl.time} &rarr; ${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
                                     } else {
@@ -821,14 +1148,14 @@
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
                                         
                                         let arrivalOffset = -dayOffset;
-                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}日)` : (arrivalOffset < 0 ? ` (${arrivalOffset}日)` : '');
+                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}${txt.day_offset})` : (arrivalOffset < 0 ? ` (${arrivalOffset}${txt.day_offset})` : '');
                                         
                                         displayStr = `${iata} ${dh}:${dm} &rarr; HKG ${fl.time} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
                                     }
                                 } else {
                                     displayStr = direction === 'Departure' 
-                                        ? `HKG ${fl.time} &rarr; ${iata} (抵達時間未知)` 
-                                        : `${iata} (起飛時間未知) &rarr; HKG ${fl.time}`;
+                                        ? `HKG ${fl.time} &rarr; ${iata} (${txt.arr_unk})` 
+                                        : `${iata} (${txt.dep_unk}) &rarr; HKG ${fl.time}`;
                                 }
 
                                 detailsHtml += `
@@ -859,8 +1186,8 @@
                 }
             }
             
-            const directionText = direction === 'Departure' ? '離港' : '抵港';
-            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">找不到符合篩選條件的${directionText}航班。</div>`;
+            const directionText = direction === 'Departure' ? txt.dep_text : txt.arr_text;
+            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">${txt.no_flights_pre}${directionText}${txt.no_flights_suf}</div>`;
         }
 
         window.togglePopupDay = function(el, uIdPrefix, day) {
@@ -928,6 +1255,9 @@
             document.querySelectorAll('.f-day-pill').forEach(p => p.classList.add('active'));
 
             window.selectedIata = null;
+            window.currentRouteInfo = null;
+            window.currentOffsetLng = null;
+            
             renderMapData();
             map.flyTo([20, 114], 3, { duration: 0.8 }); 
         };
