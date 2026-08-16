@@ -937,3 +937,32 @@ MF8691,Xiamen Air,Yinchuan,INC,2026-08-15T09:20:00+00:00,Hong Kong International
 NS3690,Hebei Airlines,Hong Kong International,HKG,2026-08-15T13:00:00+00:00,Daguocun,SJW,2026-08-15T16:00:00+00:00,landed
 NS3689,Hebei Airlines,Daguocun,SJW,2026-08-15T08:50:00+00:00,Hong Kong International,HKG,2026-08-15T12:00:00+00:00,landed
 AY099,Finnair,Helsinki-vantaa,HEL,2026-08-17T00:35:00+00:00,Hong Kong International,HKG,2026-08-17T17:40:00+00:00,scheduled
+HB8952,Greater Bay Airlines,Hong Kong International,HKG,2026-08-21T09:15:00+00:00,Dunhuang,DNH,2026-08-21T13:45:00+00:00,scheduled
+HB8953,Greater Bay Airlines,Dunhuang,DNH,2026-08-21T16:15:00+00:00,Hong Kong International,HKG,2026-08-21T20:45:00+00:00,scheduled
+SU213,Aeroflot,Hong Kong International,HKG,2026-08-17T12:25:00+00:00,Sheremetyevo International,SVO,2026-08-17T16:55:00+00:00,scheduled
+MU6098,China Eastern Airlines,Hong Kong International,HKG,2026-08-17T12:20:00+00:00,Lanzhou Zhongchuan International,LHW,2026-08-17T15:35:00+00:00,scheduled
+MU6097,China Eastern Airlines,Lanzhou Zhongchuan International,LHW,2026-08-17T08:05:00+00:00,Hong Kong International,HKG,2026-08-17T11:20:00+00:00,scheduled
+HX2507,Hong Kong Airlines,Hong Kong International,HKG,2026-08-18T15:45:00+00:00,Lanzhou Zhongchuan International,LHW,2026-08-18T19:00:00+00:00,scheduled
+HX2508,Hong Kong Airlines,Lanzhou Zhongchuan International,LHW,2026-08-18T20:40:00+00:00,Hong Kong International,HKG,2026-08-18T23:55:00+00:00,scheduled
+HX463,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T12:20:00+00:00,Hulunbuir Hailar,HLD,2026-08-17T17:20:00+00:00,scheduled
+HX462,Hong Kong Airlines,Hulunbuir Hailar,HLD,2026-08-17T17:50:00+00:00,Hong Kong International,HKG,2026-08-17T22:50:00+00:00,scheduled
+MU6086,China Eastern Airlines,Hong Kong International,HKG,2026-08-17T12:35:00+00:00,Taiyuan Wusu International,TYN,2026-08-17T15:35:00+00:00,scheduled
+MU6085,China Eastern Airlines,Taiyuan Wusu International,TYN,2026-08-17T08:35:00+00:00,Hong Kong International,HKG,2026-08-17T11:35:00+00:00,scheduled
+UA153,United Airlines,Hong Kong International,HKG,2026-08-21T12:40:00+00:00,Daniel K. Inouye International,HNL,2026-08-21T05:40:00+00:00,scheduled
+HB8235,Greater Bay Airlines,Hong Kong International,HKG,2026-08-17T14:30:00+00:00,Roman Tmetuchl International,ROR,2026-08-17T19:30:00+00:00,scheduled
+HB8236,Greater Bay Airlines,Roman Tmetuchl International,ROR,2026-08-17T20:45:00+00:00,Hong Kong International,HKG,2026-08-17T23:45:00+00:00,scheduled
+HX2725,Hong Kong Airlines,Hong Kong International,HKG,2026-08-20T14:30:00+00:00,Roman Tmetuchl International,ROR,2026-08-20T19:30:00+00:00,scheduled
+HX2726,Hong Kong Airlines,Roman Tmetuchl International,ROR,2026-08-20T20:55:00+00:00,Hong Kong International,HKG,2026-08-20T23:55:00+00:00,scheduled
+HB538,Greater Bay Airlines,Hong Kong International,HKG,2026-08-16T17:50:00+00:00,Enshi Xujiaping,ENH,2026-08-16T20:20:00+00:00,scheduled
+HB539,Greater Bay Airlines,Enshi Xujiaping,ENH,2026-08-16T20:40:00+00:00,Hong Kong International,HKG,2026-08-16T23:10:00+00:00,scheduled
+HX412,Hong Kong Airlines,Hong Kong International,HKG,2026-08-17T17:10:00+00:00,Lijiang Sanyi International,LJG,2026-08-17T19:55:00+00:00,scheduled
+HB872,Greater Bay Airlines,Hong Kong International,HKG,2026-08-17T17:25:00+00:00,Zhangjiajie Hehua International,DYG,2026-08-17T19:25:00+00:00,scheduled
+HB873,Greater Bay Airlines,Zhangjiajie Hehua International,DYG,2026-08-17T20:10:00+00:00,Hong Kong International,HKG,2026-08-17T22:10:00+00:00,scheduled
+PX019,Air Niugini,Hong Kong International,HKG,2026-08-16T20:25:00+00:00,Jacksons International,POM,2026-08-17T04:55:00+00:00,scheduled
+PX008,Air Niugini,Jacksons International,POM,2026-08-16T14:45:00+00:00,Hong Kong International,HKG,2026-08-16T19:15:00+00:00,scheduled
+AY099,Finnair,Helsinki-vantaa,HEL,2026-08-16T03:40:00+00:00,Hong Kong International,HKG,2026-08-16T17:40:00+00:00,scheduled
+HX072,Hong Kong Airlines,Hong Kong International,HKG,2026-08-16T18:25:00+00:00,Saipan International,SPN,2026-08-17T01:25:00+00:00,scheduled
+HX073,Hong Kong Airlines,Saipan International,SPN,2026-08-17T03:20:00+00:00,Hong Kong International,HKG,2026-08-17T06:20:00+00:00,scheduled
+HX2502,Hong Kong Airlines,Hong Kong International,HKG,2026-08-18T12:20:00+00:00,Xining Caojiabao International,XNN,2026-08-18T15:50:00+00:00,scheduled
+HX2503,Hong Kong Airlines,Xining Caojiabao International,XNN,2026-08-18T17:25:00+00:00,Hong Kong International,HKG,2026-08-18T20:55:00+00:00,scheduled
+CX342R,Cathay Pacific,Hong Kong International,HKG,2026-08-16T09:35:00+00:00,Hong Kong International,HKG,2026-08-16T11:35:00+00:00,scheduled
