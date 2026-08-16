@@ -221,9 +221,23 @@
     <script>
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
         const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-        const DAY_NAMES = {
-            'su': 'Sunday', 'mo': 'Monday', 'tu': 'Tuesday', 
-            'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
+        
+        // Dictionary containing UTC offsets for August (includes daylight saving rules)
+        const TIMEZONE_OFFSETS = {
+            "ICN": 9, "CDG": 2, "LAX": -7, "BNE": 10, "MEL": 10, "ADD": 3, "ZRH": 2, "DXB": 4, "SYD": 10, "MAD": 2,
+            "YVR": -7, "MXP": 2, "NRT": 9, "MAN": 1, "KIX": 9, "FCO": 2, "JNB": 2, "SFO": -7, "CAN": 8, "DOH": 3,
+            "SIN": 8, "PUS": 9, "CJU": 9, "DPS": 8, "JFK": -4, "TAE": 9, "DAD": 7, "ILO": 8, "FUK": 9, "OKA": 9,
+            "MNL": 8, "PEK": 8, "BKK": 7, "PVG": 8, "CRK": 8, "HAN": 7, "HGH": 8, "PQC": 7, "CNX": 7, "CEB": 8,
+            "RMQ": 8, "HKT": 7, "TPE": 8, "KHH": 8, "SZB": 8, "SDJ": 9, "LHR": 1, "KUL": 8, "SGN": 7, "DEL": 5.5,
+            "SYX": 8, "WNZ": 8, "PKX": 8, "FOC": 8, "KTI": 7, "HND": 9, "CTS": 9, "IST": 3, "WUH": 8, "HIJ": 9,
+            "CGK": 7, "CSX": 8, "DNH": 8, "XMN": 8, "SHA": 8, "CTU": 8, "TAK": 9, "NGO": 9, "HAK": 8, "TAO": 8,
+            "NKG": 8, "YYZ": -4, "NGB": 8, "XIY": 8, "KMG": 8, "SVO": 3, "PEN": 8, "UBN": 8, "ORD": -5, "LHW": 8,
+            "WUX": 8, "HLD": 8, "TYN": 8, "HNL": -10, "CGO": 8, "TSN": 8, "BKI": 8, "TFU": 8, "CKG": 8, "TNA": 8,
+            "MLE": 5, "DMK": 7, "ROR": 9, "SUB": 7, "BWN": 8, "PER": 8, "DFW": -5, "NAN": 12, "ENH": 8, "URC": 8,
+            "LJG": 8, "USM": 7, "BOM": 5.5, "CZX": 8, "DYG": 8, "HFE": 8, "KTM": 5.75, "NNG": 8, "BOS": -4, "AKL": 12,
+            "AUH": 4, "POM": 10, "CMB": 5.5, "MAA": 5.5, "HEL": 3, "BLR": 5.5, "AMS": 2, "HYD": 5.5, "FRA": 2, "SPN": 10,
+            "BRU": 2, "MUC": 2, "BCN": 2, "DAC": 6, "SEA": -7, "ISG": 9, "HSN": 8, "KMQ": 9, "YIW": 8, "DAT": 8,
+            "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
         };
 
         const AIRLINE_MAPPING = {
@@ -249,7 +263,6 @@
         function initMap() {
             map = L.map('map', { center: [20, 114], zoom: 3, minZoom: 2, maxBounds: [[-90, -180], [90, 180]] });
             
-            // Standard CartoDB Voyager basemap
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap &copy; CARTO'
             }).addTo(map);
@@ -262,7 +275,6 @@
 
         async function loadMapData() {
             try {
-                // Load flights.json main dataset
                 const flightsRes = await fetch('flights.json?v=' + new Date().getTime());
                 if (!flightsRes.ok) throw new Error("Failed to load flights.json");
                 routeData = await flightsRes.json();
@@ -272,7 +284,6 @@
                 return;
             }
 
-            // Parse flight durations from Flightlist_results.csv using ONLY 'scheduled' flights
             try {
                 const csvRes = await fetch('Flightlist_results.csv?v=' + new Date().getTime());
                 if (csvRes.ok) {
@@ -282,12 +293,10 @@
                     for (let i = 1; i < lines.length; i++) { 
                         if (!lines[i].trim()) continue;
                         
-                        // Basic CSV split
                         const row = lines[i].split(',');
                         if (row.length >= 9) {
                             const status = row[8].trim().toLowerCase();
                             
-                            // STRICT REQUIREMENT: Only calculate durations using 'scheduled' flights
                             if (status !== 'scheduled') continue;
 
                             const depIata = row[3].trim().toUpperCase();
@@ -295,15 +304,22 @@
                             const depTimeStr = row[4].trim();
                             const arrTimeStr = row[7].trim();
                             
-                            // Figure out which non-HKG destination/origin to assign the duration to
                             const targetIata = depIata === 'HKG' ? arrIata : depIata;
                             
-                            // Calculate once per destination based on the first scheduled flight found
                             if (!window.flightDurationsCSV[targetIata] && depTimeStr && arrTimeStr) {
-                                const depTime = new Date(depTimeStr);
-                                const arrTime = new Date(arrTimeStr);
-                                if (!isNaN(depTime) && !isNaN(arrTime)) {
-                                    const diffMs = arrTime - depTime;
+                                const depDate = new Date(depTimeStr);
+                                const arrDate = new Date(arrTimeStr);
+                                
+                                if (!isNaN(depDate) && !isNaN(arrDate)) {
+                                    // Calculate True UTC time using our hardcoded dictionary offsets
+                                    const depOffset = TIMEZONE_OFFSETS[depIata] || 0;
+                                    const arrOffset = TIMEZONE_OFFSETS[arrIata] || 0;
+                                    
+                                    const trueDepUTC = depDate.getTime() - (depOffset * 3600000);
+                                    const trueArrUTC = arrDate.getTime() - (arrOffset * 3600000);
+                                    
+                                    let diffMs = trueArrUTC - trueDepUTC;
+                                    
                                     if (diffMs > 0) {
                                         const diffMins = Math.floor(diffMs / 60000);
                                         const hours = Math.floor(diffMins / 60);
@@ -324,7 +340,6 @@
             renderMapData();
         }
 
-        // Generate Airlines Filter List
         function populateAirlineFilter() {
             let airlinesSet = new Set();
             for (const [iata, info] of Object.entries(routeData.routes)) {
@@ -341,7 +356,6 @@
             });
         }
 
-        // Main map rendering logic
         function renderMapData() {
             markersLayer.clearLayers();
             linesLayer.clearLayers();
@@ -352,7 +366,6 @@
             const tMin = parseInt(document.getElementById('time-min').value);
             const tMax = parseInt(document.getElementById('time-max').value);
 
-            // HKG Center Dot
             L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng], {
                 radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
             }).bindTooltip("HKG - Hong Kong", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
@@ -383,12 +396,10 @@
                 }
 
                 if (hasValidFlight) {
-                    // Draw Line
                     L.polyline([ [HKG_LATLNG.lat, HKG_LATLNG.lng], [info.lat, info.lng] ], {
                         color: '#1a73e8', weight: 1.5, opacity: 0.3, smoothFactor: 1
                     }).addTo(linesLayer);
 
-                    // Draw Marker
                     const m = L.circleMarker([info.lat, info.lng], {
                         radius: 5, fillColor: '#1a73e8', color: '#fff', weight: 1.5, fillOpacity: 0.9
                     });
@@ -403,7 +414,6 @@
 
         window.triggerMapFilter = function() { renderMapData(); };
 
-        // Generate Custom Popup UI
         function showPopup(iata, info, marker) {
             const popupContent = generateRouteHTML(iata, info);
             
