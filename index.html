@@ -263,6 +263,48 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
+        // Helper to Calculate Local Arrival Time utilizing the timezone-adjusted duration
+        window.calculateArrivalTime = function(depTime, durationText) {
+            if (!depTime || !durationText) return "Unknown";
+            
+            const depParts = depTime.split(':');
+            if (depParts.length !== 2) return "Unknown";
+            let depH = parseInt(depParts[0], 10);
+            let depM = parseInt(depParts[1], 10);
+            
+            let isNegative = false;
+            // Matches formats like "-2hr 30mins" or "29hr 20mins"
+            const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
+            if (!match) return "Unknown";
+
+            if (match[1] === '-') isNegative = true;
+            let durH = parseInt(match[2], 10);
+            let durM = parseInt(match[3], 10);
+            
+            let totalDurMins = durH * 60 + durM;
+            if (isNegative) totalDurMins = -totalDurMins; // Handle Dateline rollovers like LAX
+            
+            let arrTotalMins = (depH * 60 + depM) + totalDurMins;
+            
+            let dayOffset = 0;
+            while (arrTotalMins < 0) {
+                arrTotalMins += 24 * 60;
+                dayOffset -= 1;
+            }
+            while (arrTotalMins >= 24 * 60) {
+                arrTotalMins -= 24 * 60;
+                dayOffset += 1;
+            }
+            
+            let arrHStr = String(Math.floor(arrTotalMins / 60)).padStart(2, '0');
+            let arrMStr = String(arrTotalMins % 60).padStart(2, '0');
+            
+            let res = `${arrHStr}:${arrMStr}`;
+            if (dayOffset > 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(+${dayOffset})</span>`;
+            if (dayOffset < 0) res += ` <span style="color:#d93025; font-size:10px; font-weight:700;">(${dayOffset})</span>`;
+            return res;
+        };
+
         window.calculateDistance = function(lat1, lon1, lat2, lon2) {
             const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -353,7 +395,7 @@
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // Load duration data directly from Flight_duration.csv
+                // Load and map the CSV directionally
                 try {
                     const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
                     if (csvRes.ok) {
@@ -364,24 +406,29 @@
                             if (!lines[i].trim()) continue;
                             const row = lines[i].split(',');
                             
-                            // Check if row has the expected 5 columns
                             if (row.length >= 5) {
                                 const depAirport = row[2].trim();
                                 const arrAirport = row[3].trim();
                                 
-                                // Identify the non-HKG airport
                                 let targetAirport = depAirport;
+                                let direction = 'Arrival'; // If HKG is arrival, route is Dest->HKG
+                                
                                 if (depAirport.includes("HKG")) {
                                     targetAirport = arrAirport;
+                                    direction = 'Departure'; // If HKG is departure, route is HKG->Dest
                                 }
                                 
-                                // Extract the 3-letter IATA code from the parenthesis, e.g., "(ICN)"
                                 const iataMatch = targetAirport.match(/\(([A-Z]{3})\)/);
                                 
                                 if (iataMatch) {
                                     const iataCode = iataMatch[1].toUpperCase();
-                                    const durationText = row[4].trim(); // Duration is in the 5th column
-                                    window.flightDurationsCSV[iataCode] = durationText;
+                                    const durationText = row[4].trim(); 
+                                    
+                                    if (!window.flightDurationsCSV[iataCode]) {
+                                        window.flightDurationsCSV[iataCode] = { 'Departure': null, 'Arrival': null };
+                                    }
+                                    
+                                    window.flightDurationsCSV[iataCode][direction] = durationText;
                                 }
                             }
                         }
@@ -389,7 +436,7 @@
                         console.error("Flight_duration.csv returned a status error: ", csvRes.status);
                     }
                 } catch (e) {
-                    console.warn("Could not load Flight_duration.csv. Displaying unknown duration.", e);
+                    console.warn("Could not load Flight_duration.csv.", e);
                 }
 
                 const allAirlinesSet = new Set();
@@ -460,7 +507,7 @@
                 window.applyFiltersToMap();
 
             } catch (error) {
-                loadingText.innerText = "Error loading flights.json. Run fetch_flights.py first.";
+                loadingText.innerText = "Error loading flights.json.";
                 console.error("Mapping error:", error);
             }
         }
@@ -529,7 +576,10 @@
             const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
             
             const searchIata = iata.trim().toUpperCase();
-            const csvDuration = window.flightDurationsCSV[searchIata] || "Time Unknown";
+            
+            // Retrieve the directional duration
+            const durationsObj = window.flightDurationsCSV[searchIata] || {};
+            const csvDuration = durationsObj[direction] || "Time Unknown";
             
             let html = `
                 <div class="direction-toggle">
@@ -641,18 +691,32 @@
 
             const flights = window.airportRoutesData[iata].airlines[airlineCode].days[day] || [];
             const dirFlights = flights.filter(f => f.type === direction && window.flightTimeMatches(f.time));
+            
+            const searchIata = iata.trim().toUpperCase();
+            const durationsObj = window.flightDurationsCSV[searchIata] || {};
+            const csvDuration = durationsObj[direction] || "";
 
             if (dirFlights.length === 0) {
                 detailsBox.innerHTML = '<em>No flights scheduled.</em>';
             } else {
                 let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
                 dirFlights.forEach(f => {
-                    const timeLabel = direction === 'Departure' ? 'Departs HKG' : 'Arrives HKG';
+                    let depLabel = direction === 'Departure' ? 'HKG' : iata;
+                    let arrLabel = direction === 'Departure' ? iata : 'HKG';
+                    
+                    let arrTime = window.calculateArrivalTime(f.time, csvDuration);
+                    let displayHtml;
+                    
+                    if (arrTime === "Unknown") {
+                        displayHtml = `Departs ${depLabel}: ${f.time}`;
+                    } else {
+                        displayHtml = `${f.time} (${depLabel}) &rarr; ${arrTime} (${arrLabel})`;
+                    }
                     
                     html += `
                         <div class="flight-item">
                             <div class="flight-no">${f.no}</div>
-                            <div class="flight-time">${timeLabel}: ${f.time}</div>
+                            <div class="flight-time">${displayHtml}</div>
                         </div>
                     `;
                 });
