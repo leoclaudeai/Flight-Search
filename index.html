@@ -24,17 +24,36 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
-        /* Top Right Language Button */
-        #lang-btn {
-            position: absolute; top: 15px; right: 15px;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
-            border: 1px solid #e0e0e0; padding: 8px 16px; border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000;
-            font-size: 13px; font-weight: 700; color: #1a73e8; cursor: pointer;
-            transition: all 0.2s ease;
+        /* -------------------------------------------
+           NEW: Floating Top-Right Language Button 
+        ------------------------------------------- */
+        #lang-toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999; /* Ensures it sits above absolutely everything */
         }
-        #lang-btn:hover {
-            background: #f8f9fa; color: #0d47a1; border-color: #d0d0d0;
+        
+        .lang-float-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+        }
+        .lang-float-btn:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
         }
 
         /* Map Filters Panel */
@@ -179,10 +198,12 @@
 
     <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
     
-    <!-- Top Right Language Button -->
-    <button id="lang-btn" onclick="toggleLanguage()">EN</button>
+    <!-- BRAND NEW: Dedicated Floating Top Right Language Button -->
+    <div id="lang-toggle-container">
+        <button class="lang-float-btn" id="lang-btn" onclick="toggleLanguage()">🌐 EN</button>
+    </div>
 
-    <!-- Map Filters Panel -->
+    <!-- Map Filters Panel (Language button is permanently removed from here) -->
     <div id="filter-panel">
         <div class="filter-header">
             <h4 id="ui-title">航班篩選</h4>
@@ -683,7 +704,7 @@
             document.getElementById('page-title').innerText = txt.page_title;
             document.getElementById('ui-title').innerText = txt.ui_title;
             document.getElementById('reset-btn').innerText = txt.reset_btn;
-            document.getElementById('lang-btn').innerText = txt.lang_btn;
+            document.getElementById('lang-btn').innerHTML = `🌐 ${txt.lang_btn}`;
             
             document.getElementById('ui-dir-label').innerText = txt.dir_label;
             document.getElementById('ui-dir-all').innerText = txt.dir_all;
