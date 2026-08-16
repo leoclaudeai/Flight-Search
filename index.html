@@ -24,6 +24,20 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
+        /* Language Toggle Switch */
+        .lang-toggle-container {
+            position: absolute; top: 15px; right: 15px; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: flex; overflow: hidden; border: 1px solid #e0e0e0;
+        }
+        .lang-btn {
+            background: none; border: none; padding: 8px 12px; font-size: 13px; font-weight: 700;
+            color: #5f6368; cursor: pointer; transition: 0.2s; outline: none;
+        }
+        .lang-btn.active { background: #1a73e8; color: #fff; }
+        .lang-btn:hover:not(.active) { background: #f1f3f4; color: #1a73e8; }
+
         /* Map Filters Panel */
         #filter-panel {
             position: absolute; top: 15px; left: 55px;
@@ -34,9 +48,7 @@
         }
         
         /* Filter Header & Buttons */
-        .filter-header {
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .filter-header { display: flex; justify-content: space-between; align-items: center; }
         .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         
@@ -58,9 +70,7 @@
             margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
             max-height: 500px; opacity: 1; overflow: hidden;
         }
-        #filter-panel.minimized #filter-content {
-            max-height: 0; opacity: 0; margin-top: 0;
-        }
+        #filter-panel.minimized #filter-content { max-height: 0; opacity: 0; margin-top: 0; }
 
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
@@ -158,44 +168,50 @@
 </head>
 <body>
 
-    <div id="loading" class="loading-overlay">Loading Data...</div>
+    <div id="loading" class="loading-overlay" data-i18n="loading">Loading Data...</div>
     
+    <!-- Language Toggle -->
+    <div class="lang-toggle-container">
+        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="btn-zh" onclick="setLang('zh')">繁</button>
+    </div>
+
     <!-- Map Filters Panel -->
     <div id="filter-panel">
         <div class="filter-header">
-            <h4>Filter Flights</h4>
+            <h4 data-i18n="filterTitle">Filter Flights</h4>
             <div class="header-actions">
-                <button class="reset-btn" onclick="clearAllFilters()">Reset</button>
+                <button class="reset-btn" onclick="clearAllFilters()" data-i18n="reset">Reset</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
         </div>
         
         <div id="filter-content">
             <div class="filter-group">
-                <label>Direction</label>
+                <label data-i18n="direction">Direction</label>
                 <select id="filter-dir" onchange="window.triggerMapFilter()">
-                    <option value="All">All Routes</option>
-                    <option value="Departure">Departures (HKG &rarr; )</option>
-                    <option value="Arrival">Arrivals ( &rarr; HKG)</option>
+                    <option value="All" data-i18n="dirAll">All Routes</option>
+                    <option value="Departure" data-i18n="dirDep">Departures (HKG &rarr; )</option>
+                    <option value="Arrival" data-i18n="dirArr">Arrivals ( &rarr; HKG)</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label>Days of Week</label>
+                <label data-i18n="daysOfWeek">Days of Week</label>
                 <div class="filter-day-pills">
-                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
-                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
-                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
-                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
-                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
-                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
-                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)" data-i18n="su_short">Su</div>
+                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)" data-i18n="mo_short">Mo</div>
+                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)" data-i18n="tu_short">Tu</div>
+                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)" data-i18n="we_short">We</div>
+                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)" data-i18n="th_short">Th</div>
+                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)" data-i18n="fr_short">Fr</div>
+                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)" data-i18n="sa_short">Sa</div>
                 </div>
             </div>
 
             <!-- Time Filter Slider -->
             <div class="filter-group">
-                <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span data-i18n="timeWindow">Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
                     <div class="time-slider-fill" id="time-fill"></div>
@@ -205,9 +221,9 @@
             </div>
 
             <div class="filter-group">
-                <label>Airline</label>
+                <label data-i18n="airline">Airline</label>
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
-                    <option value="All">All Airlines</option>
+                    <option value="All" data-i18n="airAll">All Airlines</option>
                 </select>
             </div>
         </div>
@@ -219,12 +235,88 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+        // --- I18N DICTIONARY ---
+        let currentLang = 'en';
+        const i18n = {
+            'en': {
+                pageTitle: "Hong Kong International Airport (HKG) - Flight Routes",
+                loading: "Loading Data...",
+                filterTitle: "Filter Flights",
+                reset: "Reset",
+                direction: "Direction",
+                dirAll: "All Routes",
+                dirDep: "Departures (HKG \u2192 )",
+                dirArr: "Arrivals ( \u2192 HKG)",
+                daysOfWeek: "Days of Week",
+                timeWindow: "Time Window",
+                airline: "Airline",
+                airAll: "All Airlines",
+                hkName: "Hong Kong",
+                timeUnknown: "Time Unknown",
+                noFlights: "No flights matching your filters.",
+                noSchedule: "No flights scheduled.",
+                scheduleTxt: "Schedule:",
+                su_short: "Su", mo_short: "Mo", tu_short: "Tu", we_short: "We", th_short: "Th", fr_short: "Fr", sa_short: "Sa",
+                su_long: "Sunday", mo_long: "Monday", tu_long: "Tuesday", we_long: "Wednesday", th_long: "Thursday", fr_long: "Friday", sa_long: "Saturday"
+            },
+            'zh': {
+                pageTitle: "香港國際機場 (HKG) - 航班路線",
+                loading: "載入數據中...",
+                filterTitle: "篩選航班",
+                reset: "重設",
+                direction: "方向",
+                dirAll: "所有路線",
+                dirDep: "出發 (HKG \u2192 )",
+                dirArr: "抵達 ( \u2192 HKG)",
+                daysOfWeek: "星期",
+                timeWindow: "時間範圍",
+                airline: "航空公司",
+                airAll: "所有航空公司",
+                hkName: "香港",
+                timeUnknown: "時間未知",
+                noFlights: "沒有符合篩選條件的航班。",
+                noSchedule: "沒有預定的航班。",
+                scheduleTxt: "航班時間表:",
+                su_short: "日", mo_short: "一", tu_short: "二", we_short: "三", th_short: "四", fr_short: "五", sa_short: "六",
+                su_long: "星期日", mo_long: "星期一", tu_long: "星期二", we_long: "星期三", th_long: "星期四", fr_long: "星期五", sa_long: "星期六"
+            }
+        };
+
+        function t(key) {
+            return i18n[currentLang][key] || key;
+        }
+
+        window.setLang = function(lang) {
+            currentLang = lang;
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+            
+            document.title = t('pageTitle');
+            
+            // Update all static UI elements with data-i18n tags
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (el.tagName === 'OPTION') {
+                    el.text = t(key);
+                } else {
+                    el.innerHTML = t(key);
+                }
+            });
+
+            // Re-render popup if one is open
+            const activePopup = window.leafletMap && window.leafletMap._popup;
+            if (activePopup && activePopup.isOpen()) {
+                const iata = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/)[1] : null;
+                if (iata) {
+                    const fDir = document.getElementById('filter-dir').value;
+                    const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
+                    window.renderCardContent(iata, defaultDir);
+                }
+            }
+        };
+
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
         const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-        const DAY_NAMES = {
-            'su': 'Sunday', 'mo': 'Monday', 'tu': 'Tuesday', 
-            'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
-        };
 
         const AIRLINE_MAPPING = {
             "CPA": "Cathay Pacific", "HKE": "HK Express", "CRK": "Hong Kong Airlines",
@@ -263,26 +355,24 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        // Helper to Calculate Local Arrival Time utilizing the timezone-adjusted duration
         window.calculateArrivalTime = function(depTime, durationText) {
-            if (!depTime || !durationText) return "Unknown";
+            if (!depTime || !durationText) return t('timeUnknown');
             
             const depParts = depTime.split(':');
-            if (depParts.length !== 2) return "Unknown";
+            if (depParts.length !== 2) return t('timeUnknown');
             let depH = parseInt(depParts[0], 10);
             let depM = parseInt(depParts[1], 10);
             
             let isNegative = false;
-            // Matches formats like "-2hr 30mins" or "29hr 20mins"
             const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
-            if (!match) return "Unknown";
+            if (!match) return t('timeUnknown');
 
             if (match[1] === '-') isNegative = true;
             let durH = parseInt(match[2], 10);
             let durM = parseInt(match[3], 10);
             
             let totalDurMins = durH * 60 + durM;
-            if (isNegative) totalDurMins = -totalDurMins; // Handle Dateline rollovers like LAX
+            if (isNegative) totalDurMins = -totalDurMins; 
             
             let arrTotalMins = (depH * 60 + depM) + totalDurMins;
             
@@ -395,7 +485,6 @@
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // Load and map the CSV directionally
                 try {
                     const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
                     if (csvRes.ok) {
@@ -411,11 +500,11 @@
                                 const arrAirport = row[3].trim();
                                 
                                 let targetAirport = depAirport;
-                                let direction = 'Arrival'; // If HKG is arrival, route is Dest->HKG
+                                let direction = 'Arrival'; 
                                 
                                 if (depAirport.includes("HKG")) {
                                     targetAirport = arrAirport;
-                                    direction = 'Departure'; // If HKG is departure, route is HKG->Dest
+                                    direction = 'Departure'; 
                                 }
                                 
                                 const iataMatch = targetAirport.match(/\(([A-Z]{3})\)/);
@@ -432,8 +521,6 @@
                                 }
                             }
                         }
-                    } else {
-                        console.error("Flight_duration.csv returned a status error: ", csvRes.status);
                     }
                 } catch (e) {
                     console.warn("Could not load Flight_duration.csv.", e);
@@ -505,6 +592,7 @@
                 loadingText.style.display = 'none';
                 window.updateTimeUI(); 
                 window.applyFiltersToMap();
+                window.setLang(currentLang); // Initialize labels
 
             } catch (error) {
                 loadingText.innerText = "Error loading flights.json.";
@@ -577,9 +665,8 @@
             
             const searchIata = iata.trim().toUpperCase();
             
-            // Retrieve the directional duration
             const durationsObj = window.flightDurationsCSV[searchIata] || {};
-            const csvDuration = durationsObj[direction] || "Time Unknown";
+            const csvDuration = durationsObj[direction] || t('timeUnknown');
             
             let html = `
                 <div class="direction-toggle">
@@ -593,8 +680,8 @@
                 
                 <div class="route-badges">
                     ${isDep 
-                        ? `<span>Hong Kong</span> <span class="badge">HKG</span> &rarr; <span>${cityName}</span> <span class="badge">${iata}</span>`
-                        : `<span>${cityName}</span> <span class="badge">${iata}</span> &rarr; <span>Hong Kong</span> <span class="badge">HKG</span>`
+                        ? `<span>${t('hkName')}</span> <span class="badge">HKG</span> &rarr; <span>${cityName}</span> <span class="badge">${iata}</span>`
+                        : `<span>${cityName}</span> <span class="badge">${iata}</span> &rarr; <span>${t('hkName')}</span> <span class="badge">HKG</span>`
                     }
                 </div>
                 
@@ -644,7 +731,7 @@
                     dayHtmlList.push(`
                         <div class="${pillClass}" 
                              onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">
-                            ${day}
+                            ${t(day + '_short')}
                         </div>
                     `);
                 });
@@ -665,7 +752,7 @@
             }
 
             if (!hasAnyAirline) {
-                html += `<div style="padding: 20px; text-align: center; color: #777;">No ${direction.toLowerCase()} flights matching your filters.</div>`;
+                html += `<div style="padding: 20px; text-align: center; color: #777;">${t('noFlights')}</div>`;
             }
 
             html += `</div>`;
@@ -697,9 +784,9 @@
             const csvDuration = durationsObj[direction] || "";
 
             if (dirFlights.length === 0) {
-                detailsBox.innerHTML = '<em>No flights scheduled.</em>';
+                detailsBox.innerHTML = `<em>${t('noSchedule')}</em>`;
             } else {
-                let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${DAY_NAMES[day]} Schedule:</div>`;
+                let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${t(day + '_long')} ${t('scheduleTxt')}</div>`;
                 dirFlights.forEach(f => {
                     let depLabel = direction === 'Departure' ? 'HKG' : iata;
                     let arrLabel = direction === 'Departure' ? iata : 'HKG';
@@ -707,8 +794,8 @@
                     let arrTime = window.calculateArrivalTime(f.time, csvDuration);
                     let displayHtml;
                     
-                    if (arrTime === "Unknown") {
-                        displayHtml = `Departs ${depLabel}: ${f.time}`;
+                    if (arrTime === t('timeUnknown')) {
+                        displayHtml = `${f.time} (${depLabel})`;
                     } else {
                         displayHtml = `${f.time} (${depLabel}) &rarr; ${arrTime} (${arrLabel})`;
                     }
