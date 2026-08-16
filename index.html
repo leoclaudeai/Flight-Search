@@ -131,7 +131,7 @@
         .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #3c4043; }
         
         /* Airline List */
-        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 420px; overflow-y: auto; }
+        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
         .airline-row { display: flex; flex-direction: column; gap: 8px; }
         .airline-info { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
         .airline-icon { width: 28px; height: 28px; border-radius: 50%; background-color: #006241; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
@@ -519,15 +519,15 @@
             });
 
             /* 
-               MASSIVE SAFE ZONE: 
-               Left padding is 480px (clears the 250px panel + width of popup).
-               Top padding is 320px (clears the height of the popup).
-               This ensures the marker is pushed far to the bottom right of the viewing area!
+               PERFECTED PADDING CALIBRATION:
+               - Left padding exactly matches the filter panel width (280px).
+               - We avoid extreme vertical padding to prevent Leaflet from forcing a massive zoom-out (which causes the ghost-world wrapping bug).
+               - maxZoom set to 5 ensures long-haul routes look beautiful without breaking bounds.
             */
             map.flyToBounds(L.latLngBounds(gcLatLngs), { 
-                paddingTopLeft: [480, 320], 
+                paddingTopLeft: [280, 50], 
                 paddingBottomRight: [50, 50], 
-                maxZoom: 6, 
+                maxZoom: 5, 
                 duration: 0.8 
             });
 
@@ -536,13 +536,20 @@
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: false 
+                autoPan: true, 
+                /* autoPanPadding prevents the popup from nudging itself back under the filter box */
+                autoPanPaddingTopLeft: [290, 30],
+                autoPanPaddingBottomRight: [30, 30]
             })
             .setLatLng([info.lat, info.lng])
             .setContent(popupContent);
             
             popup.iata = iata; 
-            popup.openOn(map);
+            
+            // Wait a tiny bit before opening the popup to let flyToBounds establish the correct world-view
+            setTimeout(() => {
+                popup.openOn(map);
+            }, 300);
 
             setTimeout(() => {
                 const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
@@ -554,7 +561,7 @@
                     });
                 });
                 updatePopupContent(iata, info, 'Departure'); 
-            }, 50);
+            }, 350);
         }
 
         function generateRouteHTML(iata, info) {
