@@ -22,6 +22,7 @@
             background: #ffffff; padding: 10px 20px; border-radius: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 2000;
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
+            transition: opacity 0.3s ease; /* Added transition for smooth fade out */
         }
 
         /* -------------------------------------------
@@ -63,7 +64,7 @@
 
         /* Map Filters Panel */
         #filter-panel {
-            position: absolute; top: 15px; left: 15px; /* Flush to left edge since zoom buttons moved */
+            position: absolute; top: 15px; left: 15px; 
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             z-index: 1000; width: 250px; border: 1px solid #e0e0e0;
@@ -77,12 +78,13 @@
         .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
         .header-actions { display: flex; align-items: center; gap: 8px; }
         
+        /* Updated Reset Button Styling */
         .reset-btn {
-            background: none; border: none; color: #777; font-size: 12px; 
-            font-weight: 700; cursor: pointer; padding: 0;
-            transition: color 0.2s;
+            background: #fce8e6; border: 1px solid #fad2cf; color: #d93025; font-size: 12px; 
+            font-weight: 700; cursor: pointer; padding: 4px 12px; border-radius: 16px;
+            transition: all 0.2s ease; text-decoration: none;
         }
-        .reset-btn.danger:hover { color: #d93025; }
+        .reset-btn:hover { background: #fad2cf; color: #b31412; }
         
         .toggle-btn {
             background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px;
@@ -199,26 +201,21 @@
            Responsive Layout for Mobile Phones
         ------------------------------------------- */
         @media (max-width: 600px) {
-            /* Move language toggle out of the way of the filter box */
             #lang-toggle-container {
                 top: auto;
                 bottom: 30px;
                 right: 15px;
             }
             
-            /* Give filter panel a bit more breathing room on mobile */
             #filter-panel {
                 width: 240px;
-                /* left: 15px is inherited from desktop view */
             }
             
-            /* Center the popup perfectly on mobile without spilling off edges */
             .custom-popup .leaflet-popup-content {
                 width: 290px !important;
                 margin: 12px;
             }
             
-            /* Shrink day pills slightly inside the popup so they fit in narrower screens */
             .day-pill {
                 width: 28px;
                 font-size: 11px;
@@ -244,7 +241,8 @@
         <div class="filter-header">
             <h4 id="ui-title">航班篩選</h4>
             <div class="header-actions">
-                <button class="reset-btn danger" id="reset-btn" style="text-decoration: underline;" onclick="clearAllFilters()">重設</button>
+                <!-- Removed inline style to use new CSS pill styling -->
+                <button class="reset-btn" id="reset-btn" onclick="clearAllFilters()">重設</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
         </div>
@@ -797,13 +795,15 @@
         function initMap() {
             updateLanguageUI();
             
-            // Disable default zoom controls (top-left) to make room for the filter box
+            // Map configuration updated with bounds and constraints
             map = L.map('map', { 
                 center: [20, 114], 
                 zoom: 3, 
                 minZoom: 2,
                 worldCopyJump: false,
-                zoomControl: false // <-- This removes the top-left buttons
+                zoomControl: false,
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1.0
             });
             
             // Add zoom controls back to the bottom-left corner
@@ -918,7 +918,13 @@
                 console.warn('Flightlist_results.csv not found or unreadable.');
             }
 
-            document.getElementById('loading').style.display = 'none';
+            // Implementation of smooth fade out for loading overlay
+            const loadingEl = document.getElementById('loading');
+            loadingEl.style.opacity = '0';
+            setTimeout(() => {
+                loadingEl.style.display = 'none';
+            }, 300);
+
             populateAirlineFilter();
             renderMapData();
         }
