@@ -361,7 +361,7 @@
             "LHR": {en: "London", zh: "倫敦"}, "FRA": {en: "Frankfurt", zh: "法蘭克福"}, "AMS": {en: "Amsterdam", zh: "阿姆斯特丹"}, "MUC": {en: "Munich", zh: "慕尼黑"},
             "LAX": {en: "Los Angeles", zh: "洛杉磯"}, "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"},
             "JFK": {en: "New York", zh: "紐約"}, "EWR": {en: "Newark", zh: "紐華克"}, "ORD": {en: "Chicago", zh: "芝加哥"},
-            "YYZ": {en: "Toronto", zh: "多倫多"}, "BNE": {en: "Brisbane", zh: "布里斯本"}, "MEL": {en: "Melbourne", zh: "墨爾本"},
+            "YYZ": {en: "Toronto", zh: "多弱多"}, "BNE": {en: "Brisbane", zh: "布里斯本"}, "MEL": {en: "Melbourne", zh: "墨爾本"},
             "SYD": {en: "Sydney", zh: "悉尼"}, "PER": {en: "Perth", zh: "珀斯"}, "AKL": {en: "Auckland", zh: "奧克蘭"},
             "ADD": {en: "Addis Ababa", zh: "亞的斯亞貝巴"}, "DXB": {en: "Dubai", zh: "杜拜"}, "DOH": {en: "Doha", zh: "多哈"},
             "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}, "AUH": {en: "Abu Dhabi", zh: "阿布扎比"}, "DEL": {en: "Delhi", zh: "德里"}, "BOM": {en: "Mumbai", zh: "孟買"}
@@ -512,8 +512,8 @@
             }
         };
 
-        // Open specific airport popup safely
-        window.openAirportPopup = function(iata) {
+        // NEW BULLETPROOF POPUP ENGINE
+        window.openAirportPopup = function(iata, disableAutoPan = false) {
             const marker = allMapMarkers[iata];
             if (!marker) return;
 
@@ -532,12 +532,16 @@
             const fDir = document.getElementById('filter-dir').value;
             const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
 
-            L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
-                .setLatLng(marker.getLatLng())
-                .setContent(`<div class="route-card" id="route-card-container"></div>`)
-                .openOn(window.leafletMap);
-            
-            setTimeout(() => window.renderCardContent(iata, defaultDir), 10);
+            // 1. Build the absolute finalized HTML string strictly in memory first.
+            const htmlString = window.renderCardContent(iata, defaultDir);
+
+            // 2. Hand it directly to Leaflet's native auto-resizing engine.
+            marker.bindPopup(htmlString, { 
+                className: 'custom-popup', 
+                maxWidth: 360, 
+                minWidth: 340,
+                autoPan: !disableAutoPan // If we are flying to it manually, disable auto-pan
+            }).openPopup();
         };
 
         // Search Engine Logic
@@ -559,27 +563,17 @@
             }
 
             if (matchedIata) {
-                // Drop focus from input to hide mobile keyboards
                 document.getElementById('search-input').blur(); 
+                const marker = allMapMarkers[matchedIata];
                 
-                const targetLatLng = allMapMarkers[matchedIata].getLatLng();
-                const currentCenter = window.leafletMap.getCenter();
-                const currentZoom = window.leafletMap.getZoom();
+                // Instantly open the popup (telling Leaflet not to jump the camera)
+                window.openAirportPopup(matchedIata, true);
                 
-                // If map is already perfectly at the target, open popup immediately
-                if (currentZoom === 5 && Math.abs(currentCenter.lat - targetLatLng.lat) < 0.01 && Math.abs(currentCenter.lng - targetLatLng.lng) < 0.01) {
-                    window.openAirportPopup(matchedIata);
-                } else {
-                    // Otherwise, wait for the animation to strictly finish before opening popup
-                    window.leafletMap.once('moveend', function() {
-                        window.openAirportPopup(matchedIata);
-                    });
-                    window.leafletMap.flyTo(targetLatLng, 5, { animate: true, duration: 1.5 });
-                }
+                // Then let the map smoothly fly to it!
+                window.leafletMap.flyTo(marker.getLatLng(), 5, { animate: true, duration: 1.5 });
                 
                 document.getElementById('search-input').value = ''; 
             } else {
-                // Flash red if not found
                 const searchBox = document.getElementById('search-input');
                 const oldColor = searchBox.style.borderColor;
                 searchBox.style.borderColor = '#d93025';
@@ -587,7 +581,6 @@
             }
         };
 
-        // Great Circle Line Logic
         window.getGreatCircleLine = function(lat1, lon1, lat2, lon2, numPoints = 100) {
             const toRad = Math.PI / 180;
             const toDeg = 180 / Math.PI;
@@ -623,7 +616,6 @@
             return points;
         };
 
-        // Time Engine & Duration Engine
         window.getTrueDurationMins = function(iata, direction) {
             const searchIata = iata.trim().toUpperCase();
             const durationText = window.flightDurationsCSV[searchIata] ? window.flightDurationsCSV[searchIata][direction] : null;
@@ -681,7 +673,6 @@
             return Math.round(R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)))).toLocaleString();
         };
 
-        // Filter UI Adjustments
         window.toggleFilterPanel = function() {
             const panel = document.getElementById('filter-panel');
             const btn = document.getElementById('toggle-filter-btn');
@@ -724,7 +715,6 @@
             document.getElementById('dur-fill').style.width = (maxVal / 24 * 100) + "%";
         };
 
-        // Core Map Init
         async function initMap() {
             const loadingText = document.getElementById('loading');
             const filterPanel = document.getElementById('filter-panel');
@@ -733,7 +723,6 @@
 
             window.leafletMap = L.map('map', { center: [HKG_LATLNG.lat, HKG_LATLNG.lng], zoom: 3, worldCopyJump: true });
             
-            // Set default light theme
             window.activeTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(window.leafletMap);
@@ -852,9 +841,6 @@
         };
 
         window.renderCardContent = function(iata, direction) {
-            const container = document.getElementById('route-card-container');
-            if (!container) return;
-
             const aptData = window.airportRoutesData[iata];
             const cityName = getCityName(iata, aptData.city || aptData.name);
             const isDep = direction === 'Departure';
@@ -938,7 +924,16 @@
             // Booking Link
             html += `<a href="https://www.skyscanner.com/transport/flights/hkg/${iata.toLowerCase()}" target="_blank" class="book-btn" data-i18n="bookFlight">${t('bookFlight')}</a>`;
             
-            container.innerHTML = html;
+            // If the popup is already open, update it in place and force a resize
+            const container = document.getElementById('route-card-container');
+            if (container) {
+                container.innerHTML = html;
+                if (window.leafletMap._popup) window.leafletMap._popup.update();
+                return html; 
+            } else {
+                // Otherwise, wrap it and return it for the initial creation
+                return `<div class="route-card" id="route-card-container">${html}</div>`;
+            }
         };
 
         window.toggleDaySchedule = function(element, iata, airlineCode, day, direction) {
@@ -948,7 +943,11 @@
             const allPills = airlineRow.querySelectorAll('.day-pill');
 
             if (element.classList.contains('selected')) {
-                element.classList.remove('selected'); detailsBox.classList.remove('show'); detailsBox.innerHTML = ''; return;
+                element.classList.remove('selected'); 
+                detailsBox.classList.remove('show'); 
+                detailsBox.innerHTML = ''; 
+                if (window.leafletMap._popup) window.leafletMap._popup.update();
+                return;
             }
 
             allPills.forEach(p => p.classList.remove('selected'));
@@ -974,6 +973,9 @@
                 detailsBox.innerHTML = html;
             }
             detailsBox.classList.add('show');
+            
+            // Force Leaflet to recalculate height so it doesn't cover the marker
+            if (window.leafletMap._popup) window.leafletMap._popup.update();
         };
 
         document.addEventListener('DOMContentLoaded', initMap);
