@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hong Kong International Airport (HKG) - Flight Routes</title>
+    <title>香港國際機場 (HKG) - 航班路線圖</title>
     
     <!-- Free Leaflet.js CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -41,7 +41,7 @@
         .header-actions { display: flex; align-items: center; gap: 10px; }
         
         .reset-btn {
-            background: none; border: none; color: #777; font-size: 11px; 
+            background: none; border: none; color: #777; font-size: 12px; 
             font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0;
         }
         .reset-btn:hover { color: #d93025; }
@@ -65,9 +65,9 @@
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
         .filter-group label {
-            display: flex; justify-content: space-between; font-size: 11px;
+            display: flex; justify-content: space-between; font-size: 12px;
             font-weight: 700; color: #5f6368; margin-bottom: 6px;
-            text-transform: uppercase; letter-spacing: 0.3px;
+            letter-spacing: 0.3px;
         }
         .filter-group select {
             width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc;
@@ -78,7 +78,7 @@
         /* Multi-Select Day Pills */
         .filter-day-pills { display: flex; gap: 4px; }
         .f-day-pill {
-            flex: 1; text-align: center; padding: 6px 0; font-size: 11px;
+            flex: 1; text-align: center; padding: 6px 0; font-size: 12px;
             border: 1px solid #ccc; border-radius: 4px; cursor: pointer;
             background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s; user-select: none;
         }
@@ -127,8 +127,8 @@
         }
         .direction-btn.active { background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
-        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #4a4a4a; }
-        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #3c4043; }
+        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 12px; color: #4a4a4a; }
+        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-weight: 600; color: #3c4043; }
         
         /* Airline List */
         .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
@@ -163,43 +163,43 @@
 </head>
 <body>
 
-    <div id="loading" class="loading-overlay">Loading Data...</div>
+    <div id="loading" class="loading-overlay">載入資料中...</div>
     
     <!-- Map Filters Panel -->
     <div id="filter-panel">
         <div class="filter-header">
-            <h4>Filter Flights</h4>
+            <h4>航班篩選</h4>
             <div class="header-actions">
-                <button class="reset-btn" onclick="clearAllFilters()">Reset</button>
+                <button class="reset-btn" onclick="clearAllFilters()">重設</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
         </div>
         
         <div id="filter-content">
             <div class="filter-group">
-                <label>Direction</label>
+                <label>方向</label>
                 <select id="filter-dir" onchange="window.triggerMapFilter()">
-                    <option value="All">All Routes</option>
-                    <option value="Departure">Departures (HKG &rarr; )</option>
-                    <option value="Arrival">Arrivals ( &rarr; HKG)</option>
+                    <option value="All">所有路線</option>
+                    <option value="Departure">離港 (HKG &rarr; )</option>
+                    <option value="Arrival">抵港 ( &rarr; HKG)</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label>Days of Week</label>
+                <label>星期</label>
                 <div class="filter-day-pills">
-                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
-                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
-                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
-                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
-                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
-                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
-                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
+                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">日</div>
+                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">一</div>
+                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">二</div>
+                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">三</div>
+                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">四</div>
+                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">五</div>
+                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">六</div>
                 </div>
             </div>
 
             <div class="filter-group">
-                <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span>時間範圍</span> <span id="time-label-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
                     <div class="time-slider-fill" id="time-fill"></div>
@@ -209,9 +209,9 @@
             </div>
 
             <div class="filter-group">
-                <label>Airline</label>
+                <label>航空公司</label>
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
-                    <option value="All">All Airlines</option>
+                    <option value="All">所有航空公司</option>
                 </select>
             </div>
         </div>
@@ -225,6 +225,8 @@
     <script>
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
         const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+        
+        const DAY_NAMES_ZH = { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' };
         
         // UTC offsets for August (Daylight Saving Rules inclusive)
         const TIMEZONE_OFFSETS = {
@@ -244,7 +246,6 @@
             "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
         };
 
-        // SUPERCHARGED DICTIONARY: Covering over 135 global airlines and their matching IATA short codes
         const AIRLINE_INFO = {
             "AAL": { name: "American Airlines", iata: "AA" },
             "AAR": { name: "Asiana Airlines", iata: "OZ" },
@@ -409,7 +410,6 @@
             "XAX": { name: "AirAsia X", iata: "D7" }
         };
         
-        // Manual duration overrides (in minutes) for edge-case/missing flights
         const MANUAL_OVERRIDES = {
             "CX947": 195,  
             "MU7481": 190  
@@ -424,7 +424,6 @@
         window.flightDurationsCSV = {}; 
         window.flightSpecificData = {}; 
         
-        // Target IATA focus variable
         window.selectedIata = null;
 
         function initMap() {
@@ -432,7 +431,6 @@
                 center: [20, 114], 
                 zoom: 3, 
                 minZoom: 2,
-                // REMOVED worldCopyJump to allow smooth manual dragging infinitely
                 worldCopyJump: false 
             });
             
@@ -443,7 +441,6 @@
             markersLayer = L.featureGroup().addTo(map);
             linesLayer = L.featureGroup().addTo(map);
 
-            // Handle popup close logically to prevent jumpy race conditions
             map.on('popupclose', (e) => {
                 const closedIata = e.popup ? e.popup.iata : null;
                 if (!closedIata) return;
@@ -467,7 +464,7 @@
                 routeData = await flightsRes.json();
             } catch (err) {
                 console.error(err);
-                document.getElementById('loading').innerText = "Error loading data.";
+                document.getElementById('loading').innerText = "載入失敗。";
                 return;
             }
 
@@ -539,7 +536,7 @@
                             Arrival: data.Arrival ? data.Arrival.durationMins : null
                         };
                         
-                        const formatMins = (m) => m ? `${Math.floor(m/60)}h ${m%60}m` : 'N/A';
+                        const formatMins = (m) => m ? `${Math.floor(m/60)}小時 ${m%60}分鐘` : 'N/A';
                         window.flightDurationsCSV[iata] = {
                             Departure: formatMins(window.flightDurationsRaw[iata].Departure),
                             Arrival: formatMins(window.flightDurationsRaw[iata].Arrival)
@@ -588,11 +585,10 @@
             const tMin = parseInt(document.getElementById('time-min').value);
             const tMax = parseInt(document.getElementById('time-max').value);
 
-            // Duplicate the central HKG marker exactly 3 times across infinite worlds (-360, 0, 360)
             [-360, 0, 360].forEach(offset => {
                 L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng + offset], {
                     radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
-                }).bindTooltip("HKG - Hong Kong", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
+                }).bindTooltip("HKG - 香港", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
             });
 
             for (const [iata, info] of Object.entries(routeData.routes)) {
@@ -626,14 +622,11 @@
                     const end = turf.point([info.lng, info.lat]);
                     const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
                     
-                    // Turf.js automatically cuts the Pacific line in half (MultiLineString) to protect the map.
-                    // We extract every piece back into raw coordinates.
                     let rawCoords = [];
                     turf.coordEach(greatCircle, function (currentCoord) {
                         rawCoords.push([currentCoord[0], currentCoord[1]]);
                     });
 
-                    // Unwrap the longitudes mathematically so the line spans across the ocean perfectly!
                     let prevLng = rawCoords[0][0];
                     const latlngs = rawCoords.map(c => {
                         let lng = c[0];
@@ -644,10 +637,8 @@
                         return [lat, lng]; 
                     });
 
-                    // Capture the mathematical wrapped end of the blue line
                     let wrappedLng = latlngs[latlngs.length - 1][1];
 
-                    // THE MAGIC: Draw the line and marker THREE times (-360, 0, 360) so it appears on all adjacent scrolling worlds!
                     [-360, 0, 360].forEach(offset => {
                         const offsetLatLngs = latlngs.map(c => [c[0], c[1] + offset]);
                         const offsetWrappedLng = wrappedLng + offset;
@@ -669,7 +660,6 @@
                         
                         m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
                         
-                        // Pass exactly WHICH clone was clicked so the camera zooms into the right copy of the world!
                         m.on('click', () => { showPopup(iata, info, offsetWrappedLng); });
                         m.addTo(markersLayer);
                         mapMarkers.push(m);
@@ -682,21 +672,16 @@
 
         function showPopup(iata, info, offsetWrappedLng) {
             window.selectedIata = iata;
-            renderMapData(); // Redraw map to isolate line immediately
+            renderMapData(); 
             
             const targetZoom = 5;
             
-            // 1. Calculate where the airport will physically be on the screen
             let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
-            
-            // 2. Adjust the camera mathematically so the airport sits perfectly in the lower-right!
             targetPoint.x -= 180; 
             targetPoint.y -= 150; 
             
-            // 3. Convert that offset pixel location back into Lat/Lng coordinates
             const offsetLatLng = map.unproject(targetPoint, targetZoom);
 
-            // 4. Smoothly fly directly to that offset point!
             map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
 
             const popupContent = generateRouteHTML(iata, info);
@@ -704,14 +689,13 @@
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: false // WE NO LONGER NEED AUTOPAN, the camera offset perfectly handles it!
+                autoPan: false 
             })
             .setLatLng([info.lat, offsetWrappedLng])
             .setContent(popupContent);
             
             popup.iata = iata; 
             
-            // Wait slightly for the flyTo animation to get moving before deploying the popup
             setTimeout(() => {
                 popup.openOn(map);
             }, 350);
@@ -738,13 +722,13 @@
                     <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${info.name}</p>
                     
                     <div class="route-badges">
-                        <span class="badge" title="Fastest Route HKG to ${iata}">🛫 Fastest Outbound: ${durs.Departure}</span>
-                        <span class="badge" title="Fastest Route ${iata} to HKG">🛬 Fastest Inbound: ${durs.Arrival}</span>
+                        <span class="badge" title="HKG飛往${iata}的最快路線">🛫 最快離港: ${durs.Departure}</span>
+                        <span class="badge" title="${iata}飛往HKG的最快路線">🛬 最快抵港: ${durs.Arrival}</span>
                     </div>
 
                     <div class="direction-toggle">
-                        <div class="direction-btn active" data-dir="Departure">🛫 Departures</div>
-                        <div class="direction-btn" data-dir="Arrival">🛬 Arrivals</div>
+                        <div class="direction-btn active" data-dir="Departure">🛫 離港航班</div>
+                        <div class="direction-btn" data-dir="Arrival">🛬 抵港航班</div>
                     </div>
 
                     <div class="airline-list" id="popup-airlines-${iata}">
@@ -794,9 +778,9 @@
                     DAY_KEYS.forEach(d => {
                         const count = dayData[d].length;
                         if (count > 0) {
-                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} flights">${d.toUpperCase()}</div>`;
+                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} 班航班">${DAY_NAMES_ZH[d]}</div>`;
                         } else {
-                            pillsHtml += `<div class="day-pill disabled">${d.toUpperCase()}</div>`;
+                            pillsHtml += `<div class="day-pill disabled">${DAY_NAMES_ZH[d]}</div>`;
                         }
                     });
                     pillsHtml += `</div>`;
@@ -817,7 +801,7 @@
                                 let [h, m] = fl.time.split(':').map(Number);
                                 let hkgMins = h * 60 + m;
                                 let displayStr = '';
-                                let durStr = durMins ? `${Math.floor(durMins/60)}h ${durMins%60}m` : 'Duration N/A';
+                                let durStr = durMins ? `${Math.floor(durMins/60)}小時 ${durMins%60}分鐘` : '需時未知';
 
                                 if (durMins) {
                                     if (direction === 'Departure') {
@@ -826,7 +810,7 @@
                                         let norm = ((destMins % 1440) + 1440) % 1440;
                                         let dh = Math.floor(norm / 60).toString().padStart(2, '0');
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
-                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}d)` : (dayOffset < 0 ? ` (${dayOffset}d)` : '');
+                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}日)` : (dayOffset < 0 ? ` (${dayOffset}日)` : '');
                                         
                                         displayStr = `HKG ${fl.time} &rarr; ${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
                                     } else {
@@ -837,14 +821,14 @@
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
                                         
                                         let arrivalOffset = -dayOffset;
-                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}d)` : (arrivalOffset < 0 ? ` (${arrivalOffset}d)` : '');
+                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}日)` : (arrivalOffset < 0 ? ` (${arrivalOffset}日)` : '');
                                         
                                         displayStr = `${iata} ${dh}:${dm} &rarr; HKG ${fl.time} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
                                     }
                                 } else {
                                     displayStr = direction === 'Departure' 
-                                        ? `HKG ${fl.time} &rarr; ${iata} (Arr Time N/A)` 
-                                        : `${iata} (Dep Time N/A) &rarr; HKG ${fl.time}`;
+                                        ? `HKG ${fl.time} &rarr; ${iata} (抵達時間未知)` 
+                                        : `${iata} (起飛時間未知) &rarr; HKG ${fl.time}`;
                                 }
 
                                 detailsHtml += `
@@ -874,8 +858,9 @@
                     `;
                 }
             }
-
-            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">No ${direction.toLowerCase()}s found matching filters.</div>`;
+            
+            const directionText = direction === 'Departure' ? '離港' : '抵港';
+            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">找不到符合篩選條件的${directionText}航班。</div>`;
         }
 
         window.togglePopupDay = function(el, uIdPrefix, day) {
