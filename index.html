@@ -357,7 +357,7 @@
 
                 // Fetch CSV duration data
                 try {
-                    const csvRes = await fetch('durations.csv');
+                    const csvRes = await fetch('Flight_duration.csv');
                     if (csvRes.ok) {
                         const csvText = await csvRes.text();
                         const lines = csvText.split('\n');
@@ -371,7 +371,7 @@
                         }
                     }
                 } catch (e) {
-                    console.warn("Could not load durations.csv. Displaying unknown duration.");
+                    console.warn("Could not load Flight_duration.csv. Displaying unknown duration.");
                 }
 
                 const allAirlinesSet = new Set();
