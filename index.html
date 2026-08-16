@@ -240,7 +240,7 @@
         };
 
         let map, markersLayer, linesLayer;
-        let routeData = {}; // Full JSON data
+        let routeData = {}; 
         let mapMarkers = []; 
         let globalSelectedDays = new Set(DAY_KEYS);
         
@@ -272,16 +272,24 @@
                 return;
             }
 
-            // Parse flight durations dynamically from Flightlist_results.csv
+            // Parse flight durations from Flightlist_results.csv using ONLY 'scheduled' flights
             try {
                 const csvRes = await fetch('Flightlist_results.csv?v=' + new Date().getTime());
                 if (csvRes.ok) {
                     const csvText = await csvRes.text();
                     const lines = csvText.split('\n');
+                    
                     for (let i = 1; i < lines.length; i++) { 
                         if (!lines[i].trim()) continue;
+                        
+                        // Basic CSV split
                         const row = lines[i].split(',');
-                        if (row.length >= 8) {
+                        if (row.length >= 9) {
+                            const status = row[8].trim().toLowerCase();
+                            
+                            // STRICT REQUIREMENT: Only calculate durations using 'scheduled' flights
+                            if (status !== 'scheduled') continue;
+
                             const depIata = row[3].trim().toUpperCase();
                             const arrIata = row[6].trim().toUpperCase();
                             const depTimeStr = row[4].trim();
@@ -290,7 +298,7 @@
                             // Figure out which non-HKG destination/origin to assign the duration to
                             const targetIata = depIata === 'HKG' ? arrIata : depIata;
                             
-                            // Map the duration calculation if the key isn't stored yet
+                            // Calculate once per destination based on the first scheduled flight found
                             if (!window.flightDurationsCSV[targetIata] && depTimeStr && arrTimeStr) {
                                 const depTime = new Date(depTimeStr);
                                 const arrTime = new Date(arrTimeStr);
@@ -308,7 +316,7 @@
                     }
                 }
             } catch (err) {
-                console.warn('Flightlist_results.csv not found, cannot calculate dynamically generated flight durations.');
+                console.warn('Flightlist_results.csv not found or unreadable.');
             }
 
             document.getElementById('loading').style.display = 'none';
@@ -393,7 +401,6 @@
             }
         }
 
-        // Trigger map filter logic
         window.triggerMapFilter = function() { renderMapData(); };
 
         // Generate Custom Popup UI
@@ -409,7 +416,6 @@
             .setContent(popupContent)
             .openOn(map);
 
-            // Re-bind listeners for the newly injected popup HTML
             setTimeout(() => {
                 const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
                 dirBtns.forEach(btn => {
@@ -419,7 +425,7 @@
                         updatePopupContent(iata, info, e.target.dataset.dir);
                     });
                 });
-                updatePopupContent(iata, info, 'Departure'); // Default
+                updatePopupContent(iata, info, 'Departure'); 
             }, 50);
         }
 
@@ -432,7 +438,7 @@
                     <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${info.name}</p>
                     
                     <div class="route-badges">
-                        <span class="badge" title="Average Flight Time">⏱ ${routeDuration}</span>
+                        <span class="badge" title="Flight Time">⏱ ${routeDuration}</span>
                     </div>
 
                     <div class="direction-toggle">
@@ -460,7 +466,7 @@
                 if (fAirline !== 'All' && alCode !== fAirline) continue;
                 
                 let hasDirFlight = false;
-                let dayData = {}; // Track valid flights by day
+                let dayData = {}; 
                 
                 DAY_KEYS.forEach(d => { dayData[d] = []; });
 
@@ -480,7 +486,6 @@
                     const alName = AIRLINE_MAPPING[alCode] || alCode;
                     const uId = `fl-${iata}-${alCode}-${direction}`;
                     
-                    // Generate Day Pills
                     let pillsHtml = `<div class="day-pills">`;
                     DAY_KEYS.forEach(d => {
                         const count = dayData[d].length;
@@ -492,7 +497,6 @@
                     });
                     pillsHtml += `</div>`;
 
-                    // Flight Detail Boxes (Hidden by default)
                     let detailsHtml = '';
                     DAY_KEYS.forEach(d => {
                         if (dayData[d].length > 0) {
@@ -524,18 +528,13 @@
             container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">No ${direction.toLowerCase()}s found matching filters.</div>`;
         }
 
-        // Handle inner popup day clicks
         window.togglePopupDay = function(el, uIdPrefix, day) {
             if (el.classList.contains('disabled')) return;
             
-            // Toggle selection state
             const wasSelected = el.classList.contains('selected');
-            
-            // Deselect all pills in this row
             const parent = el.parentElement;
             parent.querySelectorAll('.day-pill').forEach(p => p.classList.remove('selected'));
             
-            // Hide all detail boxes for this airline
             const airlineRow = parent.parentElement;
             airlineRow.querySelectorAll('.flight-details-box').forEach(box => box.classList.remove('show'));
 
@@ -545,8 +544,6 @@
             }
         };
 
-
-        // Map Filter UI Logic
         function toggleFilterPanel() {
             const panel = document.getElementById('filter-panel');
             const btn = document.getElementById('toggle-filter-btn');
