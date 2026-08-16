@@ -273,7 +273,6 @@
         window.selectedIata = null;
 
         function initMap() {
-            // maxBounds removed and worldCopyJump activated to allow infinite scrolling over the Pacific
             map = L.map('map', { 
                 center: [20, 114], 
                 zoom: 3, 
@@ -288,12 +287,14 @@
             markersLayer = L.featureGroup().addTo(map);
             linesLayer = L.featureGroup().addTo(map);
 
-            // When a popup is manually closed, reset the selection and redraw all lines
-            map.on('popupclose', () => {
-                if (window.selectedIata) {
+            // Handle popup close logically to prevent jumpy zooms
+            map.on('popupclose', (e) => {
+                // Only reset the view if the popup being closed is actually the CURRENTLY selected one. 
+                // This prevents the map from zooming out when simply switching from one airport to another.
+                if (e.popup && e.popup.iata === window.selectedIata) {
                     window.selectedIata = null;
                     renderMapData();
-                    map.setView([20, 114], 3); // Auto zoom back out when deselected
+                    map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back to home view
                 }
             });
 
@@ -499,7 +500,7 @@
 
         function showPopup(iata, info, marker) {
             window.selectedIata = iata;
-            renderMapData(); // Redraw map to isolate line
+            renderMapData(); // Redraw map to isolate line immediately
             
             // Calculate great circle bounds for smooth Auto-Zoom
             const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
@@ -516,19 +517,22 @@
                 return [lat, lng];
             });
 
-            // Auto-zoom viewport to comfortably fit the curving route
-            map.fitBounds(L.latLngBounds(gcLatLngs), { padding: [50, 50], maxZoom: 6 });
+            // Smoothly fly to the new bounding box containing both HKG and the destination
+            map.flyToBounds(L.latLngBounds(gcLatLngs), { padding: [75, 75], maxZoom: 6, duration: 0.8 });
 
             const popupContent = generateRouteHTML(iata, info);
             
-            L.popup({
+            const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPanPadding: [50, 50]
+                autoPan: false // DISABLED autoPan so it doesn't fight with our beautiful flyToBounds animation!
             })
             .setLatLng([info.lat, info.lng])
-            .setContent(popupContent)
-            .openOn(map);
+            .setContent(popupContent);
+            
+            // Attach the iata code directly to this specific popup instance to track it
+            popup.iata = iata; 
+            popup.openOn(map);
 
             setTimeout(() => {
                 const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
@@ -755,7 +759,7 @@
 
             window.selectedIata = null;
             renderMapData();
-            map.setView([20, 114], 3);
+            map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back out when resetting
         };
 
         document.addEventListener('DOMContentLoaded', () => {
