@@ -172,17 +172,17 @@
     
     <!-- Language Toggle -->
     <div class="lang-toggle-container">
-        <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" id="btn-zh" onclick="setLang('zh')">繁</button>
+        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">繁</button>
     </div>
 
     <!-- Map Filters Panel -->
-    <div id="filter-panel">
+    <div id="filter-panel" class="minimized">
         <div class="filter-header">
             <h4 data-i18n="filterTitle">Filter Flights</h4>
             <div class="header-actions">
                 <button class="reset-btn" onclick="clearAllFilters()" data-i18n="reset">Reset</button>
-                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
+                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">+</button>
             </div>
         </div>
         
@@ -236,7 +236,7 @@
 
     <script>
         // --- MULTILINGUAL DICTIONARY ---
-        let currentLang = 'en';
+        let currentLang = 'zh';
         
         // Static UI Text
         const i18n = {
