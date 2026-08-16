@@ -235,8 +235,10 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // --- I18N DICTIONARY ---
+        // --- MULTILINGUAL DICTIONARY ---
         let currentLang = 'en';
+        
+        // Static UI Text
         const i18n = {
             'en': {
                 pageTitle: "Hong Kong International Airport (HKG) - Flight Routes",
@@ -282,9 +284,62 @@
             }
         };
 
-        function t(key) {
-            return i18n[currentLang][key] || key;
-        }
+        // City & Airport Translations
+        const CITY_MAPPING = {
+            "ICN": {en: "Seoul", zh: "首爾"}, "NRT": {en: "Tokyo", zh: "東京"}, "KIX": {en: "Osaka", zh: "大阪"},
+            "SIN": {en: "Singapore", zh: "新加坡"}, "CAN": {en: "Guangzhou", zh: "廣州"}, "PUS": {en: "Busan", zh: "釜山"},
+            "CJU": {en: "Jeju", zh: "濟州"}, "DPS": {en: "Denpasar-Bali", zh: "峇里島"}, "TAE": {en: "Daegu", zh: "大邱"},
+            "DAD": {en: "Da Nang", zh: "峴港"}, "ILO": {en: "Iloilo City", zh: "伊洛伊洛"}, "FUK": {en: "Fukuoka", zh: "福岡"},
+            "OKA": {en: "Okinawa", zh: "沖繩"}, "MNL": {en: "Manila", zh: "馬尼拉"}, "CDG": {en: "Paris", zh: "巴黎"},
+            "ZRH": {en: "Zurich", zh: "蘇黎世"}, "MAD": {en: "Madrid", zh: "馬德里"}, "MXP": {en: "Milan", zh: "米蘭"},
+            "MAN": {en: "Manchester", zh: "曼徹斯特"}, "FCO": {en: "Rome", zh: "羅馬"}, "LAX": {en: "Los Angeles", zh: "洛杉磯"},
+            "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"}, "JFK": {en: "New York", zh: "紐約"},
+            "BNE": {en: "Brisbane", zh: "布里斯班"}, "MEL": {en: "Melbourne", zh: "墨爾本"}, "SYD": {en: "Sydney", zh: "悉尼"},
+            "ADD": {en: "Addis Ababa", zh: "亞的斯亞貝巴"}, "DXB": {en: "Dubai", zh: "杜拜"}, "DOH": {en: "Doha", zh: "多哈"},
+            "JNB": {en: "Johannesburg", zh: "約翰內斯堡"}
+        };
+
+        // Airline Translations
+        const AIRLINE_MAPPING = {
+            "CPA": {en: "Cathay Pacific", zh: "國泰航空"}, "HKE": {en: "HK Express", zh: "香港快運航空"}, "CRK": {en: "Hong Kong Airlines", zh: "香港航空"},
+            "GBA": {en: "Greater Bay Airlines", zh: "大灣區航空"}, "HGB": {en: "Greater Bay Airlines", zh: "大灣區航空"}, "APZ": {en: "Air Premia", zh: "普雷米亞航空"},
+            "CDC": {en: "Loong Air", zh: "長龍航空"}, "CFG": {en: "Condor", zh: "神鷹航空"}, "DAL": {en: "Delta Air Lines", zh: "達美航空"},
+            "ESR": {en: "Eastar Jet", zh: "易斯達航空"}, "ETD": {en: "Etihad Airways", zh: "阿提哈德航空"}, "ETH": {en: "Ethiopian Airlines", zh: "埃塞俄比亞航空"},
+            "QDA": {en: "Qingdao Airlines", zh: "青島航空"}, "SPQ": {en: "Sun PhuQuoc Airways", zh: "太陽富國航空"}, "TBA": {en: "Tibet Airlines", zh: "西藏航空"},
+            "TLM": {en: "Thai Lion Air", zh: "泰國獅子航空"}, "AFL": {en: "Aeroflot", zh: "俄羅斯航空"}, "JJP": {en: "Jetstar Japan", zh: "捷星日本航空"},
+            "CSC": {en: "Sichuan Airlines", zh: "四川航空"}, "CSH": {en: "Shanghai Airlines", zh: "上海航空"}, "KME": {en: "Cambodia Airways", zh: "柬埔寨航空"},
+            "QDH": {en: "Qingdao Airlines", zh: "青島航空"}, "CQH": {en: "Spring Airlines", zh: "春秋航空"}, "HBH": {en: "Hebei Airlines", zh: "河北航空"},
+            "CSZ": {en: "Shenzhen Airlines", zh: "深圳航空"}, "CCA": {en: "Air China", zh: "中國國際航空"}, "CSN": {en: "China Southern Airlines", zh: "中國南方航空"},
+            "CES": {en: "China Eastern Airlines", zh: "中國東方航空"}, "CXA": {en: "XiamenAir", zh: "廈門航空"}, "CHH": {en: "Hainan Airlines", zh: "海南航空"},
+            "DKH": {en: "Juneyao Airlines", zh: "吉祥航空"}, "JYH": {en: "9 Air", zh: "九元航空"}, "CBJ": {en: "Beijing Capital Airlines", zh: "首都航空"},
+            "GCR": {en: "Tianjin Airlines", zh: "天津航空"}, "LKE": {en: "Lucky Air", zh: "祥鵬航空"}, "CHB": {en: "China West Air", zh: "西部航空"},
+            "UEA": {en: "Chengdu Airlines", zh: "成都航空"}, "CDG": {en: "Shandong Airlines", zh: "山東航空"}, "CAL": {en: "China Airlines", zh: "中華航空"},
+            "EVA": {en: "EVA Air", zh: "長榮航空"}, "SJX": {en: "Starlux Airlines", zh: "星宇航空"}, "TTW": {en: "Tigerair Taiwan", zh: "台灣虎航"},
+            "MDA": {en: "Mandarin Airlines", zh: "華信航空"}, "UIA": {en: "UNI Air", zh: "立榮航空"}, "ANA": {en: "All Nippon Airways (ANA)", zh: "全日空"},
+            "JAL": {en: "Japan Airlines", zh: "日本航空"}, "APJ": {en: "Peach Aviation", zh: "樂桃航空"}, "KAL": {en: "Korean Air", zh: "大韓航空"},
+            "AAR": {en: "Asiana Airlines", zh: "韓亞航空"}, "JJA": {en: "Jeju Air", zh: "濟州航空"}, "JNA": {en: "Jin Air", zh: "真航空"},
+            "TWB": {en: "T'way Air", zh: "德威航空"}, "ABL": {en: "Air Busan", zh: "釜山航空"}, "ASV": {en: "Air Seoul", zh: "首爾航空"},
+            "SIA": {en: "Singapore Airlines", zh: "新加坡航空"}, "TGW": {en: "Scoot", zh: "酷航"}, "MAS": {en: "Malaysia Airlines", zh: "馬來西亞航空"},
+            "AXM": {en: "AirAsia", zh: "亞洲航空"}, "MXD": {en: "Batik Air Malaysia", zh: "馬印航空"}, "THA": {en: "Thai Airways", zh: "泰國國際航空"},
+            "AIQ": {en: "Thai AirAsia", zh: "泰國亞洲航空"}, "TVJ": {en: "Thai Vietjet Air", zh: "泰國越捷航空"}, "BKP": {en: "Bangkok Airways", zh: "曼谷航空"},
+            "PAL": {en: "Philippine Airlines", zh: "菲律賓航空"}, "CEB": {en: "Cebu Pacific", zh: "宿霧太平洋航空"}, "HVN": {en: "Vietnam Airlines", zh: "越南航空"},
+            "VJC": {en: "VietJet Air", zh: "越捷航空"}, "GIA": {en: "Garuda Indonesia", zh: "印尼嘉魯達航空"}, "RBA": {en: "Royal Brunei Airlines", zh: "汶萊皇家航空"},
+            "UAE": {en: "Emirates", zh: "阿聯酋航空"}, "QTR": {en: "Qatar Airways", zh: "卡塔爾航空"}, "THY": {en: "Turkish Airlines", zh: "土耳其航空"},
+            "AIC": {en: "Air India", zh: "印度航空"}, "VTI": {en: "Vistara", zh: "維斯塔拉航空"}, "IGO": {en: "IndiGo", zh: "靛藍航空"},
+            "BBC": {en: "Biman Bangladesh Airlines", zh: "孟加拉航空"}, "ALK": {en: "SriLankan Airlines", zh: "斯里蘭卡航空"}, "RNA": {en: "Nepal Airlines", zh: "尼泊爾航空"},
+            "BAW": {en: "British Airways", zh: "英國航空"}, "AFR": {en: "Air France", zh: "法國航空"}, "DLH": {en: "Lufthansa", zh: "漢莎航空"},
+            "KLM": {en: "KLM Royal Dutch Airlines", zh: "荷蘭皇家航空"}, "FIN": {en: "Finnair", zh: "芬蘭航空"}, "SWR": {en: "Swiss International Air Lines", zh: "瑞士國際航空"},
+            "UAL": {en: "United Airlines", zh: "聯合航空"}, "ACA": {en: "Air Canada", zh: "加拿大航空"}, "QFA": {en: "Qantas", zh: "澳洲航空"},
+            "ANZ": {en: "Air New Zealand", zh: "新西蘭航空"}, "ANG": {en: "Air Niugini", zh: "新畿內亞航空"}, "FJI": {en: "Fiji Airways", zh: "斐濟航空"},
+            "MGL": {en: "MIAT Mongolian Airlines", zh: "蒙古航空"}, "KZR": {en: "Air Astana", zh: "阿斯塔納航空"}, "UZB": {en: "Uzbekistan Airways", zh: "烏茲別克航空"}
+        };
+
+        // UI Translators
+        function t(key) { return i18n[currentLang][key] || key; }
+        function getCityName(iata, fallbackStr) { return CITY_MAPPING[iata] && CITY_MAPPING[iata][currentLang] ? CITY_MAPPING[iata][currentLang] : fallbackStr; }
+        function getAirlineName(code) { return AIRLINE_MAPPING[code] && AIRLINE_MAPPING[code][currentLang] ? AIRLINE_MAPPING[code][currentLang] : code; }
+
+        window.sortedAirlineCodesGlobal = []; // Keeps track of sorted codes for the dropdown
 
         window.setLang = function(lang) {
             currentLang = lang;
@@ -293,7 +348,7 @@
             
             document.title = t('pageTitle');
             
-            // Update all static UI elements with data-i18n tags
+            // Translate static elements
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
                 if (el.tagName === 'OPTION') {
@@ -303,51 +358,55 @@
                 }
             });
 
-            // Re-render popup if one is open
+            // Re-render Airline Dropdown Options dynamically
+            const airlineSelect = document.getElementById('filter-airline');
+            if (airlineSelect && window.sortedAirlineCodesGlobal.length > 0) {
+                const currentVal = airlineSelect.value;
+                airlineSelect.innerHTML = `<option value="All" data-i18n="airAll">${t('airAll')}</option>`;
+                
+                // Sort airlines based on the translated names
+                const updatedSorted = [...window.sortedAirlineCodesGlobal].sort((a, b) => {
+                    return getAirlineName(a).localeCompare(getAirlineName(b));
+                });
+                
+                updatedSorted.forEach(code => {
+                    const name = getAirlineName(code);
+                    const optText = name ? `${name} (${code})` : code;
+                    const opt = document.createElement('option');
+                    opt.value = code;
+                    opt.innerText = optText;
+                    airlineSelect.appendChild(opt);
+                });
+                airlineSelect.value = currentVal;
+            }
+
+            // Update Map Marker Tooltips
+            for (let iata in allMapMarkers) {
+                const marker = allMapMarkers[iata];
+                const aptData = window.airportRoutesData[iata];
+                const cityName = getCityName(iata, aptData.city || aptData.name);
+                const newTitle = `${cityName} (${iata})`;
+                
+                marker.options.title = newTitle;
+                if (marker._icon) {
+                    marker._icon.title = newTitle; // Update the actual DOM element title on hover
+                }
+            }
+
+            // Re-render popup if it is open
             const activePopup = window.leafletMap && window.leafletMap._popup;
             if (activePopup && activePopup.isOpen()) {
-                const iata = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/)[1] : null;
-                if (iata) {
+                const iataMatch = activePopup._source && activePopup._source.options && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/) : null;
+                if (iataMatch) {
                     const fDir = document.getElementById('filter-dir').value;
                     const defaultDir = (fDir !== 'All') ? fDir : 'Departure';
-                    window.renderCardContent(iata, defaultDir);
+                    window.renderCardContent(iataMatch[1], defaultDir);
                 }
             }
         };
 
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
         const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-
-        const AIRLINE_MAPPING = {
-            "CPA": "Cathay Pacific", "HKE": "HK Express", "CRK": "Hong Kong Airlines",
-            "GBA": "Greater Bay Airlines", "HGB": "Greater Bay Airlines", "APZ": "Air Premia",
-            "CDC": "Loong Air", "CFG": "Condor", "DAL": "Delta Air Lines", "ESR": "Eastar Jet",
-            "ETD": "Etihad Airways", "ETH": "Ethiopian Airlines", "QDA": "Qingdao Airlines",
-            "SPQ": "Sun PhuQuoc Airways", "TBA": "Tibet Airlines", "TLM": "Thai Lion Air",
-            "AFL": "Aeroflot", "JJP": "Jetstar Japan", "CSC": "Sichuan Airlines",
-            "CSH": "Shanghai Airlines", "KME": "Cambodia Airways", "QDH": "Qingdao Airlines",
-            "CQH": "Spring Airlines", "HBH": "Hebei Airlines", "CSZ": "Shenzhen Airlines",
-            "CCA": "Air China", "CSN": "China Southern Airlines", "CES": "China Eastern Airlines",
-            "CXA": "XiamenAir", "CHH": "Hainan Airlines", "DKH": "Juneyao Airlines", "JYH": "9 Air",
-            "CBJ": "Beijing Capital Airlines", "GCR": "Tianjin Airlines", "LKE": "Lucky Air",
-            "CHB": "China West Air", "UEA": "Chengdu Airlines", "CDG": "Shandong Airlines",
-            "CAL": "China Airlines", "EVA": "EVA Air", "SJX": "Starlux Airlines",
-            "TTW": "Tigerair Taiwan", "MDA": "Mandarin Airlines", "UIA": "UNI Air",
-            "ANA": "All Nippon Airways (ANA)", "JAL": "Japan Airlines", "APJ": "Peach Aviation",
-            "KAL": "Korean Air", "AAR": "Asiana Airlines", "JJA": "Jeju Air", "JNA": "Jin Air",
-            "TWB": "T'way Air", "ABL": "Air Busan", "ASV": "Air Seoul", "SIA": "Singapore Airlines",
-            "TGW": "Scoot", "MAS": "Malaysia Airlines", "AXM": "AirAsia", "MXD": "Batik Air Malaysia",
-            "THA": "Thai Airways", "AIQ": "Thai AirAsia", "TVJ": "Thai Vietjet Air",
-            "BKP": "Bangkok Airways", "PAL": "Philippine Airlines", "CEB": "Cebu Pacific",
-            "HVN": "Vietnam Airlines", "VJC": "VietJet Air", "GIA": "Garuda Indonesia",
-            "RBA": "Royal Brunei Airlines", "UAE": "Emirates", "QTR": "Qatar Airways",
-            "THY": "Turkish Airlines", "AIC": "Air India", "VTI": "Vistara", "IGO": "IndiGo",
-            "BBC": "Biman Bangladesh Airlines", "ALK": "SriLankan Airlines", "RNA": "Nepal Airlines",
-            "BAW": "British Airways", "AFR": "Air France", "DLH": "Lufthansa", "KLM": "KLM Royal Dutch Airlines",
-            "FIN": "Finnair", "SWR": "Swiss International Air Lines", "UAL": "United Airlines",
-            "ACA": "Air Canada", "QFA": "Qantas", "ANZ": "Air New Zealand", "ANG": "Air Niugini",
-            "FJI": "Fiji Airways", "MGL": "MIAT Mongolian Airlines", "KZR": "Air Astana", "UZB": "Uzbekistan Airways"
-        };
 
         window.airportRoutesData = null;
         window.leafletMap = null; 
@@ -532,21 +591,8 @@
                         allAirlinesSet.add(alCode);
                     }
                 }
-                const sortedAirlines = Array.from(allAirlinesSet).sort((codeA, codeB) => {
-                    const nameA = AIRLINE_MAPPING[codeA] || codeA;
-                    const nameB = AIRLINE_MAPPING[codeB] || codeB;
-                    return nameA.localeCompare(nameB);
-                });
-
-                const airlineSelect = document.getElementById('filter-airline');
-                sortedAirlines.forEach(code => {
-                    const mappedName = AIRLINE_MAPPING[code];
-                    const optText = mappedName ? `${mappedName} (${code})` : code;
-                    const opt = document.createElement('option');
-                    opt.value = code;
-                    opt.innerText = optText;
-                    airlineSelect.appendChild(opt);
-                });
+                
+                window.sortedAirlineCodesGlobal = Array.from(allAirlinesSet);
 
                 window.leafletMap.on('popupclose', () => { window.applyFiltersToMap(); });
 
@@ -592,7 +638,7 @@
                 loadingText.style.display = 'none';
                 window.updateTimeUI(); 
                 window.applyFiltersToMap();
-                window.setLang(currentLang); // Initialize labels
+                window.setLang(currentLang); // Ensure initial load runs correctly
 
             } catch (error) {
                 loadingText.innerText = "Error loading flights.json.";
@@ -654,7 +700,7 @@
             if (!container) return;
 
             const aptData = window.airportRoutesData[iata];
-            const cityName = aptData.city || aptData.name;
+            const cityName = getCityName(iata, aptData.city || aptData.name);
             const isDep = direction === 'Departure';
             const activeAirlineFilter = document.getElementById('filter-airline').value;
             
@@ -697,8 +743,8 @@
             let hasAnyAirline = false;
 
             const sortedAirlineCodes = Object.keys(aptData.airlines).sort((a, b) => {
-                const nameA = AIRLINE_MAPPING[a] || a;
-                const nameB = AIRLINE_MAPPING[b] || b;
+                const nameA = getAirlineName(a);
+                const nameB = getAirlineName(b);
                 return nameA.localeCompare(nameB);
             });
 
@@ -718,9 +764,8 @@
                 
                 if (!operatesOnFilteredDaysAndTimes) continue; 
 
-                const mappedName = AIRLINE_MAPPING[airlineCode];
-                const displayAirlineName = mappedName ? `${mappedName} (${airlineCode})` : airlineCode;
-                const initial = (mappedName || airlineCode).charAt(0).toUpperCase();
+                const displayAirlineName = getAirlineName(airlineCode);
+                const initial = displayAirlineName.charAt(0).toUpperCase();
                 
                 const dayHtmlList = [];
                 DAY_KEYS.forEach(day => {
