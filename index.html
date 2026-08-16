@@ -313,7 +313,7 @@
 
                             const currentRec = tempDurations[targetIata][direction];
 
-                            if (depTimeStr && arrTimeStr && (!currentRec || currentRec.status !== 'scheduled')) {
+                            if (depTimeStr && arrTimeStr) {
                                 const depDate = new Date(depTimeStr);
                                 const arrDate = new Date(arrTimeStr);
                                 
@@ -328,10 +328,14 @@
                                     
                                     if (diffMs > 0) {
                                         const diffMins = Math.floor(diffMs / 60000);
-                                        tempDurations[targetIata][direction] = {
-                                            durationMins: diffMins,
-                                            status: status
-                                        };
+                                        
+                                        // Update if this is the first calculation, OR if this new duration is SHORTER
+                                        if (!currentRec || diffMins < currentRec.durationMins) {
+                                            tempDurations[targetIata][direction] = {
+                                                durationMins: diffMins,
+                                                status: status
+                                            };
+                                        }
                                     }
                                 }
                             }
