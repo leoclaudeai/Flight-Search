@@ -113,8 +113,8 @@
 
         /* Leaflet Popup Overrides */
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
-        .custom-popup .leaflet-popup-content { margin: 12px; width: 340px !important; }
-        .route-card { width: 340px; font-family: inherit; color: #1a1a1a; padding: 0; }
+        .custom-popup .leaflet-popup-content { margin: 12px; width: 360px !important; }
+        .route-card { width: 100%; font-family: inherit; color: #1a1a1a; padding: 0; }
         
         /* Direction Toggle Switch */
         .direction-toggle { display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px; }
@@ -128,7 +128,7 @@
         .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: #3c4043; }
         
         /* Airline List */
-        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
+        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 420px; overflow-y: auto; }
         .airline-row { display: flex; flex-direction: column; gap: 8px; }
         .airline-info { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
         .airline-icon { width: 28px; height: 28px; border-radius: 50%; background-color: #006241; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
@@ -150,10 +150,9 @@
         /* Flight Schedule Details Dropdown */
         .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; }
         .flight-details-box.show { display: block; }
-        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #ebebeb; }
+        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #ebebeb; }
         .flight-item:last-child { border-bottom: none; }
-        .flight-no { font-weight: 700; color: #1a73e8; }
-        .flight-time { font-weight: 600; color: #333; }
+        .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -221,7 +220,7 @@
         const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
         const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
         
-        // Dictionary containing UTC offsets for August (includes daylight saving rules)
+        // UTC offsets for August (Daylight Saving Rules inclusive)
         const TIMEZONE_OFFSETS = {
             "ICN": 9, "CDG": 2, "LAX": -7, "BNE": 10, "MEL": 10, "ADD": 3, "ZRH": 2, "DXB": 4, "SYD": 10, "MAD": 2,
             "YVR": -7, "MXP": 2, "NRT": 9, "MAN": 1, "KIX": 9, "FCO": 2, "JNB": 2, "SFO": -7, "CAN": 8, "DOH": 3,
@@ -257,7 +256,8 @@
         let mapMarkers = []; 
         let globalSelectedDays = new Set(DAY_KEYS);
         
-        window.flightDurationsCSV = {};
+        window.flightDurationsRaw = {}; // Will store raw minutes
+        window.flightDurationsCSV = {}; // Will store string formatted text
 
         function initMap() {
             map = L.map('map', { center: [20, 114], zoom: 3, minZoom: 2, maxBounds: [[-90, -180], [90, 180]] });
@@ -328,11 +328,8 @@
                                     
                                     if (diffMs > 0) {
                                         const diffMins = Math.floor(diffMs / 60000);
-                                        const hours = Math.floor(diffMins / 60);
-                                        const mins = diffMins % 60;
-                                        
                                         tempDurations[targetIata][direction] = {
-                                            durationStr: `${hours}h ${mins}m`,
+                                            durationMins: diffMins,
                                             status: status
                                         };
                                     }
@@ -342,9 +339,15 @@
                     }
                     
                     for (const [iata, data] of Object.entries(tempDurations)) {
+                        window.flightDurationsRaw[iata] = {
+                            Departure: data.Departure ? data.Departure.durationMins : null,
+                            Arrival: data.Arrival ? data.Arrival.durationMins : null
+                        };
+                        
+                        const formatMins = (m) => m ? `${Math.floor(m/60)}h ${m%60}m` : 'N/A';
                         window.flightDurationsCSV[iata] = {
-                            Departure: data.Departure ? data.Departure.durationStr : 'N/A',
-                            Arrival: data.Arrival ? data.Arrival.durationStr : 'N/A'
+                            Departure: formatMins(window.flightDurationsRaw[iata].Departure),
+                            Arrival: formatMins(window.flightDurationsRaw[iata].Arrival)
                         };
                     }
                 }
@@ -530,10 +533,55 @@
                         if (dayData[d].length > 0) {
                             detailsHtml += `<div class="flight-details-box" id="${uId}-${d}">`;
                             dayData[d].sort((a,b) => a.time.localeCompare(b.time)).forEach(fl => {
+                                
+                                // Fetch raw duration math variables for schedule tracking
+                                let durMins = window.flightDurationsRaw[iata] ? window.flightDurationsRaw[iata][direction] : null;
+                                let destOffset = TIMEZONE_OFFSETS[iata] !== undefined ? TIMEZONE_OFFSETS[iata] : 0;
+                                
+                                let [h, m] = fl.time.split(':').map(Number);
+                                let hkgMins = h * 60 + m;
+                                let displayStr = '';
+                                let durStr = durMins ? `${Math.floor(durMins/60)}h ${durMins%60}m` : 'Duration N/A';
+
+                                if (durMins) {
+                                    if (direction === 'Departure') {
+                                        // HKG local to UTC -> UTC to Dest Local -> Add Duration
+                                        let destMins = hkgMins - (8 * 60) + durMins + (destOffset * 60);
+                                        let dayOffset = Math.floor(destMins / 1440);
+                                        let norm = ((destMins % 1440) + 1440) % 1440;
+                                        let dh = Math.floor(norm / 60).toString().padStart(2, '0');
+                                        let dm = Math.floor(norm % 60).toString().padStart(2, '0');
+                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}d)` : (dayOffset < 0 ? ` (${dayOffset}d)` : '');
+                                        
+                                        displayStr = `HKG ${fl.time} &rarr; ${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
+                                    } else {
+                                        // HKG local (Arrival) to UTC -> Subtract duration -> Dest Local
+                                        let destMins = hkgMins - (8 * 60) - durMins + (destOffset * 60);
+                                        let dayOffset = Math.floor(destMins / 1440);
+                                        let norm = ((destMins % 1440) + 1440) % 1440;
+                                        let dh = Math.floor(norm / 60).toString().padStart(2, '0');
+                                        let dm = Math.floor(norm % 60).toString().padStart(2, '0');
+                                        
+                                        // If day offset is negative, the flight departed on previous day
+                                        let dayStr = dayOffset < 0 ? ` (${dayOffset}d)` : (dayOffset > 0 ? ` (+${dayOffset}d)` : '');
+                                        
+                                        displayStr = `${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span> &rarr; HKG ${fl.time}`;
+                                    }
+                                } else {
+                                    displayStr = direction === 'Departure' 
+                                        ? `HKG ${fl.time} &rarr; ${iata} (Arr Time N/A)` 
+                                        : `${iata} (Dep Time N/A) &rarr; HKG ${fl.time}`;
+                                }
+
                                 detailsHtml += `
                                     <div class="flight-item">
-                                        <div><span class="flight-no">${fl.no}</span> <span style="color:#777; font-size:11px; margin-left:6px;">${fl.status || ''}</span></div>
-                                        <div class="flight-time">${fl.time}</div>
+                                        <div style="flex-grow: 1;">
+                                            <div style="margin-bottom: 3px;"><span class="flight-no">${fl.no}</span> <span style="color:#777; font-size:11px; margin-left:6px;">${fl.status || ''}</span></div>
+                                            <div style="font-size: 11px; color: #555; font-weight: 500;">${displayStr}</div>
+                                        </div>
+                                        <div style="font-size: 11px; color: #1a73e8; font-weight: 600; text-align: right; white-space: nowrap;">
+                                            ⏱ ${durStr}
+                                        </div>
                                     </div>`;
                             });
                             detailsHtml += `</div>`;
