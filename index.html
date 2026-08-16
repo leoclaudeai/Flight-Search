@@ -502,54 +502,42 @@
 
         function showPopup(iata, info, marker) {
             window.selectedIata = iata;
-            renderMapData(); 
+            renderMapData(); // Redraw map to isolate line immediately
             
-            const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
-            const end = turf.point([info.lng, info.lat]);
-            const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+            // TARGET ZOOM: Level 5 gives a great regional view of the destination airport
+            const targetZoom = 5;
             
-            let prevLng = greatCircle.geometry.coordinates[0][0];
-            let gcLatLngs = greatCircle.geometry.coordinates.map(c => {
-                let lng = c[0];
-                let lat = c[1];
-                while (lng - prevLng > 180) lng -= 360;
-                while (prevLng - lng > 180) lng += 360;
-                prevLng = lng;
-                return [lat, lng];
-            });
+            // 1. Calculate where the airport will physically be on the screen
+            let targetPoint = map.project([info.lat, info.lng], targetZoom);
+            
+            // 2. Adjust the camera mathematically so the airport sits perfectly in the lower-right!
+            // Subtracting X pushes the camera left, making the airport appear further right (clearing the panel)
+            targetPoint.x -= 180; 
+            // Subtracting Y pushes the camera up, making the airport appear lower (leaving room for the popup above)
+            targetPoint.y -= 150; 
+            
+            // 3. Convert that offset pixel location back into Lat/Lng coordinates
+            const offsetLatLng = map.unproject(targetPoint, targetZoom);
 
-            /* 
-               PERFECTED PADDING CALIBRATION:
-               - Left padding exactly matches the filter panel width (280px).
-               - We avoid extreme vertical padding to prevent Leaflet from forcing a massive zoom-out (which causes the ghost-world wrapping bug).
-               - maxZoom set to 5 ensures long-haul routes look beautiful without breaking bounds.
-            */
-            map.flyToBounds(L.latLngBounds(gcLatLngs), { 
-                paddingTopLeft: [280, 50], 
-                paddingBottomRight: [50, 50], 
-                maxZoom: 5, 
-                duration: 0.8 
-            });
+            // 4. Smoothly fly directly to that offset point!
+            map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
 
             const popupContent = generateRouteHTML(iata, info);
             
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: true, 
-                /* autoPanPadding prevents the popup from nudging itself back under the filter box */
-                autoPanPaddingTopLeft: [290, 30],
-                autoPanPaddingBottomRight: [30, 30]
+                autoPan: false // WE NO LONGER NEED AUTOPAN, the camera offset perfectly handles it!
             })
             .setLatLng([info.lat, info.lng])
             .setContent(popupContent);
             
             popup.iata = iata; 
             
-            // Wait a tiny bit before opening the popup to let flyToBounds establish the correct world-view
+            // Wait slightly for the flyTo animation to get moving before deploying the popup
             setTimeout(() => {
                 popup.openOn(map);
-            }, 300);
+            }, 350);
 
             setTimeout(() => {
                 const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
@@ -561,7 +549,7 @@
                     });
                 });
                 updatePopupContent(iata, info, 'Departure'); 
-            }, 350);
+            }, 400);
         }
 
         function generateRouteHTML(iata, info) {
