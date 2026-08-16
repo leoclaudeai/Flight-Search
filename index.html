@@ -244,43 +244,17 @@
             "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
         };
 
-        const AIRLINE_INFO = {
-            "CPA": { name: "Cathay Pacific", iata: "CX" },
-            "HKE": { name: "HK Express", iata: "UO" },
-            "CRK": { name: "Hong Kong Airlines", iata: "HX" },
-            "GBA": { name: "Greater Bay Airlines", iata: "HB" },
-            "HGB": { name: "Greater Bay Airlines", iata: "HB" },
-            "APZ": { name: "Air Premia", iata: "YP" },
-            "CDC": { name: "Loong Air", iata: "GJ" },
-            "CFG": { name: "Condor", iata: "DE" },
-            "DAL": { name: "Delta Air Lines", iata: "DL" },
-            "ESR": { name: "Eastar Jet", iata: "ZE" },
-            "ETD": { name: "Etihad Airways", iata: "EY" },
-            "ETH": { name: "Ethiopian Airlines", iata: "ET" },
-            "QDA": { name: "Qingdao Airlines", iata: "QW" },
-            "SPQ": { name: "Sun PhuQuoc Airways", iata: "VU" },
-            "TBA": { name: "Tibet Airlines", iata: "TV" },
-            "TLM": { name: "Thai Lion Air", iata: "SL" },
-            "TWB": { name: "T'way Air", iata: "TW" },
-            "UAE": { name: "Emirates", iata: "EK" },
-            "UAL": { name: "United Airlines", iata: "UA" },
-            "JJA": { name: "Jeju Air", iata: "7C" },
-            "KAL": { name: "Korean Air", iata: "KE" },
-            "ABL": { name: "Air Busan", iata: "BX" },
-            "AAR": { name: "Asiana Airlines", iata: "OZ" },
-            "AFR": { name: "Air France", iata: "AF" },
-            "QFA": { name: "Qantas", iata: "QF" },
-            "SWR": { name: "Swiss", iata: "LX" },
-            "JJP": { name: "Jetstar Japan", iata: "GK" },
-            "ACA": { name: "Air Canada", iata: "AC" },
-            "APJ": { name: "Peach", iata: "MM" },
-            "ANA": { name: "All Nippon Airways", iata: "NH" },
-            "JAL": { name: "Japan Airlines", iata: "JL" },
-            "QTR": { name: "Qatar Airways", iata: "QR" },
-            "SIA": { name: "Singapore Airlines", iata: "SQ" },
-            "TGW": { name: "Scoot", iata: "TR" },
-            "CEB": { name: "Cebu Pacific", iata: "5J" },
-            "PAL": { name: "Philippine Airlines", iata: "PR" }
+        const AIRLINE_MAPPING = {
+            "CPA": "Cathay Pacific", "HKE": "HK Express", "CRK": "Hong Kong Airlines",
+            "GBA": "Greater Bay Airlines", "HGB": "Greater Bay Airlines", "APZ": "Air Premia",
+            "CDC": "Loong Air", "CFG": "Condor", "DAL": "Delta Air Lines", "ESR": "Eastar Jet",
+            "ETD": "Etihad Airways", "ETH": "Ethiopian Airlines", "QDA": "Qingdao Airlines",
+            "SPQ": "Sun PhuQuoc Airways", "TBA": "Tibet Airlines", "TLM": "Thai Lion Air",
+            "TWB": "T'way Air", "UAE": "Emirates", "UAL": "United Airlines", "JJA": "Jeju Air",
+            "KAL": "Korean Air", "ABL": "Air Busan", "AAR": "Asiana Airlines", "AFR": "Air France",
+            "QFA": "Qantas", "SWR": "Swiss", "JJP": "Jetstar Japan", "ACA": "Air Canada",
+            "APJ": "Peach", "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "QTR": "Qatar Airways",
+            "SIA": "Singapore Airlines", "TGW": "Scoot", "CEB": "Cebu Pacific", "PAL": "Philippine Airlines"
         };
         
         // Manual duration overrides (in minutes) for edge-case/missing flights
@@ -436,17 +410,10 @@
                 }
             }
             const sel = document.getElementById('filter-airline');
-            
-            const sortedAl = Array.from(airlinesSet).sort((a,b) => {
-                const nameA = AIRLINE_INFO[a] ? `${AIRLINE_INFO[a].name} (${AIRLINE_INFO[a].iata})` : a;
-                const nameB = AIRLINE_INFO[b] ? `${AIRLINE_INFO[b].name} (${AIRLINE_INFO[b].iata})` : b;
-                return nameA.localeCompare(nameB);
-            });
-            
+            const sortedAl = Array.from(airlinesSet).sort((a,b) => (AIRLINE_MAPPING[a]||a).localeCompare(AIRLINE_MAPPING[b]||b));
             sortedAl.forEach(code => {
                 let opt = document.createElement('option');
-                opt.value = code; 
-                opt.text = AIRLINE_INFO[code] ? `${AIRLINE_INFO[code].name} (${AIRLINE_INFO[code].iata})` : code;
+                opt.value = code; opt.text = AIRLINE_MAPPING[code] || code;
                 sel.add(opt);
             });
         }
@@ -491,33 +458,24 @@
                 }
 
                 if (hasValidFlight) {
-                    const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
-                    const end = turf.point([info.lng, info.lat]);
-                    const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
-                    let coords = greatCircle.geometry.coordinates;
-
-                    // THE FIX: Turf.js automatically splits lines that cross the Pacific into a MultiLineString.
-                    // We must flatten it back into a single continuous line for Leaflet's infinite wrapping!
-                    if (greatCircle.geometry.type === 'MultiLineString') {
-                        coords = coords.flat();
-                    }
-
-                    // Apply Antimeridian fixes to ensure the line flows continually
-                    let prevLng = coords[0][0];
-                    const latlngs = coords.map(c => {
-                        let lng = c[0];
-                        let lat = c[1];
-                        while (lng - prevLng > 180) lng -= 360;
-                        while (prevLng - lng > 180) lng += 360;
-                        prevLng = lng;
-                        return [lat, lng]; 
-                    });
-
-                    // We grab the exact longitude of the end of the blue line
-                    let wrappedLng = latlngs[latlngs.length - 1][1];
-
-                    // Draw the line if it is selected (or if no specific route is focused)
+                    
                     if (!window.selectedIata || window.selectedIata === iata) {
+                        
+                        const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
+                        const end = turf.point([info.lng, info.lat]);
+                        const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+                        const coords = greatCircle.geometry.coordinates;
+
+                        let prevLng = coords[0][0];
+                        const latlngs = coords.map(c => {
+                            let lng = c[0];
+                            let lat = c[1];
+                            while (lng - prevLng > 180) lng -= 360;
+                            while (prevLng - lng > 180) lng += 360;
+                            prevLng = lng;
+                            return [lat, lng]; 
+                        });
+
                         L.polyline(latlngs, {
                             color: '#1a73e8', 
                             weight: window.selectedIata ? 3 : 1.5, 
@@ -526,15 +484,14 @@
                         }).addTo(linesLayer);
                     }
 
-                    // Place the marker onto the mathematically wrapped longitude so it aligns with the line
-                    const m = L.circleMarker([info.lat, wrappedLng], {
+                    const m = L.circleMarker([info.lat, info.lng], {
                         radius: window.selectedIata === iata ? 7 : 5, 
                         fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
                         color: '#fff', weight: 1.5, fillOpacity: 0.9
                     });
                     
                     m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
-                    m.on('click', () => { showPopup(iata, info, wrappedLng); });
+                    m.on('click', () => { showPopup(iata, info, m); });
                     m.addTo(markersLayer);
                     mapMarkers.push(m);
                 }
@@ -543,18 +500,20 @@
 
         window.triggerMapFilter = function() { renderMapData(); };
 
-        function showPopup(iata, info, wrappedLng) {
+        function showPopup(iata, info, marker) {
             window.selectedIata = iata;
-            renderMapData(); 
+            renderMapData(); // Redraw map to isolate line immediately
             
             // TARGET ZOOM: Level 5 gives a great regional view of the destination airport
             const targetZoom = 5;
             
-            // 1. Calculate where the airport will physically be on the screen using the WRAPPED coordinate
-            let targetPoint = map.project([info.lat, wrappedLng], targetZoom);
+            // 1. Calculate where the airport will physically be on the screen
+            let targetPoint = map.project([info.lat, info.lng], targetZoom);
             
             // 2. Adjust the camera mathematically so the airport sits perfectly in the lower-right!
+            // Subtracting X pushes the camera left, making the airport appear further right (clearing the panel)
             targetPoint.x -= 180; 
+            // Subtracting Y pushes the camera up, making the airport appear lower (leaving room for the popup above)
             targetPoint.y -= 150; 
             
             // 3. Convert that offset pixel location back into Lat/Lng coordinates
@@ -568,14 +527,14 @@
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: false 
+                autoPan: false // WE NO LONGER NEED AUTOPAN, the camera offset perfectly handles it!
             })
-            // Force the popup to open on the WRAPPED coordinates so it aligns with the marker and line!
-            .setLatLng([info.lat, wrappedLng]) 
+            .setLatLng([info.lat, info.lng])
             .setContent(popupContent);
             
             popup.iata = iata; 
             
+            // Wait slightly for the flyTo animation to get moving before deploying the popup
             setTimeout(() => {
                 popup.openOn(map);
             }, 350);
@@ -648,11 +607,7 @@
                 }
 
                 if (hasDirFlight) {
-                    
-                    const infoObj = AIRLINE_INFO[alCode];
-                    const alName = infoObj ? `${infoObj.name} (${infoObj.iata})` : alCode;
-                    const iconText = infoObj ? infoObj.iata : alCode.substring(0,2);
-                    
+                    const alName = AIRLINE_MAPPING[alCode] || alCode;
                     const uId = `fl-${iata}-${alCode}-${direction}`;
                     
                     let pillsHtml = `<div class="day-pills">`;
@@ -730,7 +685,7 @@
                     html += `
                         <div class="airline-row">
                             <div class="airline-info">
-                                <div class="airline-icon">${iconText}</div>
+                                <div class="airline-icon">${alCode.substring(0,2)}</div>
                                 <div class="airline-name">${alName}</div>
                             </div>
                             ${pillsHtml}
