@@ -24,6 +24,19 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
+        /* Top Right Language Button */
+        #lang-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            border: 1px solid #e0e0e0; padding: 8px 16px; border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000;
+            font-size: 13px; font-weight: 700; color: #1a73e8; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #lang-btn:hover {
+            background: #f8f9fa; color: #0d47a1; border-color: #d0d0d0;
+        }
+
         /* Map Filters Panel */
         #filter-panel {
             position: absolute; top: 15px; left: 55px;
@@ -45,7 +58,6 @@
             font-weight: 700; cursor: pointer; padding: 0;
             transition: color 0.2s;
         }
-        .reset-btn:hover { color: #1a73e8; }
         .reset-btn.danger:hover { color: #d93025; }
         
         .toggle-btn {
@@ -167,12 +179,14 @@
 
     <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
     
+    <!-- Top Right Language Button -->
+    <button id="lang-btn" onclick="toggleLanguage()">EN</button>
+
     <!-- Map Filters Panel -->
     <div id="filter-panel">
         <div class="filter-header">
             <h4 id="ui-title">航班篩選</h4>
             <div class="header-actions">
-                <button class="reset-btn" id="lang-btn" onclick="toggleLanguage()">EN</button>
                 <button class="reset-btn danger" id="reset-btn" style="text-decoration: underline;" onclick="clearAllFilters()">重設</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
