@@ -356,22 +356,27 @@
                 window.airportRoutesData = data.routes;
 
                 // Fetch CSV duration data
+                // ADDED CACHE-BUSTER: "?v=" + timestamp ensures GitHub gives you the latest file
                 try {
-                    const csvRes = await fetch('Flight_duration.csv');
+                    const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
                     if (csvRes.ok) {
                         const csvText = await csvRes.text();
                         const lines = csvText.split('\n');
                         for (let i = 1; i < lines.length; i++) { 
+                            if (!lines[i].trim()) continue; // Skip empty rows at the bottom
                             const row = lines[i].split(',');
                             if (row.length >= 2) {
+                                // Force uppercase for ultimate safety
                                 const iataCode = row[0].trim().toUpperCase();
                                 const durationText = row[1].trim();
                                 window.flightDurationsCSV[iataCode] = durationText;
                             }
                         }
+                    } else {
+                        console.error("Flight_duration.csv returned a status error: ", csvRes.status);
                     }
                 } catch (e) {
-                    console.warn("Could not load Flight_duration.csv. Displaying unknown duration.");
+                    console.warn("Could not load Flight_duration.csv. Displaying unknown duration.", e);
                 }
 
                 const allAirlinesSet = new Set();
@@ -509,7 +514,10 @@
             const fDays = Array.from(activeDayElements).map(el => el.getAttribute('data-day'));
 
             const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
-            const csvDuration = window.flightDurationsCSV[iata] || "Time Unknown";
+            
+            // Force uppercase when looking up just in case the JSON data has lowercase IATA codes
+            const searchIata = iata.trim().toUpperCase();
+            const csvDuration = window.flightDurationsCSV[searchIata] || "Time Unknown";
             
             let html = `
                 <div class="direction-toggle">
