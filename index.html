@@ -154,6 +154,9 @@
         .flight-item:last-child { border-bottom: none; }
         .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
     </style>
+
+    <!-- Turf.js Library for Great Circle Spherical Routing -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
 </head>
 <body>
 
@@ -265,9 +268,18 @@
         window.flightDurationsRaw = {}; 
         window.flightDurationsCSV = {}; 
         window.flightSpecificData = {}; 
+        
+        // Target IATA focus variable
+        window.selectedIata = null;
 
         function initMap() {
-            map = L.map('map', { center: [20, 114], zoom: 3, minZoom: 2, maxBounds: [[-90, -180], [90, 180]] });
+            // maxBounds removed and worldCopyJump activated to allow infinite scrolling over the Pacific
+            map = L.map('map', { 
+                center: [20, 114], 
+                zoom: 3, 
+                minZoom: 2,
+                worldCopyJump: true 
+            });
             
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 attribution: '&copy; OpenStreetMap &copy; CARTO'
@@ -275,6 +287,15 @@
 
             markersLayer = L.featureGroup().addTo(map);
             linesLayer = L.featureGroup().addTo(map);
+
+            // When a popup is manually closed, reset the selection and redraw all lines
+            map.on('popupclose', () => {
+                if (window.selectedIata) {
+                    window.selectedIata = null;
+                    renderMapData();
+                    map.setView([20, 114], 3); // Auto zoom back out when deselected
+                }
+            });
 
             loadMapData();
         }
@@ -430,12 +451,40 @@
                 }
 
                 if (hasValidFlight) {
-                    L.polyline([ [HKG_LATLNG.lat, HKG_LATLNG.lng], [info.lat, info.lng] ], {
-                        color: '#1a73e8', weight: 1.5, opacity: 0.3, smoothFactor: 1
-                    }).addTo(linesLayer);
+                    
+                    // Route Isolation: Only draw line if no popup is active, OR if it matches the active popup
+                    if (!window.selectedIata || window.selectedIata === iata) {
+                        
+                        // Use Turf.js to calculate a Great Circle (Spherical path)
+                        const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
+                        const end = turf.point([info.lng, info.lat]);
+                        const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+                        const coords = greatCircle.geometry.coordinates;
 
+                        // Antimeridian Fix: Prevents horizontal streaks across the map when crossing the Pacific Ocean
+                        let prevLng = coords[0][0];
+                        const latlngs = coords.map(c => {
+                            let lng = c[0];
+                            let lat = c[1];
+                            while (lng - prevLng > 180) lng -= 360;
+                            while (prevLng - lng > 180) lng += 360;
+                            prevLng = lng;
+                            return [lat, lng]; // Leaflet uses LatLng order
+                        });
+
+                        L.polyline(latlngs, {
+                            color: '#1a73e8', 
+                            weight: window.selectedIata ? 3 : 1.5, 
+                            opacity: window.selectedIata ? 0.9 : 0.35, 
+                            smoothFactor: 1
+                        }).addTo(linesLayer);
+                    }
+
+                    // Always draw all available airport markers
                     const m = L.circleMarker([info.lat, info.lng], {
-                        radius: 5, fillColor: '#1a73e8', color: '#fff', weight: 1.5, fillOpacity: 0.9
+                        radius: window.selectedIata === iata ? 7 : 5, 
+                        fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
+                        color: '#fff', weight: 1.5, fillOpacity: 0.9
                     });
                     
                     m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
@@ -449,6 +498,27 @@
         window.triggerMapFilter = function() { renderMapData(); };
 
         function showPopup(iata, info, marker) {
+            window.selectedIata = iata;
+            renderMapData(); // Redraw map to isolate line
+            
+            // Calculate great circle bounds for smooth Auto-Zoom
+            const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
+            const end = turf.point([info.lng, info.lat]);
+            const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+            
+            let prevLng = greatCircle.geometry.coordinates[0][0];
+            let gcLatLngs = greatCircle.geometry.coordinates.map(c => {
+                let lng = c[0];
+                let lat = c[1];
+                while (lng - prevLng > 180) lng -= 360;
+                while (prevLng - lng > 180) lng += 360;
+                prevLng = lng;
+                return [lat, lng];
+            });
+
+            // Auto-zoom viewport to comfortably fit the curving route
+            map.fitBounds(L.latLngBounds(gcLatLngs), { padding: [50, 50], maxZoom: 6 });
+
             const popupContent = generateRouteHTML(iata, info);
             
             L.popup({
@@ -577,7 +647,6 @@
                                         let dh = Math.floor(norm / 60).toString().padStart(2, '0');
                                         let dm = Math.floor(norm % 60).toString().padStart(2, '0');
                                         
-                                        // Invert dayOffset for arrivals so the perspective is anchored to departure 
                                         let arrivalOffset = -dayOffset;
                                         let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}d)` : (arrivalOffset < 0 ? ` (${arrivalOffset}d)` : '');
                                         
@@ -684,7 +753,9 @@
             globalSelectedDays = new Set(DAY_KEYS);
             document.querySelectorAll('.f-day-pill').forEach(p => p.classList.add('active'));
 
+            window.selectedIata = null;
             renderMapData();
+            map.setView([20, 114], 3);
         };
 
         document.addEventListener('DOMContentLoaded', () => {
