@@ -25,7 +25,7 @@
         }
 
         /* -------------------------------------------
-           NEW: Floating Top-Right Dual Language Toggle
+           Floating Top-Right Dual Language Toggle
         ------------------------------------------- */
         #lang-toggle-container {
             position: fixed;
@@ -194,6 +194,35 @@
         .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #ebebeb; }
         .flight-item:last-child { border-bottom: none; }
         .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
+        
+        /* -------------------------------------------
+           NEW: Responsive Layout for Mobile Phones
+        ------------------------------------------- */
+        @media (max-width: 500px) {
+            /* Move language toggle out of the way of the filter box */
+            #lang-toggle-container {
+                top: auto;
+                bottom: 30px;
+                right: 15px;
+            }
+            
+            /* Slightly shrink the filter panel to fit */
+            #filter-panel {
+                width: 230px;
+                left: 50px;
+            }
+            
+            /* Ensure map popups don't overflow narrow phone screens */
+            .custom-popup .leaflet-popup-content {
+                width: 270px !important;
+            }
+            
+            /* Shrink day pills slightly inside the popup so they fit */
+            .day-pill {
+                width: 28px;
+                font-size: 11px;
+            }
+        }
     </style>
 
     <!-- Turf.js Library for Great Circle Spherical Routing -->
@@ -203,7 +232,7 @@
 
     <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
     
-    <!-- BRAND NEW: Dual-Toggle Top Right Language Button -->
+    <!-- Dual-Toggle Top Right Language Button -->
     <div id="lang-toggle-container">
         <div class="lang-option active" id="lang-zh" onclick="setLanguage('zh')">繁中</div>
         <div class="lang-option" id="lang-en" onclick="setLanguage('en')">EN</div>
@@ -518,7 +547,7 @@
             "MXP": { cityEn: "Milan", cityZh: "米蘭", nameEn: "Malpensa", nameZh: "馬爾彭薩機場" },
             "NRT": { cityEn: "Tokyo", cityZh: "東京", nameEn: "Narita", nameZh: "成田國際機場" },
             "MAN": { cityEn: "Manchester", cityZh: "曼徹斯特", nameEn: "Manchester Airport", nameZh: "曼徹斯特機場" },
-            "KIX": { cityEn: "Osaka", cityZh: "大阪", nameEn: "Kansai", nameZh: "關西國際機場" },
+            "KIX": { cityEn: "Osaka", cityZh: "大阪", nameEn: "關西", nameZh: "關西國際機場" },
             "FCO": { cityEn: "Rome", cityZh: "羅馬", nameEn: "Fiumicino", nameZh: "菲烏米奇諾機場" },
             "JNB": { cityEn: "Johannesburg", cityZh: "約翰內斯堡", nameEn: "OR Tambo", nameZh: "奧利弗·坦博國際機場" },
             "SFO": { cityEn: "San Francisco", cityZh: "三藩市", nameEn: "San Francisco Intl", nameZh: "三藩市國際機場" },
@@ -725,7 +754,6 @@
             populateAirlineFilter(); // Re-populate the dropdown in the new language
         }
 
-        // --- NEW: Toggle Language Function for Dual Buttons ---
         window.setLanguage = function(lang) {
             if (currentLang === lang) return; // Do nothing if already selected
             currentLang = lang;
