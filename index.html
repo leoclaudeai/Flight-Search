@@ -25,35 +25,40 @@
         }
 
         /* -------------------------------------------
-           NEW: Floating Top-Right Language Button 
+           NEW: Floating Top-Right Dual Language Toggle
         ------------------------------------------- */
         #lang-toggle-container {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 9999; /* Ensures it sits above absolutely everything */
+            z-index: 9999;
+            display: flex;
+            background-color: #f1f3f4;
+            border-radius: 20px;
+            padding: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #dadce0;
         }
         
-        .lang-float-btn {
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            font-size: 14px;
+        .lang-option {
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #5f6368;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-radius: 16px;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 0.5px;
+            user-select: none;
         }
-        .lang-float-btn:hover {
-            background-color: #1557b0;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+        
+        .lang-option:hover {
+            color: #1a1a1a;
+        }
+        
+        .lang-option.active {
+            background-color: #ffffff;
+            color: #1a73e8; /* Highlighted in Blue */
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
 
         /* Map Filters Panel */
@@ -198,12 +203,13 @@
 
     <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
     
-    <!-- BRAND NEW: Dedicated Floating Top Right Language Button -->
+    <!-- BRAND NEW: Dual-Toggle Top Right Language Button -->
     <div id="lang-toggle-container">
-        <button class="lang-float-btn" id="lang-btn" onclick="toggleLanguage()">🌐 EN</button>
+        <div class="lang-option active" id="lang-zh" onclick="setLanguage('zh')">繁中</div>
+        <div class="lang-option" id="lang-en" onclick="setLanguage('en')">EN</div>
     </div>
 
-    <!-- Map Filters Panel (Language button is permanently removed from here) -->
+    <!-- Map Filters Panel -->
     <div id="filter-panel">
         <div class="filter-header">
             <h4 id="ui-title">航班篩選</h4>
@@ -268,7 +274,6 @@
                 loading_error: '載入失敗。',
                 ui_title: '航班篩選',
                 reset_btn: '重設',
-                lang_btn: 'EN',
                 dir_label: '方向',
                 dir_all: '所有路線',
                 dir_dep: '離港 (HKG &rarr; )',
@@ -302,7 +307,6 @@
                 loading_error: 'Error loading data.',
                 ui_title: 'Filter Flights',
                 reset_btn: 'Reset',
-                lang_btn: '中文',
                 dir_label: 'DIRECTION',
                 dir_all: 'All Routes',
                 dir_dep: 'Departures (HKG &rarr; )',
@@ -704,7 +708,6 @@
             document.getElementById('page-title').innerText = txt.page_title;
             document.getElementById('ui-title').innerText = txt.ui_title;
             document.getElementById('reset-btn').innerText = txt.reset_btn;
-            document.getElementById('lang-btn').innerHTML = `🌐 ${txt.lang_btn}`;
             
             document.getElementById('ui-dir-label').innerText = txt.dir_label;
             document.getElementById('ui-dir-all').innerText = txt.dir_all;
@@ -722,8 +725,15 @@
             populateAirlineFilter(); // Re-populate the dropdown in the new language
         }
 
-        window.toggleLanguage = function() {
-            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+        // --- NEW: Toggle Language Function for Dual Buttons ---
+        window.setLanguage = function(lang) {
+            if (currentLang === lang) return; // Do nothing if already selected
+            currentLang = lang;
+            
+            // Update Toggle UI active state
+            document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
             updateLanguageUI();
             
             if (map) {
