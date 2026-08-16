@@ -263,7 +263,6 @@
         const allMapMarkers = {};
         const allMapPolylines = {};
 
-        // Calculate Great-Circle Distance (in km) purely via Math
         window.calculateDistance = function(lat1, lon1, lat2, lon2) {
             const R = 6371; 
             const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -350,26 +349,40 @@
             }).addTo(window.leafletMap);
 
             try {
-                // Fetch JSON flight data
                 const res = await fetch('flights.json');
                 const data = await res.json();
                 window.airportRoutesData = data.routes;
 
-                // Fetch CSV duration data
-                // ADDED CACHE-BUSTER: "?v=" + timestamp ensures GitHub gives you the latest file
+                // Load duration data directly from Flight_duration.csv
                 try {
                     const csvRes = await fetch('Flight_duration.csv?v=' + new Date().getTime());
                     if (csvRes.ok) {
                         const csvText = await csvRes.text();
                         const lines = csvText.split('\n');
+                        
                         for (let i = 1; i < lines.length; i++) { 
-                            if (!lines[i].trim()) continue; // Skip empty rows at the bottom
+                            if (!lines[i].trim()) continue;
                             const row = lines[i].split(',');
-                            if (row.length >= 2) {
-                                // Force uppercase for ultimate safety
-                                const iataCode = row[0].trim().toUpperCase();
-                                const durationText = row[1].trim();
-                                window.flightDurationsCSV[iataCode] = durationText;
+                            
+                            // Check if row has the expected 5 columns
+                            if (row.length >= 5) {
+                                const depAirport = row[2].trim();
+                                const arrAirport = row[3].trim();
+                                
+                                // Identify the non-HKG airport
+                                let targetAirport = depAirport;
+                                if (depAirport.includes("HKG")) {
+                                    targetAirport = arrAirport;
+                                }
+                                
+                                // Extract the 3-letter IATA code from the parenthesis, e.g., "(ICN)"
+                                const iataMatch = targetAirport.match(/\(([A-Z]{3})\)/);
+                                
+                                if (iataMatch) {
+                                    const iataCode = iataMatch[1].toUpperCase();
+                                    const durationText = row[4].trim(); // Duration is in the 5th column
+                                    window.flightDurationsCSV[iataCode] = durationText;
+                                }
                             }
                         }
                     } else {
@@ -515,7 +528,6 @@
 
             const distanceKm = window.calculateDistance(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
             
-            // Force uppercase when looking up just in case the JSON data has lowercase IATA codes
             const searchIata = iata.trim().toUpperCase();
             const csvDuration = window.flightDurationsCSV[searchIata] || "Time Unknown";
             
