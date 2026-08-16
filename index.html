@@ -523,8 +523,14 @@
                 return [lat, lng];
             });
 
-            // Smoothly fly to the new bounding box containing both HKG and the destination
-            map.flyToBounds(L.latLngBounds(gcLatLngs), { padding: [75, 75], maxZoom: 6, duration: 0.8 });
+            // Set asymmetrical padding to account for the width of the filter panel on the left!
+            // This leaves 330px of padding on the left side so the route never hides behind the panel.
+            map.flyToBounds(L.latLngBounds(gcLatLngs), { 
+                paddingTopLeft: [330, 75], 
+                paddingBottomRight: [75, 75], 
+                maxZoom: 6, 
+                duration: 0.8 
+            });
 
             const popupContent = generateRouteHTML(iata, info);
             
