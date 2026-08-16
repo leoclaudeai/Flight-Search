@@ -111,6 +111,9 @@
         }
         #time-label-val { color: #1a73e8; font-weight: 700; }
 
+        /* Elevate Popup above the filter UI */
+        .leaflet-popup-pane { z-index: 1100 !important; }
+
         /* Leaflet Popup Overrides */
         .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
         .custom-popup .leaflet-popup-content { margin: 12px; width: 360px !important; }
@@ -256,8 +259,8 @@
         
         // Manual duration overrides (in minutes) for edge-case/missing flights
         const MANUAL_OVERRIDES = {
-            "CX947": 195,  // 3h 15m
-            "MU7481": 190  // 3h 10m
+            "CX947": 195,  
+            "MU7481": 190  
         };
 
         let map, markersLayer, linesLayer;
@@ -292,14 +295,11 @@
                 const closedIata = e.popup ? e.popup.iata : null;
                 if (!closedIata) return;
 
-                // Set a tiny 100ms delay. If the user clicked another airport marker, 
-                // selectedIata will immediately change to the new airport.
-                // If it HASN'T changed in 100ms, it means they clicked the empty background, so we zoom out!
                 setTimeout(() => {
                     if (window.selectedIata === closedIata) {
                         window.selectedIata = null;
                         renderMapData();
-                        map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back out
+                        map.flyTo([20, 114], 3, { duration: 0.8 });
                     }
                 }, 100);
             });
@@ -459,16 +459,13 @@
 
                 if (hasValidFlight) {
                     
-                    // Route Isolation: Only draw line if no popup is active, OR if it matches the active popup
                     if (!window.selectedIata || window.selectedIata === iata) {
                         
-                        // Use Turf.js to calculate a Great Circle (Spherical path)
                         const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
                         const end = turf.point([info.lng, info.lat]);
                         const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
                         const coords = greatCircle.geometry.coordinates;
 
-                        // Antimeridian Fix: Prevents horizontal streaks across the map when crossing the Pacific Ocean
                         let prevLng = coords[0][0];
                         const latlngs = coords.map(c => {
                             let lng = c[0];
@@ -476,7 +473,7 @@
                             while (lng - prevLng > 180) lng -= 360;
                             while (prevLng - lng > 180) lng += 360;
                             prevLng = lng;
-                            return [lat, lng]; // Leaflet uses LatLng order
+                            return [lat, lng]; 
                         });
 
                         L.polyline(latlngs, {
@@ -487,7 +484,6 @@
                         }).addTo(linesLayer);
                     }
 
-                    // Always draw all available airport markers
                     const m = L.circleMarker([info.lat, info.lng], {
                         radius: window.selectedIata === iata ? 7 : 5, 
                         fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
@@ -506,9 +502,8 @@
 
         function showPopup(iata, info, marker) {
             window.selectedIata = iata;
-            renderMapData(); // Redraw map to isolate line immediately
+            renderMapData(); 
             
-            // Calculate great circle bounds for smooth Auto-Zoom
             const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
             const end = turf.point([info.lng, info.lat]);
             const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
@@ -523,11 +518,15 @@
                 return [lat, lng];
             });
 
-            // Set asymmetrical padding to account for the width of the filter panel on the left!
-            // This leaves 330px of padding on the left side so the route never hides behind the panel.
+            /* 
+               MASSIVE SAFE ZONE: 
+               Left padding is 480px (clears the 250px panel + width of popup).
+               Top padding is 320px (clears the height of the popup).
+               This ensures the marker is pushed far to the bottom right of the viewing area!
+            */
             map.flyToBounds(L.latLngBounds(gcLatLngs), { 
-                paddingTopLeft: [330, 75], 
-                paddingBottomRight: [75, 75], 
+                paddingTopLeft: [480, 320], 
+                paddingBottomRight: [50, 50], 
                 maxZoom: 6, 
                 duration: 0.8 
             });
@@ -537,12 +536,11 @@
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: false // DISABLED autoPan so it doesn't fight with our beautiful flyToBounds animation!
+                autoPan: false 
             })
             .setLatLng([info.lat, info.lng])
             .setContent(popupContent);
             
-            // Attach the iata code directly to this specific popup instance to track it
             popup.iata = iata; 
             popup.openOn(map);
 
@@ -771,7 +769,7 @@
 
             window.selectedIata = null;
             renderMapData();
-            map.flyTo([20, 114], 3, { duration: 0.8 }); // Smooth fly back out when resetting
+            map.flyTo([20, 114], 3, { duration: 0.8 }); 
         };
 
         document.addEventListener('DOMContentLoaded', () => {
