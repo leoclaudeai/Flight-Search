@@ -798,9 +798,53 @@
             }
         };
 
-        // Directly use CSV duration as the true air-time without timezone offsets
+        // Universal timezone offset resolver based on longitude and region fallback
+        window.getUniversalTzOffsetHours = function(lat, lon) {
+            // Rough precise timezone hour approximation based on longitude
+            let baseOffset = lon / 15;
+            
+            // Region overrides for specific timezones that differ heavily from pure longitude
+            if (lat > 50 && lon > -10 && lon < 2) return 0; // UK / London
+            if (lat > 40 && lat < 52 && lon >= 2 && lon < 15) return 1; // Central Europe (Paris, Frankfurt, Rome)
+            if (lat > 20 && lat < 50 && lon > 120 && lon < 150) return 9; // Japan / Tokyo (CTS, NRT, HND)
+            if (lat > 30 && lat < 45 && lon > 124 && lon < 132) return 9; // South Korea (ICN)
+
+            return Math.round(baseOffset);
+        };
+
+        // Corrects the CSV duration by subtracting or adding timezone differences when raw times mix timezones
         window.getTrueDisplayDuration = function(durationText, iata, direction) {
-            return durationText || t('timeUnknown');
+            if (!durationText || durationText === t('timeUnknown')) return durationText;
+
+            let isNegative = false;
+            const match = durationText.match(/(-?)(\d+)\s*hr\s*(\d+)\s*mins/i);
+            if (!match) return durationText;
+
+            if (match[1] === '-') isNegative = true;
+            let durH = parseInt(match[2], 10);
+            let durM = parseInt(match[3], 10);
+            
+            let totalDurMins = durH * 60 + durM;
+            if (isNegative) totalDurMins = -totalDurMins; 
+            
+            const hkgTz = 8; // Hong Kong is GMT+8
+            const aptData = window.airportRoutesData[iata];
+            const destTz = aptData ? window.getUniversalTzOffsetHours(aptData.lat, aptData.lng) : hkgTz;
+            
+            let tzDiffHours = 0;
+            if (direction === 'Departure') {
+                tzDiffHours = destTz - hkgTz; 
+            } else {
+                tzDiffHours = hkgTz - destTz;
+            }
+            
+            // Subtracting timezone displacement to reveal true duration if CSV was derived from clock differences
+            let trueDurMins = totalDurMins - (tzDiffHours * 60);
+            if (trueDurMins < 0) trueDurMins += 24 * 60; 
+
+            let trueH = Math.floor(trueDurMins / 60);
+            let trueM = trueDurMins % 60;
+            return `${trueH}hr ${String(trueM).padStart(2, '0')}mins`;
         };
 
         window.renderCardContent = function(iata, direction) {
