@@ -792,19 +792,17 @@
             return `${h}${i18n[currentLang].hours} ${mins}${i18n[currentLang].mins}`;
         }
 
-        function initMap() {
+                function initMap() {
             updateLanguageUI();
             
-            // Map configuration updated with bounds and constraints
             map = L.map('map', { 
                 center: [20, 114], 
                 zoom: 3, 
                 minZoom: 2,
                 worldCopyJump: false,
-                zoomControl: false,
-                maxBounds: [[-90, -180], [90, 180]],
-                maxBoundsViscosity: 1.0
+                zoomControl: false
             });
+
             
             // Add zoom controls back to the bottom-left corner
             L.control.zoom({ position: 'bottomleft' }).addTo(map);
