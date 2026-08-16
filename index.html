@@ -24,20 +24,6 @@
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
         }
 
-        /* Language Toggle Switch */
-        .lang-toggle-container {
-            position: absolute; top: 15px; right: 15px; z-index: 1000;
-            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
-            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            display: flex; overflow: hidden; border: 1px solid #e0e0e0;
-        }
-        .lang-btn {
-            background: none; border: none; padding: 8px 12px; font-size: 13px; font-weight: 700;
-            color: #5f6368; cursor: pointer; transition: 0.2s; outline: none;
-        }
-        .lang-btn.active { background: #1a73e8; color: #fff; }
-        .lang-btn:hover:not(.active) { background: #f1f3f4; color: #1a73e8; }
-
         /* Map Filters Panel */
         #filter-panel {
             position: absolute; top: 15px; left: 55px;
@@ -48,7 +34,9 @@
         }
         
         /* Filter Header & Buttons */
-        .filter-header { display: flex; justify-content: space-between; align-items: center; }
+        .filter-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
         .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
         .header-actions { display: flex; align-items: center; gap: 10px; }
         
@@ -70,7 +58,9 @@
             margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
             max-height: 500px; opacity: 1; overflow: hidden;
         }
-        #filter-panel.minimized #filter-content { max-height: 0; opacity: 0; margin-top: 0; }
+        #filter-panel.minimized #filter-content {
+            max-height: 0; opacity: 0; margin-top: 0;
+        }
 
         .filter-group { margin-bottom: 14px; }
         .filter-group:last-child { margin-bottom: 0; }
@@ -164,70 +154,48 @@
         .flight-item:last-child { border-bottom: none; }
         .flight-no { font-weight: 700; color: #1a73e8; }
         .flight-time { font-weight: 600; color: #333; }
-
-        /* --- MOBILE RESPONSIVENESS FIX --- */
-        @media (max-width: 480px) {
-            .lang-toggle-container {
-                top: auto;
-                bottom: 25px; 
-                right: 15px;
-            }
-            #filter-panel {
-                width: calc(100vw - 70px); 
-            }
-            #filter-content {
-                max-height: 50vh; 
-                overflow-y: auto;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <div id="loading" class="loading-overlay" data-i18n="loading">Loading Data...</div>
+    <div id="loading" class="loading-overlay">Loading Data...</div>
     
-    <!-- Language Toggle -->
-    <div class="lang-toggle-container">
-        <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
-        <button class="lang-btn active" id="btn-zh" onclick="setLang('zh')">繁</button>
-    </div>
-
     <!-- Map Filters Panel -->
-    <div id="filter-panel" class="minimized">
+    <div id="filter-panel">
         <div class="filter-header">
-            <h4 data-i18n="filterTitle">Filter Flights</h4>
+            <h4>Filter Flights</h4>
             <div class="header-actions">
-                <button class="reset-btn" onclick="clearAllFilters()" data-i18n="reset">Reset</button>
-                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">+</button>
+                <button class="reset-btn" onclick="clearAllFilters()">Reset</button>
+                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
         </div>
         
         <div id="filter-content">
             <div class="filter-group">
-                <label data-i18n="direction">Direction</label>
+                <label>Direction</label>
                 <select id="filter-dir" onchange="window.triggerMapFilter()">
-                    <option value="All" data-i18n="dirAll">All Routes</option>
-                    <option value="Departure" data-i18n="dirDep">Departures (HKG &rarr; )</option>
-                    <option value="Arrival" data-i18n="dirArr">Arrivals ( &rarr; HKG)</option>
+                    <option value="All">All Routes</option>
+                    <option value="Departure">Departures (HKG &rarr; )</option>
+                    <option value="Arrival">Arrivals ( &rarr; HKG)</option>
                 </select>
             </div>
 
             <div class="filter-group">
-                <label data-i18n="daysOfWeek">Days of Week</label>
+                <label>Days of Week</label>
                 <div class="filter-day-pills">
-                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)" data-i18n="su_short">Su</div>
-                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)" data-i18n="mo_short">Mo</div>
-                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)" data-i18n="tu_short">Tu</div>
-                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)" data-i18n="we_short">We</div>
-                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)" data-i18n="th_short">Th</div>
-                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)" data-i18n="fr_short">Fr</div>
-                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)" data-i18n="sa_short">Sa</div>
+                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">Su</div>
+                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">Mo</div>
+                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">Tu</div>
+                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">We</div>
+                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">Th</div>
+                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">Fr</div>
+                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">Sa</div>
                 </div>
             </div>
 
             <!-- Time Filter Slider -->
             <div class="filter-group">
-                <label><span data-i18n="timeWindow">Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span>Time Window</span> <span id="time-label-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
                     <div class="time-slider-fill" id="time-fill"></div>
@@ -237,9 +205,9 @@
             </div>
 
             <div class="filter-group">
-                <label data-i18n="airline">Airline</label>
+                <label>Airline</label>
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
-                    <option value="All" data-i18n="airAll">All Airlines</option>
+                    <option value="All">All Airlines</option>
                 </select>
             </div>
         </div>
@@ -251,430 +219,390 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // --- MULTILINGUAL DICTIONARY ---
-        let currentLang = 'zh';
-        
-        // Static UI Text
-        const i18n = {
-            'en': {
-                pageTitle: "Hong Kong International Airport (HKG) - Flight Routes",
-                loading: "Loading Data...",
-                filterTitle: "Filter Flights",
-                reset: "Reset",
-                direction: "Direction",
-                dirAll: "All Routes",
-                dirDep: "Departures (HKG \u2192 )",
-                dirArr: "Arrivals ( \u2192 HKG)",
-                daysOfWeek: "Days of Week",
-                timeWindow: "Time Window",
-                airline: "Airline",
-                airAll: "All Airlines",
-                hkName: "Hong Kong",
-                timeUnknown: "Time Unknown",
-                noFlights: "No flights matching your filters.",
-                noSchedule: "No flights scheduled.",
-                scheduleTxt: "Schedule:",
-                su_short: "Su", mo_short: "Mo", tu_short: "Tu", we_short: "We", th_short: "Th", fr_short: "Fr", sa_short: "Sa",
-                su_long: "Sunday", mo_long: "Monday", tu_long: "Tuesday", we_long: "Wednesday", th_long: "Thursday", fr_long: "Friday", sa_long: "Saturday"
-            },
-            'zh': {
-                pageTitle: "香港國際機場 (HKG) - 航班路線",
-                loading: "載入數據中...",
-                filterTitle: "篩選航班",
-                reset: "重設",
-                direction: "方向",
-                dirAll: "所有路線",
-                dirDep: "出發 (HKG \u2192 )",
-                dirArr: "抵達 ( \u2192 HKG)",
-                daysOfWeek: "星期",
-                timeWindow: "時間範圍",
-                airline: "航空公司",
-                airAll: "所有航空公司",
-                hkName: "香港",
-                timeUnknown: "時間未知",
-                noFlights: "沒有符合篩選條件的航班。",
-                noSchedule: "沒有預定的航班。",
-                scheduleTxt: "航班時間表:",
-                su_short: "日", mo_short: "一", tu_short: "二", we_short: "三", th_short: "四", fr_short: "五", sa_short: "六",
-                su_long: "星期日", mo_long: "星期一", tu_long: "星期二", we_long: "星期三", th_long: "星期四", fr_long: "星期五", sa_long: "星期六"
-            }
-        };
-
-        const CITY_MAPPING = {
-            "ICN": {en: "Seoul", zh: "首爾"}, "GMP": {en: "Seoul (Gimpo)", zh: "首爾 (金浦)"},
-            "NRT": {en: "Tokyo", zh: "東京"}, "HND": {en: "Tokyo (Haneda)", zh: "東京 (羽田)"},
-            "KIX": {en: "Osaka", zh: "大阪"}, "ITM": {en: "Osaka (Itami)", zh: "大阪 (伊丹)"},
-            "PUS": {en: "Busan", zh: "釜山"}, "CJU": {en: "Jeju City", zh: "濟州市"}, "TAE": {en: "Daegu", zh: "大邱"},
-            "FUK": {en: "Fukuoka", zh: "福岡"}, "OKA": {en: "Naha", zh: "那霸"}, "NGO": {en: "Nagoya", zh: "名古屋"},
-            "CTS": {en: "Sapporo", zh: "札幌"}, "HKD": {en: "Hakodate", zh: "函館"}, "KOJ": {en: "Kagoshima", zh: "鹿兒島"},
-            "PEK": {en: "Beijing (Capital)", zh: "北京 (首都)"}, "PKX": {en: "Beijing (Daxing)", zh: "北京 (大興)"},
-            "PVG": {en: "Shanghai (Pudong)", zh: "上海 (浦東)"}, "SHA": {en: "Shanghai (Hongqiao)", zh: "上海 (虹橋)"},
-            "CAN": {en: "Guangzhou", zh: "廣州"}, "SZX": {en: "Shenzhen", zh: "深圳"}, "MFM": {en: "Macau", zh: "澳門"},
-            "TPE": {en: "Taipei (Taoyuan)", zh: "台北 (桃園)"}, "KHH": {en: "Kaohsiung", zh: "高雄"},
-            "SIN": {en: "Singapore", zh: "新加坡"}, "BKK": {en: "Bangkok (Suvarnabhumi)", zh: "曼谷 (素萬那普)"}, 
-            "CDG": {en: "Paris", zh: "巴黎"}, "LHR": {en: "London (Heathrow)", zh: "倫敦 (希斯路)"},
-            "FRA": {en: "Frankfurt", zh: "法蘭克福"}, "AMS": {en: "Amsterdam", zh: "阿姆斯特丹"},
-            "LAX": {en: "Los Angeles", zh: "洛杉磯"}, "YVR": {en: "Vancouver", zh: "溫哥華"}, "SFO": {en: "San Francisco", zh: "三藩市"},
-            "JFK": {en: "New York", zh: "紐約"}, "SYD": {en: "Sydney", zh: "悉尼"}, "DXB": {en: "Dubai", zh: "杜拜"}
+        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
+        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+        const DAY_NAMES = {
+            'su': 'Sunday', 'mo': 'Monday', 'tu': 'Tuesday', 
+            'we': 'Wednesday', 'th': 'Thursday', 'fr': 'Friday', 'sa': 'Saturday'
         };
 
         const AIRLINE_MAPPING = {
-            "CPA": {en: "Cathay Pacific", zh: "國泰航空"}, "HKE": {en: "HK Express", zh: "香港快運航空"}, 
-            "CRK": {en: "Hong Kong Airlines", zh: "香港航空"}, "BAW": {en: "British Airways", zh: "英國航空"},
-            "CCA": {en: "Air China", zh: "中國國際航空"}, "CSN": {en: "China Southern Airlines", zh: "中國南方航空"},
-            "UAL": {en: "United Airlines", zh: "聯合航空"}, "ANA": {en: "All Nippon Airways (ANA)", zh: "全日空"},
-            "JAL": {en: "Japan Airlines", zh: "日本航空"}, "SIA": {en: "Singapore Airlines", zh: "新加坡航空"}
+            "CPA": "Cathay Pacific", "HKE": "HK Express", "CRK": "Hong Kong Airlines",
+            "GBA": "Greater Bay Airlines", "HGB": "Greater Bay Airlines", "APZ": "Air Premia",
+            "CDC": "Loong Air", "CFG": "Condor", "DAL": "Delta Air Lines", "ESR": "Eastar Jet",
+            "ETD": "Etihad Airways", "ETH": "Ethiopian Airlines", "QDA": "Qingdao Airlines",
+            "SPQ": "Sun PhuQuoc Airways", "TBA": "Tibet Airlines", "TLM": "Thai Lion Air",
+            "TWB": "T'way Air", "UAE": "Emirates", "UAL": "United Airlines", "JJA": "Jeju Air",
+            "KAL": "Korean Air", "ABL": "Air Busan", "AAR": "Asiana Airlines", "AFR": "Air France",
+            "QFA": "Qantas", "SWR": "Swiss", "JJP": "Jetstar Japan", "ACA": "Air Canada",
+            "APJ": "Peach", "ANA": "All Nippon Airways", "JAL": "Japan Airlines", "QTR": "Qatar Airways",
+            "SIA": "Singapore Airlines", "TGW": "Scoot", "CEB": "Cebu Pacific", "PAL": "Philippine Airlines"
         };
 
-        function t(key) { return i18n[currentLang][key] || key; }
-        function getCityName(iata, fallbackStr) { return CITY_MAPPING[iata] && CITY_MAPPING[iata][currentLang] ? CITY_MAPPING[iata][currentLang] : fallbackStr; }
-        function getAirlineName(code) { return AIRLINE_MAPPING[code] && AIRLINE_MAPPING[code][currentLang] ? AIRLINE_MAPPING[code][currentLang] : code; }
+        let map, markersLayer, linesLayer;
+        let routeData = {}; // Full JSON data
+        let mapMarkers = []; 
+        let globalSelectedDays = new Set(DAY_KEYS);
+        
+        window.flightDurationsCSV = {};
 
-        window.sortedAirlineCodesGlobal = []; 
-
-        window.setLang = function(lang) {
-            currentLang = lang;
-            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
-            document.title = t('pageTitle');
+        function initMap() {
+            map = L.map('map', { center: [20, 114], zoom: 3, minZoom: 2, maxBounds: [[-90, -180], [90, 180]] });
             
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (el.tagName === 'OPTION') el.text = t(key);
-                else el.innerHTML = t(key);
-            });
+            // Standard CartoDB Voyager basemap
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; OpenStreetMap &copy; CARTO'
+            }).addTo(map);
 
-            const airlineSelect = document.getElementById('filter-airline');
-            if (airlineSelect && window.sortedAirlineCodesGlobal.length > 0) {
-                const currentVal = airlineSelect.value;
-                airlineSelect.innerHTML = `<option value="All" data-i18n="airAll">${t('airAll')}</option>`;
-                const updatedSorted = [...window.sortedAirlineCodesGlobal].sort((a, b) => getAirlineName(a).localeCompare(getAirlineName(b)));
-                updatedSorted.forEach(code => {
-                    const opt = document.createElement('option');
-                    opt.value = code;
-                    opt.innerText = `${getAirlineName(code)} (${code})`;
-                    airlineSelect.appendChild(opt);
-                });
-                airlineSelect.value = currentVal;
+            markersLayer = L.featureGroup().addTo(map);
+            linesLayer = L.featureGroup().addTo(map);
+
+            loadMapData();
+        }
+
+        async function loadMapData() {
+            try {
+                // Load flights.json main dataset
+                const flightsRes = await fetch('flights.json?v=' + new Date().getTime());
+                if (!flightsRes.ok) throw new Error("Failed to load flights.json");
+                routeData = await flightsRes.json();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').innerText = "Error loading data.";
+                return;
             }
 
-            const activePopup = window.leafletMap && window.leafletMap._popup;
-            if (activePopup && activePopup.isOpen()) {
-                const iataMatch = activePopup._source && activePopup._source.options.title ? activePopup._source.options.title.match(/\(([A-Z]{3})\)/) : null;
-                if (iataMatch) {
-                    const fDir = document.getElementById('filter-dir').value;
-                    window.renderCardContent(iataMatch[1], fDir !== 'All' ? fDir : 'Departure');
+            // Parse flight durations dynamically from Flightlist_results.csv
+            try {
+                const csvRes = await fetch('Flightlist_results.csv?v=' + new Date().getTime());
+                if (csvRes.ok) {
+                    const csvText = await csvRes.text();
+                    const lines = csvText.split('\n');
+                    for (let i = 1; i < lines.length; i++) { 
+                        if (!lines[i].trim()) continue;
+                        const row = lines[i].split(',');
+                        if (row.length >= 8) {
+                            const depIata = row[3].trim().toUpperCase();
+                            const arrIata = row[6].trim().toUpperCase();
+                            const depTimeStr = row[4].trim();
+                            const arrTimeStr = row[7].trim();
+                            
+                            // Figure out which non-HKG destination/origin to assign the duration to
+                            const targetIata = depIata === 'HKG' ? arrIata : depIata;
+                            
+                            // Map the duration calculation if the key isn't stored yet
+                            if (!window.flightDurationsCSV[targetIata] && depTimeStr && arrTimeStr) {
+                                const depTime = new Date(depTimeStr);
+                                const arrTime = new Date(arrTimeStr);
+                                if (!isNaN(depTime) && !isNaN(arrTime)) {
+                                    const diffMs = arrTime - depTime;
+                                    if (diffMs > 0) {
+                                        const diffMins = Math.floor(diffMs / 60000);
+                                        const hours = Math.floor(diffMins / 60);
+                                        const mins = diffMins % 60;
+                                        window.flightDurationsCSV[targetIata] = `${hours}h ${mins}m`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn('Flightlist_results.csv not found, cannot calculate dynamically generated flight durations.');
+            }
+
+            document.getElementById('loading').style.display = 'none';
+            populateAirlineFilter();
+            renderMapData();
+        }
+
+        // Generate Airlines Filter List
+        function populateAirlineFilter() {
+            let airlinesSet = new Set();
+            for (const [iata, info] of Object.entries(routeData.routes)) {
+                for (const al in info.airlines) {
+                    airlinesSet.add(al);
                 }
             }
-        };
+            const sel = document.getElementById('filter-airline');
+            const sortedAl = Array.from(airlinesSet).sort((a,b) => (AIRLINE_MAPPING[a]||a).localeCompare(AIRLINE_MAPPING[b]||b));
+            sortedAl.forEach(code => {
+                let opt = document.createElement('option');
+                opt.value = code; opt.text = AIRLINE_MAPPING[code] || code;
+                sel.add(opt);
+            });
+        }
 
-        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
-        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+        // Main map rendering logic
+        function renderMapData() {
+            markersLayer.clearLayers();
+            linesLayer.clearLayers();
+            mapMarkers = [];
 
-        window.airportRoutesData = null;
-        window.leafletMap = null; 
-        const allMapMarkers = {};
-        const allMapPolylines = {};
+            const fDir = document.getElementById('filter-dir').value;
+            const fAirline = document.getElementById('filter-airline').value;
+            const tMin = parseInt(document.getElementById('time-min').value);
+            const tMax = parseInt(document.getElementById('time-max').value);
 
-        // Great Circle distance formula
-        window.getDistanceKm = function(lat1, lon1, lat2, lon2) {
-            const R = 6371; 
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-        };
+            // HKG Center Dot
+            L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng], {
+                radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
+            }).bindTooltip("HKG - Hong Kong", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
 
-        window.getGreatCircleLine = function(lat1, lon1, lat2, lon2, numPoints = 100) {
-            const toRad = Math.PI / 180;
-            const toDeg = 180 / Math.PI;
-            const phi1 = lat1 * toRad; let lambda1 = lon1 * toRad;
-            const phi2 = lat2 * toRad; let lambda2 = lon2 * toRad;
-
-            if (lambda2 - lambda1 > Math.PI) lambda2 -= 2 * Math.PI;
-            else if (lambda1 - lambda2 > Math.PI) lambda2 += 2 * Math.PI;
-
-            const dLat = phi2 - phi1; const dLon = lambda2 - lambda1;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dLon/2) * Math.sin(dLon/2);
-            const angularDistance = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            if (angularDistance === 0) return [[lat1, lon1]];
-
-            const points = []; let prevLng = lon1; 
-            for (let i = 0; i <= numPoints; i++) {
-                const f = i / numPoints;
-                const A = Math.sin((1 - f) * angularDistance) / Math.sin(angularDistance);
-                const B = Math.sin(f * angularDistance) / Math.sin(angularDistance);
-                const x = A * Math.cos(phi1) * Math.cos(lambda1) + B * Math.cos(phi2) * Math.cos(lambda2);
-                const y = A * Math.cos(phi1) * Math.sin(lambda1) + B * Math.cos(phi2) * Math.sin(lambda2);
-                const z = A * Math.sin(phi1) + B * Math.sin(phi2);
-                let degLng = Math.atan2(y, x) * toDeg;
+            for (const [iata, info] of Object.entries(routeData.routes)) {
+                if (!info.lat || !info.lng) continue;
                 
-                while (degLng - prevLng > 180) degLng -= 360;
-                while (degLng - prevLng < -180) degLng += 360;
-                prevLng = degLng;
-                points.push([Math.atan2(z, Math.sqrt(x * x + y * y)) * toDeg, degLng]);
+                let hasValidFlight = false;
+                
+                for (const [alCode, alData] of Object.entries(info.airlines)) {
+                    if (fAirline !== 'All' && alCode !== fAirline) continue;
+
+                    for (const [day, flights] of Object.entries(alData.days)) {
+                        if (!globalSelectedDays.has(day)) continue;
+
+                        for (const fl of flights) {
+                            if (fDir !== 'All' && fl.type !== fDir) continue;
+                            
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (flHour >= tMin && flHour < (tMax === 24 ? 25 : tMax)) {
+                                hasValidFlight = true;
+                                break;
+                            }
+                        }
+                        if (hasValidFlight) break;
+                    }
+                    if (hasValidFlight) break;
+                }
+
+                if (hasValidFlight) {
+                    // Draw Line
+                    L.polyline([ [HKG_LATLNG.lat, HKG_LATLNG.lng], [info.lat, info.lng] ], {
+                        color: '#1a73e8', weight: 1.5, opacity: 0.3, smoothFactor: 1
+                    }).addTo(linesLayer);
+
+                    // Draw Marker
+                    const m = L.circleMarker([info.lat, info.lng], {
+                        radius: 5, fillColor: '#1a73e8', color: '#fff', weight: 1.5, fillOpacity: 0.9
+                    });
+                    
+                    m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
+                    m.on('click', () => { showPopup(iata, info, m); });
+                    m.addTo(markersLayer);
+                    mapMarkers.push(m);
+                }
             }
-            return points;
+        }
+
+        // Trigger map filter logic
+        window.triggerMapFilter = function() { renderMapData(); };
+
+        // Generate Custom Popup UI
+        function showPopup(iata, info, marker) {
+            const popupContent = generateRouteHTML(iata, info);
+            
+            L.popup({
+                className: 'custom-popup',
+                closeButton: true,
+                autoPanPadding: [50, 50]
+            })
+            .setLatLng([info.lat, info.lng])
+            .setContent(popupContent)
+            .openOn(map);
+
+            // Re-bind listeners for the newly injected popup HTML
+            setTimeout(() => {
+                const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
+                dirBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        dirBtns.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        updatePopupContent(iata, info, e.target.dataset.dir);
+                    });
+                });
+                updatePopupContent(iata, info, 'Departure'); // Default
+            }, 50);
+        }
+
+        function generateRouteHTML(iata, info) {
+            const routeDuration = window.flightDurationsCSV[iata] || 'Duration unavailable';
+            
+            return `
+                <div class="route-card" id="popup-${iata}">
+                    <h3 style="margin:0 0 4px 0; font-size:18px;">${info.city} (${iata})</h3>
+                    <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${info.name}</p>
+                    
+                    <div class="route-badges">
+                        <span class="badge" title="Average Flight Time">⏱ ${routeDuration}</span>
+                    </div>
+
+                    <div class="direction-toggle">
+                        <div class="direction-btn active" data-dir="Departure">🛫 Departures</div>
+                        <div class="direction-btn" data-dir="Arrival">🛬 Arrivals</div>
+                    </div>
+
+                    <div class="airline-list" id="popup-airlines-${iata}">
+                        <!-- Rendered by updatePopupContent -->
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePopupContent(iata, info, direction) {
+            const container = document.getElementById(`popup-airlines-${iata}`);
+            if (!container) return;
+            
+            const fAirline = document.getElementById('filter-airline').value;
+            const tMin = parseInt(document.getElementById('time-min').value);
+            const tMax = parseInt(document.getElementById('time-max').value);
+            let html = '';
+
+            for (const [alCode, alData] of Object.entries(info.airlines)) {
+                if (fAirline !== 'All' && alCode !== fAirline) continue;
+                
+                let hasDirFlight = false;
+                let dayData = {}; // Track valid flights by day
+                
+                DAY_KEYS.forEach(d => { dayData[d] = []; });
+
+                for (const [day, flights] of Object.entries(alData.days)) {
+                    for (const fl of flights) {
+                        if (fl.type === direction) {
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (flHour >= tMin && flHour < (tMax === 24 ? 25 : tMax)) {
+                                dayData[day].push(fl);
+                                hasDirFlight = true;
+                            }
+                        }
+                    }
+                }
+
+                if (hasDirFlight) {
+                    const alName = AIRLINE_MAPPING[alCode] || alCode;
+                    const uId = `fl-${iata}-${alCode}-${direction}`;
+                    
+                    // Generate Day Pills
+                    let pillsHtml = `<div class="day-pills">`;
+                    DAY_KEYS.forEach(d => {
+                        const count = dayData[d].length;
+                        if (count > 0) {
+                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} flights">${d.toUpperCase()}</div>`;
+                        } else {
+                            pillsHtml += `<div class="day-pill disabled">${d.toUpperCase()}</div>`;
+                        }
+                    });
+                    pillsHtml += `</div>`;
+
+                    // Flight Detail Boxes (Hidden by default)
+                    let detailsHtml = '';
+                    DAY_KEYS.forEach(d => {
+                        if (dayData[d].length > 0) {
+                            detailsHtml += `<div class="flight-details-box" id="${uId}-${d}">`;
+                            dayData[d].sort((a,b) => a.time.localeCompare(b.time)).forEach(fl => {
+                                detailsHtml += `
+                                    <div class="flight-item">
+                                        <div><span class="flight-no">${fl.no}</span> <span style="color:#777; font-size:11px; margin-left:6px;">${fl.status || ''}</span></div>
+                                        <div class="flight-time">${fl.time}</div>
+                                    </div>`;
+                            });
+                            detailsHtml += `</div>`;
+                        }
+                    });
+
+                    html += `
+                        <div class="airline-row">
+                            <div class="airline-info">
+                                <div class="airline-icon">${alCode.substring(0,2)}</div>
+                                <div class="airline-name">${alName}</div>
+                            </div>
+                            ${pillsHtml}
+                            ${detailsHtml}
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">No ${direction.toLowerCase()}s found matching filters.</div>`;
+        }
+
+        // Handle inner popup day clicks
+        window.togglePopupDay = function(el, uIdPrefix, day) {
+            if (el.classList.contains('disabled')) return;
+            
+            // Toggle selection state
+            const wasSelected = el.classList.contains('selected');
+            
+            // Deselect all pills in this row
+            const parent = el.parentElement;
+            parent.querySelectorAll('.day-pill').forEach(p => p.classList.remove('selected'));
+            
+            // Hide all detail boxes for this airline
+            const airlineRow = parent.parentElement;
+            airlineRow.querySelectorAll('.flight-details-box').forEach(box => box.classList.remove('show'));
+
+            if (!wasSelected) {
+                el.classList.add('selected');
+                document.getElementById(`${uIdPrefix}-${day}`).classList.add('show');
+            }
         };
 
-        window.toggleFilterPanel = function() {
+
+        // Map Filter UI Logic
+        function toggleFilterPanel() {
             const panel = document.getElementById('filter-panel');
+            const btn = document.getElementById('toggle-filter-btn');
             panel.classList.toggle('minimized');
-            document.getElementById('toggle-filter-btn').innerHTML = panel.classList.contains('minimized') ? '+' : '&minus;';
+            btn.innerHTML = panel.classList.contains('minimized') ? '&plus;' : '&minus;';
+        }
+
+        window.toggleFilterDay = function(el) {
+            const day = el.dataset.day;
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) {
+                globalSelectedDays.add(day);
+            } else {
+                globalSelectedDays.delete(day);
+            }
+            renderMapData();
         };
+
+        function updateTimeUI() {
+            let tMin = document.getElementById('time-min');
+            let tMax = document.getElementById('time-max');
+            let vMin = parseInt(tMin.value);
+            let vMax = parseInt(tMax.value);
+
+            if (vMin >= vMax) {
+                if (this === tMin) tMin.value = vMax - 1;
+                else tMax.value = vMin + 1;
+                vMin = parseInt(tMin.value);
+                vMax = parseInt(tMax.value);
+            }
+
+            document.getElementById('time-label-val').innerText = `${String(vMin).padStart(2,'0')}:00 - ${String(vMax).padStart(2,'0')}:00`;
+            const fill = document.getElementById('time-fill');
+            fill.style.left = `${(vMin / 24) * 100}%`;
+            fill.style.width = `${((vMax - vMin) / 24) * 100}%`;
+        }
 
         window.clearAllFilters = function() {
             document.getElementById('filter-dir').value = 'All';
             document.getElementById('filter-airline').value = 'All';
+            
+            document.getElementById('time-min').value = 0;
+            document.getElementById('time-max').value = 24;
+            updateTimeUI();
+
+            globalSelectedDays = new Set(DAY_KEYS);
             document.querySelectorAll('.f-day-pill').forEach(p => p.classList.add('active'));
-            document.getElementById('time-min').value = 0; document.getElementById('time-max').value = 24;
-            window.updateTimeUI(); window.triggerMapFilter();
+
+            renderMapData();
         };
 
-        window.flightTimeMatches = function(timeStr) {
-            if (!timeStr) return true; 
-            let checkStr = timeStr;
-            if (timeStr.includes('-')) checkStr = timeStr.split('-')[0].trim();
-            if (!checkStr.includes(':')) return true;
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            updateTimeUI();
+        });
 
-            const flightMins = parseInt(checkStr.split(':')[0]) * 60 + parseInt(checkStr.split(':')[1]);
-            const v1 = parseInt(document.getElementById('time-min').value);
-            const v2 = parseInt(document.getElementById('time-max').value);
-            const startMins = Math.min(v1, v2) * 60;
-            const endMins = Math.max(v1, v2) === 24 ? 24 * 60 : Math.max(v1, v2) * 60;
-            
-            return flightMins >= startMins && flightMins <= endMins;
-        };
-
-        window.updateTimeUI = function() {
-            const minVal = Math.min(document.getElementById('time-min').value, document.getElementById('time-max').value);
-            const maxVal = Math.max(document.getElementById('time-min').value, document.getElementById('time-max').value);
-            document.getElementById('time-label-val').innerText = `${String(minVal).padStart(2, '0')}:00 - ${String(maxVal).padStart(2, '0')}:00`;
-            const fill = document.getElementById('time-fill');
-            fill.style.left = (minVal / 24 * 100) + "%";
-            fill.style.width = ((maxVal - minVal) / 24 * 100) + "%";
-        };
-
-        async function initMap() {
-            window.leafletMap = L.map('map', { center: [HKG_LATLNG.lat, HKG_LATLNG.lng], zoom: 3, worldCopyJump: true });
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(window.leafletMap);
-            L.DomEvent.disableClickPropagation(document.getElementById('filter-panel'));
-            L.DomEvent.disableScrollPropagation(document.getElementById('filter-panel'));
-
-            try {
-                const res = await fetch('flights.json');
-                const data = await res.json();
-                window.airportRoutesData = data.routes;
-
-                const allAirlinesSet = new Set();
-                for (let iata in window.airportRoutesData) {
-                    for (let alCode in window.airportRoutesData[iata].airlines) allAirlinesSet.add(alCode);
-                }
-                window.sortedAirlineCodesGlobal = Array.from(allAirlinesSet);
-
-                window.leafletMap.on('popupclose', () => { window.applyFiltersToMap(); });
-
-                for (let iata in window.airportRoutesData) {
-                    const aptData = window.airportRoutesData[iata];
-                    const marker = L.marker([aptData.lat, aptData.lng], { title: `${aptData.city || aptData.name} (${iata})` }).addTo(window.leafletMap);
-                    allMapMarkers[iata] = marker; 
-                    allMapPolylines[iata] = L.polyline(window.getGreatCircleLine(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng), { color: 'red', weight: 1.5, opacity: 0.2 }).addTo(window.leafletMap);
-
-                    marker.on('click', () => {
-                        for (let key in allMapMarkers) if (key !== iata) {
-                            window.leafletMap.removeLayer(allMapMarkers[key]); window.leafletMap.removeLayer(allMapPolylines[key]);
-                        }
-                        const fDir = document.getElementById('filter-dir').value;
-                        L.popup({ className: 'custom-popup', maxWidth: 360, minWidth: 340 })
-                            .setLatLng(marker.getLatLng()).setContent(`<div class="route-card" id="route-card-container"></div>`).openOn(window.leafletMap);
-                        setTimeout(() => { window.renderCardContent(iata, (fDir !== 'All') ? fDir : 'Departure'); }, 10);
-                    });
-                }
-                
-                document.getElementById('loading').style.display = 'none';
-                window.updateTimeUI(); window.applyFiltersToMap(); window.setLang(currentLang); 
-            } catch (error) { document.getElementById('loading').innerText = "Error loading flights.json."; }
-        }
-
-        window.toggleFilterDay = function(element) { element.classList.toggle('active'); window.triggerMapFilter(); };
-        window.triggerMapFilter = function() { window.leafletMap.closePopup(); window.applyFiltersToMap(); };
-
-        window.applyFiltersToMap = function() {
-            const fDir = document.getElementById('filter-dir').value;
-            const fAir = document.getElementById('filter-airline').value;
-            const fDays = Array.from(document.querySelectorAll('.f-day-pill.active')).map(el => el.getAttribute('data-day'));
-
-            for (let iata in window.airportRoutesData) {
-                let isMatch = false;
-                for (let alCode in window.airportRoutesData[iata].airlines) {
-                    if (fAir !== 'All' && alCode !== fAir) continue; 
-                    for (let d of fDays) {
-                        if ((window.airportRoutesData[iata].airlines[alCode].days[d] || []).some(f => window.flightTimeMatches(f.time) && (fDir === 'All' || f.type === fDir))) {
-                            isMatch = true; break;
-                        }
-                    }
-                    if (isMatch) break; 
-                }
-                if (isMatch) {
-                    if (!window.leafletMap.hasLayer(allMapMarkers[iata])) window.leafletMap.addLayer(allMapMarkers[iata]);
-                    if (!window.leafletMap.hasLayer(allMapPolylines[iata])) window.leafletMap.addLayer(allMapPolylines[iata]);
-                } else {
-                    window.leafletMap.removeLayer(allMapMarkers[iata]); window.leafletMap.removeLayer(allMapPolylines[iata]);
-                }
-            }
-        };
-
-        window.getPreciseTzOffsetHours = function(lat, lon) {
-            let tzString = "UTC";
-            if (lat > 50 && lon > -10 && lon < 2) tzString = "Europe/London";
-            else if (lat > 40 && lat < 55 && lon >= 2 && lon < 10) tzString = "Europe/Paris";
-            else if (lat > 35 && lat < 48 && lon >= 10 && lon < 15) tzString = "Europe/Rome";
-            else if (lat > 25 && lat < 50 && lon > -130 && lon < -115) tzString = "America/Los_Angeles";
-            else if (lat > 25 && lat < 50 && lon > -80 && lon < -70) tzString = "America/New_York";
-            else if (lat > 20 && lat < 46 && lon > 128 && lon < 148) tzString = "Asia/Tokyo";
-            else if (lat > 33 && lat < 39 && lon > 124 && lon < 132) tzString = "Asia/Seoul";
-            else if (lat > 20 && lat < 45 && lon > 110 && lon < 122) tzString = "Asia/Shanghai";
-            else return Math.round(lon / 15);
-            try { return (new Date(new Date().toLocaleString('en-US', { timeZone: tzString })) - new Date(new Date().toLocaleString('en-US', { timeZone: "UTC" }))) / 3600000; } 
-            catch (e) { return Math.round(lon / 15); }
-        };
-
-        // NEW MASTER ALGORITHM: Extract exact times, fix timezone, handle Date Line
-        window.calculateDurationFromSchedule = function(depTime, arrTime, iata, direction) {
-            if (!depTime || !arrTime) return null;
-            const depParts = depTime.split(':'); const arrParts = arrTime.split(':');
-            let depTotalMins = parseInt(depParts[0]) * 60 + parseInt(depParts[1]);
-            let arrTotalMins = parseInt(arrParts[0]) * 60 + parseInt(arrParts[1]);
-            
-            let rawClockDiff = arrTotalMins - depTotalMins;
-
-            const aptData = window.airportRoutesData[iata];
-            const hkgTz = 8;
-            const destTz = window.getPreciseTzOffsetHours(aptData.lat, aptData.lng);
-            
-            // Apply timezone differences
-            let tzDiff = direction === 'Departure' ? (hkgTz - destTz) : (destTz - hkgTz);
-            let exactCalculatedMins = rawClockDiff + (tzDiff * 60);
-
-            // Geographic failsafe to align date-crossing issues (+/- 24 hours)
-            const distanceKm = window.getDistanceKm(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng);
-            const estimatedMins = ((distanceKm / 850) + 0.5) * 60;
-
-            while (exactCalculatedMins < estimatedMins - 720) exactCalculatedMins += 1440; // Add 24 hours
-            while (exactCalculatedMins > estimatedMins + 720) exactCalculatedMins -= 1440; // Subtract 24 hours
-
-            const h = Math.floor(exactCalculatedMins / 60);
-            const m = Math.round(exactCalculatedMins % 60);
-            return `${h}hr ${String(m).padStart(2, '0')}mins`;
-        };
-
-        window.renderCardContent = function(iata, direction) {
-            const container = document.getElementById('route-card-container');
-            if (!container) return;
-            const aptData = window.airportRoutesData[iata];
-            const cityName = getCityName(iata, aptData.city || aptData.name);
-            const isDep = direction === 'Departure';
-            const fDays = Array.from(document.querySelectorAll('.f-day-pill.active')).map(el => el.getAttribute('data-day'));
-            
-            const distanceKm = Math.round(window.getDistanceKm(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng)).toLocaleString();
-
-            // Find at least one flight with both times to calculate true duration
-            let displayDuration = t('timeUnknown');
-            for (let alCode in aptData.airlines) {
-                for (let d of fDays) {
-                    let flights = aptData.airlines[alCode].days[d] || [];
-                    let tFlight = flights.find(f => f.type === direction && (f.arrTime || f.arrivalTime || f.arrival || (f.time && f.time.includes('-'))));
-                    if (tFlight) {
-                        let dStr = tFlight.time, aStr = tFlight.arrTime || tFlight.arrivalTime || tFlight.arrival;
-                        if (dStr.includes('-')) { const pts = dStr.split('-'); dStr = pts[0].trim(); aStr = pts[1].trim(); }
-                        displayDuration = window.calculateDurationFromSchedule(dStr, aStr, iata, direction);
-                        break;
-                    }
-                }
-                if (displayDuration !== t('timeUnknown')) break;
-            }
-
-            // Fallback if no schedule has arrival time
-            if (displayDuration === t('timeUnknown')) {
-                const totalMins = Math.round(((window.getDistanceKm(HKG_LATLNG.lat, HKG_LATLNG.lng, aptData.lat, aptData.lng) / 850) + 0.5) * 60);
-                displayDuration = `${Math.floor(totalMins / 60)}hr ${String(totalMins % 60).padStart(2, '0')}mins`;
-            }
-
-            let html = `
-                <div class="direction-toggle">
-                    <div class="direction-btn ${isDep ? 'active' : ''}" onclick="setTimeout(() => renderCardContent('${iata}', 'Departure'), 10)">HKG &rarr; ${cityName}</div>
-                    <div class="direction-btn ${!isDep ? 'active' : ''}" onclick="setTimeout(() => renderCardContent('${iata}', 'Arrival'), 10)">${cityName} &rarr; HKG</div>
-                </div>
-                <div class="route-badges">
-                    ${isDep ? `<span>${t('hkName')}</span><span class="badge">HKG</span> &rarr; <span>${cityName}</span><span class="badge">${iata}</span>`
-                            : `<span>${cityName}</span><span class="badge">${iata}</span> &rarr; <span>${t('hkName')}</span><span class="badge">HKG</span>`}
-                </div>
-                <div style="font-size: 12px; color: #5f6368; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <span>✈️ ${distanceKm} km</span><span>•</span><span>⏱ ${displayDuration}</span>
-                </div>
-                <div class="airline-list">
-            `;
-
-            const sortedAirlineCodes = Object.keys(aptData.airlines).sort((a, b) => getAirlineName(a).localeCompare(getAirlineName(b)));
-            let hasAnyAirline = false;
-
-            for (let airlineCode of sortedAirlineCodes) {
-                if (document.getElementById('filter-airline').value !== 'All' && airlineCode !== document.getElementById('filter-airline').value) continue;
-                const airline = aptData.airlines[airlineCode];
-                if (!fDays.some(d => (airline.days[d] || []).some(f => f.type === direction && window.flightTimeMatches(f.time)))) continue; 
-
-                const displayAirlineName = getAirlineName(airlineCode);
-                const dayHtmlList = DAY_KEYS.map(day => {
-                    const dirFlights = (airline.days[day] || []).filter(f => f.type === direction && window.flightTimeMatches(f.time));
-                    return `<div class="${dirFlights.length > 0 ? 'day-pill active' : 'day-pill disabled'}" onclick="toggleDaySchedule(this, '${iata}', '${airlineCode}', '${day}', '${direction}')">${t(day + '_short')}</div>`;
-                });
-
-                hasAnyAirline = true;
-                html += `
-                    <div class="airline-row">
-                        <div class="airline-info">
-                            <div class="airline-icon">${displayAirlineName.charAt(0).toUpperCase()}</div>
-                            <div class="airline-name" title="${displayAirlineName}">${displayAirlineName}</div>
-                        </div>
-                        <div class="day-pills">${dayHtmlList.join('')}</div>
-                        <div class="flight-details-box"></div>
-                    </div>`;
-            }
-
-            container.innerHTML = html + (hasAnyAirline ? `</div>` : `<div style="padding: 20px; text-align: center; color: #777;">${t('noFlights')}</div></div>`);
-        };
-
-        window.toggleDaySchedule = function(element, iata, airlineCode, day, direction) {
-            if (element.classList.contains('disabled')) return;
-            const detailsBox = element.closest('.airline-row').querySelector('.flight-details-box');
-            element.closest('.airline-row').querySelectorAll('.day-pill').forEach(p => p.classList.remove('selected'));
-            
-            if (detailsBox.classList.contains('show') && detailsBox.dataset.activeDay === day) {
-                detailsBox.classList.remove('show'); return;
-            }
-            element.classList.add('selected'); detailsBox.dataset.activeDay = day;
-
-            const dirFlights = (window.airportRoutesData[iata].airlines[airlineCode].days[day] || []).filter(f => f.type === direction && window.flightTimeMatches(f.time));
-            if (dirFlights.length === 0) {
-                detailsBox.innerHTML = `<em>${t('noSchedule')}</em>`;
-            } else {
-                let html = `<div style="font-weight:700; margin-bottom:4px; color:#555;">${t(day + '_long')} ${t('scheduleTxt')}</div>`;
-                dirFlights.forEach(f => {
-                    let depTimeStr = f.time, arrTimeStr = f.arrTime || f.arrivalTime || f.arrival;
-                    if (f.time && f.time.includes('-')) { const pts = f.time.split('-'); depTimeStr = pts[0].trim(); arrTimeStr = pts[1].trim(); }
-                    
-                    if (arrTimeStr) {
-                        html += `<div class="flight-item"><div class="flight-no">${f.no}</div><div class="flight-time">${depTimeStr} &rarr; ${arrTimeStr}</div></div>`;
-                    } else {
-                        html += `<div class="flight-item"><div class="flight-no">${f.no}</div><div class="flight-time">${depTimeStr}</div></div>`;
-                    }
-                });
-                detailsBox.innerHTML = html;
-            }
-            detailsBox.classList.add('show');
-        };
-
-        document.addEventListener('DOMContentLoaded', initMap);
     </script>
 </body>
 </html>
