@@ -196,9 +196,9 @@
         .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
         
         /* -------------------------------------------
-           NEW: Responsive Layout for Mobile Phones
+           Responsive Layout for Mobile Phones
         ------------------------------------------- */
-        @media (max-width: 500px) {
+        @media (max-width: 600px) {
             /* Move language toggle out of the way of the filter box */
             #lang-toggle-container {
                 top: auto;
@@ -206,18 +206,19 @@
                 right: 15px;
             }
             
-            /* Slightly shrink the filter panel to fit */
+            /* Give filter panel a bit more breathing room on mobile */
             #filter-panel {
-                width: 230px;
-                left: 50px;
+                width: 240px;
+                left: 15px; /* Push it to the far left so it doesn't overlap controls */
             }
             
-            /* Ensure map popups don't overflow narrow phone screens */
+            /* Center the popup perfectly on mobile without spilling off edges */
             .custom-popup .leaflet-popup-content {
-                width: 270px !important;
+                width: 290px !important;
+                margin: 12px;
             }
             
-            /* Shrink day pills slightly inside the popup so they fit */
+            /* Shrink day pills slightly inside the popup so they fit in narrower screens */
             .day-pill {
                 width: 28px;
                 font-size: 11px;
@@ -650,7 +651,7 @@
             "BLR": { cityEn: "Bengaluru", cityZh: "班加羅爾", nameEn: "Kempegowda", nameZh: "肯佩戈達國際機場" },
             "AMS": { cityEn: "Amsterdam", cityZh: "阿姆斯特丹", nameEn: "Schiphol", nameZh: "史基浦機場" },
             "HYD": { cityEn: "Hyderabad", cityZh: "海得拉巴", nameEn: "Rajiv Gandhi", nameZh: "拉吉夫·甘地國際機場" },
-            "FRA": { cityEn: "Frankfurt", cityZh: "法蘭克福", nameEn: "Frankfurt Airport", nameZh: "法蘭克福機場" },
+            "FRA": { cityEn: "法蘭克福", cityZh: "法蘭克福", nameEn: "Frankfurt Airport", nameZh: "法蘭克福機場" },
             "SPN": { cityEn: "Saipan", cityZh: "塞班島", nameEn: "Saipan Intl", nameZh: "塞班國際機場" },
             "BRU": { cityEn: "Brussels", cityZh: "布魯塞爾", nameEn: "Brussels Airport", nameZh: "布魯塞爾機場" },
             "MUC": { cityEn: "Munich", cityZh: "慕尼黑", nameEn: "Munich Airport", nameZh: "慕尼黑機場" },
@@ -709,7 +710,6 @@
         window.currentOffsetLng = null;
         window.currentDirection = 'Departure';
 
-        // Helper function to dynamically get the translated airport/city name
         function getLocationName(iata, fallbackInfo) {
             const dictionaryHit = AIRPORT_INFO[iata];
             if (dictionaryHit) {
@@ -721,7 +721,6 @@
             return { city: fallbackInfo.city, name: fallbackInfo.name };
         }
 
-        // Helper function to dynamically get the translated airline name
         function getAirlineName(alCode) {
             const infoObj = AIRLINE_INFO[alCode];
             if (infoObj) {
@@ -751,23 +750,21 @@
             document.getElementById('ui-time-label').innerText = txt.time_label;
             document.getElementById('ui-airline-label').innerText = txt.airline_label;
             
-            populateAirlineFilter(); // Re-populate the dropdown in the new language
+            populateAirlineFilter();
         }
 
         window.setLanguage = function(lang) {
-            if (currentLang === lang) return; // Do nothing if already selected
+            if (currentLang === lang) return; 
             currentLang = lang;
             
-            // Update Toggle UI active state
             document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
             
             updateLanguageUI();
             
             if (map) {
-                renderMapData(); // Updates tooltips
+                renderMapData(); 
                 
-                // If a popup is open, regenerate its HTML silently
                 if (window.selectedIata && window.currentRouteInfo) {
                     const newHTML = generateRouteHTML(window.selectedIata, window.currentRouteInfo);
                     const popup = document.querySelector('.custom-popup .leaflet-popup-content');
@@ -934,7 +931,6 @@
             
             const sel = document.getElementById('filter-airline');
             
-            // Clear current options except "All"
             sel.innerHTML = `<option value="All" id="ui-airline-all">${i18n[currentLang].airline_all}</option>`;
             
             const sortedAl = Array.from(airlinesSet).sort((a,b) => {
@@ -1063,12 +1059,20 @@
             
             const targetZoom = 5;
             
+            // --- NEW: Smart Mobile Camera Centering ---
             let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
-            targetPoint.x -= 180; 
-            targetPoint.y -= 150; 
+            
+            if (window.innerWidth <= 600) {
+                // Mobile View: Center horizontally, push marker down to leave room for the tall popup above it
+                targetPoint.x -= 0;
+                targetPoint.y -= 220; 
+            } else {
+                // Desktop View: Push marker left to make room for the filter panel
+                targetPoint.x -= 180; 
+                targetPoint.y -= 150; 
+            }
             
             const offsetLatLng = map.unproject(targetPoint, targetZoom);
-
             map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
 
             const popupContent = generateRouteHTML(iata, info);
@@ -1338,6 +1342,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             initMap();
             updateTimeUI();
+            
+            // --- NEW: Auto-minimize filter box if viewed on a mobile device ---
+            if (window.innerWidth <= 600) {
+                const panel = document.getElementById('filter-panel');
+                const btn = document.getElementById('toggle-filter-btn');
+                panel.classList.add('minimized');
+                btn.innerHTML = '&plus;';
+            }
         });
 
     </script>
