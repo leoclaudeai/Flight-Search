@@ -244,7 +244,6 @@
             "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
         };
 
-        // ENHANCED DICTIONARY: Contains both Full Name and IATA shortcode
         const AIRLINE_INFO = {
             "CPA": { name: "Cathay Pacific", iata: "CX" },
             "HKE": { name: "HK Express", iata: "UO" },
@@ -307,7 +306,8 @@
                 center: [20, 114], 
                 zoom: 3, 
                 minZoom: 2,
-                worldCopyJump: true 
+                // REMOVED worldCopyJump to allow smooth manual dragging infinitely
+                worldCopyJump: false 
             });
             
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
@@ -438,7 +438,6 @@
             }
             const sel = document.getElementById('filter-airline');
             
-            // Format dropdown items as "Full Name (Shortcode)"
             const sortedAl = Array.from(airlinesSet).sort((a,b) => {
                 const nameA = AIRLINE_INFO[a] ? `${AIRLINE_INFO[a].name} (${AIRLINE_INFO[a].iata})` : a;
                 const nameB = AIRLINE_INFO[b] ? `${AIRLINE_INFO[b].name} (${AIRLINE_INFO[b].iata})` : b;
@@ -463,9 +462,12 @@
             const tMin = parseInt(document.getElementById('time-min').value);
             const tMax = parseInt(document.getElementById('time-max').value);
 
-            L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng], {
-                radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
-            }).bindTooltip("HKG - Hong Kong", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
+            // NEW: Duplicate the central HKG marker exactly 3 times across infinite worlds (-360, 0, 360)
+            [-360, 0, 360].forEach(offset => {
+                L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng + offset], {
+                    radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
+                }).bindTooltip("HKG - Hong Kong", {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
+            });
 
             for (const [iata, info] of Object.entries(routeData.routes)) {
                 if (!info.lat || !info.lng) continue;
@@ -498,13 +500,14 @@
                     const end = turf.point([info.lng, info.lat]);
                     const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
                     
-                    // NEW SAFE FIX: Iterating over turf coordinates natively prevents multi-line crashes!
+                    // Turf.js automatically cuts the Pacific line in half (MultiLineString) to protect the map.
+                    // We extract every piece back into raw coordinates.
                     let rawCoords = [];
                     turf.coordEach(greatCircle, function (currentCoord) {
                         rawCoords.push([currentCoord[0], currentCoord[1]]);
                     });
 
-                    // Unwrap the longitudes mathematically so the line remains continuous over the Pacific
+                    // Unwrap the longitudes mathematically so the line spans across the ocean perfectly!
                     let prevLng = rawCoords[0][0];
                     const latlngs = rawCoords.map(c => {
                         let lng = c[0];
@@ -515,60 +518,77 @@
                         return [lat, lng]; 
                     });
 
-                    // Capture the exact wrapped longitude the line naturally terminates at
+                    // Capture the mathematical wrapped end of the blue line
                     let wrappedLng = latlngs[latlngs.length - 1][1];
 
-                    if (!window.selectedIata || window.selectedIata === iata) {
-                        L.polyline(latlngs, {
-                            color: '#1a73e8', 
-                            weight: window.selectedIata ? 3 : 1.5, 
-                            opacity: window.selectedIata ? 0.9 : 0.35, 
-                            smoothFactor: 1
-                        }).addTo(linesLayer);
-                    }
+                    // THE MAGIC: Draw the line and marker THREE times (-360, 0, 360) so it appears on all adjacent scrolling worlds!
+                    [-360, 0, 360].forEach(offset => {
+                        const offsetLatLngs = latlngs.map(c => [c[0], c[1] + offset]);
+                        const offsetWrappedLng = wrappedLng + offset;
 
-                    // Map the marker perfectly onto the wrapped longitude so it doesn't break the camera!
-                    const m = L.circleMarker([info.lat, wrappedLng], {
-                        radius: window.selectedIata === iata ? 7 : 5, 
-                        fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
-                        color: '#fff', weight: 1.5, fillOpacity: 0.9
+                        if (!window.selectedIata || window.selectedIata === iata) {
+                            L.polyline(offsetLatLngs, {
+                                color: '#1a73e8', 
+                                weight: window.selectedIata ? 3 : 1.5, 
+                                opacity: window.selectedIata ? 0.9 : 0.35, 
+                                smoothFactor: 1
+                            }).addTo(linesLayer);
+                        }
+
+                        const m = L.circleMarker([info.lat, offsetWrappedLng], {
+                            radius: window.selectedIata === iata ? 7 : 5, 
+                            fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
+                            color: '#fff', weight: 1.5, fillOpacity: 0.9
+                        });
+                        
+                        m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
+                        
+                        // Pass exactly WHICH clone was clicked so the camera zooms into the right copy of the world!
+                        m.on('click', () => { showPopup(iata, info, offsetWrappedLng); });
+                        m.addTo(markersLayer);
+                        mapMarkers.push(m);
                     });
-                    
-                    m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
-                    m.on('click', () => { showPopup(iata, info, wrappedLng); });
-                    m.addTo(markersLayer);
-                    mapMarkers.push(m);
                 }
             }
         }
 
         window.triggerMapFilter = function() { renderMapData(); };
 
-        function showPopup(iata, info, wrappedLng) {
+        function showPopup(iata, info, offsetWrappedLng) {
             window.selectedIata = iata;
             renderMapData(); // Redraw map to isolate line immediately
             
-            // 1. Fly to the destination airport using the wrapped Pacific coordinates
-            map.flyTo([info.lat, wrappedLng], 5, { duration: 0.8 });
+            const targetZoom = 5;
+            
+            // 1. Calculate where the airport will physically be on the screen
+            let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
+            
+            // 2. Adjust the camera mathematically so the airport sits perfectly in the lower-right!
+            targetPoint.x -= 180; 
+            targetPoint.y -= 150; 
+            
+            // 3. Convert that offset pixel location back into Lat/Lng coordinates
+            const offsetLatLng = map.unproject(targetPoint, targetZoom);
+
+            // 4. Smoothly fly directly to that offset point!
+            map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
 
             const popupContent = generateRouteHTML(iata, info);
             
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: true, 
-                // 2. Safely tell Leaflet's autoPan feature to strictly avoid the Filter Panel on the left side!
-                autoPanPaddingTopLeft: [280, 50],
-                autoPanPaddingBottomRight: [50, 50]
+                autoPan: false // WE NO LONGER NEED AUTOPAN, the camera offset perfectly handles it!
             })
-            .setLatLng([info.lat, wrappedLng])
+            .setLatLng([info.lat, offsetWrappedLng])
             .setContent(popupContent);
             
             popup.iata = iata; 
             
+            // Wait slightly for the flyTo animation to get moving before deploying the popup
             setTimeout(() => {
                 popup.openOn(map);
-            }, 300);
+            }, 350);
 
             setTimeout(() => {
                 const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
@@ -580,7 +600,7 @@
                     });
                 });
                 updatePopupContent(iata, info, 'Departure'); 
-            }, 350);
+            }, 400);
         }
 
         function generateRouteHTML(iata, info) {
@@ -638,8 +658,6 @@
                 }
 
                 if (hasDirFlight) {
-                    
-                    // Formatting the titles and icons inside the popup to "Full Name (Short Code)"
                     const infoObj = AIRLINE_INFO[alCode];
                     const alName = infoObj ? `${infoObj.name} (${infoObj.iata})` : alCode;
                     const iconText = infoObj ? infoObj.iata : alCode.substring(0,2);
