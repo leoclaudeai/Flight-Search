@@ -458,24 +458,28 @@
                 }
 
                 if (hasValidFlight) {
-                    
+                    // Pre-calculate the Great Circle so we can determine the exact "wrapped" longitude
+                    const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
+                    const end = turf.point([info.lng, info.lat]);
+                    const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+                    const coords = greatCircle.geometry.coordinates;
+
+                    // Apply Antimeridian fixes to ensure the line flows continually
+                    let prevLng = coords[0][0];
+                    const latlngs = coords.map(c => {
+                        let lng = c[0];
+                        let lat = c[1];
+                        while (lng - prevLng > 180) lng -= 360;
+                        while (prevLng - lng > 180) lng += 360;
+                        prevLng = lng;
+                        return [lat, lng]; 
+                    });
+
+                    // THIS IS THE MAGIC FIX: We grab the exact longitude of the end of the blue line!
+                    let wrappedLng = latlngs[latlngs.length - 1][1];
+
+                    // Draw the line if it is selected (or if no specific route is focused)
                     if (!window.selectedIata || window.selectedIata === iata) {
-                        
-                        const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
-                        const end = turf.point([info.lng, info.lat]);
-                        const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
-                        const coords = greatCircle.geometry.coordinates;
-
-                        let prevLng = coords[0][0];
-                        const latlngs = coords.map(c => {
-                            let lng = c[0];
-                            let lat = c[1];
-                            while (lng - prevLng > 180) lng -= 360;
-                            while (prevLng - lng > 180) lng += 360;
-                            prevLng = lng;
-                            return [lat, lng]; 
-                        });
-
                         L.polyline(latlngs, {
                             color: '#1a73e8', 
                             weight: window.selectedIata ? 3 : 1.5, 
@@ -484,14 +488,16 @@
                         }).addTo(linesLayer);
                     }
 
-                    const m = L.circleMarker([info.lat, info.lng], {
+                    // Place the marker onto the mathematically wrapped longitude so it aligns with the line!
+                    const m = L.circleMarker([info.lat, wrappedLng], {
                         radius: window.selectedIata === iata ? 7 : 5, 
                         fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
                         color: '#fff', weight: 1.5, fillOpacity: 0.9
                     });
                     
                     m.bindTooltip(`<b>${iata}</b><br>${info.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
-                    m.on('click', () => { showPopup(iata, info, m); });
+                    // Pass the wrapped coordinate straight to the popup click handler
+                    m.on('click', () => { showPopup(iata, info, wrappedLng); });
                     m.addTo(markersLayer);
                     mapMarkers.push(m);
                 }
@@ -500,15 +506,16 @@
 
         window.triggerMapFilter = function() { renderMapData(); };
 
-        function showPopup(iata, info, marker) {
+        // Note the new wrappedLng parameter!
+        function showPopup(iata, info, wrappedLng) {
             window.selectedIata = iata;
             renderMapData(); // Redraw map to isolate line immediately
             
             // TARGET ZOOM: Level 5 gives a great regional view of the destination airport
             const targetZoom = 5;
             
-            // 1. Calculate where the airport will physically be on the screen
-            let targetPoint = map.project([info.lat, info.lng], targetZoom);
+            // 1. Calculate where the airport will physically be on the screen using the WRAPPED coordinate
+            let targetPoint = map.project([info.lat, wrappedLng], targetZoom);
             
             // 2. Adjust the camera mathematically so the airport sits perfectly in the lower-right!
             // Subtracting X pushes the camera left, making the airport appear further right (clearing the panel)
@@ -527,9 +534,10 @@
             const popup = L.popup({
                 className: 'custom-popup',
                 closeButton: true,
-                autoPan: false // WE NO LONGER NEED AUTOPAN, the camera offset perfectly handles it!
+                autoPan: false // Camera offset perfectly handles it!
             })
-            .setLatLng([info.lat, info.lng])
+            // Force the popup to open on the WRAPPED coordinates so it aligns with the marker and line!
+            .setLatLng([info.lat, wrappedLng]) 
             .setContent(popupContent);
             
             popup.iata = iata; 
