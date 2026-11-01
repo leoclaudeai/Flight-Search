@@ -127,29 +127,26 @@
         .f-day-pill:hover { border-color: #1a73e8; }
         .f-day-pill.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 
-        /* Direction radio pills - horizontal */
+        /* Direction radio pills */
         .dir-radio-group {
             display: flex;
-            flex-direction: row;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
         }
         .dir-radio-option {
-            flex: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 8px 6px;
+            gap: 8px;
+            padding: 7px 10px;
             border: 1px solid #dadce0;
             border-radius: 8px;
             cursor: pointer;
             background: #fff;
             transition: all 0.15s ease;
             user-select: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #3c4043;
-            text-align: center;
         }
         .dir-radio-option:hover {
             border-color: #1a73e8;
@@ -162,38 +159,10 @@
         }
         .dir-radio-option input {
             accent-color: #1a73e8;
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
             margin: 0;
             cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        /* Deselect-all days button */
-        .days-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        .days-header label {
-            margin-bottom: 0 !important;
-        }
-        .deselect-days-btn {
-            background: #f1f3f4;
-            border: 1px solid #dadce0;
-            color: #5f6368;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 2px 8px;
-            border-radius: 12px;
-            transition: all 0.15s ease;
-        }
-        .deselect-days-btn:hover {
-            background: #e8eaed;
-            color: #1a73e8;
-            border-color: #1a73e8;
         }
 
         /* Custom Dual-Thumb Time Slider */
@@ -271,17 +240,9 @@
         /* Flight Schedule Details Dropdown */
         .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; }
         .flight-details-box.show { display: block; }
-        .flight-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 6px; border-bottom: 1px solid #ebebeb;
-            border-radius: 6px; cursor: pointer; transition: background 0.15s;
-        }
+        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #ebebeb; }
         .flight-item:last-child { border-bottom: none; }
-        .flight-item:hover { background: #e8f0fe; }
         .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
-        .flight-price-hint {
-            font-size: 10px; color: #5f6368; margin-top: 2px;
-        }
         
         /* -------------------------------------------
            Responsive Layout for Mobile Phones
@@ -336,13 +297,17 @@
             <div class="filter-group">
                 <label id="ui-dir-label">方向</label>
                 <div class="dir-radio-group">
-                    <label class="dir-radio-option selected" id="dir-opt-dep">
-                        <input type="radio" name="filter-dir" value="Departure" checked onchange="onDirChange(this)">
-                        <span id="ui-dir-dep">離港</span>
+                    <label class="dir-radio-option selected" id="dir-opt-all">
+                        <input type="radio" name="filter-dir" value="All" checked onchange="onDirChange(this)">
+                        <span id="ui-dir-all">所有路線</span>
+                    </label>
+                    <label class="dir-radio-option" id="dir-opt-dep">
+                        <input type="radio" name="filter-dir" value="Departure" onchange="onDirChange(this)">
+                        <span id="ui-dir-dep">離港 (HKG &rarr; )</span>
                     </label>
                     <label class="dir-radio-option" id="dir-opt-arr">
                         <input type="radio" name="filter-dir" value="Arrival" onchange="onDirChange(this)">
-                        <span id="ui-dir-arr">抵港</span>
+                        <span id="ui-dir-arr">抵港 ( &rarr; HKG)</span>
                     </label>
                 </div>
             </div>
@@ -363,10 +328,7 @@
             </div>
 
             <div class="filter-group">
-                <div class="days-header">
-                    <label id="ui-days-label">星期</label>
-                    <button type="button" class="deselect-days-btn" id="deselect-days-btn" onclick="deselectAllDays()">取消全選</button>
-                </div>
+                <label id="ui-days-label">星期</label>
                 <div class="filter-day-pills">
                     <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">日</div>
                     <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">一</div>
@@ -430,8 +392,8 @@
                 reset_btn: '重設',
                 dir_label: '方向',
                 dir_all: '所有路線',
-                dir_dep: '離港',
-                dir_arr: '抵港',
+                dir_dep: '離港 (HKG &rarr; )',
+                dir_arr: '抵港 ( &rarr; HKG)',
                 days_label: '星期',
                 days: { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' },
                 time_label_dep: '離港時間範圍',
@@ -465,8 +427,7 @@
                 no_flights_pre: '找不到符合篩選條件的',
                 no_flights_suf: '航班。',
                 dep_text: '離港',
-                arr_text: '抵港',
-                deselect_days: '取消全選'
+                arr_text: '抵港'
             },
             'en': {
                 page_title: 'HKG International Airport - Flight Routes',
@@ -475,8 +436,8 @@
                 reset_btn: 'Reset',
                 dir_label: 'DIRECTION',
                 dir_all: 'All Routes',
-                dir_dep: 'Departures',
-                dir_arr: 'Arrivals',
+                dir_dep: 'Departures (HKG &rarr; )',
+                dir_arr: 'Arrivals ( &rarr; HKG)',
                 days_label: 'DAYS OF WEEK',
                 days: { 'su': 'Su', 'mo': 'Mo', 'tu': 'Tu', 'we': 'We', 'th': 'Th', 'fr': 'Fr', 'sa': 'Sa' },
                 time_label_dep: 'DEPARTURE TIME',
@@ -510,8 +471,7 @@
                 no_flights_pre: 'No matching flights found for ',
                 no_flights_suf: 's.',
                 dep_text: 'Departure',
-                arr_text: 'Arrival',
-                deselect_days: 'Deselect all'
+                arr_text: 'Arrival'
             }
         };
 
@@ -887,7 +847,7 @@
 
         function getFilterDir() {
             const checked = document.querySelector('input[name="filter-dir"]:checked');
-            return checked ? checked.value : 'Departure';
+            return checked ? checked.value : 'All';
         }
 
         window.onDirChange = function(radio) {
@@ -925,12 +885,11 @@
             document.getElementById('reset-btn').innerText = txt.reset_btn;
             
             document.getElementById('ui-dir-label').innerText = txt.dir_label;
+            document.getElementById('ui-dir-all').innerHTML = txt.dir_all;
             document.getElementById('ui-dir-dep').innerHTML = txt.dir_dep;
             document.getElementById('ui-dir-arr').innerHTML = txt.dir_arr;
             
             document.getElementById('ui-days-label').innerText = txt.days_label;
-            const deselectBtn = document.getElementById('deselect-days-btn');
-            if (deselectBtn) deselectBtn.innerText = txt.deselect_days;
             document.querySelectorAll('.f-day-pill').forEach(el => {
                 el.innerText = txt.days[el.dataset.day];
             });
@@ -1536,11 +1495,10 @@
                                 }
 
                                 detailsHtml += `
-                                    <div class="flight-item" onclick="openGoogleFlights('${iata}', '${direction}', '${d}', '${String(fl.no).replace(/'/g, '')}')" title="View prices on Google Flights">
+                                    <div class="flight-item">
                                         <div style="flex-grow: 1;">
                                             <div style="margin-bottom: 3px;"><span class="flight-no">${fl.no}</span></div>
                                             <div style="font-size: 11px; color: #555; font-weight: 500;">${displayStr}</div>
-                                            <div class="flight-price-hint">${currentLang === 'zh' ? '點擊查看未來票價 →' : 'Click for upcoming prices →'}</div>
                                         </div>
                                         <div style="font-size: 11px; color: #1a73e8; font-weight: 600; text-align: right; white-space: nowrap;">
                                             ⏱ ${durStr}
@@ -1591,48 +1549,6 @@
             btn.innerHTML = panel.classList.contains('minimized') ? '&plus;' : '&minus;';
         }
 
-        
-        // Map day keys to JS getDay() (0=Sun ... 6=Sat)
-        
-        const DAY_KEY_TO_JS = { su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 };
-
-        function nextDateForDay(dayKey) {
-            const target = DAY_KEY_TO_JS[dayKey];
-            const d = new Date();
-            d.setHours(12, 0, 0, 0);
-            d.setDate(d.getDate() + 1);
-            while (d.getDay() !== target) {
-                d.setDate(d.getDate() + 1);
-            }
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return y + '-' + m + '-' + day;
-        }
-
-        window.openGoogleFlights = function(iata, direction, dayKey, flightNo) {
-            const dateStr = nextDateForDay(dayKey);
-            let origin, dest;
-            if (direction === 'Departure') {
-                origin = 'HKG';
-                dest = iata;
-            } else {
-                origin = iata;
-                dest = 'HKG';
-            }
-            const q = encodeURIComponent('Flights from ' + origin + ' to ' + dest + ' on ' + dateStr);
-            const url = 'https://www.google.com/travel/flights?q=' + q + '&curr=HKD';
-            window.open(url, '_blank', 'noopener,noreferrer');
-        };
-
-        window.deselectAllDays = function() {
-            globalSelectedDays.clear();
-            document.querySelectorAll('.f-day-pill').forEach(function(p) {
-                p.classList.remove('active');
-            });
-            renderMapData();
-        };
-
         window.toggleFilterDay = function(el) {
             const day = el.dataset.day;
             el.classList.toggle('active');
@@ -1664,12 +1580,12 @@
         };
 
         window.clearAllFilters = function() {
-            // Reset direction radios to Departure
+            // Reset direction radios
             document.querySelectorAll('input[name="filter-dir"]').forEach(r => {
-                r.checked = (r.value === 'Departure');
+                r.checked = (r.value === 'All');
             });
             document.querySelectorAll('.dir-radio-option').forEach(el => el.classList.remove('selected'));
-            document.getElementById('dir-opt-dep').classList.add('selected');
+            document.getElementById('dir-opt-all').classList.add('selected');
             
             document.getElementById('filter-region').value = 'All';
             
