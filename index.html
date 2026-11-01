@@ -1,1 +1,1562 @@
-PLACEHOLDER_WILL_BE_REPLACED
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">香港國際機場 (HKG) - 航班路線圖</title>
+    
+    <!-- Free Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * { box-sizing: border-box; }
+        html, body {
+            height: 100%; width: 100%; margin: 0; padding: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            overflow: hidden;
+        }
+        #map { width: 100vw; height: 100vh; background-color: #cad2d3; } 
+        
+        .loading-overlay {
+            position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+            background: #ffffff; padding: 10px 20px; border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 2000;
+            font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        /* -------------------------------------------
+           Floating Top-Right Dual Language Toggle
+        ------------------------------------------- */
+        #lang-toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            background-color: #f1f3f4;
+            border-radius: 20px;
+            padding: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #dadce0;
+        }
+        
+        .lang-option {
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #5f6368;
+            cursor: pointer;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        
+        .lang-option:hover {
+            color: #1a1a1a;
+        }
+        
+        .lang-option.active {
+            background-color: #ffffff;
+            color: #1a73e8;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+        }
+
+        /* Map Filters Panel */
+        #filter-panel {
+            position: absolute; top: 15px; left: 15px; 
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
+            padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000; width: 260px; border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        /* Filter Header & Buttons */
+        .filter-header {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        
+        .reset-btn {
+            background: #fce8e6; border: 1px solid #fad2cf; color: #d93025; font-size: 12px; 
+            font-weight: 700; cursor: pointer; padding: 4px 12px; border-radius: 16px;
+            transition: all 0.2s ease; text-decoration: none;
+        }
+        .reset-btn:hover { background: #fad2cf; color: #b31412; }
+        
+        .toggle-btn {
+            background: #f1f3f4; border: none; border-radius: 4px; width: 24px; height: 24px;
+            font-weight: bold; color: #5f6368; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; transition: background 0.2s;
+        }
+        .toggle-btn:hover { background: #e8eaed; color: #1a73e8; }
+        
+        /* Minimized State */
+        #filter-content {
+            margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
+            max-height: 65vh; opacity: 1; overflow-y: auto; overflow-x: hidden; padding-right: 4px;
+        }
+        #filter-content::-webkit-scrollbar { width: 4px; }
+        #filter-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+        
+        #filter-panel.minimized #filter-content {
+            max-height: 0; opacity: 0; margin-top: 0;
+        }
+
+        .filter-group { margin-bottom: 14px; }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-group label {
+            display: flex; justify-content: space-between; font-size: 11px;
+            font-weight: 700; color: #5f6368; margin-bottom: 6px;
+            letter-spacing: 0.3px; text-transform: uppercase;
+        }
+        .filter-group select {
+            width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid #ccc;
+            font-size: 13px; background-color: #fff; color: #202124; cursor: pointer; outline: none;
+        }
+        .filter-group select:focus { border-color: #1a73e8; }
+
+        /* Multi-Select Day Pills */
+        .filter-day-pills { display: flex; gap: 4px; }
+        .f-day-pill {
+            flex: 1; text-align: center; padding: 6px 0; font-size: 12px;
+            border: 1px solid #ccc; border-radius: 4px; cursor: pointer;
+            background: #fff; color: #5f6368; font-weight: 700; transition: all 0.2s; user-select: none;
+        }
+        .f-day-pill:hover { border-color: #1a73e8; }
+        .f-day-pill.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+
+        /* Custom Dual-Thumb Time Slider */
+        .time-slider-wrapper { position: relative; width: 100%; height: 24px; margin-top: 4px; }
+        .time-slider-track {
+            position: absolute; top: 10px; left: 0; right: 0; height: 4px;
+            background: #dadce0; border-radius: 2px; z-index: 1;
+        }
+        .time-slider-fill {
+            position: absolute; top: 10px; left: 0; width: 100%; height: 4px;
+            background: #1a73e8; border-radius: 2px; z-index: 2;
+        }
+        .time-slider-wrapper input[type="range"] {
+            position: absolute; top: 2px; left: 0; width: 100%; height: 20px;
+            pointer-events: none; appearance: none; background: none; z-index: 3; margin: 0;
+        }
+        .time-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            pointer-events: auto; appearance: none; width: 16px; height: 16px;
+            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .time-slider-wrapper input[type="range"]::-moz-range-thumb {
+            pointer-events: auto; appearance: none; width: 16px; height: 16px;
+            background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        #time-dep-val, #time-arr-val { color: #1a73e8; font-weight: 700; }
+        
+        /* Available Locations List */
+        .location-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 180px; overflow-y: auto; padding-right: 4px; margin-top: 4px; }
+        .loc-pill { font-size: 11px; background: #f8f9fa; border: 1px solid #dadce0; border-radius: 12px; padding: 4px 8px; cursor: pointer; transition: all 0.2s; font-weight: 600; color: #3c4043; user-select: none; }
+        .loc-pill:hover { background: #e8f0fe; color: #1a73e8; border-color: #1a73e8; }
+        .location-list::-webkit-scrollbar { width: 4px; }
+        .location-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+        /* Elevate Popup */
+        .leaflet-popup-pane { z-index: 1100 !important; }
+
+        /* Leaflet Popup Overrides */
+        .custom-popup .leaflet-popup-content-wrapper { border-radius: 12px; }
+        .custom-popup .leaflet-popup-content { margin: 12px; width: 360px !important; }
+        .route-card { width: 100%; font-family: inherit; color: #1a1a1a; padding: 0; }
+        
+        /* Direction Toggle Switch */
+        .direction-toggle { display: flex; background-color: #f1f3f4; border-radius: 8px; padding: 4px; margin-bottom: 12px; }
+        .direction-btn {
+            flex: 1; text-align: center; padding: 8px 0; font-size: 13px; font-weight: 600;
+            color: #5f6368; cursor: pointer; border-radius: 6px; transition: all 0.2s;
+        }
+        .direction-btn.active { background-color: #ffffff; color: #1a73e8; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+        .route-badges { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 12px; color: #4a4a4a; }
+        .badge { background-color: #f1f3f4; border: 1px solid #dadce0; border-radius: 4px; padding: 4px 8px; font-weight: 600; color: #3c4043; }
+        
+        /* Airline List */
+        .airline-list { display: flex; flex-direction: column; gap: 16px; border-top: 1px solid #e0e0e0; padding-top: 12px; max-height: 380px; overflow-y: auto; }
+        .airline-row { display: flex; flex-direction: column; gap: 8px; }
+        .airline-info { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+        .airline-icon { width: 28px; height: 28px; border-radius: 50%; background-color: #006241; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .airline-name { font-size: 14px; font-weight: 600; flex-grow: 1; word-break: break-word; line-height: 1.3; }
+        
+        /* Day Pills Bar (Inside Popup) */
+        .day-pills { display: flex; gap: 4px; margin-left: 38px; }
+        .day-pill {
+            width: 32px; height: 26px; border-radius: 6px; border: 1px solid #d0d0d0;
+            background: #ffffff; font-size: 12px; font-weight: 600; color: #202124;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: all 0.15s ease; user-select: none;
+        }
+        .day-pill.active { border-color: #1a73e8; color: #1a73e8; background-color: #e8f0fe; }
+        .day-pill.active:hover { background-color: #1a73e8; color: white; }
+        .day-pill.selected { background-color: #1a73e8 !important; color: white !important; border-color: #1a73e8 !important; }
+        .day-pill.disabled { border-color: #f1f3f4; background-color: #f8f9fa; color: #bdc1c6; cursor: not-allowed; opacity: 0.6; }
+
+        /* Flight Schedule Details Dropdown */
+        .flight-details-box { margin-left: 38px; margin-top: 4px; background-color: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px 10px; font-size: 13px; display: none; }
+        .flight-details-box.show { display: block; }
+        .flight-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #ebebeb; }
+        .flight-item:last-child { border-bottom: none; }
+        .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
+        
+        /* -------------------------------------------
+           Responsive Layout for Mobile Phones
+        ------------------------------------------- */
+        @media (max-width: 600px) {
+            #lang-toggle-container {
+                top: auto;
+                bottom: 30px;
+                right: 15px;
+            }
+            
+            #filter-panel {
+                width: 240px;
+            }
+            
+            .custom-popup .leaflet-popup-content {
+                width: 290px !important;
+                margin: 12px;
+            }
+            
+            .day-pill {
+                width: 28px;
+                font-size: 11px;
+            }
+        }
+    </style>
+
+    <!-- Turf.js Library for Great Circle Spherical Routing -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+</head>
+<body>
+
+    <div id="loading" class="loading-overlay">載入資料中... / Loading Data...</div>
+    
+    <!-- Dual-Toggle Top Right Language Button -->
+    <div id="lang-toggle-container">
+        <div class="lang-option active" id="lang-zh" onclick="setLanguage('zh')">繁中</div>
+        <div class="lang-option" id="lang-en" onclick="setLanguage('en')">EN</div>
+    </div>
+
+    <!-- Map Filters Panel -->
+    <div id="filter-panel">
+        <div class="filter-header">
+            <h4 id="ui-title">航班篩選</h4>
+            <div class="header-actions">
+                <button class="reset-btn" id="reset-btn" onclick="clearAllFilters()">重設</button>
+                <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
+            </div>
+        </div>
+        
+        <div id="filter-content">
+            <div class="filter-group">
+                <label id="ui-dir-label">方向</label>
+                <select id="filter-dir" onchange="window.triggerMapFilter()">
+                    <option value="All" id="ui-dir-all">所有路線</option>
+                    <option value="Departure" id="ui-dir-dep">離港 (HKG &rarr; )</option>
+                    <option value="Arrival" id="ui-dir-arr">抵港 ( &rarr; HKG)</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label id="ui-days-label">星期</label>
+                <div class="filter-day-pills">
+                    <div class="f-day-pill active" data-day="su" onclick="toggleFilterDay(this)">日</div>
+                    <div class="f-day-pill active" data-day="mo" onclick="toggleFilterDay(this)">一</div>
+                    <div class="f-day-pill active" data-day="tu" onclick="toggleFilterDay(this)">二</div>
+                    <div class="f-day-pill active" data-day="we" onclick="toggleFilterDay(this)">三</div>
+                    <div class="f-day-pill active" data-day="th" onclick="toggleFilterDay(this)">四</div>
+                    <div class="f-day-pill active" data-day="fr" onclick="toggleFilterDay(this)">五</div>
+                    <div class="f-day-pill active" data-day="sa" onclick="toggleFilterDay(this)">六</div>
+                </div>
+            </div>
+
+            <!-- Departure Time Filter -->
+            <div class="filter-group" id="group-time-dep">
+                <label><span id="ui-time-dep-label">離港時間範圍</span> <span id="time-dep-val">00:00 - 24:00</span></label>
+                <div class="time-slider-wrapper">
+                    <div class="time-slider-track"></div>
+                    <div class="time-slider-fill" id="time-dep-fill"></div>
+                    <input type="range" min="0" max="24" value="0" id="time-dep-min" oninput="updateTimeUI('dep', this)" onchange="triggerMapFilter()">
+                    <input type="range" min="0" max="24" value="24" id="time-dep-max" oninput="updateTimeUI('dep', this)" onchange="triggerMapFilter()">
+                </div>
+            </div>
+
+            <!-- Arrival Time Filter -->
+            <div class="filter-group" id="group-time-arr">
+                <label><span id="ui-time-arr-label">抵港時間範圍</span> <span id="time-arr-val">00:00 - 24:00</span></label>
+                <div class="time-slider-wrapper">
+                    <div class="time-slider-track"></div>
+                    <div class="time-slider-fill" id="time-arr-fill"></div>
+                    <input type="range" min="0" max="24" value="0" id="time-arr-min" oninput="updateTimeUI('arr', this)" onchange="triggerMapFilter()">
+                    <input type="range" min="0" max="24" value="24" id="time-arr-max" oninput="updateTimeUI('arr', this)" onchange="triggerMapFilter()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <label id="ui-airline-label">航空公司</label>
+                <select id="filter-airline" onchange="window.triggerMapFilter()">
+                    <option value="All" id="ui-airline-all">所有航空公司</option>
+                </select>
+            </div>
+            
+            <!-- Popular Locations / Region Filter -->
+            <div class="filter-group">
+                <label id="ui-region-label">熱門地點</label>
+                <select id="filter-region" onchange="window.triggerMapFilter()">
+                    <option value="All" id="ui-region-all">所有地區</option>
+                    <option value="China" id="ui-region-cn">中國內地</option>
+                    <option value="Taiwan" id="ui-region-tw">台灣</option>
+                    <option value="Japan" id="ui-region-jp">日本</option>
+                    <option value="Thailand" id="ui-region-th">泰國</option>
+                    <option value="Vietnam" id="ui-region-vn">越南</option>
+                    <option value="Europe" id="ui-region-eu">歐洲</option>
+                    <option value="USA" id="ui-region-us">美國</option>
+                </select>
+            </div>
+            
+            <!-- Dynamic Available Locations list -->
+            <div class="filter-group" id="group-locations" style="display: none;">
+                <label id="ui-locations-label">可用地點</label>
+                <div id="location-list" class="location-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Free Leaflet.js Script -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // --- TRANSLATION DICTIONARY FOR UI ---
+        const i18n = {
+            'zh': {
+                page_title: '香港國際機場 (HKG) - 航班路線圖',
+                loading_error: '載入失敗。',
+                ui_title: '航班篩選',
+                reset_btn: '重設',
+                dir_label: '方向',
+                dir_all: '所有路線',
+                dir_dep: '離港 (HKG &rarr; )',
+                dir_arr: '抵港 ( &rarr; HKG)',
+                days_label: '星期',
+                days: { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' },
+                time_label_dep: '離港時間範圍',
+                time_label_arr: '抵港時間範圍',
+                airline_label: '航空公司',
+                airline_all: '所有航空公司',
+                region_label: '熱門地點', 
+                region_all: '所有地區', 
+                region_cn: '中國內地', 
+                region_tw: '台灣', 
+                region_jp: '日本', 
+                region_th: '泰國', 
+                region_vn: '越南', 
+                region_eu: '歐洲', 
+                region_us: '美國',
+                locations_label: '可用地點',
+                hkg_tooltip: 'HKG - 香港',
+                fastest_out: '最快離港:',
+                fastest_in: '最快抵港:',
+                fastest_out_title: 'HKG飛往{iata}的最快路線',
+                fastest_in_title: '{iata}飛往HKG的最快路線',
+                popup_dep: '🛫 去程',
+                popup_arr: '🛬 回程',
+                dur_unk: '需時未知',
+                arr_unk: '抵達時間未知',
+                dep_unk: '起飛時間未知',
+                hours: '小時',
+                mins: '分鐘',
+                day_offset: '日',
+                flights_count: '班航班',
+                no_flights_pre: '找不到符合篩選條件的',
+                no_flights_suf: '航班。',
+                dep_text: '離港',
+                arr_text: '抵港'
+            },
+            'en': {
+                page_title: 'HKG International Airport - Flight Routes',
+                loading_error: 'Error loading data.',
+                ui_title: 'Filter Flights',
+                reset_btn: 'Reset',
+                dir_label: 'DIRECTION',
+                dir_all: 'All Routes',
+                dir_dep: 'Departures (HKG &rarr; )',
+                dir_arr: 'Arrivals ( &rarr; HKG)',
+                days_label: 'DAYS OF WEEK',
+                days: { 'su': 'Su', 'mo': 'Mo', 'tu': 'Tu', 'we': 'We', 'th': 'Th', 'fr': 'Fr', 'sa': 'Sa' },
+                time_label_dep: 'DEPARTURE TIME',
+                time_label_arr: 'ARRIVAL TIME',
+                airline_label: 'AIRLINE',
+                airline_all: 'All Airlines',
+                region_label: 'POPULAR LOCATIONS', 
+                region_all: 'All Regions', 
+                region_cn: 'China', 
+                region_tw: 'Taiwan', 
+                region_jp: 'Japan', 
+                region_th: 'Thailand', 
+                region_vn: 'Vietnam', 
+                region_eu: 'Europe', 
+                region_us: 'USA',
+                locations_label: 'AVAILABLE LOCATIONS',
+                hkg_tooltip: 'HKG - Hong Kong',
+                fastest_out: 'Fastest Outbound:',
+                fastest_in: 'Fastest Inbound:',
+                fastest_out_title: 'Fastest Route HKG to {iata}',
+                fastest_in_title: 'Fastest Route {iata} to HKG',
+                popup_dep: '🛫 Departures',
+                popup_arr: '🛬 Arrivals',
+                dur_unk: 'Duration N/A',
+                arr_unk: 'Arr Time N/A',
+                dep_unk: 'Dep Time N/A',
+                hours: 'h',
+                mins: 'm',
+                day_offset: 'd',
+                flights_count: 'flights',
+                no_flights_pre: 'No matching flights found for ',
+                no_flights_suf: 's.',
+                dep_text: 'Departure',
+                arr_text: 'Arrival'
+            }
+        };
+
+        // --- BILINGUAL AIRLINE DATABASE ---
+        const AIRLINE_INFO = {
+            "AAL": { nameEn: "American Airlines", nameZh: "美國航空", iata: "AA" },
+            "AAR": { nameEn: "Asiana Airlines", nameZh: "韓亞航空", iata: "OZ" },
+            "ABB": { nameEn: "Air Belgium", nameZh: "比利時航空", iata: "KF" },
+            "ABL": { nameEn: "Air Busan", nameZh: "釜山航空", iata: "BX" },
+            "ABY": { nameEn: "Air Arabia", nameZh: "阿拉伯航空", iata: "G9" },
+            "ACA": { nameEn: "Air Canada", nameZh: "加拿大航空", iata: "AC" },
+            "AEU": { nameEn: "Astraeus", nameZh: "星辰航空", iata: "5W" },
+            "AFL": { nameEn: "Aeroflot", nameZh: "俄羅斯航空", iata: "SU" },
+            "AFR": { nameEn: "Air France", nameZh: "法國航空", iata: "AF" },
+            "AIC": { nameEn: "Air India", nameZh: "印度航空", iata: "AI" },
+            "ALK": { nameEn: "SriLankan Airlines", nameZh: "斯里蘭卡航空", iata: "UL" },
+            "AMX": { nameEn: "Aeroméxico", nameZh: "墨西哥國際航空", iata: "AM" },
+            "ANA": { nameEn: "All Nippon Airways", nameZh: "全日空", iata: "NH" },
+            "ANG": { nameEn: "Air Niugini", nameZh: "新幾內亞航空", iata: "PX" },
+            "ANZ": { nameEn: "Air New Zealand", nameZh: "新西蘭航空", iata: "NZ" },
+            "APJ": { nameEn: "Peach", nameZh: "樂桃航空", iata: "MM" },
+            "APZ": { nameEn: "Air Premia", nameZh: "普雷米婭航空", iata: "YP" },
+            "ARG": { nameEn: "Aerolíneas Argentinas", nameZh: "阿根廷航空", iata: "AR" },
+            "ASA": { nameEn: "Alaska Airlines", nameZh: "阿拉斯加航空", iata: "AS" },
+            "ASY": { nameEn: "AirAsia", nameZh: "亞洲航空", iata: "AK" }, 
+            "AXM": { nameEn: "AirAsia", nameZh: "亞洲航空", iata: "AK" },
+            "AZA": { nameEn: "ITA Airways", nameZh: "意大利航空", iata: "AZ" },
+            "AZM": { nameEn: "Azman Air", nameZh: "阿茲曼航空", iata: "ZU" },
+            "BAW": { nameEn: "British Airways", nameZh: "英國航空", iata: "BA" },
+            "BBC": { nameEn: "Biman Bangladesh Airlines", nameZh: "孟加拉航空", iata: "BG" },
+            "BGH": { nameEn: "BH Air", nameZh: "巴爾幹假日航空", iata: "8H" },
+            "BKP": { nameEn: "Bangkok Airways", nameZh: "曼谷航空", iata: "PG" },
+            "BOX": { nameEn: "AeroLogic", nameZh: "邏輯航空", iata: "3S" },
+            "BTI": { nameEn: "Air Baltic", nameZh: "波羅的海航空", iata: "BT" },
+            "BWA": { nameEn: "Caribbean Airlines", nameZh: "加勒比海航空", iata: "BW" },
+            "CAL": { nameEn: "China Airlines", nameZh: "中華航空", iata: "CI" },
+            "CAW": { nameEn: "Kulula", nameZh: "庫魯拉航空", iata: "MN" },
+            "CBJ": { nameEn: "Beijing Capital Airlines", nameZh: "首都航空", iata: "JD" },
+            "CCA": { nameEn: "Air China", nameZh: "中國國際航空", iata: "CA" },
+            "CDC": { nameEn: "Loong Air", nameZh: "長龍航空", iata: "GJ" },
+            "CDG": { nameEn: "Shandong Airlines", nameZh: "山東航空", iata: "SC" },
+            "CEB": { nameEn: "Cebu Pacific", nameZh: "宿霧太平洋航空", iata: "5J" },
+            "CES": { nameEn: "China Eastern Airlines", nameZh: "中國東方航空", iata: "MU" },
+            "CFG": { nameEn: "Condor", nameZh: "神鷹航空", iata: "DE" },
+            "CHH": { nameEn: "Hainan Airlines", nameZh: "海南航空", iata: "HU" },
+            "CPA": { nameEn: "Cathay Pacific", nameZh: "國泰航空", iata: "CX" },
+            "CQH": { nameEn: "Spring Airlines", nameZh: "春秋航空", iata: "9C" },
+            "CRK": { nameEn: "Hong Kong Airlines", nameZh: "香港航空", iata: "HX" },
+            "CSC": { nameEn: "Sichuan Airlines", nameZh: "四川航空", iata: "3U" },
+            "CSH": { nameEn: "Shanghai Airlines", nameZh: "上海航空", iata: "FM" },
+            "CSN": { nameEn: "China Southern Airlines", nameZh: "中國南方航空", iata: "CZ" },
+            "CSZ": { nameEn: "Shenzhen Airlines", nameZh: "深圳航空", iata: "ZH" },
+            "CUB": { nameEn: "Cubana de Aviación", nameZh: "古巴航空", iata: "CU" },
+            "CVA": { nameEn: "Air Austral", nameZh: "南方航空 (留尼汪)", iata: "UU" },
+            "CXA": { nameEn: "XiamenAir", nameZh: "廈門航空", iata: "MF" },
+            "DAH": { nameEn: "Air Algérie", nameZh: "阿爾及利亞航空", iata: "AH" },
+            "DAL": { nameEn: "Delta Air Lines", nameZh: "達美航空", iata: "DL" },
+            "DHK": { nameEn: "DHL Aviation", nameZh: "DHL航空", iata: "D0" },
+            "DKH": { nameEn: "Juneyao Airlines", nameZh: "吉祥航空", iata: "HO" },
+            "DLH": { nameEn: "Lufthansa", nameZh: "漢莎航空", iata: "LH" },
+            "DTR": { nameEn: "DAT", nameZh: "丹麥航空", iata: "DX" },
+            "EIN": { nameEn: "Aer Lingus", nameZh: "愛爾蘭航空", iata: "EI" },
+            "ELB": { nameEn: "El Al", nameZh: "以色列航空", iata: "LY" },
+            "ESR": { nameEn: "Eastar Jet", nameZh: "易斯達航空", iata: "ZE" },
+            "ETD": { nameEn: "Etihad Airways", nameZh: "阿提哈德航空", iata: "EY" },
+            "ETH": { nameEn: "Ethiopian Airlines", nameZh: "埃塞俄比亞航空", iata: "ET" },
+            "EVA": { nameEn: "EVA Air", nameZh: "長榮航空", iata: "BR" },
+            "EVE": { nameEn: "Evelop Airlines", nameZh: "埃福洛普航空", iata: "E9" },
+            "EXY": { nameEn: "South African Express", nameZh: "南非快運航空", iata: "XZ" },
+            "EZS": { nameEn: "easyJet Switzerland", nameZh: "瑞士易捷航空", iata: "DS" },
+            "EZY": { nameEn: "easyJet", nameZh: "易捷航空", iata: "U2" },
+            "FDX": { nameEn: "FedEx Express", nameZh: "聯邦快遞", iata: "FX" },
+            "FIN": { nameEn: "Finnair", nameZh: "芬蘭航空", iata: "AY" },
+            "FJI": { nameEn: "Fiji Airways", nameZh: "斐濟航空", iata: "FJ" },
+            "FLI": { nameEn: "Atlantic Airways", nameZh: "大西洋航空", iata: "RC" },
+            "GBA": { nameEn: "Greater Bay Airlines", nameZh: "大灣區航空", iata: "HB" },
+            "GIA": { nameEn: "Garuda Indonesia", nameZh: "印尼嘉魯達航空", iata: "GA" },
+            "GOW": { nameEn: "GoAir", nameZh: "捷高航空", iata: "G8" },
+            "GTI": { nameEn: "Atlas Air", nameZh: "亞特拉斯航空", iata: "5Y" },
+            "GWI": { nameEn: "Germanwings", nameZh: "德國之翼航空", iata: "4U" },
+            "HAL": { nameEn: "Hawaiian Airlines", nameZh: "夏威夷航空", iata: "HA" },
+            "HBH": { nameEn: "Hebei Airlines", nameZh: "河北航空", iata: "NS" },
+            "HGB": { nameEn: "Greater Bay Airlines", nameZh: "大灣區航空", iata: "HB" },
+            "HKE": { nameEn: "HK Express", nameZh: "香港快運航空", iata: "UO" },
+            "HVN": { nameEn: "Vietnam Airlines", nameZh: "越南航空", iata: "VN" },
+            "IBS": { nameEn: "Iberia", nameZh: "伊比利亞航空", iata: "IB" },
+            "IGO": { nameEn: "IndiGo", nameZh: "靛藍航空", iata: "6E" },
+            "IRA": { nameEn: "Iran Air", nameZh: "伊朗航空", iata: "IR" },
+            "ISR": { nameEn: "Israir", nameZh: "以色列方舟航空", iata: "6H" },
+            "JAI": { nameEn: "Jet Airways", nameZh: "捷特航空", iata: "9W" },
+            "JAL": { nameEn: "Japan Airlines", nameZh: "日本航空", iata: "JL" },
+            "JBW": { nameEn: "Jubba Airways", nameZh: "朱巴航空", iata: "3J" },
+            "JJA": { nameEn: "Jeju Air", nameZh: "濟州航空", iata: "7C" },
+            "JJP": { nameEn: "Jetstar Japan", nameZh: "捷星日本航空", iata: "GK" },
+            "JNA": { nameEn: "Jin Air", nameZh: "真航空", iata: "LJ" },
+            "JST": { nameEn: "Jetstar Airways", nameZh: "捷星航空", iata: "JQ" },
+            "KAL": { nameEn: "Korean Air", nameZh: "大韓航空", iata: "KE" },
+            "KAC": { nameEn: "Kuwait Airways", nameZh: "科威特航空", iata: "KU" },
+            "KME": { nameEn: "Cambodia Airways", nameZh: "柬埔寨航空", iata: "KR" },
+            "KQA": { nameEn: "Kenya Airways", nameZh: "肯雅航空", iata: "KQ" },
+            "KLM": { nameEn: "KLM Royal Dutch Airlines", nameZh: "荷蘭皇家航空", iata: "KL" },
+            "LAN": { nameEn: "LATAM Airlines", nameZh: "智利南美航空", iata: "LA" },
+            "LNI": { nameEn: "Lion Air", nameZh: "獅子航空", iata: "JT" },
+            "LOT": { nameEn: "LOT Polish Airlines", nameZh: "波蘭航空", iata: "LO" },
+            "LZB": { nameEn: "Bulgaria Air", nameZh: "保加利亞航空", iata: "FB" },
+            "MAS": { nameEn: "Malaysia Airlines", nameZh: "馬來西亞航空", iata: "MH" },
+            "MAU": { nameEn: "Air Mauritius", nameZh: "毛里求斯航空", iata: "MK" },
+            "MDA": { nameEn: "Mandarin Airlines", nameZh: "華信航空", iata: "AE" },
+            "MEA": { nameEn: "Middle East Airlines", nameZh: "中東航空", iata: "ME" },
+            "MGL": { nameEn: "MIAT Mongolian Airlines", nameZh: "蒙古民用航空", iata: "OM" },
+            "MON": { nameEn: "Monarch Airlines", nameZh: "君主航空", iata: "ZB" },
+            "MSR": { nameEn: "EgyptAir", nameZh: "埃及航空", iata: "MS" },
+            "MXD": { nameEn: "Batik Air Malaysia", nameZh: "馬印航空", iata: "OD" },
+            "NAX": { nameEn: "Norwegian Air Shuttle", nameZh: "挪威航空", iata: "DY" },
+            "NCA": { nameEn: "Nippon Cargo Airlines", nameZh: "日本貨物航空", iata: "KZ" },
+            "OMA": { nameEn: "Oman Air", nameZh: "阿曼航空", iata: "WY" },
+            "PAC": { nameEn: "Polar Air Cargo", nameZh: "極地貨運航空", iata: "PO" },
+            "PAL": { nameEn: "Philippine Airlines", nameZh: "菲律賓航空", iata: "PR" },
+            "PIA": { nameEn: "Pakistan International Airlines", nameZh: "巴基斯坦國際航空", iata: "PK" },
+            "PIC": { nameEn: "Pacific Airlines", nameZh: "太平洋航空", iata: "BL" },
+            "PNC": { nameEn: "Prince Aviation", nameZh: "王子航空", iata: "PU" },
+            "QDA": { nameEn: "Qingdao Airlines", nameZh: "青島航空", iata: "QW" },
+            "QFA": { nameEn: "Qantas", nameZh: "澳洲航空", iata: "QF" },
+            "QTR": { nameEn: "Qatar Airways", nameZh: "卡塔爾航空", iata: "QR" },
+            "RAM": { nameEn: "Royal Air Maroc", nameZh: "皇家摩洛哥航空", iata: "AT" },
+            "RBA": { nameEn: "Royal Brunei Airlines", nameZh: "汶萊皇家航空", iata: "BI" },
+            "RJA": { nameEn: "Royal Jordanian", nameZh: "皇家約旦航空", iata: "RJ" },
+            "RNA": { nameEn: "Nepal Airlines", nameZh: "尼泊爾航空", iata: "RA" },
+            "ROT": { nameEn: "TAROM", nameZh: "羅馬尼亞航空", iata: "RO" },
+            "RYR": { nameEn: "Ryanair", nameZh: "瑞安航空", iata: "FR" },
+            "SAA": { nameEn: "South African Airways", nameZh: "南非航空", iata: "SA" },
+            "SAS": { nameEn: "Scandinavian Airlines", nameZh: "北歐航空", iata: "SK" },
+            "SIA": { nameEn: "Singapore Airlines", nameZh: "新加坡航空", iata: "SQ" },
+            "SJX": { nameEn: "Starlux Airlines", nameZh: "星宇航空", iata: "JX" },
+            "SNG": { nameEn: "Synergy Aviation", nameZh: "協同航空", iata: "SY" },
+            "SOO": { nameEn: "Southern Air", nameZh: "美國南方航空", iata: "9S" },
+            "SPQ": { nameEn: "Sun PhuQuoc Airways", nameZh: "太陽富國航空", iata: "VU" },
+            "SQC": { nameEn: "Singapore Airlines Cargo", nameZh: "新加坡貨運航空", iata: "SQ" },
+            "SVA": { nameEn: "Saudia", nameZh: "沙特阿拉伯航空", iata: "SV" },
+            "SWR": { nameEn: "Swiss International Air Lines", nameZh: "瑞士國際航空", iata: "LX" },
+            "SWA": { nameEn: "Southwest Airlines", nameZh: "西南航空", iata: "WN" },
+            "TAI": { nameEn: "TACA Airlines", nameZh: "中美洲航空", iata: "TA" },
+            "TAM": { nameEn: "LATAM Brasil", nameZh: "巴西南美航空", iata: "JJ" },
+            "TAP": { nameEn: "TAP Air Portugal", nameZh: "葡萄牙航空", iata: "TP" },
+            "TBA": { nameEn: "Tibet Airlines", nameZh: "西藏航空", iata: "TV" },
+            "TGW": { nameEn: "Scoot", nameZh: "酷航", iata: "TR" },
+            "THA": { nameEn: "Thai Airways", nameZh: "泰國國際航空", iata: "TG" },
+            "THD": { nameEn: "Thai Smile", nameZh: "泰國微笑航空", iata: "WE" },
+            "THY": { nameEn: "Turkish Airlines", nameZh: "土耳其航空", iata: "TK" },
+            "TLM": { nameEn: "Thai Lion Air", nameZh: "泰國獅子航空", iata: "SL" },
+            "TWB": { nameEn: "T'way Air", nameZh: "德威航空", iata: "TW" },
+            "UAE": { nameEn: "Emirates", nameZh: "阿聯酋航空", iata: "EK" },
+            "UAL": { nameEn: "United Airlines", nameZh: "聯合航空", iata: "UA" },
+            "UBG": { nameEn: "US-Bangla Airlines", nameZh: "美孟航空", iata: "BS" },
+            "UBA": { nameEn: "Myanmar National Airlines", nameZh: "緬甸國家航空", iata: "UB" },
+            "UPS": { nameEn: "UPS Airlines", nameZh: "UPS航空", iata: "5X" },
+            "UTA": { nameEn: "Utair", nameZh: "烏塔航空", iata: "UT" },
+            "UZB": { nameEn: "Uzbekistan Airways", nameZh: "烏茲別克斯坦航空", iata: "HY" },
+            "VIR": { nameEn: "Virgin Atlantic", nameZh: "維珍航空", iata: "VS" },
+            "VJC": { nameEn: "VietJet Air", nameZh: "越捷航空", iata: "VJ" },
+            "VKG": { nameEn: "Sunclass Airlines", nameZh: "太陽系航空", iata: "DK" },
+            "VOZ": { nameEn: "Virgin Australia", nameZh: "維珍澳洲航空", iata: "VA" },
+            "VTE": { nameEn: "Volotea", nameZh: "維羅提航空", iata: "V7" },
+            "WJA": { nameEn: "WestJet", nameZh: "西捷航空", iata: "WS" },
+            "WZZ": { nameEn: "Wizz Air", nameZh: "威茲航空", iata: "W6" },
+            "XAX": { nameEn: "AirAsia X", nameZh: "全亞洲航空", iata: "D7" }
+        };
+
+        // --- BILINGUAL AIRPORTS & CITIES DATABASE ---
+        const AIRPORT_INFO = {
+            "ICN": { cityEn: "Seoul", cityZh: "首爾", nameEn: "Incheon", nameZh: "仁川國際機場" },
+            "CDG": { cityEn: "Paris", cityZh: "巴黎", nameEn: "Charles de Gaulle", nameZh: "戴高樂機場" },
+            "LAX": { cityEn: "Los Angeles", cityZh: "洛杉磯", nameEn: "Los Angeles Intl", nameZh: "洛杉磯國際機場" },
+            "BNE": { cityEn: "Brisbane", cityZh: "布里斯班", nameEn: "Brisbane Airport", nameZh: "布里斯班機場" },
+            "MEL": { cityEn: "Melbourne", cityZh: "墨爾本", nameEn: "Melbourne Airport", nameZh: "墨爾本機場" },
+            "ADD": { cityEn: "Addis Ababa", cityZh: "亞的斯亞貝巴", nameEn: "Bole", nameZh: "博萊國際機場" },
+            "ZRH": { cityEn: "Zurich", cityZh: "蘇黎世", nameEn: "Zurich Airport", nameZh: "蘇黎世機場" },
+            "DXB": { cityEn: "Dubai", cityZh: "杜拜", nameEn: "Dubai Intl", nameZh: "杜拜國際機場" },
+            "SYD": { cityEn: "Sydney", cityZh: "悉尼", nameEn: "Sydney Airport", nameZh: "悉尼機場" },
+            "MAD": { cityEn: "Madrid", cityZh: "馬德里", nameEn: "Barajas", nameZh: "巴拉哈斯機場" },
+            "YVR": { cityEn: "Vancouver", cityZh: "溫哥華", nameEn: "Vancouver Intl", nameZh: "溫哥華國際機場" },
+            "MXP": { cityEn: "Milan", cityZh: "米蘭", nameEn: "Malpensa", nameZh: "馬爾彭薩機場" },
+            "NRT": { cityEn: "Tokyo", cityZh: "東京", nameEn: "Narita", nameZh: "成田國際機場" },
+            "MAN": { cityEn: "Manchester", cityZh: "曼徹斯特", nameEn: "Manchester Airport", nameZh: "曼徹斯特機場" },
+            "KIX": { cityEn: "Osaka", cityZh: "大阪", nameEn: "關西", nameZh: "關西國際機場" },
+            "FCO": { cityEn: "Rome", cityZh: "羅馬", nameEn: "Fiumicino", nameZh: "菲烏米奇諾機場" },
+            "JNB": { cityEn: "Johannesburg", cityZh: "約翰內斯堡", nameEn: "OR Tambo", nameZh: "奧利弗·坦博國際機場" },
+            "SFO": { cityEn: "San Francisco", cityZh: "三藩市", nameEn: "San Francisco Intl", nameZh: "三藩市國際機場" },
+            "CAN": { cityEn: "Guangzhou", cityZh: "廣州", nameEn: "Baiyun", nameZh: "白雲國際機場" },
+            "DOH": { cityEn: "Doha", cityZh: "多哈", nameEn: "Hamad", nameZh: "哈馬德國際機場" },
+            "SIN": { cityEn: "Singapore", cityZh: "新加坡", nameEn: "Changi", nameZh: "樟宜機場" },
+            "PUS": { cityEn: "Busan", cityZh: "釜山", nameEn: "Gimhae", nameZh: "金海國際機場" },
+            "CJU": { cityEn: "Jeju", cityZh: "濟州", nameEn: "Jeju Intl", nameZh: "濟州國際機場" },
+            "DPS": { cityEn: "Bali", cityZh: "峇里島", nameEn: "Ngurah Rai", nameZh: "伍拉·賴國際機場" },
+            "JFK": { cityEn: "New York", cityZh: "紐約", nameEn: "JFK Intl", nameZh: "甘迺迪國際機場" },
+            "TAE": { cityEn: "Daegu", cityZh: "大邱", nameEn: "Daegu Intl", nameZh: "大邱國際機場" },
+            "DAD": { cityEn: "Da Nang", cityZh: "峴港", nameEn: "Da Nang Intl", nameZh: "峴港國際機場" },
+            "ILO": { cityEn: "Iloilo", cityZh: "伊洛伊洛", nameEn: "Iloilo Intl", nameZh: "伊洛伊洛國際機場" },
+            "FUK": { cityEn: "Fukuoka", cityZh: "福岡", nameEn: "Fukuoka Airport", nameZh: "福岡機場" },
+            "OKA": { cityEn: "Okinawa", cityZh: "沖繩", nameEn: "Naha", nameZh: "那霸機場" },
+            "MNL": { cityEn: "Manila", cityZh: "馬尼拉", nameEn: "Ninoy Aquino", nameZh: "尼諾伊·阿基諾國際機場" },
+            "PEK": { cityEn: "Beijing", cityZh: "北京", nameEn: "Capital", nameZh: "首都國際機場" },
+            "BKK": { cityEn: "Bangkok", cityZh: "曼谷", nameEn: "Suvarnabhumi", nameZh: "素萬那普機場" },
+            "PVG": { cityEn: "Shanghai", cityZh: "上海", nameEn: "Pudong", nameZh: "浦東國際機場" },
+            "CRK": { cityEn: "Clark", cityZh: "克拉克", nameEn: "Clark Intl", nameZh: "克拉克國際機場" },
+            "HAN": { cityEn: "Hanoi", cityZh: "河內", nameEn: "Noi Bai", nameZh: "內排國際機場" },
+            "HGH": { cityEn: "Hangzhou", cityZh: "杭州", nameEn: "Xiaoshan", nameZh: "蕭山國際機場" },
+            "PQC": { cityEn: "Phu Quoc", cityZh: "富國島", nameEn: "Phu Quoc Intl", nameZh: "富國國際機場" },
+            "CNX": { cityEn: "Chiang Mai", cityZh: "清邁", nameEn: "Chiang Mai Intl", nameZh: "清邁國際機場" },
+            "CEB": { cityEn: "Cebu", cityZh: "宿霧", nameEn: "Mactan-Cebu", nameZh: "麥克坦-宿霧國際機場" },
+            "RMQ": { cityEn: "Taichung", cityZh: "台中", nameEn: "Taichung Intl", nameZh: "台中國際機場" },
+            "HKT": { cityEn: "Phuket", cityZh: "布吉", nameEn: "Phuket Intl", nameZh: "布吉國際機場" },
+            "TPE": { cityEn: "Taipei", cityZh: "台北", nameEn: "Taoyuan", nameZh: "桃園國際機場" },
+            "KHH": { cityEn: "Kaohsiung", cityZh: "高雄", nameEn: "Kaohsiung Intl", nameZh: "高雄國際機場" },
+            "SZB": { cityEn: "Kuala Lumpur", cityZh: "吉隆坡", nameEn: "Subang", nameZh: "梳邦機場" },
+            "SDJ": { cityEn: "Sendai", cityZh: "仙台", nameEn: "Sendai Airport", nameZh: "仙台機場" },
+            "LHR": { cityEn: "London", cityZh: "倫敦", nameEn: "Heathrow", nameZh: "希斯路機場" },
+            "KUL": { cityEn: "Kuala Lumpur", cityZh: "吉隆坡", nameEn: "KLIA", nameZh: "吉隆坡國際機場" },
+            "SGN": { cityEn: "Ho Chi Minh City", cityZh: "胡志明市", nameEn: "Tan Son Nhat", nameZh: "新山一國際機場" },
+            "DEL": { cityEn: "Delhi", cityZh: "德里", nameEn: "Indira Gandhi", nameZh: "英迪拉·甘地國際機場" },
+            "SYX": { cityEn: "Sanya", cityZh: "三亞", nameEn: "Phoenix", nameZh: "鳳凰國際機場" },
+            "WNZ": { cityEn: "Wenzhou", cityZh: "溫州", nameEn: "Longwan", nameZh: "龍灣國際機場" },
+            "PKX": { cityEn: "Beijing", cityZh: "北京", nameEn: "Daxing", nameZh: "大興國際機場" },
+            "FOC": { cityEn: "Fuzhou", cityZh: "福州", nameEn: "Changle", nameZh: "長樂國際機場" },
+            "HND": { cityEn: "Tokyo", cityZh: "東京", nameEn: "Haneda", nameZh: "羽田機場" },
+            "CTS": { cityEn: "Sapporo", cityZh: "札幌", nameEn: "New Chitose", nameZh: "新千歲機場" },
+            "IST": { cityEn: "Istanbul", cityZh: "伊斯坦堡", nameEn: "Istanbul Airport", nameZh: "伊斯坦堡機場" },
+            "WUH": { cityEn: "Wuhan", cityZh: "武漢", nameEn: "Tianhe", nameZh: "天河國際機場" },
+            "HIJ": { cityEn: "Hiroshima", cityZh: "廣島", nameEn: "Hiroshima Airport", nameZh: "廣島機場" },
+            "CGK": { cityEn: "Jakarta", cityZh: "雅加達", nameEn: "Soekarno-Hatta", nameZh: "蘇加諾-哈達國際機場" },
+            "CSX": { cityEn: "Changsha", cityZh: "長沙", nameEn: "Huanghua", nameZh: "黃花國際機場" },
+            "DNH": { cityEn: "Dunhuang", cityZh: "敦煌", nameEn: "Dunhuang Mogao", nameZh: "敦煌莫高國際機場" },
+            "XMN": { cityEn: "Xiamen", cityZh: "廈門", nameEn: "Gaoqi", nameZh: "高崎國際機場" },
+            "SHA": { cityEn: "Shanghai", cityZh: "上海", nameEn: "Hongqiao", nameZh: "虹橋國際機場" },
+            "CTU": { cityEn: "Chengdu", cityZh: "成都", nameEn: "Shuangliu", nameZh: "雙流國際機場" },
+            "TAK": { cityEn: "Takamatsu", cityZh: "高松", nameEn: "Takamatsu Airport", nameZh: "高松機場" },
+            "NGO": { cityEn: "Nagoya", cityZh: "名古屋", nameEn: "Chubu Centrair", nameZh: "中部國際機場" },
+            "HAK": { cityEn: "Haikou", cityZh: "海口", nameEn: "Meilan", nameZh: "美蘭國際機場" },
+            "TAO": { cityEn: "Qingdao", cityZh: "青島", nameEn: "Jiaodong", nameZh: "膠東國際機場" },
+            "NKG": { cityEn: "Nanjing", cityZh: "南京", nameEn: "Lukou", nameZh: "祿口國際機場" },
+            "YYZ": { cityEn: "Toronto", cityZh: "多倫多", nameEn: "Pearson", nameZh: "皮爾遜國際機場" },
+            "NGB": { cityEn: "Ningbo", cityZh: "寧波", nameEn: "Lishe", nameZh: "櫟社國際機場" },
+            "XIY": { cityEn: "Xi'an", cityZh: "西安", nameEn: "Xianyang", nameZh: "咸陽國際機場" },
+            "KMG": { cityEn: "Kunming", cityZh: "昆明", nameEn: "Changshui", nameZh: "長水國際機場" },
+            "SVO": { cityEn: "Moscow", cityZh: "莫斯科", nameEn: "Sheremetyevo", nameZh: "謝列梅捷沃國際機場" },
+            "PEN": { cityEn: "Penang", cityZh: "檳城", nameEn: "Penang Intl", nameZh: "檳城國際機場" },
+            "UBN": { cityEn: "Ulaanbaatar", cityZh: "烏蘭巴托", nameEn: "Chinggis Khaan", nameZh: "成吉思汗國際機場" },
+            "ORD": { cityEn: "Chicago", cityZh: "芝加哥", nameEn: "O'Hare", nameZh: "奧黑爾國際機場" },
+            "LHW": { cityEn: "Lanzhou", cityZh: "蘭州", nameEn: "Zhongchuan", nameZh: "中川國際機場" },
+            "WUX": { cityEn: "Wuxi", cityZh: "無錫", nameEn: "Shuofang", nameZh: "碩放國際機場" },
+            "HLD": { cityEn: "Hailar", cityZh: "海拉爾", nameEn: "Dongshan", nameZh: "東山機場" },
+            "TYN": { cityEn: "Taiyuan", cityZh: "太原", nameEn: "Wusu", nameZh: "武宿國際機場" },
+            "HNL": { cityEn: "Honolulu", cityZh: "檀香山", nameEn: "Inouye", nameZh: "井上國際機場" },
+            "CGO": { cityEn: "Zhengzhou", cityZh: "鄭州", nameEn: "Xinzheng", nameZh: "新鄭國際機場" },
+            "TSN": { cityEn: "Tianjin", cityZh: "天津", nameEn: "Binhai", nameZh: "濱海國際機場" },
+            "BKI": { cityEn: "Kota Kinabalu", cityZh: "亞庇", nameEn: "Kota Kinabalu Intl", nameZh: "亞庇國際機場" },
+            "TFU": { cityEn: "Chengdu", cityZh: "成都", nameEn: "Tianfu", nameZh: "天府國際機場" },
+            "CKG": { cityEn: "Chongqing", cityZh: "重慶", nameEn: "Jiangbei", nameZh: "江北國際機場" },
+            "TNA": { cityEn: "Jinan", cityZh: "濟南", nameEn: "Yaoqiang", nameZh: "遙牆國際機場" },
+            "MLE": { cityEn: "Malé", cityZh: "馬累", nameEn: "Velana", nameZh: "維拉納國際機場" },
+            "DMK": { cityEn: "Bangkok", cityZh: "曼谷", nameEn: "Don Mueang", nameZh: "廊曼國際機場" },
+            "ROR": { cityEn: "Koror", cityZh: "科羅爾", nameEn: "Palau Intl", nameZh: "帛琉國際機場" },
+            "SUB": { cityEn: "Surabaya", cityZh: "泗水", nameEn: "Juanda", nameZh: "朱安達國際機場" },
+            "BWN": { cityEn: "Bandar Seri Begawan", cityZh: "斯里巴加灣", nameEn: "Brunei Intl", nameZh: "汶萊國際機場" },
+            "PER": { cityEn: "Perth", cityZh: "珀斯", nameEn: "Perth Airport", nameZh: "珀斯機場" },
+            "DFW": { cityEn: "Dallas", cityZh: "達拉斯", nameEn: "DFW Intl", nameZh: "達拉斯-沃斯堡國際機場" },
+            "NAN": { cityEn: "Nadi", cityZh: "楠迪", nameEn: "Nadi Intl", nameZh: "楠迪國際機場" },
+            "ENH": { cityEn: "Enshi", cityZh: "恩施", nameEn: "Xujiaping", nameZh: "許家坪機場" },
+            "URC": { cityEn: "Urumqi", cityZh: "烏魯木齊", nameEn: "Diwopu", nameZh: "地窩堡國際機場" },
+            "LJG": { cityEn: "Lijiang", cityZh: "麗江", nameEn: "Sanyi", nameZh: "三義國際機場" },
+            "USM": { cityEn: "Koh Samui", cityZh: "蘇梅島", nameEn: "Samui", nameZh: "蘇梅國際機場" },
+            "BOM": { cityEn: "Mumbai", cityZh: "孟買", nameEn: "Chhatrapati Shivaji", nameZh: "賈特拉帕蒂·希瓦吉國際機場" },
+            "CZX": { cityEn: "Changzhou", cityZh: "常州", nameEn: "Benniu", nameZh: "奔牛國際機場" },
+            "DYG": { cityEn: "Zhangjiajie", cityZh: "張家界", nameEn: "Hehua", nameZh: "荷花國際機場" },
+            "HFE": { cityEn: "Hefei", cityZh: "合肥", nameEn: "Xinqiao", nameZh: "新橋國際機場" },
+            "KTM": { cityEn: "Kathmandu", cityZh: "加德滿都", nameEn: "Tribhuvan", nameZh: "特里布萬國際機場" },
+            "NNG": { cityEn: "Nanning", cityZh: "南寧", nameEn: "Wuxu", nameZh: "吳圩國際機場" },
+            "BOS": { cityEn: "Boston", cityZh: "波士頓", nameEn: "Logan", nameZh: "羅根國際機場" },
+            "AKL": { cityEn: "Auckland", cityZh: "奧克蘭", nameEn: "Auckland Airport", nameZh: "奧克蘭機場" },
+            "AUH": { cityEn: "Abu Dhabi", cityZh: "阿布扎比", nameEn: "Zayed", nameZh: "扎耶德國際機場" },
+            "POM": { cityEn: "Port Moresby", cityZh: "莫爾茲比港", nameEn: "Jacksons", nameZh: "傑克遜斯國際機場" },
+            "CMB": { cityEn: "Colombo", cityZh: "科倫坡", nameEn: "Bandaranaike", nameZh: "班達拉奈克國際機場" },
+            "MAA": { cityEn: "Chennai", cityZh: "金奈", nameEn: "Chennai Intl", nameZh: "金奈國際機場" },
+            "HEL": { cityEn: "Helsinki", cityZh: "赫爾辛基", nameEn: "Vantaa", nameZh: "萬塔機場" },
+            "BLR": { cityEn: "Bengaluru", cityZh: "班加羅爾", nameEn: "Kempegowda", nameZh: "肯佩戈達國際機場" },
+            "AMS": { cityEn: "Amsterdam", cityZh: "阿姆斯特丹", nameEn: "Schiphol", nameZh: "史基浦機場" },
+            "HYD": { cityEn: "Hyderabad", cityZh: "海得拉巴", nameEn: "Rajiv Gandhi", nameZh: "拉吉夫·甘地國際機場" },
+            "FRA": { cityEn: "法蘭克福", cityZh: "法蘭克福", nameEn: "Frankfurt Airport", nameZh: "法蘭克福機場" },
+            "SPN": { cityEn: "Saipan", cityZh: "塞班島", nameEn: "Saipan Intl", nameZh: "塞班國際機場" },
+            "BRU": { cityEn: "Brussels", cityZh: "布魯塞爾", nameEn: "Brussels Airport", nameZh: "布魯塞爾機場" },
+            "MUC": { cityEn: "Munich", cityZh: "慕尼黑", nameEn: "Munich Airport", nameZh: "慕尼黑機場" },
+            "BCN": { cityEn: "Barcelona", cityZh: "巴塞羅那", nameEn: "El Prat", nameZh: "埃爾普拉特機場" },
+            "DAC": { cityEn: "Dhaka", cityZh: "達卡", nameEn: "Shahjalal", nameZh: "沙阿賈拉勒國際機場" },
+            "SEA": { cityEn: "Seattle", cityZh: "西雅圖", nameEn: "Sea-Tac", nameZh: "西雅圖-塔科馬國際機場" },
+            "ISG": { cityEn: "Ishigaki", cityZh: "石垣", nameEn: "New Ishigaki", nameZh: "新石垣機場" },
+            "HSN": { cityEn: "Zhoushan", cityZh: "舟山", nameEn: "Putuoshan", nameZh: "普陀山機場" },
+            "KMQ": { cityEn: "Komatsu", cityZh: "小松", nameEn: "Komatsu Airport", nameZh: "小松機場" },
+            "YIW": { cityEn: "Yiwu", cityZh: "義烏", nameEn: "Yiwu Airport", nameZh: "義烏機場" },
+            "DAT": { cityEn: "Datong", cityZh: "大同", nameEn: "Yungang", nameZh: "雲岡機場" },
+            "HRB": { cityEn: "Harbin", cityZh: "哈爾濱", nameEn: "Taiping", nameZh: "太平國際機場" },
+            "YIH": { cityEn: "Yichang", cityZh: "宜昌", nameEn: "Sanxia", nameZh: "三峽機場" },
+            "YCU": { cityEn: "Yuncheng", cityZh: "運城", nameEn: "Yanhu", nameZh: "鹽湖國際機場" },
+            "KWL": { cityEn: "Guilin", cityZh: "桂林", nameEn: "Liangjiang", nameZh: "兩江國際機場" },
+            "LXA": { cityEn: "Lhasa", cityZh: "拉薩", nameEn: "Gonggar", nameZh: "貢嘎機場" },
+            "CGQ": { cityEn: "Changchun", cityZh: "長春", nameEn: "Longjia", nameZh: "龍嘉國際機場" },
+            "XNN": { cityEn: "Xining", cityZh: "西寧", nameEn: "Caojiabao", nameZh: "曹家堡國際機場" },
+            "INC": { cityEn: "Yinchuan", cityZh: "銀川", nameEn: "Hedong", nameZh: "河東國際機場" },
+            "SJW": { cityEn: "Shijiazhuang", cityZh: "石家莊", nameEn: "Zhengding", nameZh: "正定國際機場" }
+        };
+        
+        // --- IATA TO REGION MAPPING ---
+        const IATA_TO_REGION = {
+            "PEK": "China", "PKX": "China", "CAN": "China", "PVG": "China", "SHA": "China", 
+            "HGH": "China", "SYX": "China", "WNZ": "China", "FOC": "China", "WUH": "China", 
+            "CSX": "China", "DNH": "China", "XMN": "China", "CTU": "China", "TFU": "China", 
+            "HAK": "China", "TAO": "China", "NKG": "China", "NGB": "China", "XIY": "China", 
+            "KMG": "China", "LHW": "China", "WUX": "China", "HLD": "China", "TYN": "China", 
+            "CGO": "China", "TSN": "China", "CKG": "China", "TNA": "China", "ENH": "China", 
+            "URC": "China", "LJG": "China", "CZX": "China", "DYG": "China", "HFE": "China", 
+            "NNG": "China", "DAT": "China", "HRB": "China", "YIH": "China", "YCU": "China", 
+            "KWL": "China", "LXA": "China", "CGQ": "China", "XNN": "China", "INC": "China", 
+            "SJW": "China", "HSN": "China", "YIW": "China",
+            "TPE": "Taiwan", "KHH": "Taiwan", "RMQ": "Taiwan",
+            "HND": "Japan", "NRT": "Japan", "KIX": "Japan", "FUK": "Japan", "OKA": "Japan", 
+            "SDJ": "Japan", "CTS": "Japan", "HIJ": "Japan", "TAK": "Japan", "NGO": "Japan", 
+            "KMQ": "Japan", "ISG": "Japan",
+            "BKK": "Thailand", "DMK": "Thailand", "CNX": "Thailand", "HKT": "Thailand", "USM": "Thailand",
+            "SGN": "Vietnam", "HAN": "Vietnam", "DAD": "Vietnam", "PQC": "Vietnam",
+            "CDG": "Europe", "ZRH": "Europe", "MAD": "Europe", "MXP": "Europe", "MAN": "Europe", 
+            "FCO": "Europe", "LHR": "Europe", "IST": "Europe", "SVO": "Europe", "HEL": "Europe", 
+            "AMS": "Europe", "FRA": "Europe", "BRU": "Europe", "MUC": "Europe", "BCN": "Europe",
+            "LAX": "USA", "SFO": "USA", "JFK": "USA", "SEA": "USA", "ORD": "USA", "HNL": "USA", 
+            "DFW": "USA", "BOS": "USA"
+        };
+
+        const TIMEZONE_OFFSETS = {
+            "ICN": 9, "CDG": 2, "LAX": -7, "BNE": 10, "MEL": 10, "ADD": 3, "ZRH": 2, "DXB": 4, "SYD": 10, "MAD": 2,
+            "YVR": -7, "MXP": 2, "NRT": 9, "MAN": 1, "KIX": 9, "FCO": 2, "JNB": 2, "SFO": -7, "CAN": 8, "DOH": 3,
+            "SIN": 8, "PUS": 9, "CJU": 9, "DPS": 8, "JFK": -4, "TAE": 9, "DAD": 7, "ILO": 8, "FUK": 9, "OKA": 9,
+            "MNL": 8, "PEK": 8, "BKK": 7, "PVG": 8, "CRK": 8, "HAN": 7, "HGH": 8, "PQC": 7, "CNX": 7, "CEB": 8,
+            "RMQ": 8, "HKT": 7, "TPE": 8, "KHH": 8, "SZB": 8, "SDJ": 9, "LHR": 1, "KUL": 8, "SGN": 7, "DEL": 5.5,
+            "SYX": 8, "WNZ": 8, "PKX": 8, "FOC": 8, "KTI": 7, "HND": 9, "CTS": 9, "IST": 3, "WUH": 8, "HIJ": 9,
+            "CGK": 7, "CSX": 8, "DNH": 8, "XMN": 8, "SHA": 8, "CTU": 8, "TAK": 9, "NGO": 9, "HAK": 8, "TAO": 8,
+            "NKG": 8, "YYZ": -4, "NGB": 8, "XIY": 8, "KMG": 8, "SVO": 3, "PEN": 8, "UBN": 8, "ORD": -5, "LHW": 8,
+            "WUX": 8, "HLD": 8, "TYN": 8, "HNL": -10, "CGO": 8, "TSN": 8, "BKI": 8, "TFU": 8, "CKG": 8, "TNA": 8,
+            "MLE": 5, "DMK": 7, "ROR": 9, "SUB": 7, "BWN": 8, "PER": 8, "DFW": -5, "NAN": 12, "ENH": 8, "URC": 8,
+            "LJG": 8, "USM": 7, "BOM": 5.5, "CZX": 8, "DYG": 8, "HFE": 8, "KTM": 5.75, "NNG": 8, "BOS": -4, "AKL": 12,
+            "AUH": 4, "POM": 10, "CMB": 5.5, "MAA": 5.5, "HEL": 3, "BLR": 5.5, "AMS": 2, "HYD": 5.5, "FRA": 2, "SPN": 10,
+            "BRU": 2, "MUC": 2, "BCN": 2, "DAC": 6, "SEA": -7, "ISG": 9, "HSN": 8, "KMQ": 9, "YIW": 8, "DAT": 8,
+            "HRB": 8, "YIH": 8, "YCU": 8, "KWL": 8, "LXA": 8, "CGQ": 8, "XNN": 8, "INC": 8, "HKG": 8, "SJW": 8
+        };
+
+        let currentLang = 'zh';
+        const HKG_LATLNG = { lat: 22.3080, lng: 113.9185 }; 
+        const DAY_KEYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+        
+        const MANUAL_OVERRIDES = { "CX947": 195, "MU7481": 190 };
+
+        let map, markersLayer, linesLayer;
+        let routeData = {}; 
+        let mapMarkers = []; 
+        let globalSelectedDays = new Set(DAY_KEYS);
+        
+        window.flightDurationsRaw = {}; 
+        window.flightSpecificData = {}; 
+        
+        window.selectedIata = null;
+        window.currentRouteInfo = null;
+        window.currentOffsetLng = null;
+        window.currentDirection = 'Departure';
+        
+        window.currentValidLocationsMap = {}; 
+
+        function getLocationName(iata, fallbackInfo) {
+            const dictionaryHit = AIRPORT_INFO[iata];
+            if (dictionaryHit) {
+                return {
+                    city: currentLang === 'zh' ? dictionaryHit.cityZh : dictionaryHit.cityEn,
+                    name: currentLang === 'zh' ? dictionaryHit.nameZh : dictionaryHit.nameEn
+                };
+            }
+            return { city: fallbackInfo.city, name: fallbackInfo.name };
+        }
+
+        function getAirlineName(alCode) {
+            const infoObj = AIRLINE_INFO[alCode];
+            if (infoObj) {
+                return currentLang === 'zh' ? infoObj.nameZh : infoObj.nameEn;
+            }
+            return alCode;
+        }
+
+        function updateLanguageUI() {
+            const txt = i18n[currentLang];
+            
+            document.documentElement.lang = currentLang;
+            document.getElementById('page-title').innerText = txt.page_title;
+            document.getElementById('ui-title').innerText = txt.ui_title;
+            document.getElementById('reset-btn').innerText = txt.reset_btn;
+            
+            document.getElementById('ui-dir-label').innerText = txt.dir_label;
+            document.getElementById('ui-dir-all').innerText = txt.dir_all;
+            document.getElementById('ui-dir-dep').innerHTML = txt.dir_dep;
+            document.getElementById('ui-dir-arr').innerHTML = txt.dir_arr;
+            
+            document.getElementById('ui-days-label').innerText = txt.days_label;
+            document.querySelectorAll('.f-day-pill').forEach(el => {
+                el.innerText = txt.days[el.dataset.day];
+            });
+            
+            document.getElementById('ui-time-dep-label').innerText = txt.time_label_dep;
+            document.getElementById('ui-time-arr-label').innerText = txt.time_label_arr;
+            document.getElementById('ui-airline-label').innerText = txt.airline_label;
+            
+            document.getElementById('ui-region-label').innerText = txt.region_label;
+            document.getElementById('ui-region-all').innerText = txt.region_all;
+            document.getElementById('ui-region-cn').innerText = txt.region_cn;
+            document.getElementById('ui-region-tw').innerText = txt.region_tw;
+            document.getElementById('ui-region-jp').innerText = txt.region_jp;
+            document.getElementById('ui-region-th').innerText = txt.region_th;
+            document.getElementById('ui-region-vn').innerText = txt.region_vn;
+            document.getElementById('ui-region-eu').innerText = txt.region_eu;
+            document.getElementById('ui-region-us').innerText = txt.region_us;
+            
+            const locLabel = document.getElementById('ui-locations-label');
+            if (locLabel) locLabel.innerText = txt.locations_label;
+        }
+
+        window.setLanguage = function(lang) {
+            if (currentLang === lang) return; 
+            currentLang = lang;
+            
+            document.getElementById('lang-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
+            updateLanguageUI();
+            
+            if (map) {
+                renderMapData(); 
+                
+                if (window.selectedIata && window.currentRouteInfo) {
+                    const newHTML = generateRouteHTML(window.selectedIata, window.currentRouteInfo);
+                    const popup = document.querySelector('.custom-popup .leaflet-popup-content');
+                    if (popup) {
+                        popup.innerHTML = newHTML;
+                        
+                        const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
+                        dirBtns.forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                dirBtns.forEach(b => b.classList.remove('active'));
+                                e.target.classList.add('active');
+                                window.currentDirection = e.target.dataset.dir;
+                                updatePopupContent(window.selectedIata, window.currentRouteInfo, window.currentDirection);
+                            });
+                        });
+                        
+                        updatePopupContent(window.selectedIata, window.currentRouteInfo, window.currentDirection);
+                    }
+                }
+            }
+        };
+
+        function formatDuration(m) {
+            if (!m) return i18n[currentLang].dur_unk;
+            let h = Math.floor(m / 60);
+            let mins = m % 60;
+            return `${h}${i18n[currentLang].hours} ${mins}${i18n[currentLang].mins}`;
+        }
+
+        function initMap() {
+            updateLanguageUI();
+            
+            map = L.map('map', { 
+                center: [20, 114], 
+                zoom: 3, 
+                minZoom: 2,
+                worldCopyJump: false,
+                zoomControl: false
+            });
+
+            L.control.zoom({ position: 'bottomleft' }).addTo(map);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            markersLayer = L.featureGroup().addTo(map);
+            linesLayer = L.featureGroup().addTo(map);
+
+            map.on('popupclose', (e) => {
+                const closedIata = e.popup ? e.popup.iata : null;
+                if (!closedIata) return;
+
+                setTimeout(() => {
+                    if (window.selectedIata === closedIata) {
+                        window.selectedIata = null;
+                        window.currentRouteInfo = null;
+                        window.currentOffsetLng = null;
+                        renderMapData();
+                        map.flyTo([20, 114], 3, { duration: 0.8 });
+                    }
+                }, 100);
+            });
+
+            loadMapData();
+        }
+
+        async function loadMapData() {
+            try {
+                const flightsRes = await fetch('flights.json?v=' + new Date().getTime());
+                if (!flightsRes.ok) throw new Error("Failed to load flights.json");
+                routeData = await flightsRes.json();
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loading').innerText = i18n[currentLang].loading_error;
+                return;
+            }
+
+            try {
+                const csvRes = await fetch('Flightlist_results.csv?v=' + new Date().getTime());
+                if (csvRes.ok) {
+                    const csvText = await csvRes.text();
+                    const lines = csvText.split('\n');
+                    
+                    let tempDurations = {};
+
+                    for (let i = 1; i < lines.length; i++) { 
+                        if (!lines[i].trim()) continue;
+                        
+                        const row = lines[i].split(',');
+                        if (row.length >= 9) {
+                            const flightNoRaw = row[0].trim();
+                            const status = row[8].trim().toLowerCase();
+                            if (status === 'cancelled') continue;
+
+                            const depIata = row[3].trim().toUpperCase();
+                            const arrIata = row[6].trim().toUpperCase();
+                            const depTimeStr = row[4].trim();
+                            const arrTimeStr = row[7].trim();
+                            
+                            const targetIata = depIata === 'HKG' ? arrIata : depIata;
+                            const direction = depIata === 'HKG' ? 'Departure' : 'Arrival';
+                            
+                            if (!tempDurations[targetIata]) {
+                                tempDurations[targetIata] = {};
+                            }
+
+                            const currentRec = tempDurations[targetIata][direction];
+
+                            if (depTimeStr && arrTimeStr) {
+                                const depDate = new Date(depTimeStr);
+                                const arrDate = new Date(arrTimeStr);
+                                
+                                if (!isNaN(depDate) && !isNaN(arrDate)) {
+                                    const depOffset = TIMEZONE_OFFSETS[depIata] || 0;
+                                    const arrOffset = TIMEZONE_OFFSETS[arrIata] || 0;
+                                    
+                                    const trueDepUTC = depDate.getTime() - (depOffset * 3600000);
+                                    const trueArrUTC = arrDate.getTime() - (arrOffset * 3600000);
+                                    
+                                    let diffMs = trueArrUTC - trueDepUTC;
+                                    
+                                    if (diffMs > 0) {
+                                        const diffMins = Math.floor(diffMs / 60000);
+                                        
+                                        const cleanFlightNo = flightNoRaw.replace(/\s+/g, '').toUpperCase();
+                                        window.flightSpecificData[cleanFlightNo] = diffMins;
+
+                                        if (!currentRec || diffMins < currentRec.durationMins) {
+                                            tempDurations[targetIata][direction] = {
+                                                durationMins: diffMins,
+                                                status: status
+                                            };
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    for (const [iata, data] of Object.entries(tempDurations)) {
+                        window.flightDurationsRaw[iata] = {
+                            Departure: data.Departure ? data.Departure.durationMins : null,
+                            Arrival: data.Arrival ? data.Arrival.durationMins : null
+                        };
+                    }
+                }
+            } catch (err) {
+                console.warn('Flightlist_results.csv not found or unreadable.');
+            }
+
+            const loadingEl = document.getElementById('loading');
+            loadingEl.style.opacity = '0';
+            setTimeout(() => {
+                loadingEl.style.display = 'none';
+            }, 300);
+
+            renderMapData();
+        }
+
+        function renderMapData() {
+            markersLayer.clearLayers();
+            linesLayer.clearLayers();
+            mapMarkers = [];
+            window.currentValidLocationsMap = {};
+
+            const fDir = document.getElementById('filter-dir').value;
+            const fRegion = document.getElementById('filter-region').value;
+            
+            document.getElementById('group-time-dep').style.display = (fDir === 'Arrival') ? 'none' : 'block';
+            document.getElementById('group-time-arr').style.display = (fDir === 'Departure') ? 'none' : 'block';
+
+            let fAirline = document.getElementById('filter-airline').value;
+            const depMin = parseInt(document.getElementById('time-dep-min').value);
+            const depMax = parseInt(document.getElementById('time-dep-max').value);
+            const arrMin = parseInt(document.getElementById('time-arr-min').value);
+            const arrMax = parseInt(document.getElementById('time-arr-max').value);
+            const txt = i18n[currentLang];
+
+            // --- PASS 1: Determine all available airlines that match Time, Day, Direction, and Region ---
+            let availableAirlines = new Set();
+            for (const [iata, info] of Object.entries(routeData.routes)) {
+                if (!info.lat || !info.lng) continue;
+                if (fRegion !== 'All' && IATA_TO_REGION[iata] !== fRegion) continue;
+                
+                for (const [alCode, alData] of Object.entries(info.airlines)) {
+                    let hasValidFlightForAirline = false;
+                    for (const [day, flights] of Object.entries(alData.days)) {
+                        if (!globalSelectedDays.has(day)) continue;
+                        for (const fl of flights) {
+                            if (fDir !== 'All' && fl.type !== fDir) continue;
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (fl.type === 'Departure') {
+                                if (flHour >= depMin && flHour < (depMax === 24 ? 25 : depMax)) hasValidFlightForAirline = true;
+                            } else if (fl.type === 'Arrival') {
+                                if (flHour >= arrMin && flHour < (arrMax === 24 ? 25 : arrMax)) hasValidFlightForAirline = true;
+                            }
+                        }
+                        if (hasValidFlightForAirline) break;
+                    }
+                    if (hasValidFlightForAirline) availableAirlines.add(alCode);
+                }
+            }
+
+            const sel = document.getElementById('filter-airline');
+            sel.innerHTML = `<option value="All" id="ui-airline-all">${txt.airline_all}</option>`;
+            
+            const sortedAl = Array.from(availableAirlines).sort((a,b) => {
+                const infoA = AIRLINE_INFO[a];
+                const infoB = AIRLINE_INFO[b];
+                const nameA = infoA ? `${currentLang === 'zh' ? infoA.nameZh : infoA.nameEn} (${infoA.iata})` : a;
+                const nameB = infoB ? `${currentLang === 'zh' ? infoB.nameZh : infoB.nameEn} (${infoB.iata})` : b;
+                return nameA.localeCompare(nameB);
+            });
+            
+            sortedAl.forEach(code => {
+                let opt = document.createElement('option');
+                opt.value = code; 
+                const infoObj = AIRLINE_INFO[code];
+                opt.text = infoObj ? `${currentLang === 'zh' ? infoObj.nameZh : infoObj.nameEn} (${infoObj.iata})` : code;
+                sel.add(opt);
+            });
+            
+            if (availableAirlines.has(fAirline)) {
+                sel.value = fAirline;
+            } else {
+                fAirline = 'All';
+                sel.value = 'All';
+            }
+
+            // Base Map setup
+            [-360, 0, 360].forEach(offset => {
+                L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng + offset], {
+                    radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
+                }).bindTooltip(txt.hkg_tooltip, {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
+            });
+
+            // --- PASS 2: Collect valid locations and Draw markers ---
+            let validLocations = [];
+
+            for (const [iata, info] of Object.entries(routeData.routes)) {
+                if (!info.lat || !info.lng) continue;
+                if (fRegion !== 'All' && IATA_TO_REGION[iata] !== fRegion) continue;
+                
+                let hasValidFlight = false;
+                
+                for (const [alCode, alData] of Object.entries(info.airlines)) {
+                    if (fAirline !== 'All' && alCode !== fAirline) continue;
+
+                    for (const [day, flights] of Object.entries(alData.days)) {
+                        if (!globalSelectedDays.has(day)) continue;
+
+                        for (const fl of flights) {
+                            if (fDir !== 'All' && fl.type !== fDir) continue;
+                            
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (fl.type === 'Departure') {
+                                if (flHour >= depMin && flHour < (depMax === 24 ? 25 : depMax)) {
+                                    hasValidFlight = true;
+                                    break;
+                                }
+                            } else if (fl.type === 'Arrival') {
+                                if (flHour >= arrMin && flHour < (arrMax === 24 ? 25 : arrMax)) {
+                                    hasValidFlight = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (hasValidFlight) break;
+                    }
+                    if (hasValidFlight) break;
+                }
+
+                if (hasValidFlight) {
+                    const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
+                    const end = turf.point([info.lng, info.lat]);
+                    const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
+                    
+                    let rawCoords = [];
+                    turf.coordEach(greatCircle, function (currentCoord) {
+                        rawCoords.push([currentCoord[0], currentCoord[1]]);
+                    });
+
+                    let prevLng = rawCoords[0][0];
+                    const latlngs = rawCoords.map(c => {
+                        let lng = c[0];
+                        let lat = c[1];
+                        while (lng - prevLng > 180) lng -= 360;
+                        while (prevLng - lng > 180) lng += 360;
+                        prevLng = lng;
+                        return [lat, lng]; 
+                    });
+
+                    let wrappedLng = latlngs[latlngs.length - 1][1];
+                    const loc = getLocationName(iata, info);
+                    
+                    let primaryOffsetLng = wrappedLng; 
+
+                    [-360, 0, 360].forEach(offset => {
+                        const offsetLatLngs = latlngs.map(c => [c[0], c[1] + offset]);
+                        const offsetWrappedLng = wrappedLng + offset;
+                        
+                        if (offset === 0) primaryOffsetLng = offsetWrappedLng;
+
+                        if (!window.selectedIata || window.selectedIata === iata) {
+                            L.polyline(offsetLatLngs, {
+                                color: '#1a73e8', 
+                                weight: window.selectedIata ? 3 : 1.5, 
+                                opacity: window.selectedIata ? 0.9 : 0.35, 
+                                smoothFactor: 1
+                            }).addTo(linesLayer);
+                        }
+
+                        const m = L.circleMarker([info.lat, offsetWrappedLng], {
+                            radius: window.selectedIata === iata ? 7 : 5, 
+                            fillColor: window.selectedIata === iata ? '#d93025' : '#1a73e8', 
+                            color: '#fff', weight: 1.5, fillOpacity: 0.9
+                        });
+                        
+                        m.bindTooltip(`<b>${iata}</b><br>${loc.city}`, {direction:'top', offset:[0,-5], opacity:0.9});
+                        
+                        m.on('click', () => { showPopup(iata, info, offsetWrappedLng); });
+                        m.addTo(markersLayer);
+                        mapMarkers.push(m);
+                    });
+                    
+                    validLocations.push({ iata, loc, info, primaryOffsetLng });
+                }
+            }
+
+            const locGroup = document.getElementById('group-locations');
+            const locList = document.getElementById('location-list');
+            if (validLocations.length > 0) {
+                locGroup.style.display = 'block';
+                validLocations.sort((a, b) => a.loc.city.localeCompare(b.loc.city));
+                locList.innerHTML = validLocations.map(v => 
+                    `<div class="loc-pill" onclick="triggerLocationClick('${v.iata}')">${v.loc.city} (${v.iata})</div>`
+                ).join('');
+
+                validLocations.forEach(v => {
+                    window.currentValidLocationsMap[v.iata] = { info: v.info, offsetLng: v.primaryOffsetLng };
+                });
+            } else {
+                locGroup.style.display = 'none';
+                locList.innerHTML = '';
+            }
+        }
+
+        window.triggerMapFilter = function() { renderMapData(); };
+        
+        window.triggerLocationClick = function(iata) {
+            if (window.currentValidLocationsMap && window.currentValidLocationsMap[iata]) {
+                const locData = window.currentValidLocationsMap[iata];
+                showPopup(iata, locData.info, locData.offsetLng);
+            }
+        };
+
+        function showPopup(iata, info, offsetWrappedLng) {
+            window.selectedIata = iata;
+            window.currentRouteInfo = info;
+            window.currentOffsetLng = offsetWrappedLng;
+            
+            const fDir = document.getElementById('filter-dir').value;
+            window.currentDirection = (fDir === 'Arrival') ? 'Arrival' : 'Departure';
+            
+            renderMapData(); 
+            
+            const targetZoom = 5;
+            let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
+            
+            if (window.innerWidth <= 600) {
+                targetPoint.x -= 0;
+                targetPoint.y -= 220; 
+            } else {
+                targetPoint.x -= 180; 
+                targetPoint.y -= 150; 
+            }
+            
+            const offsetLatLng = map.unproject(targetPoint, targetZoom);
+            map.flyTo(offsetLatLng, targetZoom, { duration: 0.8 });
+
+            const popupContent = generateRouteHTML(iata, info);
+            
+            const popup = L.popup({
+                className: 'custom-popup',
+                closeButton: true,
+                autoPan: false 
+            })
+            .setLatLng([info.lat, offsetWrappedLng])
+            .setContent(popupContent);
+            
+            popup.iata = iata; 
+            
+            setTimeout(() => {
+                popup.openOn(map);
+            }, 350);
+
+            setTimeout(() => {
+                const dirBtns = document.querySelectorAll('.custom-popup .direction-btn');
+                dirBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        dirBtns.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        window.currentDirection = e.target.dataset.dir;
+                        updatePopupContent(iata, info, window.currentDirection);
+                    });
+                });
+                updatePopupContent(iata, info, window.currentDirection); 
+            }, 400);
+        }
+
+        function generateRouteHTML(iata, info) {
+            const txt = i18n[currentLang];
+            const rawDurs = window.flightDurationsRaw[iata] || {};
+            const depDur = formatDuration(rawDurs.Departure);
+            const arrDur = formatDuration(rawDurs.Arrival);
+            const loc = getLocationName(iata, info);
+            
+            const outTitle = txt.fastest_out_title.replace('{iata}', iata);
+            const inTitle = txt.fastest_in_title.replace('{iata}', iata);
+            
+            const isDepActive = window.currentDirection === 'Departure' ? 'active' : '';
+            const isArrActive = window.currentDirection === 'Arrival' ? 'active' : '';
+            
+            return `
+                <div class="route-card" id="popup-${iata}">
+                    <h3 style="margin:0 0 4px 0; font-size:18px;">${loc.city} (${iata})</h3>
+                    <p style="margin:0 0 12px 0; font-size:12px; color:#5f6368;">${loc.name}</p>
+                    
+                    <div class="route-badges">
+                        <span class="badge" title="${outTitle}">🛫 ${txt.fastest_out} ${depDur}</span>
+                        <span class="badge" title="${inTitle}">🛬 ${txt.fastest_in} ${arrDur}</span>
+                    </div>
+
+                    <div class="direction-toggle">
+                        <div class="direction-btn ${isDepActive}" data-dir="Departure">${txt.popup_dep}</div>
+                        <div class="direction-btn ${isArrActive}" data-dir="Arrival">${txt.popup_arr}</div>
+                    </div>
+
+                    <div class="airline-list" id="popup-airlines-${iata}">
+                        <!-- Rendered by updatePopupContent -->
+                    </div>
+                </div>
+            `;
+        }
+
+        function updatePopupContent(iata, info, direction) {
+            const container = document.getElementById(`popup-airlines-${iata}`);
+            if (!container) return;
+            
+            const fAirline = document.getElementById('filter-airline').value;
+            const depMin = parseInt(document.getElementById('time-dep-min').value);
+            const depMax = parseInt(document.getElementById('time-dep-max').value);
+            const arrMin = parseInt(document.getElementById('time-arr-min').value);
+            const arrMax = parseInt(document.getElementById('time-arr-max').value);
+            
+            const tMin = direction === 'Departure' ? depMin : arrMin;
+            const tMax = direction === 'Departure' ? depMax : arrMax;
+            
+            const txt = i18n[currentLang];
+            let html = '';
+
+            for (const [alCode, alData] of Object.entries(info.airlines)) {
+                if (fAirline !== 'All' && alCode !== fAirline) continue;
+                
+                let hasDirFlight = false;
+                let dayData = {}; 
+                
+                DAY_KEYS.forEach(d => { dayData[d] = []; });
+
+                for (const [day, flights] of Object.entries(alData.days)) {
+                    for (const fl of flights) {
+                        if (fl.type === direction) {
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (flHour >= tMin && flHour < (tMax === 24 ? 25 : tMax)) {
+                                dayData[day].push(fl);
+                                hasDirFlight = true;
+                            }
+                        }
+                    }
+                }
+
+                if (hasDirFlight) {
+                    const infoObj = AIRLINE_INFO[alCode];
+                    const translatedAlName = getAirlineName(alCode);
+                    const alName = infoObj ? `${translatedAlName} (${infoObj.iata})` : alCode;
+                    const iconText = infoObj ? infoObj.iata : alCode.substring(0,2);
+                    
+                    const uId = `fl-${iata}-${alCode}-${direction}`;
+                    
+                    // Prefer a day that is currently selected in the filter panel
+                    let preferredDay = null;
+                    for (const d of DAY_KEYS) {
+                        if (dayData[d].length > 0 && globalSelectedDays.has(d)) {
+                            preferredDay = d;
+                            break;
+                        }
+                    }
+                    // Fallback: first day that has any flights
+                    if (!preferredDay) {
+                        for (const d of DAY_KEYS) {
+                            if (dayData[d].length > 0) {
+                                preferredDay = d;
+                                break;
+                            }
+                        }
+                    }
+
+                    let pillsHtml = `<div class="day-pills">`;
+                    
+                    DAY_KEYS.forEach(d => {
+                        const count = dayData[d].length;
+                        if (count > 0) {
+                            const activeClass = (d === preferredDay) ? 'selected' : '';
+                            pillsHtml += `<div class="day-pill active ${activeClass}" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} ${txt.flights_count}">${txt.days[d]}</div>`;
+                        } else {
+                            pillsHtml += `<div class="day-pill disabled">${txt.days[d]}</div>`;
+                        }
+                    });
+                    pillsHtml += `</div>`;
+
+                    let detailsHtml = '';
+                    
+                    DAY_KEYS.forEach(d => {
+                        if (dayData[d].length > 0) {
+                            const showClass = (d === preferredDay) ? 'show' : '';
+                            
+                            detailsHtml += `<div class="flight-details-box ${showClass}" id="${uId}-${d}">`;
+                            dayData[d].sort((a,b) => a.time.localeCompare(b.time)).forEach(fl => {
+                                
+                                const cleanFlNo = fl.no.replace(/\s+/g, '').toUpperCase();
+                                
+                                const exactDurMins = MANUAL_OVERRIDES[cleanFlNo] || window.flightSpecificData[cleanFlNo];
+                                const durMins = exactDurMins ? exactDurMins : (window.flightDurationsRaw[iata] ? window.flightDurationsRaw[iata][direction] : null);
+                                
+                                let destOffset = TIMEZONE_OFFSETS[iata] !== undefined ? TIMEZONE_OFFSETS[iata] : 0;
+                                
+                                let [h, m] = fl.time.split(':').map(Number);
+                                let hkgMins = h * 60 + m;
+                                let displayStr = '';
+                                let durStr = formatDuration(durMins);
+
+                                if (durMins) {
+                                    if (direction === 'Departure') {
+                                        let destMins = hkgMins - (8 * 60) + durMins + (destOffset * 60);
+                                        let dayOffset = Math.floor(destMins / 1440);
+                                        let norm = ((destMins % 1440) + 1440) % 1440;
+                                        let dh = Math.floor(norm / 60).toString().padStart(2, '0');
+                                        let dm = Math.floor(norm % 60).toString().padStart(2, '0');
+                                        let dayStr = dayOffset > 0 ? ` (+${dayOffset}${txt.day_offset})` : (dayOffset < 0 ? ` (${dayOffset}${txt.day_offset})` : '');
+                                        
+                                        displayStr = `HKG ${fl.time} &rarr; ${iata} ${dh}:${dm} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
+                                    } else {
+                                        let destMins = hkgMins - (8 * 60) - durMins + (destOffset * 60);
+                                        let dayOffset = Math.floor(destMins / 1440);
+                                        let norm = ((destMins % 1440) + 1440) % 1440;
+                                        let dh = Math.floor(norm / 60).toString().padStart(2, '0');
+                                        let dm = Math.floor(norm % 60).toString().padStart(2, '0');
+                                        
+                                        let arrivalOffset = -dayOffset;
+                                        let dayStr = arrivalOffset > 0 ? ` (+${arrivalOffset}${txt.day_offset})` : (arrivalOffset < 0 ? ` (${arrivalOffset}${txt.day_offset})` : '');
+                                        
+                                        displayStr = `${iata} ${dh}:${dm} &rarr; HKG ${fl.time} <span style="color:#d93025;font-weight:600;font-size:10px;">${dayStr}</span>`;
+                                    }
+                                } else {
+                                    displayStr = direction === 'Departure' 
+                                        ? `HKG ${fl.time} &rarr; ${iata} (${txt.arr_unk})` 
+                                        : `${iata} (${txt.dep_unk}) &rarr; HKG ${fl.time}`;
+                                }
+
+                                detailsHtml += `
+                                    <div class="flight-item">
+                                        <div style="flex-grow: 1;">
+                                            <div style="margin-bottom: 3px;"><span class="flight-no">${fl.no}</span></div>
+                                            <div style="font-size: 11px; color: #555; font-weight: 500;">${displayStr}</div>
+                                        </div>
+                                        <div style="font-size: 11px; color: #1a73e8; font-weight: 600; text-align: right; white-space: nowrap;">
+                                            ⏱ ${durStr}
+                                        </div>
+                                    </div>`;
+                            });
+                            detailsHtml += `</div>`;
+                        }
+                    });
+
+                    html += `
+                        <div class="airline-row">
+                            <div class="airline-info">
+                                <div class="airline-icon">${iconText}</div>
+                                <div class="airline-name">${alName}</div>
+                            </div>
+                            ${pillsHtml}
+                            ${detailsHtml}
+                        </div>
+                    `;
+                }
+            }
+            
+            const directionText = direction === 'Departure' ? txt.dep_text : txt.arr_text;
+            container.innerHTML = html || `<div style="text-align:center; padding: 20px; color:#777; font-size:13px;">${txt.no_flights_pre}${directionText}${txt.no_flights_suf}</div>`;
+        }
+
+        window.togglePopupDay = function(el, uIdPrefix, day) {
+            if (el.classList.contains('disabled')) return;
+            
+            const wasSelected = el.classList.contains('selected');
+            const parent = el.parentElement;
+            parent.querySelectorAll('.day-pill').forEach(p => p.classList.remove('selected'));
+            
+            const airlineRow = parent.parentElement;
+            airlineRow.querySelectorAll('.flight-details-box').forEach(box => box.classList.remove('show'));
+
+            if (!wasSelected) {
+                el.classList.add('selected');
+                document.getElementById(`${uIdPrefix}-${day}`).classList.add('show');
+            }
+        };
+
+        function toggleFilterPanel() {
+            const panel = document.getElementById('filter-panel');
+            const btn = document.getElementById('toggle-filter-btn');
+            panel.classList.toggle('minimized');
+            btn.innerHTML = panel.classList.contains('minimized') ? '&plus;' : '&minus;';
+        }
+
+        window.toggleFilterDay = function(el) {
+            const day = el.dataset.day;
+            el.classList.toggle('active');
+            if (el.classList.contains('active')) {
+                globalSelectedDays.add(day);
+            } else {
+                globalSelectedDays.delete(day);
+            }
+            renderMapData();
+        };
+
+        window.updateTimeUI = function(type, element) {
+            let tMin = document.getElementById(`time-${type}-min`);
+            let tMax = document.getElementById(`time-${type}-max`);
+            let vMin = parseInt(tMin.value);
+            let vMax = parseInt(tMax.value);
+
+            if (vMin >= vMax) {
+                if (element === tMin) tMin.value = vMax - 1;
+                else tMax.value = vMin + 1;
+                vMin = parseInt(tMin.value);
+                vMax = parseInt(tMax.value);
+            }
+
+            document.getElementById(`time-${type}-val`).innerText = `${String(vMin).padStart(2,'0')}:00 - ${String(vMax).padStart(2,'0')}:00`;
+            const fill = document.getElementById(`time-${type}-fill`);
+            fill.style.left = `${(vMin / 24) * 100}%`;
+            fill.style.width = `${((vMax - vMin) / 24) * 100}%`;
+        };
+
+        window.clearAllFilters = function() {
+            document.getElementById('filter-dir').value = 'All';
+            document.getElementById('filter-region').value = 'All';
+            
+            document.getElementById('time-dep-min').value = 0;
+            document.getElementById('time-dep-max').value = 24;
+            document.getElementById('time-arr-min').value = 0;
+            document.getElementById('time-arr-max').value = 24;
+            
+            updateTimeUI('dep', document.getElementById('time-dep-min'));
+            updateTimeUI('arr', document.getElementById('time-arr-min'));
+
+            globalSelectedDays = new Set(DAY_KEYS);
+            document.querySelectorAll('.f-day-pill').forEach(p => p.classList.add('active'));
+
+            window.selectedIata = null;
+            window.currentRouteInfo = null;
+            window.currentOffsetLng = null;
+            
+            document.getElementById('filter-airline').value = 'All';
+            renderMapData();
+            map.flyTo([20, 114], 3, { duration: 0.8 }); 
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            updateTimeUI('dep', document.getElementById('time-dep-min'));
+            updateTimeUI('arr', document.getElementById('time-arr-min'));
+            
+            if (window.innerWidth <= 600) {
+                const panel = document.getElementById('filter-panel');
+                const btn = document.getElementById('toggle-filter-btn');
+                panel.classList.add('minimized');
+                btn.innerHTML = '&plus;';
+            }
+        });
+
+    </script>
+</body>
+</html>
