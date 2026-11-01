@@ -338,11 +338,11 @@
                 <div class="dir-radio-group">
                     <label class="dir-radio-option selected" id="dir-opt-dep">
                         <input type="radio" name="filter-dir" value="Departure" checked onchange="onDirChange(this)">
-                        <span id="ui-dir-dep">離港 (HKG &rarr; )</span>
+                        <span id="ui-dir-dep">離港</span>
                     </label>
                     <label class="dir-radio-option" id="dir-opt-arr">
                         <input type="radio" name="filter-dir" value="Arrival" onchange="onDirChange(this)">
-                        <span id="ui-dir-arr">抵港 ( &rarr; HKG)</span>
+                        <span id="ui-dir-arr">抵港</span>
                     </label>
                 </div>
             </div>
@@ -430,8 +430,8 @@
                 reset_btn: '重設',
                 dir_label: '方向',
                 dir_all: '所有路線',
-                dir_dep: '離港 (HKG &rarr; )',
-                dir_arr: '抵港 ( &rarr; HKG)',
+                dir_dep: '離港',
+                dir_arr: '抵港',
                 days_label: '星期',
                 days: { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' },
                 time_label_dep: '離港時間範圍',
@@ -475,8 +475,8 @@
                 reset_btn: 'Reset',
                 dir_label: 'DIRECTION',
                 dir_all: 'All Routes',
-                dir_dep: 'Departures (HKG &rarr; )',
-                dir_arr: 'Arrivals ( &rarr; HKG)',
+                dir_dep: 'Departures',
+                dir_arr: 'Arrivals',
                 days_label: 'DAYS OF WEEK',
                 days: { 'su': 'Su', 'mo': 'Mo', 'tu': 'Tu', 'we': 'We', 'th': 'Th', 'fr': 'Fr', 'sa': 'Sa' },
                 time_label_dep: 'DEPARTURE TIME',
@@ -1624,6 +1624,47 @@
             const q = encodeURIComponent(`Flights from ${origin} to ${dest} on ${dateStr}`);
             const url = `https://www.google.com/travel/flights?q=${q}&curr=HKD`;
             window.open(url, '_blank', 'noopener,noreferrer');
+        };
+
+        
+        // Map day keys to JS getDay() (0=Sun ... 6=Sat)
+        const DAY_KEY_TO_JS = { su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 };
+
+        function nextDateForDay(dayKey) {
+            const target = DAY_KEY_TO_JS[dayKey];
+            const d = new Date();
+            d.setHours(12, 0, 0, 0);
+            d.setDate(d.getDate() + 1); // start from tomorrow
+            while (d.getDay() !== target) {
+                d.setDate(d.getDate() + 1);
+            }
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return y + '-' + m + '-' + day;
+        }
+
+        window.openGoogleFlights = function(iata, direction, dayKey, flightNo) {
+            const dateStr = nextDateForDay(dayKey);
+            let origin, dest;
+            if (direction === 'Departure') {
+                origin = 'HKG';
+                dest = iata;
+            } else {
+                origin = iata;
+                dest = 'HKG';
+            }
+            const q = encodeURIComponent('Flights from ' + origin + ' to ' + dest + ' on ' + dateStr);
+            const url = 'https://www.google.com/travel/flights?q=' + q + '&curr=HKD';
+            window.open(url, '_blank', 'noopener,noreferrer');
+        };
+
+        window.deselectAllDays = function() {
+            globalSelectedDays.clear();
+            document.querySelectorAll('.f-day-pill').forEach(function(p) {
+                p.classList.remove('active');
+            });
+            renderMapData();
         };
 
         window.toggleFilterDay = function(el) {
