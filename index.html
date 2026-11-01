@@ -22,7 +22,7 @@
             background: #ffffff; padding: 10px 20px; border-radius: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.25); z-index: 2000;
             font-weight: 600; font-size: 14px; color: #1a1a1a; pointer-events: none;
-            transition: opacity 0.3s ease; /* Added transition for smooth fade out */
+            transition: opacity 0.3s ease;
         }
 
         /* -------------------------------------------
@@ -58,7 +58,7 @@
         
         .lang-option.active {
             background-color: #ffffff;
-            color: #1a73e8; /* Highlighted in Blue */
+            color: #1a73e8;
             box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
 
@@ -149,7 +149,7 @@
             background: #fff; border: 2px solid #1a73e8; border-radius: 50%;
             cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
-        #time-label-val { color: #1a73e8; font-weight: 700; }
+        #time-dep-val, #time-arr-val { color: #1a73e8; font-weight: 700; }
 
         /* Elevate Popup */
         .leaflet-popup-pane { z-index: 1100 !important; }
@@ -241,7 +241,6 @@
         <div class="filter-header">
             <h4 id="ui-title">航班篩選</h4>
             <div class="header-actions">
-                <!-- Removed inline style to use new CSS pill styling -->
                 <button class="reset-btn" id="reset-btn" onclick="clearAllFilters()">重設</button>
                 <button class="toggle-btn" id="toggle-filter-btn" onclick="toggleFilterPanel()">&minus;</button>
             </div>
@@ -270,13 +269,25 @@
                 </div>
             </div>
 
+            <!-- Departure Time Filter -->
             <div class="filter-group">
-                <label><span id="ui-time-label">時間範圍</span> <span id="time-label-val">00:00 - 24:00</span></label>
+                <label><span id="ui-time-dep-label">離港時間範圍</span> <span id="time-dep-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
-                    <div class="time-slider-fill" id="time-fill"></div>
-                    <input type="range" min="0" max="24" value="0" id="time-min" oninput="updateTimeUI()" onchange="triggerMapFilter()">
-                    <input type="range" min="0" max="24" value="24" id="time-max" oninput="updateTimeUI()" onchange="triggerMapFilter()">
+                    <div class="time-slider-fill" id="time-dep-fill"></div>
+                    <input type="range" min="0" max="24" value="0" id="time-dep-min" oninput="updateTimeUI('dep', this)" onchange="triggerMapFilter()">
+                    <input type="range" min="0" max="24" value="24" id="time-dep-max" oninput="updateTimeUI('dep', this)" onchange="triggerMapFilter()">
+                </div>
+            </div>
+
+            <!-- Arrival Time Filter -->
+            <div class="filter-group">
+                <label><span id="ui-time-arr-label">抵港時間範圍</span> <span id="time-arr-val">00:00 - 24:00</span></label>
+                <div class="time-slider-wrapper">
+                    <div class="time-slider-track"></div>
+                    <div class="time-slider-fill" id="time-arr-fill"></div>
+                    <input type="range" min="0" max="24" value="0" id="time-arr-min" oninput="updateTimeUI('arr', this)" onchange="triggerMapFilter()">
+                    <input type="range" min="0" max="24" value="24" id="time-arr-max" oninput="updateTimeUI('arr', this)" onchange="triggerMapFilter()">
                 </div>
             </div>
 
@@ -308,7 +319,8 @@
                 dir_arr: '抵港 ( &rarr; HKG)',
                 days_label: '星期',
                 days: { 'su': '日', 'mo': '一', 'tu': '二', 'we': '三', 'th': '四', 'fr': '五', 'sa': '六' },
-                time_label: '時間範圍',
+                time_label_dep: '離港時間範圍',
+                time_label_arr: '抵港時間範圍',
                 airline_label: '航空公司',
                 airline_all: '所有航空公司',
                 hkg_tooltip: 'HKG - 香港',
@@ -341,7 +353,8 @@
                 dir_arr: 'Arrivals ( &rarr; HKG)',
                 days_label: 'DAYS OF WEEK',
                 days: { 'su': 'Su', 'mo': 'Mo', 'tu': 'Tu', 'we': 'We', 'th': 'Th', 'fr': 'Fr', 'sa': 'Sa' },
-                time_label: 'TIME WINDOW',
+                time_label_dep: 'DEPARTURE TIME',
+                time_label_arr: 'ARRIVAL TIME',
                 airline_label: 'AIRLINE',
                 airline_all: 'All Airlines',
                 hkg_tooltip: 'HKG - Hong Kong',
@@ -745,7 +758,8 @@
                 el.innerText = txt.days[el.dataset.day];
             });
             
-            document.getElementById('ui-time-label').innerText = txt.time_label;
+            document.getElementById('ui-time-dep-label').innerText = txt.time_label_dep;
+            document.getElementById('ui-time-arr-label').innerText = txt.time_label_arr;
             document.getElementById('ui-airline-label').innerText = txt.airline_label;
             
             populateAirlineFilter();
@@ -792,7 +806,7 @@
             return `${h}${i18n[currentLang].hours} ${mins}${i18n[currentLang].mins}`;
         }
 
-                function initMap() {
+        function initMap() {
             updateLanguageUI();
             
             map = L.map('map', { 
@@ -803,13 +817,12 @@
                 zoomControl: false
             });
 
-            
             // Add zoom controls back to the bottom-left corner
             L.control.zoom({ position: 'bottomleft' }).addTo(map);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
             markersLayer = L.featureGroup().addTo(map);
             linesLayer = L.featureGroup().addTo(map);
@@ -968,8 +981,10 @@
 
             const fDir = document.getElementById('filter-dir').value;
             const fAirline = document.getElementById('filter-airline').value;
-            const tMin = parseInt(document.getElementById('time-min').value);
-            const tMax = parseInt(document.getElementById('time-max').value);
+            const depMin = parseInt(document.getElementById('time-dep-min').value);
+            const depMax = parseInt(document.getElementById('time-dep-max').value);
+            const arrMin = parseInt(document.getElementById('time-arr-min').value);
+            const arrMax = parseInt(document.getElementById('time-arr-max').value);
             const txt = i18n[currentLang];
 
             [-360, 0, 360].forEach(offset => {
@@ -993,9 +1008,16 @@
                             if (fDir !== 'All' && fl.type !== fDir) continue;
                             
                             const flHour = parseInt(fl.time.split(':')[0], 10);
-                            if (flHour >= tMin && flHour < (tMax === 24 ? 25 : tMax)) {
-                                hasValidFlight = true;
-                                break;
+                            if (fl.type === 'Departure') {
+                                if (flHour >= depMin && flHour < (depMax === 24 ? 25 : depMax)) {
+                                    hasValidFlight = true;
+                                    break;
+                                }
+                            } else if (fl.type === 'Arrival') {
+                                if (flHour >= arrMin && flHour < (arrMax === 24 ? 25 : arrMax)) {
+                                    hasValidFlight = true;
+                                    break;
+                                }
                             }
                         }
                         if (hasValidFlight) break;
@@ -1151,8 +1173,14 @@
             if (!container) return;
             
             const fAirline = document.getElementById('filter-airline').value;
-            const tMin = parseInt(document.getElementById('time-min').value);
-            const tMax = parseInt(document.getElementById('time-max').value);
+            const depMin = parseInt(document.getElementById('time-dep-min').value);
+            const depMax = parseInt(document.getElementById('time-dep-max').value);
+            const arrMin = parseInt(document.getElementById('time-arr-min').value);
+            const arrMax = parseInt(document.getElementById('time-arr-max').value);
+            
+            const tMin = direction === 'Departure' ? depMin : arrMin;
+            const tMax = direction === 'Departure' ? depMax : arrMax;
+            
             const txt = i18n[currentLang];
             let html = '';
 
@@ -1307,32 +1335,37 @@
             renderMapData();
         };
 
-        function updateTimeUI() {
-            let tMin = document.getElementById('time-min');
-            let tMax = document.getElementById('time-max');
+        window.updateTimeUI = function(type, element) {
+            let tMin = document.getElementById(`time-${type}-min`);
+            let tMax = document.getElementById(`time-${type}-max`);
             let vMin = parseInt(tMin.value);
             let vMax = parseInt(tMax.value);
 
+            // Prevent sliders from crossing over each other
             if (vMin >= vMax) {
-                if (this === tMin) tMin.value = vMax - 1;
+                if (element === tMin) tMin.value = vMax - 1;
                 else tMax.value = vMin + 1;
                 vMin = parseInt(tMin.value);
                 vMax = parseInt(tMax.value);
             }
 
-            document.getElementById('time-label-val').innerText = `${String(vMin).padStart(2,'0')}:00 - ${String(vMax).padStart(2,'0')}:00`;
-            const fill = document.getElementById('time-fill');
+            document.getElementById(`time-${type}-val`).innerText = `${String(vMin).padStart(2,'0')}:00 - ${String(vMax).padStart(2,'0')}:00`;
+            const fill = document.getElementById(`time-${type}-fill`);
             fill.style.left = `${(vMin / 24) * 100}%`;
             fill.style.width = `${((vMax - vMin) / 24) * 100}%`;
-        }
+        };
 
         window.clearAllFilters = function() {
             document.getElementById('filter-dir').value = 'All';
             document.getElementById('filter-airline').value = 'All';
             
-            document.getElementById('time-min').value = 0;
-            document.getElementById('time-max').value = 24;
-            updateTimeUI();
+            document.getElementById('time-dep-min').value = 0;
+            document.getElementById('time-dep-max').value = 24;
+            document.getElementById('time-arr-min').value = 0;
+            document.getElementById('time-arr-max').value = 24;
+            
+            updateTimeUI('dep', document.getElementById('time-dep-min'));
+            updateTimeUI('arr', document.getElementById('time-arr-min'));
 
             globalSelectedDays = new Set(DAY_KEYS);
             document.querySelectorAll('.f-day-pill').forEach(p => p.classList.add('active'));
@@ -1347,7 +1380,8 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initMap();
-            updateTimeUI();
+            updateTimeUI('dep', document.getElementById('time-dep-min'));
+            updateTimeUI('arr', document.getElementById('time-arr-min'));
             
             // Auto-minimize filter box if viewed on a mobile device
             if (window.innerWidth <= 600) {
