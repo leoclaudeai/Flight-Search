@@ -67,7 +67,7 @@
             position: absolute; top: 15px; left: 15px; 
             background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(4px);
             padding: 15px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 1000; width: 250px; border: 1px solid #e0e0e0;
+            z-index: 1000; width: 260px; border: 1px solid #e0e0e0;
             transition: all 0.3s ease;
         }
         
@@ -78,7 +78,6 @@
         .filter-header h4 { margin: 0; font-size: 15px; color: #1a73e8; }
         .header-actions { display: flex; align-items: center; gap: 8px; }
         
-        /* Updated Reset Button Styling */
         .reset-btn {
             background: #fce8e6; border: 1px solid #fad2cf; color: #d93025; font-size: 12px; 
             font-weight: 700; cursor: pointer; padding: 4px 12px; border-radius: 16px;
@@ -96,8 +95,11 @@
         /* Minimized State */
         #filter-content {
             margin-top: 14px; transition: max-height 0.3s ease, opacity 0.2s ease;
-            max-height: 500px; opacity: 1; overflow: hidden;
+            max-height: 65vh; opacity: 1; overflow-y: auto; overflow-x: hidden; padding-right: 4px;
         }
+        #filter-content::-webkit-scrollbar { width: 4px; }
+        #filter-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+        
         #filter-panel.minimized #filter-content {
             max-height: 0; opacity: 0; margin-top: 0;
         }
@@ -150,6 +152,13 @@
             cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         #time-dep-val, #time-arr-val { color: #1a73e8; font-weight: 700; }
+        
+        /* Available Locations List */
+        .location-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 180px; overflow-y: auto; padding-right: 4px; margin-top: 4px; }
+        .loc-pill { font-size: 11px; background: #f8f9fa; border: 1px solid #dadce0; border-radius: 12px; padding: 4px 8px; cursor: pointer; transition: all 0.2s; font-weight: 600; color: #3c4043; user-select: none; }
+        .loc-pill:hover { background: #e8f0fe; color: #1a73e8; border-color: #1a73e8; }
+        .location-list::-webkit-scrollbar { width: 4px; }
+        .location-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
 
         /* Elevate Popup */
         .leaflet-popup-pane { z-index: 1100 !important; }
@@ -270,7 +279,7 @@
             </div>
 
             <!-- Departure Time Filter -->
-            <div class="filter-group">
+            <div class="filter-group" id="group-time-dep">
                 <label><span id="ui-time-dep-label">離港時間範圍</span> <span id="time-dep-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
@@ -281,7 +290,7 @@
             </div>
 
             <!-- Arrival Time Filter -->
-            <div class="filter-group">
+            <div class="filter-group" id="group-time-arr">
                 <label><span id="ui-time-arr-label">抵港時間範圍</span> <span id="time-arr-val">00:00 - 24:00</span></label>
                 <div class="time-slider-wrapper">
                     <div class="time-slider-track"></div>
@@ -296,6 +305,12 @@
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
                     <option value="All" id="ui-airline-all">所有航空公司</option>
                 </select>
+            </div>
+            
+            <!-- Dynamic Available Locations list -->
+            <div class="filter-group" id="group-locations" style="display: none;">
+                <label id="ui-locations-label">可用地點</label>
+                <div id="location-list" class="location-list"></div>
             </div>
         </div>
     </div>
@@ -323,6 +338,7 @@
                 time_label_arr: '抵港時間範圍',
                 airline_label: '航空公司',
                 airline_all: '所有航空公司',
+                locations_label: '可用地點',
                 hkg_tooltip: 'HKG - 香港',
                 fastest_out: '最快離港:',
                 fastest_in: '最快抵港:',
@@ -357,6 +373,7 @@
                 time_label_arr: 'ARRIVAL TIME',
                 airline_label: 'AIRLINE',
                 airline_all: 'All Airlines',
+                locations_label: 'AVAILABLE LOCATIONS',
                 hkg_tooltip: 'HKG - Hong Kong',
                 fastest_out: 'Fastest Outbound:',
                 fastest_in: 'Fastest Inbound:',
@@ -720,6 +737,8 @@
         window.currentRouteInfo = null;
         window.currentOffsetLng = null;
         window.currentDirection = 'Departure';
+        
+        window.currentValidLocationsMap = {}; // Maps IATA to {info, offsetLng} for sidebar clicking
 
         function getLocationName(iata, fallbackInfo) {
             const dictionaryHit = AIRPORT_INFO[iata];
@@ -737,7 +756,7 @@
             if (infoObj) {
                 return currentLang === 'zh' ? infoObj.nameZh : infoObj.nameEn;
             }
-            return alCode; // Fallback
+            return alCode;
         }
 
         function updateLanguageUI() {
@@ -762,7 +781,8 @@
             document.getElementById('ui-time-arr-label').innerText = txt.time_label_arr;
             document.getElementById('ui-airline-label').innerText = txt.airline_label;
             
-            populateAirlineFilter();
+            const locLabel = document.getElementById('ui-locations-label');
+            if (locLabel) locLabel.innerText = txt.locations_label;
         }
 
         window.setLanguage = function(lang) {
@@ -817,7 +837,6 @@
                 zoomControl: false
             });
 
-            // Add zoom controls back to the bottom-left corner
             L.control.zoom({ position: 'bottomleft' }).addTo(map);
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -929,33 +948,62 @@
                 console.warn('Flightlist_results.csv not found or unreadable.');
             }
 
-            // Implementation of smooth fade out for loading overlay
             const loadingEl = document.getElementById('loading');
             loadingEl.style.opacity = '0';
             setTimeout(() => {
                 loadingEl.style.display = 'none';
             }, 300);
 
-            populateAirlineFilter();
             renderMapData();
         }
 
-        function populateAirlineFilter() {
-            if (!routeData.routes) return;
+        function renderMapData() {
+            markersLayer.clearLayers();
+            linesLayer.clearLayers();
+            mapMarkers = [];
+            window.currentValidLocationsMap = {};
+
+            const fDir = document.getElementById('filter-dir').value;
             
-            const currentSelection = document.getElementById('filter-airline').value;
-            let airlinesSet = new Set();
+            // Toggle visibility of Time Sliders based on Direction
+            document.getElementById('group-time-dep').style.display = (fDir === 'Arrival') ? 'none' : 'block';
+            document.getElementById('group-time-arr').style.display = (fDir === 'Departure') ? 'none' : 'block';
+
+            let fAirline = document.getElementById('filter-airline').value;
+            const depMin = parseInt(document.getElementById('time-dep-min').value);
+            const depMax = parseInt(document.getElementById('time-dep-max').value);
+            const arrMin = parseInt(document.getElementById('time-arr-min').value);
+            const arrMax = parseInt(document.getElementById('time-arr-max').value);
+            const txt = i18n[currentLang];
+
+            // --- PASS 1: Determine all available airlines that match Time, Day, and Direction ---
+            let availableAirlines = new Set();
             for (const [iata, info] of Object.entries(routeData.routes)) {
-                for (const al in info.airlines) {
-                    airlinesSet.add(al);
+                if (!info.lat || !info.lng) continue;
+                for (const [alCode, alData] of Object.entries(info.airlines)) {
+                    let hasValidFlightForAirline = false;
+                    for (const [day, flights] of Object.entries(alData.days)) {
+                        if (!globalSelectedDays.has(day)) continue;
+                        for (const fl of flights) {
+                            if (fDir !== 'All' && fl.type !== fDir) continue;
+                            const flHour = parseInt(fl.time.split(':')[0], 10);
+                            if (fl.type === 'Departure') {
+                                if (flHour >= depMin && flHour < (depMax === 24 ? 25 : depMax)) hasValidFlightForAirline = true;
+                            } else if (fl.type === 'Arrival') {
+                                if (flHour >= arrMin && flHour < (arrMax === 24 ? 25 : arrMax)) hasValidFlightForAirline = true;
+                            }
+                        }
+                        if (hasValidFlightForAirline) break;
+                    }
+                    if (hasValidFlightForAirline) availableAirlines.add(alCode);
                 }
             }
-            
+
+            // Update Airline Dropdown
             const sel = document.getElementById('filter-airline');
+            sel.innerHTML = `<option value="All" id="ui-airline-all">${txt.airline_all}</option>`;
             
-            sel.innerHTML = `<option value="All" id="ui-airline-all">${i18n[currentLang].airline_all}</option>`;
-            
-            const sortedAl = Array.from(airlinesSet).sort((a,b) => {
+            const sortedAl = Array.from(availableAirlines).sort((a,b) => {
                 const infoA = AIRLINE_INFO[a];
                 const infoB = AIRLINE_INFO[b];
                 const nameA = infoA ? `${currentLang === 'zh' ? infoA.nameZh : infoA.nameEn} (${infoA.iata})` : a;
@@ -971,27 +1019,22 @@
                 sel.add(opt);
             });
             
-            sel.value = currentSelection;
-        }
+            if (availableAirlines.has(fAirline)) {
+                sel.value = fAirline;
+            } else {
+                fAirline = 'All';
+                sel.value = 'All';
+            }
 
-        function renderMapData() {
-            markersLayer.clearLayers();
-            linesLayer.clearLayers();
-            mapMarkers = [];
-
-            const fDir = document.getElementById('filter-dir').value;
-            const fAirline = document.getElementById('filter-airline').value;
-            const depMin = parseInt(document.getElementById('time-dep-min').value);
-            const depMax = parseInt(document.getElementById('time-dep-max').value);
-            const arrMin = parseInt(document.getElementById('time-arr-min').value);
-            const arrMax = parseInt(document.getElementById('time-arr-max').value);
-            const txt = i18n[currentLang];
-
+            // Base Map setup
             [-360, 0, 360].forEach(offset => {
                 L.circleMarker([HKG_LATLNG.lat, HKG_LATLNG.lng + offset], {
                     radius: 6, fillColor: '#d93025', color: '#fff', weight: 2, fillOpacity: 1
                 }).bindTooltip(txt.hkg_tooltip, {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
             });
+
+            // --- PASS 2: Collect valid locations and Draw markers based on ALL filters (including selected airline) ---
+            let validLocations = [];
 
             for (const [iata, info] of Object.entries(routeData.routes)) {
                 if (!info.lat || !info.lng) continue;
@@ -1048,10 +1091,14 @@
 
                     let wrappedLng = latlngs[latlngs.length - 1][1];
                     const loc = getLocationName(iata, info);
+                    
+                    let primaryOffsetLng = wrappedLng; 
 
                     [-360, 0, 360].forEach(offset => {
                         const offsetLatLngs = latlngs.map(c => [c[0], c[1] + offset]);
                         const offsetWrappedLng = wrappedLng + offset;
+                        
+                        if (offset === 0) primaryOffsetLng = offsetWrappedLng;
 
                         if (!window.selectedIata || window.selectedIata === iata) {
                             L.polyline(offsetLatLngs, {
@@ -1074,22 +1121,53 @@
                         m.addTo(markersLayer);
                         mapMarkers.push(m);
                     });
+                    
+                    validLocations.push({ iata, loc, info, primaryOffsetLng });
                 }
+            }
+
+            // Update Locations Panel
+            const locGroup = document.getElementById('group-locations');
+            const locList = document.getElementById('location-list');
+            if (validLocations.length > 0) {
+                locGroup.style.display = 'block';
+                // Sort by City Name alphabetically
+                validLocations.sort((a, b) => a.loc.city.localeCompare(b.loc.city));
+                locList.innerHTML = validLocations.map(v => 
+                    `<div class="loc-pill" onclick="triggerLocationClick('${v.iata}')">${v.loc.city} (${v.iata})</div>`
+                ).join('');
+
+                validLocations.forEach(v => {
+                    window.currentValidLocationsMap[v.iata] = { info: v.info, offsetLng: v.primaryOffsetLng };
+                });
+            } else {
+                locGroup.style.display = 'none';
+                locList.innerHTML = '';
             }
         }
 
         window.triggerMapFilter = function() { renderMapData(); };
+        
+        // Exposed function for when user clicks a location pill
+        window.triggerLocationClick = function(iata) {
+            if (window.currentValidLocationsMap && window.currentValidLocationsMap[iata]) {
+                const locData = window.currentValidLocationsMap[iata];
+                showPopup(iata, locData.info, locData.offsetLng);
+            }
+        };
 
         function showPopup(iata, info, offsetWrappedLng) {
             window.selectedIata = iata;
             window.currentRouteInfo = info;
             window.currentOffsetLng = offsetWrappedLng;
-            window.currentDirection = 'Departure';
+            
+            // Set default tab safely if a direction is explicitly filtered
+            const fDir = document.getElementById('filter-dir').value;
+            window.currentDirection = (fDir === 'Arrival') ? 'Arrival' : 'Departure';
             
             renderMapData(); 
             
             const targetZoom = 5;
-            
             let targetPoint = map.project([info.lat, offsetWrappedLng], targetZoom);
             
             if (window.innerWidth <= 600) {
@@ -1341,7 +1419,6 @@
             let vMin = parseInt(tMin.value);
             let vMax = parseInt(tMax.value);
 
-            // Prevent sliders from crossing over each other
             if (vMin >= vMax) {
                 if (element === tMin) tMin.value = vMax - 1;
                 else tMax.value = vMin + 1;
@@ -1357,7 +1434,6 @@
 
         window.clearAllFilters = function() {
             document.getElementById('filter-dir').value = 'All';
-            document.getElementById('filter-airline').value = 'All';
             
             document.getElementById('time-dep-min').value = 0;
             document.getElementById('time-dep-max').value = 24;
@@ -1374,6 +1450,8 @@
             window.currentRouteInfo = null;
             window.currentOffsetLng = null;
             
+            // Re-render, clearing the Airline select value will be handled natively in pass 1 because it defaults back to 'All'
+            document.getElementById('filter-airline').value = 'All';
             renderMapData();
             map.flyTo([20, 114], 3, { duration: 0.8 }); 
         };
@@ -1383,7 +1461,6 @@
             updateTimeUI('dep', document.getElementById('time-dep-min'));
             updateTimeUI('arr', document.getElementById('time-arr-min'));
             
-            // Auto-minimize filter box if viewed on a mobile device
             if (window.innerWidth <= 600) {
                 const panel = document.getElementById('filter-panel');
                 const btn = document.getElementById('toggle-filter-btn');
