@@ -307,6 +307,21 @@
                 </select>
             </div>
             
+            <!-- Popular Locations / Region Filter -->
+            <div class="filter-group">
+                <label id="ui-region-label">熱門地點</label>
+                <select id="filter-region" onchange="window.triggerMapFilter()">
+                    <option value="All" id="ui-region-all">所有地區</option>
+                    <option value="China" id="ui-region-cn">中國內地</option>
+                    <option value="Taiwan" id="ui-region-tw">台灣</option>
+                    <option value="Japan" id="ui-region-jp">日本</option>
+                    <option value="Thailand" id="ui-region-th">泰國</option>
+                    <option value="Vietnam" id="ui-region-vn">越南</option>
+                    <option value="Europe" id="ui-region-eu">歐洲</option>
+                    <option value="USA" id="ui-region-us">美國</option>
+                </select>
+            </div>
+            
             <!-- Dynamic Available Locations list -->
             <div class="filter-group" id="group-locations" style="display: none;">
                 <label id="ui-locations-label">可用地點</label>
@@ -338,6 +353,15 @@
                 time_label_arr: '抵港時間範圍',
                 airline_label: '航空公司',
                 airline_all: '所有航空公司',
+                region_label: '熱門地點', 
+                region_all: '所有地區', 
+                region_cn: '中國內地', 
+                region_tw: '台灣', 
+                region_jp: '日本', 
+                region_th: '泰國', 
+                region_vn: '越南', 
+                region_eu: '歐洲', 
+                region_us: '美國',
                 locations_label: '可用地點',
                 hkg_tooltip: 'HKG - 香港',
                 fastest_out: '最快離港:',
@@ -373,6 +397,15 @@
                 time_label_arr: 'ARRIVAL TIME',
                 airline_label: 'AIRLINE',
                 airline_all: 'All Airlines',
+                region_label: 'POPULAR LOCATIONS', 
+                region_all: 'All Regions', 
+                region_cn: 'China', 
+                region_tw: 'Taiwan', 
+                region_jp: 'Japan', 
+                region_th: 'Thailand', 
+                region_vn: 'Vietnam', 
+                region_eu: 'Europe', 
+                region_us: 'USA',
                 locations_label: 'AVAILABLE LOCATIONS',
                 hkg_tooltip: 'HKG - Hong Kong',
                 fastest_out: 'Fastest Outbound:',
@@ -701,6 +734,31 @@
             "INC": { cityEn: "Yinchuan", cityZh: "銀川", nameEn: "Hedong", nameZh: "河東國際機場" },
             "SJW": { cityEn: "Shijiazhuang", cityZh: "石家莊", nameEn: "Zhengding", nameZh: "正定國際機場" }
         };
+        
+        // --- IATA TO REGION MAPPING ---
+        const IATA_TO_REGION = {
+            "PEK": "China", "PKX": "China", "CAN": "China", "PVG": "China", "SHA": "China", 
+            "HGH": "China", "SYX": "China", "WNZ": "China", "FOC": "China", "WUH": "China", 
+            "CSX": "China", "DNH": "China", "XMN": "China", "CTU": "China", "TFU": "China", 
+            "HAK": "China", "TAO": "China", "NKG": "China", "NGB": "China", "XIY": "China", 
+            "KMG": "China", "LHW": "China", "WUX": "China", "HLD": "China", "TYN": "China", 
+            "CGO": "China", "TSN": "China", "CKG": "China", "TNA": "China", "ENH": "China", 
+            "URC": "China", "LJG": "China", "CZX": "China", "DYG": "China", "HFE": "China", 
+            "NNG": "China", "DAT": "China", "HRB": "China", "YIH": "China", "YCU": "China", 
+            "KWL": "China", "LXA": "China", "CGQ": "China", "XNN": "China", "INC": "China", 
+            "SJW": "China", "HSN": "China", "YIW": "China",
+            "TPE": "Taiwan", "KHH": "Taiwan", "RMQ": "Taiwan",
+            "HND": "Japan", "NRT": "Japan", "KIX": "Japan", "FUK": "Japan", "OKA": "Japan", 
+            "SDJ": "Japan", "CTS": "Japan", "HIJ": "Japan", "TAK": "Japan", "NGO": "Japan", 
+            "KMQ": "Japan", "ISG": "Japan",
+            "BKK": "Thailand", "DMK": "Thailand", "CNX": "Thailand", "HKT": "Thailand", "USM": "Thailand",
+            "SGN": "Vietnam", "HAN": "Vietnam", "DAD": "Vietnam", "PQC": "Vietnam",
+            "CDG": "Europe", "ZRH": "Europe", "MAD": "Europe", "MXP": "Europe", "MAN": "Europe", 
+            "FCO": "Europe", "LHR": "Europe", "IST": "Europe", "SVO": "Europe", "HEL": "Europe", 
+            "AMS": "Europe", "FRA": "Europe", "BRU": "Europe", "MUC": "Europe", "BCN": "Europe",
+            "LAX": "USA", "SFO": "USA", "JFK": "USA", "SEA": "USA", "ORD": "USA", "HNL": "USA", 
+            "DFW": "USA", "BOS": "USA"
+        };
 
         const TIMEZONE_OFFSETS = {
             "ICN": 9, "CDG": 2, "LAX": -7, "BNE": 10, "MEL": 10, "ADD": 3, "ZRH": 2, "DXB": 4, "SYD": 10, "MAD": 2,
@@ -738,7 +796,7 @@
         window.currentOffsetLng = null;
         window.currentDirection = 'Departure';
         
-        window.currentValidLocationsMap = {}; // Maps IATA to {info, offsetLng} for sidebar clicking
+        window.currentValidLocationsMap = {}; 
 
         function getLocationName(iata, fallbackInfo) {
             const dictionaryHit = AIRPORT_INFO[iata];
@@ -780,6 +838,16 @@
             document.getElementById('ui-time-dep-label').innerText = txt.time_label_dep;
             document.getElementById('ui-time-arr-label').innerText = txt.time_label_arr;
             document.getElementById('ui-airline-label').innerText = txt.airline_label;
+            
+            document.getElementById('ui-region-label').innerText = txt.region_label;
+            document.getElementById('ui-region-all').innerText = txt.region_all;
+            document.getElementById('ui-region-cn').innerText = txt.region_cn;
+            document.getElementById('ui-region-tw').innerText = txt.region_tw;
+            document.getElementById('ui-region-jp').innerText = txt.region_jp;
+            document.getElementById('ui-region-th').innerText = txt.region_th;
+            document.getElementById('ui-region-vn').innerText = txt.region_vn;
+            document.getElementById('ui-region-eu').innerText = txt.region_eu;
+            document.getElementById('ui-region-us').innerText = txt.region_us;
             
             const locLabel = document.getElementById('ui-locations-label');
             if (locLabel) locLabel.innerText = txt.locations_label;
@@ -964,8 +1032,8 @@
             window.currentValidLocationsMap = {};
 
             const fDir = document.getElementById('filter-dir').value;
+            const fRegion = document.getElementById('filter-region').value;
             
-            // Toggle visibility of Time Sliders based on Direction
             document.getElementById('group-time-dep').style.display = (fDir === 'Arrival') ? 'none' : 'block';
             document.getElementById('group-time-arr').style.display = (fDir === 'Departure') ? 'none' : 'block';
 
@@ -976,10 +1044,12 @@
             const arrMax = parseInt(document.getElementById('time-arr-max').value);
             const txt = i18n[currentLang];
 
-            // --- PASS 1: Determine all available airlines that match Time, Day, and Direction ---
+            // --- PASS 1: Determine all available airlines that match Time, Day, Direction, and Region ---
             let availableAirlines = new Set();
             for (const [iata, info] of Object.entries(routeData.routes)) {
                 if (!info.lat || !info.lng) continue;
+                if (fRegion !== 'All' && IATA_TO_REGION[iata] !== fRegion) continue;
+                
                 for (const [alCode, alData] of Object.entries(info.airlines)) {
                     let hasValidFlightForAirline = false;
                     for (const [day, flights] of Object.entries(alData.days)) {
@@ -999,7 +1069,6 @@
                 }
             }
 
-            // Update Airline Dropdown
             const sel = document.getElementById('filter-airline');
             sel.innerHTML = `<option value="All" id="ui-airline-all">${txt.airline_all}</option>`;
             
@@ -1033,11 +1102,12 @@
                 }).bindTooltip(txt.hkg_tooltip, {direction: 'top', offset: [0, -5]}).addTo(markersLayer);
             });
 
-            // --- PASS 2: Collect valid locations and Draw markers based on ALL filters (including selected airline) ---
+            // --- PASS 2: Collect valid locations and Draw markers ---
             let validLocations = [];
 
             for (const [iata, info] of Object.entries(routeData.routes)) {
                 if (!info.lat || !info.lng) continue;
+                if (fRegion !== 'All' && IATA_TO_REGION[iata] !== fRegion) continue;
                 
                 let hasValidFlight = false;
                 
@@ -1069,7 +1139,6 @@
                 }
 
                 if (hasValidFlight) {
-                    
                     const start = turf.point([HKG_LATLNG.lng, HKG_LATLNG.lat]);
                     const end = turf.point([info.lng, info.lat]);
                     const greatCircle = turf.greatCircle(start, end, { npoints: 75 });
@@ -1126,12 +1195,10 @@
                 }
             }
 
-            // Update Locations Panel
             const locGroup = document.getElementById('group-locations');
             const locList = document.getElementById('location-list');
             if (validLocations.length > 0) {
                 locGroup.style.display = 'block';
-                // Sort by City Name alphabetically
                 validLocations.sort((a, b) => a.loc.city.localeCompare(b.loc.city));
                 locList.innerHTML = validLocations.map(v => 
                     `<div class="loc-pill" onclick="triggerLocationClick('${v.iata}')">${v.loc.city} (${v.iata})</div>`
@@ -1148,7 +1215,6 @@
 
         window.triggerMapFilter = function() { renderMapData(); };
         
-        // Exposed function for when user clicks a location pill
         window.triggerLocationClick = function(iata) {
             if (window.currentValidLocationsMap && window.currentValidLocationsMap[iata]) {
                 const locData = window.currentValidLocationsMap[iata];
@@ -1161,7 +1227,6 @@
             window.currentRouteInfo = info;
             window.currentOffsetLng = offsetWrappedLng;
             
-            // Set default tab safely if a direction is explicitly filtered
             const fDir = document.getElementById('filter-dir').value;
             window.currentDirection = (fDir === 'Arrival') ? 'Arrival' : 'Departure';
             
@@ -1291,10 +1356,17 @@
                     const uId = `fl-${iata}-${alCode}-${direction}`;
                     
                     let pillsHtml = `<div class="day-pills">`;
+                    let firstDayFound = false;
+                    
                     DAY_KEYS.forEach(d => {
                         const count = dayData[d].length;
                         if (count > 0) {
-                            pillsHtml += `<div class="day-pill active" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} ${txt.flights_count}">${txt.days[d]}</div>`;
+                            let activeClass = '';
+                            if (!firstDayFound) {
+                                activeClass = 'selected';
+                                firstDayFound = true;
+                            }
+                            pillsHtml += `<div class="day-pill active ${activeClass}" onclick="togglePopupDay(this, '${uId}', '${d}')" title="${count} ${txt.flights_count}">${txt.days[d]}</div>`;
                         } else {
                             pillsHtml += `<div class="day-pill disabled">${txt.days[d]}</div>`;
                         }
@@ -1302,9 +1374,17 @@
                     pillsHtml += `</div>`;
 
                     let detailsHtml = '';
+                    firstDayFound = false; // Reset for details rendering
+                    
                     DAY_KEYS.forEach(d => {
                         if (dayData[d].length > 0) {
-                            detailsHtml += `<div class="flight-details-box" id="${uId}-${d}">`;
+                            let showClass = '';
+                            if (!firstDayFound) {
+                                showClass = 'show';
+                                firstDayFound = true;
+                            }
+                            
+                            detailsHtml += `<div class="flight-details-box ${showClass}" id="${uId}-${d}">`;
                             dayData[d].sort((a,b) => a.time.localeCompare(b.time)).forEach(fl => {
                                 
                                 const cleanFlNo = fl.no.replace(/\s+/g, '').toUpperCase();
@@ -1434,6 +1514,7 @@
 
         window.clearAllFilters = function() {
             document.getElementById('filter-dir').value = 'All';
+            document.getElementById('filter-region').value = 'All';
             
             document.getElementById('time-dep-min').value = 0;
             document.getElementById('time-dep-max').value = 24;
@@ -1450,7 +1531,6 @@
             window.currentRouteInfo = null;
             window.currentOffsetLng = null;
             
-            // Re-render, clearing the Airline select value will be handled natively in pass 1 because it defaults back to 'All'
             document.getElementById('filter-airline').value = 'All';
             renderMapData();
             map.flyTo([20, 114], 3, { duration: 0.8 }); 
