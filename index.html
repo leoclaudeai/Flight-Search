@@ -1536,7 +1536,7 @@
                                 }
 
                                 detailsHtml += `
-                                    <div class="flight-item" onclick="openGoogleFlights('${iata}', '${direction}', '${d}', '${fl.no.replace(/'/g, "\\'")}')" title="View prices on Google Flights">
+                                    <div class="flight-item" onclick="openGoogleFlights('${iata}', '${direction}', '${d}', '${String(fl.no).replace(/'/g, '')}')" title="View prices on Google Flights">
                                         <div style="flex-grow: 1;">
                                             <div style="margin-bottom: 3px;"><span class="flight-no">${fl.no}</span></div>
                                             <div style="font-size: 11px; color: #555; font-weight: 500;">${displayStr}</div>
@@ -1593,48 +1593,14 @@
 
         
         // Map day keys to JS getDay() (0=Sun ... 6=Sat)
-        const DAY_KEY_TO_JS = { su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 };
-
-        function nextDateForDay(dayKey) {
-            const target = DAY_KEY_TO_JS[dayKey];
-            const d = new Date();
-            d.setHours(12, 0, 0, 0);
-            // start from tomorrow so we always get a future date
-            d.setDate(d.getDate() + 1);
-            while (d.getDay() !== target) {
-                d.setDate(d.getDate() + 1);
-            }
-            const y = d.getFullYear();
-            const m = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${y}-${m}-${day}`;
-        }
-
-        window.openGoogleFlights = function(iata, direction, dayKey, flightNo) {
-            const dateStr = nextDateForDay(dayKey);
-            let origin, dest;
-            if (direction === 'Departure') {
-                origin = 'HKG';
-                dest = iata;
-            } else {
-                origin = iata;
-                dest = 'HKG';
-            }
-            // Google Flights search URL
-            const q = encodeURIComponent(`Flights from ${origin} to ${dest} on ${dateStr}`);
-            const url = `https://www.google.com/travel/flights?q=${q}&curr=HKD`;
-            window.open(url, '_blank', 'noopener,noreferrer');
-        };
-
         
-        // Map day keys to JS getDay() (0=Sun ... 6=Sat)
         const DAY_KEY_TO_JS = { su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 };
 
         function nextDateForDay(dayKey) {
             const target = DAY_KEY_TO_JS[dayKey];
             const d = new Date();
             d.setHours(12, 0, 0, 0);
-            d.setDate(d.getDate() + 1); // start from tomorrow
+            d.setDate(d.getDate() + 1);
             while (d.getDay() !== target) {
                 d.setDate(d.getDate() + 1);
             }
