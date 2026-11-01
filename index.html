@@ -1693,73 +1693,107 @@
             var dest = (direction === 'Departure') ? iata : 'HKG';
             var dates = nextDatesForDay(dayKey, 8);
 
-            // Normalize: "CX 500" / "CX500" -> "CX500"
-            var targetNo = String(flightNo || '').replace(/\s+/g, '').toUpperCase();
+            var targetNo = String(flightNo || '').replace(/\\s+/g, '').toUpperCase();
+            var isHnd = (origin === 'HKG' && dest === 'HND') || (origin === 'HND' && dest === 'HKG');
 
-            var loadingText = (currentLang === 'zh') ? '正在查詢該航班未來 8 週票價…' : 'Loading prices for this flight (8 weeks)…';
+            var loadingText = (currentLang === 'zh') ? '正在查詢票價…' : 'Loading prices…';
             panel.innerHTML = '<div class="price-loading">' + loadingText + '</div>';
 
-            var results = [];
-            for (var i = 0; i < dates.length; i++) {
-                var date = dates[i];
-                try {
+            // Helper to render results
+            function renderResults(results, sourceNote) {
+                var title = (currentLang === 'zh')
+                    ? (flightNo + ' · 未來價格 (' + origin + ' → ' + dest + ')')
+                    : (flightNo + ' · Prices (' + origin + ' → ' + dest + ')');
+                var thDate = (currentLang === 'zh') ? '日期' : 'Date';
+                var thPrice = (currentLang === 'zh') ? '票價' : 'Price';
+                var na = (currentLang === 'zh') ? '暫無' : 'N/A';
+
+                var rows = results.map(function(r) {
+                    var priceCell = (r.price != null)
+                        ? '<a href="' + (r.link || '#') + '" target="_blank" rel="noopener">HK$' + Number(r.price).toLocaleString() + '</a>'
+                        : '<span class="price-na">' + na + '</span>';
+                    return '<tr><td>' + formatDisplayDate(r.date) + '</td><td>' + priceCell + '</td></tr>';
+                }).join('');
+
+                panel.innerHTML = '<h4>' + title + '</h4>'
+                    + (sourceNote ? '<div style="font-size:10px;color:#5f6368;margin-bottom:6px;">' + sourceNote + '</div>' : '')
+                    + '<table><thead><tr><th>' + thDate + '</th><th>' + thPrice + '</th></tr></thead>'
+                    + '<tbody>' + rows + '</tbody></table>';
+            }
+
+            // 1. Try Worker / SerpApi first
+            var liveResults = [];
+            var liveFailed = false;
+            try {
+                for (var i = 0; i < dates.length; i++) {
+                    var date = dates[i];
                     var url = PRICE_PROXY_URL + '?origin=' + encodeURIComponent(origin)
                         + '&dest=' + encodeURIComponent(dest)
                         + '&date=' + encodeURIComponent(date);
                     var res = await fetch(url);
+                    if (!res.ok) throw new Error('Worker error');
                     var data = await res.json();
                     var link = data.google_flights_url
                         || ('https://www.google.com/travel/flights?q=' + encodeURIComponent('Flights ' + origin + ' to ' + dest + ' on ' + date) + '&curr=HKD');
 
                     var matchedPrice = null;
-                    var matched = false;
                     var flights = data.flights || [];
                     for (var j = 0; j < flights.length; j++) {
                         var nums = (flights[j].flight_numbers || []).map(function(n) {
-                            return String(n).replace(/\s+/g, '').toUpperCase();
+                            return String(n).replace(/\\s+/g, '').toUpperCase();
                         });
                         if (nums.indexOf(targetNo) !== -1) {
                             matchedPrice = flights[j].price;
-                            matched = true;
                             break;
                         }
                     }
+                    // If no exact match, fall back to cheapest for this date
+                    if (matchedPrice == null && data.price != null) {
+                        matchedPrice = data.price;
+                    }
+                    liveResults.push({ date: date, price: matchedPrice, link: link });
+                }
+            } catch (e) {
+                liveFailed = true;
+            }
 
-                    results.push({
-                        date: date,
-                        price: matchedPrice,
-                        matched: matched,
-                        link: link
-                    });
-                } catch (e) {
-                    results.push({ date: date, price: null, matched: false, link: null, error: true });
+            if (!liveFailed && liveResults.some(function(r) { return r.price != null; })) {
+                renderResults(liveResults, (currentLang === 'zh') ? '來源：即時查詢' : 'Source: live');
+                return;
+            }
+
+            // 2. Fallback: prices_hnd.json (only for HND route)
+            if (isHnd) {
+                try {
+                    var cacheRes = await fetch('prices_hnd.json?v=' + Date.now());
+                    if (cacheRes.ok) {
+                        var cache = await cacheRes.json();
+                        var cacheMap = {};
+                        cache.forEach(function(item) {
+                            if (item.date && item.cheapest) {
+                                cacheMap[item.date] = item.cheapest;
+                            }
+                        });
+                        var fallbackResults = dates.map(function(d) {
+                            return {
+                                date: d,
+                                price: cacheMap[d] || null,
+                                link: 'https://www.google.com/travel/flights?q=' + encodeURIComponent('Flights ' + origin + ' to ' + dest + ' on ' + d) + '&curr=HKD'
+                            };
+                        });
+                        var note = (currentLang === 'zh')
+                            ? '來源：每日快取（僅 HKG–HND）'
+                            : 'Source: daily cache (HKG–HND only)';
+                        renderResults(fallbackResults, note);
+                        return;
+                    }
+                } catch (e2) {
+                    // ignore
                 }
             }
 
-            var title = (currentLang === 'zh')
-                ? (flightNo + ' · 未來 8 週票價 (' + origin + ' → ' + dest + ')')
-                : (flightNo + ' · Next 8 weeks (' + origin + ' → ' + dest + ')');
-            var thDate = (currentLang === 'zh') ? '日期' : 'Date';
-            var thPrice = (currentLang === 'zh') ? '該航班票價' : 'This flight';
-            var na = (currentLang === 'zh') ? '當日無此航班' : 'Not listed';
-            var note = (currentLang === 'zh')
-                ? '只顯示 Google 上找到的該航班號票價；找不到則顯示「當日無此航班」。'
-                : 'Shows price only when Google lists this flight number; otherwise “Not listed”.';
-
-            var rows = results.map(function(r) {
-                var priceCell;
-                if (r.matched && r.price != null) {
-                    priceCell = '<a href="' + r.link + '" target="_blank" rel="noopener">HK$' + Number(r.price).toLocaleString() + '</a>';
-                } else {
-                    priceCell = '<span class="price-na">' + na + '</span>';
-                }
-                return '<tr><td>' + formatDisplayDate(r.date) + '</td><td>' + priceCell + '</td></tr>';
-            }).join('');
-
-            panel.innerHTML = '<h4>' + title + '</h4>'
-                + '<div style="font-size:10px;color:#5f6368;margin-bottom:6px;">' + note + '</div>'
-                + '<table><thead><tr><th>' + thDate + '</th><th>' + thPrice + '</th></tr></thead>'
-                + '<tbody>' + rows + '</tbody></table>';
+            // 3. Nothing available
+            panel.innerHTML = '<div class="price-err">' + ((currentLang === 'zh') ? '暫時無法取得票價' : 'Prices unavailable') + '</div>';
         };
 
         window.deselectAllDays = function() {
