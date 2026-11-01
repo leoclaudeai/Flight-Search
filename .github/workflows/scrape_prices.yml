@@ -2,9 +2,11 @@ name: Scrape HKG-HND Prices
 
 on:
   schedule:
-    # Run every day at 03:00 UTC
     - cron: '0 3 * * *'
-  workflow_dispatch:  # allow manual run
+  workflow_dispatch:
+
+permissions:
+  contents: write   # ← add this
 
 jobs:
   scrape:
@@ -12,6 +14,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   # optional but clearer
 
       - name: Set up Python
         uses: actions/setup-python@v5
