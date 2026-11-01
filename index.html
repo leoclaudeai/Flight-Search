@@ -1693,11 +1693,13 @@
             var dest = (direction === 'Departure') ? iata : 'HKG';
             var dates = nextDatesForDay(dayKey, 8);
 
-            var loadingText = (currentLang === 'zh') ? '正在查詢未來 8 週票價…' : 'Loading prices for next 8 weeks…';
+            // Normalize: "CX 500" / "CX500" -> "CX500"
+            var targetNo = String(flightNo || '').replace(/\s+/g, '').toUpperCase();
+
+            var loadingText = (currentLang === 'zh') ? '正在查詢該航班未來 8 週票價…' : 'Loading prices for this flight (8 weeks)…';
             panel.innerHTML = '<div class="price-loading">' + loadingText + '</div>';
 
             var results = [];
-            // Sequential to be gentler on free tier (8 calls)
             for (var i = 0; i < dates.length; i++) {
                 var date = dates[i];
                 try {
@@ -1706,27 +1708,47 @@
                         + '&date=' + encodeURIComponent(date);
                     var res = await fetch(url);
                     var data = await res.json();
+                    var link = data.google_flights_url
+                        || ('https://www.google.com/travel/flights?q=' + encodeURIComponent('Flights ' + origin + ' to ' + dest + ' on ' + date) + '&curr=HKD');
+
+                    var matchedPrice = null;
+                    var matched = false;
+                    var flights = data.flights || [];
+                    for (var j = 0; j < flights.length; j++) {
+                        var nums = (flights[j].flight_numbers || []).map(function(n) {
+                            return String(n).replace(/\s+/g, '').toUpperCase();
+                        });
+                        if (nums.indexOf(targetNo) !== -1) {
+                            matchedPrice = flights[j].price;
+                            matched = true;
+                            break;
+                        }
+                    }
+
                     results.push({
                         date: date,
-                        price: data.price,
-                        link: data.google_flights_url
-                            || ('https://www.google.com/travel/flights?q=' + encodeURIComponent('Flights ' + origin + ' to ' + dest + ' on ' + date) + '&curr=HKD')
+                        price: matchedPrice,
+                        matched: matched,
+                        link: link
                     });
                 } catch (e) {
-                    results.push({ date: date, price: null, link: null, error: true });
+                    results.push({ date: date, price: null, matched: false, link: null, error: true });
                 }
             }
 
             var title = (currentLang === 'zh')
-                ? ('未來 8 週票價 (' + origin + ' → ' + dest + ')')
-                : ('Next 8 weeks (' + origin + ' → ' + dest + ')');
+                ? (flightNo + ' · 未來 8 週票價 (' + origin + ' → ' + dest + ')')
+                : (flightNo + ' · Next 8 weeks (' + origin + ' → ' + dest + ')');
             var thDate = (currentLang === 'zh') ? '日期' : 'Date';
-            var thPrice = (currentLang === 'zh') ? '最低票價' : 'Lowest price';
-            var na = (currentLang === 'zh') ? '暫無' : 'N/A';
+            var thPrice = (currentLang === 'zh') ? '該航班票價' : 'This flight';
+            var na = (currentLang === 'zh') ? '當日無此航班' : 'Not listed';
+            var note = (currentLang === 'zh')
+                ? '只顯示 Google 上找到的該航班號票價；找不到則顯示「當日無此航班」。'
+                : 'Shows price only when Google lists this flight number; otherwise “Not listed”.';
 
             var rows = results.map(function(r) {
                 var priceCell;
-                if (r.price != null) {
+                if (r.matched && r.price != null) {
                     priceCell = '<a href="' + r.link + '" target="_blank" rel="noopener">HK$' + Number(r.price).toLocaleString() + '</a>';
                 } else {
                     priceCell = '<span class="price-na">' + na + '</span>';
@@ -1735,6 +1757,7 @@
             }).join('');
 
             panel.innerHTML = '<h4>' + title + '</h4>'
+                + '<div style="font-size:10px;color:#5f6368;margin-bottom:6px;">' + note + '</div>'
                 + '<table><thead><tr><th>' + thDate + '</th><th>' + thPrice + '</th></tr></thead>'
                 + '<tbody>' + rows + '</tbody></table>';
         };
