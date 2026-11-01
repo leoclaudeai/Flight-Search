@@ -280,6 +280,51 @@
         .flight-item:hover { background: #e8f0fe; }
         .flight-no { font-weight: 700; color: #1a73e8; font-size: 13px; }
         .flight-price-hint { font-size: 10px; color: #5f6368; margin-top: 2px; }
+
+        .price-panel {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .price-panel h4 {
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            color: #1a73e8;
+        }
+        .price-panel .price-loading {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        .price-panel table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .price-panel th, .price-panel td {
+            padding: 5px 4px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .price-panel th {
+            color: #5f6368;
+            font-weight: 600;
+            font-size: 11px;
+        }
+        .price-panel td a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .price-panel td a:hover { text-decoration: underline; }
+        .price-panel .price-err {
+            font-size: 12px;
+            color: #d93025;
+        }
+        .price-panel .price-na {
+            color: #9aa0a6;
+        }
         
         /* -------------------------------------------
            Responsive Layout for Mobile Phones
@@ -1521,17 +1566,19 @@
                                         : `${iata} (${txt.dep_unk}) &rarr; HKG ${fl.time}`;
                                 }
 
+                                const pricePanelId = uId + '-price-' + d + '-' + fl.no.replace(/[^a-zA-Z0-9]/g, '');
                                 detailsHtml += `
-                                    <div class="flight-item" onclick="openGoogleFlights('${iata}','${direction}','${d}','${fl.no}')" title="Google Flights">
+                                    <div class="flight-item" onclick="(function(el){ var p=document.getElementById('${pricePanelId}'); if(!p) return; if(p.style.display==='block'){p.style.display='none'; return;} p.style.display='block'; showFlightPrices('${iata}','${direction}','${d}','${fl.no}','${pricePanelId}'); })(this)" title="Show prices">
                                         <div style="flex-grow: 1;">
                                             <div style="margin-bottom: 3px;"><span class="flight-no">${fl.no}</span></div>
                                             <div style="font-size: 11px; color: #555; font-weight: 500;">${displayStr}</div>
-                                            <div class="flight-price-hint">${currentLang === 'zh' ? '點擊查看未來票價 →' : 'Click for prices →'}</div>
+                                            <div class="flight-price-hint">${currentLang === 'zh' ? '點擊查看未來 8 週票價 →' : 'Click for next 8 weeks prices →'}</div>
                                         </div>
                                         <div style="font-size: 11px; color: #1a73e8; font-weight: 600; text-align: right; white-space: nowrap;">
                                             ⏱ ${durStr}
                                         </div>
-                                    </div>`;
+                                    </div>
+                                    <div class="price-panel" id="${pricePanelId}" style="display:none;"></div>`;
                             });
                             detailsHtml += `</div>`;
                         }
@@ -1599,32 +1646,108 @@
             renderMapData();
         };
 
+        
         var DAY_KEY_TO_JS = { su: 0, mo: 1, tu: 2, we: 3, th: 4, fr: 5, sa: 6 };
 
-        function nextDateForDay(dayKey) {
+        // Your Cloudflare Worker (SerpApi key stays on the worker)
+        var PRICE_PROXY_URL = 'https://flight-prices.leoclaudeai2026.workers.dev/';
+
+        function nextDatesForDay(dayKey, count) {
             var target = DAY_KEY_TO_JS[dayKey];
+            var dates = [];
             var d = new Date();
             d.setHours(12, 0, 0, 0);
             d.setDate(d.getDate() + 1);
-            while (d.getDay() !== target) {
+            while (dates.length < count) {
+                if (d.getDay() === target) {
+                    var y = d.getFullYear();
+                    var m = String(d.getMonth() + 1).padStart(2, '0');
+                    var day = String(d.getDate()).padStart(2, '0');
+                    dates.push(y + '-' + m + '-' + day);
+                }
                 d.setDate(d.getDate() + 1);
             }
-            var y = d.getFullYear();
-            var m = String(d.getMonth() + 1).padStart(2, '0');
-            var day = String(d.getDate()).padStart(2, '0');
-            return y + '-' + m + '-' + day;
+            return dates;
+        }
+
+        function formatDisplayDate(iso) {
+            var parts = iso.split('-');
+            return parts[1] + '/' + parts[2];
         }
 
         window.openGoogleFlights = function(iata, direction, dayKey, flightNo) {
-            var dateStr = nextDateForDay(dayKey);
+            // Kept as fallback / direct link helper
+            var dates = nextDatesForDay(dayKey, 1);
+            var dateStr = dates[0];
             var origin = (direction === 'Departure') ? 'HKG' : iata;
             var dest = (direction === 'Departure') ? iata : 'HKG';
             var q = encodeURIComponent('Flights from ' + origin + ' to ' + dest + ' on ' + dateStr);
-            var url = 'https://www.google.com/travel/flights?q=' + q + '&curr=HKD';
-            window.open(url, '_blank', 'noopener,noreferrer');
+            window.open('https://www.google.com/travel/flights?q=' + q + '&curr=HKD', '_blank', 'noopener,noreferrer');
         };
 
-        window.toggleFilterDay = function(el) {
+        window.showFlightPrices = async function(iata, direction, dayKey, flightNo, panelId) {
+            var panel = document.getElementById(panelId);
+            if (!panel) return;
+
+            var origin = (direction === 'Departure') ? 'HKG' : iata;
+            var dest = (direction === 'Departure') ? iata : 'HKG';
+            var dates = nextDatesForDay(dayKey, 8);
+
+            var loadingText = (currentLang === 'zh') ? '正在查詢未來 8 週票價…' : 'Loading prices for next 8 weeks…';
+            panel.innerHTML = '<div class="price-loading">' + loadingText + '</div>';
+
+            var results = [];
+            // Sequential to be gentler on free tier (8 calls)
+            for (var i = 0; i < dates.length; i++) {
+                var date = dates[i];
+                try {
+                    var url = PRICE_PROXY_URL + '?origin=' + encodeURIComponent(origin)
+                        + '&dest=' + encodeURIComponent(dest)
+                        + '&date=' + encodeURIComponent(date);
+                    var res = await fetch(url);
+                    var data = await res.json();
+                    results.push({
+                        date: date,
+                        price: data.price,
+                        link: data.google_flights_url
+                            || ('https://www.google.com/travel/flights?q=' + encodeURIComponent('Flights ' + origin + ' to ' + dest + ' on ' + date) + '&curr=HKD')
+                    });
+                } catch (e) {
+                    results.push({ date: date, price: null, link: null, error: true });
+                }
+            }
+
+            var title = (currentLang === 'zh')
+                ? ('未來 8 週票價 (' + origin + ' → ' + dest + ')')
+                : ('Next 8 weeks (' + origin + ' → ' + dest + ')');
+            var thDate = (currentLang === 'zh') ? '日期' : 'Date';
+            var thPrice = (currentLang === 'zh') ? '最低票價' : 'Lowest price';
+            var na = (currentLang === 'zh') ? '暫無' : 'N/A';
+
+            var rows = results.map(function(r) {
+                var priceCell;
+                if (r.price != null) {
+                    priceCell = '<a href="' + r.link + '" target="_blank" rel="noopener">HK$' + Number(r.price).toLocaleString() + '</a>';
+                } else {
+                    priceCell = '<span class="price-na">' + na + '</span>';
+                }
+                return '<tr><td>' + formatDisplayDate(r.date) + '</td><td>' + priceCell + '</td></tr>';
+            }).join('');
+
+            panel.innerHTML = '<h4>' + title + '</h4>'
+                + '<table><thead><tr><th>' + thDate + '</th><th>' + thPrice + '</th></tr></thead>'
+                + '<tbody>' + rows + '</tbody></table>';
+        };
+
+        window.deselectAllDays = function() {
+            globalSelectedDays.clear();
+            document.querySelectorAll('.f-day-pill').forEach(function(p) {
+                p.classList.remove('active');
+            });
+            renderMapData();
+        };
+
+window.toggleFilterDay = function(el) {
             const day = el.dataset.day;
             el.classList.toggle('active');
             if (el.classList.contains('active')) {
