@@ -127,6 +127,44 @@
         .f-day-pill:hover { border-color: #1a73e8; }
         .f-day-pill.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 
+        /* Direction radio pills */
+        .dir-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .dir-radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #fff;
+            transition: all 0.15s ease;
+            user-select: none;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3c4043;
+        }
+        .dir-radio-option:hover {
+            border-color: #1a73e8;
+            background: #f8fbff;
+        }
+        .dir-radio-option.selected {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+        .dir-radio-option input {
+            accent-color: #1a73e8;
+            width: 15px;
+            height: 15px;
+            margin: 0;
+            cursor: pointer;
+        }
+
         /* Custom Dual-Thumb Time Slider */
         .time-slider-wrapper { position: relative; width: 100%; height: 24px; margin-top: 4px; }
         .time-slider-track {
@@ -258,10 +296,34 @@
         <div id="filter-content">
             <div class="filter-group">
                 <label id="ui-dir-label">方向</label>
-                <select id="filter-dir" onchange="window.triggerMapFilter()">
-                    <option value="All" id="ui-dir-all">所有路線</option>
-                    <option value="Departure" id="ui-dir-dep">離港 (HKG &rarr; )</option>
-                    <option value="Arrival" id="ui-dir-arr">抵港 ( &rarr; HKG)</option>
+                <div class="dir-radio-group">
+                    <label class="dir-radio-option selected" id="dir-opt-all">
+                        <input type="radio" name="filter-dir" value="All" checked onchange="onDirChange(this)">
+                        <span id="ui-dir-all">所有路線</span>
+                    </label>
+                    <label class="dir-radio-option" id="dir-opt-dep">
+                        <input type="radio" name="filter-dir" value="Departure" onchange="onDirChange(this)">
+                        <span id="ui-dir-dep">離港 (HKG &rarr; )</span>
+                    </label>
+                    <label class="dir-radio-option" id="dir-opt-arr">
+                        <input type="radio" name="filter-dir" value="Arrival" onchange="onDirChange(this)">
+                        <span id="ui-dir-arr">抵港 ( &rarr; HKG)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Popular Locations / Region Filter (moved up) -->
+            <div class="filter-group">
+                <label id="ui-region-label">熱門地點</label>
+                <select id="filter-region" onchange="window.triggerMapFilter()">
+                    <option value="All" id="ui-region-all">所有地區</option>
+                    <option value="China" id="ui-region-cn">中國內地</option>
+                    <option value="Taiwan" id="ui-region-tw">台灣</option>
+                    <option value="Japan" id="ui-region-jp">日本</option>
+                    <option value="Thailand" id="ui-region-th">泰國</option>
+                    <option value="Vietnam" id="ui-region-vn">越南</option>
+                    <option value="Europe" id="ui-region-eu">歐洲</option>
+                    <option value="USA" id="ui-region-us">美國</option>
                 </select>
             </div>
 
@@ -304,21 +366,6 @@
                 <label id="ui-airline-label">航空公司</label>
                 <select id="filter-airline" onchange="window.triggerMapFilter()">
                     <option value="All" id="ui-airline-all">所有航空公司</option>
-                </select>
-            </div>
-            
-            <!-- Popular Locations / Region Filter -->
-            <div class="filter-group">
-                <label id="ui-region-label">熱門地點</label>
-                <select id="filter-region" onchange="window.triggerMapFilter()">
-                    <option value="All" id="ui-region-all">所有地區</option>
-                    <option value="China" id="ui-region-cn">中國內地</option>
-                    <option value="Taiwan" id="ui-region-tw">台灣</option>
-                    <option value="Japan" id="ui-region-jp">日本</option>
-                    <option value="Thailand" id="ui-region-th">泰國</option>
-                    <option value="Vietnam" id="ui-region-vn">越南</option>
-                    <option value="Europe" id="ui-region-eu">歐洲</option>
-                    <option value="USA" id="ui-region-us">美國</option>
                 </select>
             </div>
             
@@ -796,7 +843,19 @@
         window.currentOffsetLng = null;
         window.currentDirection = 'Departure';
         
-        window.currentValidLocationsMap = {}; 
+        window.currentValidLocationsMap = {};
+
+        function getFilterDir() {
+            const checked = document.querySelector('input[name="filter-dir"]:checked');
+            return checked ? checked.value : 'All';
+        }
+
+        window.onDirChange = function(radio) {
+            document.querySelectorAll('.dir-radio-option').forEach(el => el.classList.remove('selected'));
+            radio.closest('.dir-radio-option').classList.add('selected');
+            window.triggerMapFilter();
+        };
+ 
 
         function getLocationName(iata, fallbackInfo) {
             const dictionaryHit = AIRPORT_INFO[iata];
@@ -826,7 +885,7 @@
             document.getElementById('reset-btn').innerText = txt.reset_btn;
             
             document.getElementById('ui-dir-label').innerText = txt.dir_label;
-            document.getElementById('ui-dir-all').innerText = txt.dir_all;
+            document.getElementById('ui-dir-all').innerHTML = txt.dir_all;
             document.getElementById('ui-dir-dep').innerHTML = txt.dir_dep;
             document.getElementById('ui-dir-arr').innerHTML = txt.dir_arr;
             
@@ -1031,7 +1090,7 @@
             mapMarkers = [];
             window.currentValidLocationsMap = {};
 
-            const fDir = document.getElementById('filter-dir').value;
+            const fDir = getFilterDir();
             const fRegion = document.getElementById('filter-region').value;
             
             document.getElementById('group-time-dep').style.display = (fDir === 'Arrival') ? 'none' : 'block';
@@ -1227,7 +1286,7 @@
             window.currentRouteInfo = info;
             window.currentOffsetLng = offsetWrappedLng;
             
-            const fDir = document.getElementById('filter-dir').value;
+            const fDir = getFilterDir();
             window.currentDirection = (fDir === 'Arrival') ? 'Arrival' : 'Departure';
             
             renderMapData(); 
@@ -1521,7 +1580,13 @@
         };
 
         window.clearAllFilters = function() {
-            document.getElementById('filter-dir').value = 'All';
+            // Reset direction radios
+            document.querySelectorAll('input[name="filter-dir"]').forEach(r => {
+                r.checked = (r.value === 'All');
+            });
+            document.querySelectorAll('.dir-radio-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById('dir-opt-all').classList.add('selected');
+            
             document.getElementById('filter-region').value = 'All';
             
             document.getElementById('time-dep-min').value = 0;
