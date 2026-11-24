@@ -2,37 +2,47 @@
   {
     "date": "2026-11-25",
     "route": "HKG-HND",
-    "prices_found": [],
-    "cheapest": null,
-    "scraped_at": "2026-11-23T11:39:17.094750"
+    "prices_found": [
+      2978,
+      3378,
+      5156,
+      5474,
+      5924,
+      6920,
+      6970,
+      7060
+    ],
+    "cheapest": 2978,
+    "scraped_at": "2026-11-24T13:11:42.772217"
   },
   {
     "date": "2026-12-02",
     "route": "HKG-HND",
-    "prices_found": [
-      2098,
-      2548,
-      4728,
-      4749,
-      5022,
-      5458,
-      7058
-    ],
-    "cheapest": 2098,
-    "scraped_at": "2026-11-23T11:39:28.169179"
+    "prices_found": [],
+    "cheapest": null,
+    "scraped_at": "2026-11-24T13:11:53.873357"
   },
   {
     "date": "2026-12-09",
     "route": "HKG-HND",
-    "prices_found": [],
-    "cheapest": null,
-    "scraped_at": "2026-11-23T11:39:39.315778"
+    "prices_found": [
+      2398,
+      2978,
+      4708,
+      4833,
+      5024,
+      5130,
+      5860,
+      6800
+    ],
+    "cheapest": 2398,
+    "scraped_at": "2026-11-24T13:12:05.190953"
   },
   {
     "date": "2026-12-16",
     "route": "HKG-HND",
     "prices_found": [],
     "cheapest": null,
-    "scraped_at": "2026-11-23T11:39:50.280506"
+    "scraped_at": "2026-11-24T13:12:16.252451"
   }
 ]
